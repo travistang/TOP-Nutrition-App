@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
+import { useRecoilState } from 'recoil';
+import { createEditRecordAtom } from './atoms/CreateEditRecordAtom';
+
 import CreateRecordModal from './components/CreateRecordModal';
 import Fab from './components/Fab';
 import Header from './components/Header';
+import ConsumptionSummary from './pages/ConsumptionSummary';
+import { DEFAULT_CONSUMPTION } from './types/Consumption';
 
 function App() {
-  const [creatingRecord, setCreatingRecord] = useState(false);
+  const [createEditRecord, setCreatEditRecord] = useRecoilState(createEditRecordAtom);
+
   return (
     <div className="page bg-gray-200">
+      <Toaster />
       <Header />
-      {!creatingRecord && (
-          <Fab icon="pen" onClick={() => setCreatingRecord(true)} />
+      <ConsumptionSummary />
+      {!createEditRecord.modalOpened && (
+          <Fab icon="pen" onClick={() => setCreatEditRecord({ modalOpened: true, record: DEFAULT_CONSUMPTION })} />
       )}
-      <CreateRecordModal onClose={() => setCreatingRecord(false)} opened={creatingRecord} />
+      <CreateRecordModal />
     </div>
   );
 }
