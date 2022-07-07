@@ -1,10 +1,10 @@
 import React from 'react';
-import { Consumption } from '../../types/Consumption';
+import { ConsumptionRecord } from '../../database/ConsumptionDatabase';
 import { MarcoNutrition, MarcoNutritionColor } from '../../types/Nutrition';
 import Chip from '../Chip';
 
 type Props = {
-  record: Consumption
+  record: ConsumptionRecord
 }
 export default function ConsumptionAutocompleteResult({ record }: Props) {
   return (

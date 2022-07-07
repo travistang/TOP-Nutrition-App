@@ -2,6 +2,7 @@ import { endOfDay, startOfDay } from 'date-fns';
 import Dexie, { Table } from 'dexie';
 import { v4 as uuid } from 'uuid';
 import { Consumption } from '../types/Consumption';
+import NutritionUtils from '../utils/Nutrition';
 
 export type ConsumptionRecord = Consumption & {
   id: string;
@@ -31,8 +32,12 @@ class ConsumptionDatabase extends Dexie {
     return this.consumptions.update(id, data);
   }
 
-  search(recordName: string) {
-    return this.consumptions.where('name').startsWithIgnoreCase(recordName).toArray();
+  async search(recordName: string) {
+    const searchResults = await this.consumptions.where('name').startsWithIgnoreCase(recordName).toArray();
+    return searchResults.reduce((uniqueResults, result) => {
+      const hasSimilarResults = uniqueResults.find(res => NutritionUtils.isEqual(res.nutritionPerHundred, result.nutritionPerHundred));
+      return hasSimilarResults ? uniqueResults : [...uniqueResults, result];
+    }, [] as ConsumptionRecord[]);
   }
 
   remove(id: string) {
