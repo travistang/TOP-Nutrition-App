@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { createEditRecordAtom } from './atoms/CreateEditRecordAtom';
 
 import CreateRecordModal from './components/CreateRecordModal';
+import DailyNutritionGoalModal from './components/DailyNutritionGoalModal';
 import Fab from './components/Fab';
 import Header from './components/Header';
 import ConsumptionSummary from './pages/ConsumptionSummary';
@@ -21,6 +22,7 @@ function App() {
           <Fab icon="pen" onClick={() => setCreatEditRecord({ modalOpened: true, record: DEFAULT_CONSUMPTION })} />
       )}
       <CreateRecordModal />
+      <DailyNutritionGoalModal />
     </div>
   );
 }

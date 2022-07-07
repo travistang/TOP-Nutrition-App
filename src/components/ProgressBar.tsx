@@ -11,7 +11,7 @@ type Props = {
 export default function ProgressBar({ className, data, totalValue }:Props) {
   const usingValue = totalValue ?? NumberUtils.sum(...data.map(d => d.value));
   return (
-    <div className={classNames("rounded-full flex bg-gray-400", className)}>
+    <div className={classNames("flex-shrink-0 rounded-full flex bg-gray-400", className)}>
       {
         data.map((dat => (
           <span
