@@ -18,8 +18,9 @@ export default function ConsumptionItem({ consumption, onClick, maxAmount }:Prop
     }))
 
   return (
-    <div className="grid grid-cols-6 items-center w-full h-12 py-2" onClick={onClick}>
-      <span className="font-bold text-sm text-gray-700 col-span-3 capitalize">{consumption.name}</span>
+    <div className="flex-shrink-0 grid grid-cols-6 items-center w-full h-12 py-2" onClick={onClick}>
+      <span className="font-bold text-gray-700 col-span-3 capitalize">
+        {consumption.name} <i className="text-xs">({consumption.amount.toFixed(1)} g)</i></span>
       <span className="font-bold text-sm text-right col-span-3">{NutritonUtils.caloriesByAmount(consumption.nutritionPerHundred, consumption.amount).toFixed(1)} kcal</span>
       <ProgressBar totalValue={maxAmount} className="col-span-4 h-1 col-start-1" data={progressBarData} />
     </div>

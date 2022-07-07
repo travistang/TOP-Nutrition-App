@@ -31,6 +31,10 @@ class ConsumptionDatabase extends Dexie {
     return this.consumptions.update(id, data);
   }
 
+  search(recordName: string) {
+    return this.consumptions.where('name').startsWithIgnoreCase(recordName).toArray();
+  }
+
   remove(id: string) {
     return this.consumptions.delete(id);
   }

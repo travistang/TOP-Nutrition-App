@@ -14,7 +14,7 @@ export default function SummaryWidgets({ nutritionRecords}: Props) {
   const totalNutritions = NutritionUtils.total(...nutritionRecords);
   const caloriesByNutrition = NutritionUtils.caloriesByNutrition(totalNutritions);
   return (
-    <div className="flex flex-row flex-nowrap gap-2">
+    <div className="flex flex-row flex-nowrap gap-2 rounded-lg p-2 bg-gray-300">
       <CalorieWidget caloriesByNutrition={caloriesByNutrition} remainingCalories={Math.max(0, targetCalories - totalNutritions.calories)} />
       <div className="flex-1 flex flex-col items-stretch gap-1">
         <ItemWidget name="Calories" value={totalNutritions.calories} maxValue={targetCalories} unit="kcal" themeColor="rgb(100, 0, 0)" className="" />

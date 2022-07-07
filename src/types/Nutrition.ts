@@ -1,19 +1,19 @@
 export enum MarcoNutrition {
   carbohydrates = 'carbohydrates',
-  protein = 'protein',
   fat = 'fat',
+  protein = 'protein',
 }
 
 export const MarcoNutritionCalories: Record<MarcoNutrition, number> = {
   [MarcoNutrition.carbohydrates]: 4,
   [MarcoNutrition.protein]: 4,
-  [MarcoNutrition.fat]: 4,
+  [MarcoNutrition.fat]: 9,
 }
 
 export const MarcoNutritionColor: Record<MarcoNutrition, string> = {
   [MarcoNutrition.carbohydrates]: 'rgb(76, 184, 154)',
-  [MarcoNutrition.protein]: 'rgb(198, 95, 84)',
-  [MarcoNutrition.fat]: 'rgb(228, 177, 0)',
+  [MarcoNutrition.fat]: 'rgb(198, 95, 84)',
+  [MarcoNutrition.protein]: 'rgb(228, 177, 0)',
 };
 
 export type Nutrition = { [N in MarcoNutrition]: number } & {

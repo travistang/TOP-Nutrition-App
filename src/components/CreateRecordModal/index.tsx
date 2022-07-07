@@ -1,5 +1,7 @@
 import React from 'react';
 import toast from 'react-hot-toast';
+import { useRecoilState } from 'recoil';
+import classNames from 'classnames';
 import { Consumption, DEFAULT_CONSUMPTION } from '../../types/Consumption';
 import TextInput from '../Input/TextInput';
 import Modal from '../Modal';
@@ -8,13 +10,16 @@ import NutritionUtils from '../../utils/Nutrition';
 import DateUtils from '../../utils/Date';
 import Button from '../Input/Button';
 import ConsumptionDatabase, { ConsumptionRecord } from '../../database/ConsumptionDatabase';
-import { useRecoilState } from 'recoil';
 import { createEditRecordAtom } from '../../atoms/CreateEditRecordAtom';
+import AutoCompleteInput from '../Input/AutoCompleteInput';
+import ConsumptionAutocompleteResult from '../Input/ConsumptionAutocompleteResult';
 
 export default function CreateRecordModal() {
   const [createEditRecord, setCreateEditRecord] = useRecoilState(createEditRecordAtom);
   const { modalOpened, record: consumption } = createEditRecord;
   const isEditing = !!consumption.id;
+  const isFormValid = !!consumption.name && consumption.amount > 0;
+
   const setConsumption = (consumption: Consumption) => setCreateEditRecord({ ...createEditRecord, record: consumption });
   const reset = () => setConsumption(DEFAULT_CONSUMPTION);
 
@@ -26,6 +31,10 @@ export default function CreateRecordModal() {
     await ConsumptionDatabase.remove(consumption.id!);
     toast.success("Record deleted");
     onClose();
+  }
+
+  const useAutoCompleteResult = (record: ConsumptionRecord) => {
+    setConsumption({ ...consumption, nutritionPerHundred: record.nutritionPerHundred, name: record.name })
   }
 
   const updateField = (field: keyof Omit<Consumption, "nutritionPerHundred">) => (value: string | number) => {
@@ -41,6 +50,7 @@ export default function CreateRecordModal() {
   };
 
   const applyChanges = async () => {
+    if (!isFormValid) return;
     try {
       if (!isEditing) {
         await ConsumptionDatabase.add(consumption);
@@ -65,18 +75,21 @@ export default function CreateRecordModal() {
   return (
     <Modal opened={modalOpened} onClose={onClose} label={isEditing ? "Edit record" : "Create nutrition record"}>
       <div className="grid grid-cols-6 gap-2 p-2">
-        <TextInput
+        <AutoCompleteInput
           label="Name"
           value={consumption.name}
           onChange={updateField('name')}
-          className="col-span-3"
+          className="col-span-4"
+          onSearch={ConsumptionDatabase.search.bind(ConsumptionDatabase)}
+          onSelectSearchResult={useAutoCompleteResult}
+          renderResult={record => <ConsumptionAutocompleteResult record={record} key={record.id} />}
         />
         <TextInput
           label="Date"
           type="datetime-local"
           value={DateUtils.toInputFormat(consumption.date)}
           onChange={updateDate}
-          className="col-span-3"
+          className="col-span-2"
         />
         <NutritionFacts
           nutrition={consumption.nutritionPerHundred}
@@ -100,7 +113,12 @@ export default function CreateRecordModal() {
           <Button text="Delete" textClassName='text-red-500' onClick={deleteRecord} /> :
           <Button text="Reset" onClick={reset} />
         }
-        <Button text="Create" className="bg-violet-400 rounded-lg h-12 col-span-2 col-start-5" onClick={applyChanges} />
+        <Button
+          text="Create"
+          className={classNames("bg-violet-400 rounded-lg h-12 col-span-2 col-start-5", isFormValid ? 'bg-violet-900' : 'bg-violet-400 cursor-not-allowed')}
+          onClick={applyChanges}
+          textClassName={isFormValid ? 'text-gray-200' : ''}
+        />
       </div>
     </Modal>
   );
