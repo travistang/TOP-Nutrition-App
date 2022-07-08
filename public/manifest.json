@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "TOP Nutrition Tracker",
+  "name": "TOP Nutrition Tracker",
   "icons": [
     {
       "src": "favicon.ico",
@@ -9,12 +9,12 @@
     },
     {
       "src": "logo192.png",
-      "type": "image/png",
+      "type": "image/svg",
       "sizes": "192x192"
     },
     {
       "src": "logo512.png",
-      "type": "image/png",
+      "type": "image/svg",
       "sizes": "512x512"
     }
   ],
