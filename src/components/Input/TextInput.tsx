@@ -11,7 +11,7 @@ export type TextInputProps = Omit<InputBaseProps, "children"> & {
 export default function TextInput({ children, type, label, className, value, onChange }: TextInputProps) {
   return (
     <InputBase label={label} className={className}>
-      <div className="rounded-lg h-12 px-2 bg-violet-600 flex items-center overflow-hidden">
+      <div className="rounded-lg h-12 px-2 bg-blue-600 flex items-center overflow-hidden">
         <input type={type} className="bg-transparent outline-none flex-1 text-gray-100" value={value} onChange={e => onChange(e.target.value)} />
       </div>
       {children}

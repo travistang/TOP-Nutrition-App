@@ -10,7 +10,7 @@ type Props = {
 };
 export default function Fab({ onClick, className, icon }: Props) {
   return (
-    <button className={classNames("absolute bottom-4 right-4 h-16 w-16 rounded-full bg-violet-500 flex items-center justify-center z-50", className)} onClick={onClick}>
+    <button className={classNames("absolute bottom-4 right-4 h-12 w-12 rounded-full bg-blue-500 flex items-center justify-center z-50", className)} onClick={onClick}>
       <FontAwesomeIcon icon={icon} className="text-gray-200 fill-gray-200" />
     </button>
   );

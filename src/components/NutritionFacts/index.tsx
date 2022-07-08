@@ -33,7 +33,7 @@ export default function NutritionFacts({ className, nutrition, onChange}:Props) 
         <span className="text-sm justify-self-end text-gray-100">in grams</span>
       </div>
       <ItemRow
-        className="bg-violet-900 -mx-2 px-2 py-1"
+        className="bg-blue-900 -mx-2 px-2 py-1"
         value={nutrition.calories}
         label="Calories"
         onChange={editable ? updateCalories : undefined}

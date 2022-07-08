@@ -115,7 +115,7 @@ export default function CreateRecordModal() {
         }
         <Button
           text="Create"
-          className={classNames("bg-violet-400 rounded-lg h-12 col-span-2 col-start-5", isFormValid ? 'bg-violet-900' : 'bg-violet-400 cursor-not-allowed')}
+          className={classNames("bg-blue-400 rounded-lg h-12 col-span-2 col-start-5", isFormValid ? 'bg-blue-900' : 'bg-blue-400 cursor-not-allowed')}
           onClick={applyChanges}
           textClassName={isFormValid ? 'text-gray-200' : ''}
         />

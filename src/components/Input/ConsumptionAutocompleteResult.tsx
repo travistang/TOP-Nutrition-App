@@ -17,7 +17,7 @@ export default function ConsumptionAutocompleteResult({ record }: Props) {
         {Object.values(MarcoNutrition).map(marco => (
           <Chip
             key={marco}
-            className="px-2 text-violet-100 items-center text-xs capitalize"
+            className="px-2 text-blue-100 items-center text-xs capitalize"
             color={MarcoNutritionColor[marco]}
             text={`${record.nutritionPerHundred[marco].toFixed(0)}g`}
           />
