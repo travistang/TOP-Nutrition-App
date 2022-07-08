@@ -5,6 +5,7 @@ import { DailyNutritionGoal, dailyNutritionGoalAtom } from '../../atoms/DailyNut
 import { MarcoNutrition } from '../../types/Nutrition';
 import Button from '../Input/Button';
 import TextInput from '../Input/TextInput';
+import NumberUtils from '../../utils/Number';
 import Modal from '../Modal';
 
 type FormProps = Omit<DailyNutritionGoal, "modalOpened">;
@@ -13,7 +14,7 @@ export default function DailyNutritionGoalModal() {
   const [nutritionGoalPlaceholder, setNutritionGoalPlaceholder] = useState<FormProps>({ targetCalories, targetNutritionIntake });
 
   const updatePlaceholderCalories = (value: string | number) => {
-    setNutritionGoalPlaceholder({ ...nutritionGoalPlaceholder, targetCalories: parseFloat(value.toString()) });
+    setNutritionGoalPlaceholder({ ...nutritionGoalPlaceholder, targetCalories: NumberUtils.inputAsNumber(value.toString()) });
   }
 
   const onClose = () => setDailyNutritionGoalAtom(atom => ({ ...atom, modalOpened: false }));
@@ -23,7 +24,7 @@ export default function DailyNutritionGoalModal() {
       ...nutritionGoalPlaceholder,
       targetNutritionIntake: {
         ...nutritionGoalPlaceholder.targetNutritionIntake,
-        [marco]: parseFloat(value.toString())
+        [marco]: NumberUtils.inputAsNumber(value.toString())
     }})
   }
 

@@ -8,6 +8,7 @@ import Modal from '../Modal';
 import NutritionFacts from '../NutritionFacts';
 import NutritionUtils from '../../utils/Nutrition';
 import DateUtils from '../../utils/Date';
+import NumberUtils from '../../utils/Number';
 import Button from '../Input/Button';
 import ConsumptionDatabase, { ConsumptionRecord } from '../../database/ConsumptionDatabase';
 import { createEditRecordAtom } from '../../atoms/CreateEditRecordAtom';
@@ -42,7 +43,7 @@ export default function CreateRecordModal() {
   };
 
   const updateAmount = (value: string) => {
-    setConsumption({ ...consumption, amount: parseFloat(value) });
+    setConsumption({ ...consumption, amount: NumberUtils.inputAsNumber(value) });
   }
 
   const updateDate = (dateString: string) => {

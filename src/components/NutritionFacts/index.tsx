@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { MarcoNutrition, Nutrition } from '../../types/Nutrition';
 import ItemRow from './ItemRow';
 import NutritionUtils from '../../utils/Nutrition';
+import NumberUtils from '../../utils/Number';
 
 type Props = {
   className?: string;
@@ -13,7 +14,7 @@ export default function NutritionFacts({ className, nutrition, onChange}:Props) 
   const editable = !!onChange;
 
   const updateNutrition = (marco: MarcoNutrition) => (value: string) => {
-    const updatedNutrition: Nutrition = { ...nutrition, [marco]: parseFloat(value) };
+    const updatedNutrition: Nutrition = { ...nutrition, [marco]: NumberUtils.inputAsNumber(value) };
     const totalCalories = NutritionUtils.totalCalories(updatedNutrition);
     const derivedNutrition: Nutrition = {
       ...updatedNutrition,
@@ -23,7 +24,7 @@ export default function NutritionFacts({ className, nutrition, onChange}:Props) 
   }
 
   const updateCalories = (value: string) => {
-    onChange?.({ ...nutrition, calories: parseFloat(value) });
+    onChange?.({ ...nutrition, calories: NumberUtils.inputAsNumber(value) });
   }
 
   return (
