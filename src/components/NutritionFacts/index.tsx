@@ -25,6 +25,7 @@ export default function NutritionFacts({ className, nutrition, onChange}:Props) 
   const updateCalories = (value: string) => {
     onChange?.({ ...nutrition, calories: parseFloat(value) });
   }
+
   return (
     <div className={classNames("border-4 border-gray-100 rounded-lg p-2 overflow-hidden grid grid-cols-6", className)}>
       <div className="flex flex-row items-center gap-2 col-span-full py-2">
