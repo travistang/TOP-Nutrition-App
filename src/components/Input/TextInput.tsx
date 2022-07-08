@@ -15,6 +15,7 @@ export default function TextInput({ children, type, label, className, value, onC
         <input
           type={type}
           inputMode={type === 'number' ? 'decimal' : undefined}
+          pattern={type === 'number' ? '\d*' : undefined}
           className="bg-transparent outline-none flex-1 text-gray-100"
           value={value}
           onChange={e => onChange(e.target.value)}
