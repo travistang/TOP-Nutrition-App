@@ -11,7 +11,7 @@ import reportWebVitals from './reportWebVitals';
 
 library.add(fas);
 ChartJS.register(LineController, LineElement, PointElement, LinearScale, Title, ArcElement, Tooltip, Legend);
-ChartJS.register();
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

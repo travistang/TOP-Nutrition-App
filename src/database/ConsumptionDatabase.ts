@@ -19,7 +19,10 @@ class ConsumptionDatabase extends Dexie {
   }
 
   consumptionsOfDay(date = Date.now()) {
-    return this.consumptions.where('date').between(startOfDay(date).getTime(), endOfDay(date).getTime()).toArray();
+    return this.consumptions
+      .where('date')
+      .between(startOfDay(date).getTime(), endOfDay(date).getTime())
+      .sortBy('date');
   }
 
   add(consumption: Consumption) {
