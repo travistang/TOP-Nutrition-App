@@ -34,7 +34,7 @@ export default function MealSummary({ meal, index }: Props) {
       key={meal[0].id}
       className="rounded-lg flex flex-col px-2 pb-2 flex-shrink-0 bg-gray-300 mb-2"
     >
-      <div className="flex-shirnk-0 sticky -top-2 rounded-t-lg h-12 flex flex-row items-center justify-between bg-gray-300 shadow-md -mx-2 px-2">
+      <div className="flex-shirnk-0 sticky top-0 rounded-t-lg h-12 flex flex-row items-center justify-between bg-gray-300 shadow-md -mx-2 px-2">
         <span className="text-gray-500">
           Meal {index + 1} @ {format(meal[0].date, "HH:mm")}
         </span>
