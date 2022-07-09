@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
@@ -26,10 +26,15 @@ export default function CreateRecordModal() {
 
   const setConsumption = (consumption: Consumption) =>
     setCreateEditRecord({ ...createEditRecord, record: consumption });
-  const reset = () => setConsumption(DEFAULT_CONSUMPTION);
+
+  const reset = () =>
+    setConsumption({ ...DEFAULT_CONSUMPTION, date: Date.now() });
 
   const onClose = () => {
-    setCreateEditRecord({ modalOpened: false, record: DEFAULT_CONSUMPTION });
+    setCreateEditRecord({
+      modalOpened: false,
+      record: { ...DEFAULT_CONSUMPTION, date: Date.now() },
+    });
   };
 
   const deleteRecord = async () => {
