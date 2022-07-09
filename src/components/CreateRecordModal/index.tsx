@@ -98,7 +98,10 @@ export default function CreateRecordModal() {
       onClose={onClose}
       label={isEditing ? "Edit record" : "Create nutrition record"}
     >
-      <div className="grid grid-cols-6 gap-2 p-2">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="grid grid-cols-6 gap-2 p-2"
+      >
         <AutoCompleteInput
           label="Name"
           value={consumption.name}
@@ -157,7 +160,7 @@ export default function CreateRecordModal() {
           onClick={applyChanges}
           textClassName={isFormValid ? "text-gray-200" : ""}
         />
-      </div>
+      </form>
     </Modal>
   );
 }

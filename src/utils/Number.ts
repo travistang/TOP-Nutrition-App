@@ -20,14 +20,16 @@ const stringToFloat = (str: string) => {
 };
 
 const isNumeric = (str: string) => {
-  return !Number.isNaN(stringToFloat(str)) && !Number.isNaN(stringToFloat(str));
+  return /^\d*((\.|,)\d*)?$/.test(str);
 };
 
+const isNumericDigit = (str: string) => str.match(/^[0-9.,]$/);
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   nanToZero,
   sum,
   inputAsNumber,
   isNumeric,
+  isNumericDigit,
   stringToFloat,
 };
