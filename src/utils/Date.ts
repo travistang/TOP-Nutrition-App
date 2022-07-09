@@ -1,4 +1,4 @@
-import { differenceInMinutes, format } from 'date-fns';
+import { differenceInMinutes, format } from "date-fns";
 
 const toInputFormat = (date: number | Date) => {
   const inputFormat = "yyyy-MM-dd'T'HH:mm";
@@ -7,9 +7,12 @@ const toInputFormat = (date: number | Date) => {
 
 const stringToDate = (date: string) => {
   return new Date(date).getTime();
-}
+};
 
-const groupByTimeInterval = <T extends { date: number; }>(items: T[], seperateIntervalInMinutes: number): T[][] => {
+const groupByTimeInterval = <T extends { date: number }>(
+  items: T[],
+  seperateIntervalInMinutes: number
+): T[][] => {
   return items
     .sort((a, b) => a.date - b.date)
     .reduce((result, item, currentIndex, arr) => {
@@ -18,13 +21,18 @@ const groupByTimeInterval = <T extends { date: number; }>(items: T[], seperateIn
       }
 
       const previousItem = arr[currentIndex - 1];
-      const timeDiffInMinutes = differenceInMinutes(item.date, previousItem.date);
-      return timeDiffInMinutes >= seperateIntervalInMinutes ? [...result, [item]] : [
-        ...result.slice(0, -1),
-        [...result.at(-1) ?? [], item]
-      ]
+      const timeDiffInMinutes = differenceInMinutes(
+        item.date,
+        previousItem.date
+      );
+      return timeDiffInMinutes >= seperateIntervalInMinutes
+        ? [...result, [item]]
+        : [
+            ...result.slice(0, -1),
+            [...(result[result.length - 1] ?? []), item],
+          ];
     }, [] as T[][]);
-}
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
