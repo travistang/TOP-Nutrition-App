@@ -15,8 +15,12 @@ const inputAsNumber = (numString: string) => {
   return parseFloat(numString);
 };
 
+const stringToFloat = (str: string) => {
+  return parseFloat(str.replace(/,/g, "."));
+};
+
 const isNumeric = (str: string) => {
-  return !Number.isNaN(str) && !Number.isNaN(parseFloat(str));
+  return !Number.isNaN(stringToFloat(str)) && !Number.isNaN(stringToFloat(str));
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -25,4 +29,5 @@ export default {
   sum,
   inputAsNumber,
   isNumeric,
+  stringToFloat,
 };

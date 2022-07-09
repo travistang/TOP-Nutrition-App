@@ -18,7 +18,7 @@ export default function NumberInput({
   const onChangeFromString = (str: string) => {
     setInputPlaceholder(str);
     if (NumberUtils.isNumeric(str)) {
-      onChange(parseFloat(str));
+      onChange(NumberUtils.stringToFloat(str));
       return;
     }
   };
@@ -33,7 +33,7 @@ export default function NumberInput({
         <input
           type="number"
           inputMode="decimal"
-          pattern="\\d*"
+          pattern="\d*"
           className="bg-transparent outline-none flex-1 text-gray-100"
           value={inputPlaceholder}
           onChange={(e) => onChangeFromString(e.target.value)}
