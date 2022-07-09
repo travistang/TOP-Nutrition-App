@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
@@ -157,7 +157,7 @@ export default function CreateRecordModal() {
           <Button text="Reset" onClick={reset} />
         )}
         <Button
-          text="Create"
+          text={isEditing ? "Update" : "Record"}
           className={classNames(
             "bg-blue-400 rounded-lg h-12 col-span-2 col-start-5",
             isFormValid ? "bg-blue-900" : "bg-blue-400 cursor-not-allowed"
