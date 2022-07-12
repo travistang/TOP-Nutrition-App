@@ -15,6 +15,7 @@ import {
   Legend,
   CategoryScale,
   BarElement,
+  BarController,
 } from "chart.js";
 import App from "./App";
 import "./index.css";
@@ -24,6 +25,7 @@ import reportWebVitals from "./reportWebVitals";
 library.add(fas);
 ChartJS.register(
   LineController,
+  BarController,
   LineElement,
   PointElement,
   LinearScale,
