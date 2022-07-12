@@ -45,7 +45,8 @@ export default function ConsumptionTrend({ previousRecords }: Props) {
   };
 
   const options = {
-    plugins: { legend: { display: false } },
+    plugins: { tooltip: { enabled: false }, legend: { display: false } },
+    animation: { duration: 0 },
     scales: {
       x: {
         grid: {

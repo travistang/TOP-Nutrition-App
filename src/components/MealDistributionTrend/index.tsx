@@ -32,7 +32,8 @@ export default function MealDistributionTrend({ previousRecords }: Props) {
   };
 
   const options = {
-    plugins: { legend: { display: false } },
+    plugins: { tooltip: { enabled: false }, legend: { display: false } },
+    animation: { duration: 0 },
     scales: {
       y: {
         label: "time",
