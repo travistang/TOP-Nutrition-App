@@ -30,9 +30,10 @@ ChartJS.register(
   Title,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
+  CategoryScale,
+  BarElement
 );
-ChartJS.register(CategoryScale, BarElement, PointElement);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
