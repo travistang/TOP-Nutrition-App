@@ -22,9 +22,11 @@ export default function ConsumptionTrend({ previousRecords }: Props) {
         type: "bar" as const,
         data: recordsByDay?.map(
           (dailyRecords) =>
-            NutritionUtils.total(
-              ...dailyRecords.map((record) =>
-                NutritionUtils.nutritionFromConsumption(record)
+            NutritionUtils.caloriesByNutrition(
+              NutritionUtils.total(
+                ...dailyRecords.map((record) =>
+                  NutritionUtils.nutritionFromConsumption(record)
+                )
               )
             )[marco]
         ),
