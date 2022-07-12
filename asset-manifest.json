@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/TOP-Nutrition-App/static/css/main.a26c92bd.css",
-    "main.js": "/TOP-Nutrition-App/static/js/main.60dad104.js",
+    "main.js": "/TOP-Nutrition-App/static/js/main.d8e1c5e7.js",
     "static/js/787.d785a6e4.chunk.js": "/TOP-Nutrition-App/static/js/787.d785a6e4.chunk.js",
     "service-worker.js": "/TOP-Nutrition-App/service-worker.js",
     "index.html": "/TOP-Nutrition-App/index.html",
     "main.a26c92bd.css.map": "/TOP-Nutrition-App/static/css/main.a26c92bd.css.map",
-    "main.60dad104.js.map": "/TOP-Nutrition-App/static/js/main.60dad104.js.map",
+    "main.d8e1c5e7.js.map": "/TOP-Nutrition-App/static/js/main.d8e1c5e7.js.map",
     "787.d785a6e4.chunk.js.map": "/TOP-Nutrition-App/static/js/787.d785a6e4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a26c92bd.css",
-    "static/js/main.60dad104.js"
+    "static/js/main.d8e1c5e7.js"
   ]
 }
