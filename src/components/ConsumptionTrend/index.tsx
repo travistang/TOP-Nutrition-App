@@ -1,11 +1,11 @@
 import React from "react";
 import { format } from "date-fns";
+import { useRecoilValue } from "recoil";
 import { Chart } from "react-chartjs-2";
 import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
 import { MarcoNutrition, MarcoNutritionColor } from "../../types/Nutrition";
 import NutritionUtils from "../../utils/Nutrition";
 import Section from "../Section";
-import { useRecoilValue } from "recoil";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 
 type Props = {
@@ -14,21 +14,23 @@ type Props = {
 export default function ConsumptionTrend({ previousRecords }: Props) {
   const { targetCalories } = useRecoilValue(dailyNutritionGoalAtom);
   const recordsByDay = previousRecords?.map(([, records]) => records);
+  const caloriesByNutritionByDay = recordsByDay?.map((dailyRecords) =>
+    NutritionUtils.caloriesByNutrition(
+      NutritionUtils.total(
+        ...dailyRecords.map((record) =>
+          NutritionUtils.nutritionFromConsumption(record)
+        )
+      )
+    )
+  );
   const consumptionTrendData = {
     labels: previousRecords?.map(([date]) => format(date, "MM/dd")),
     datasets: [
       ...Object.values(MarcoNutrition).map((marco) => ({
         label: marco,
         type: "bar" as const,
-        data: recordsByDay?.map(
-          (dailyRecords) =>
-            NutritionUtils.caloriesByNutrition(
-              NutritionUtils.total(
-                ...dailyRecords.map((record) =>
-                  NutritionUtils.nutritionFromConsumption(record)
-                )
-              )
-            )[marco]
+        data: caloriesByNutritionByDay.map(
+          (caloriesByNutrition) => caloriesByNutrition[marco]
         ),
         backgroundColor: MarcoNutritionColor[marco],
       })),
@@ -36,7 +38,8 @@ export default function ConsumptionTrend({ previousRecords }: Props) {
         label: "target calories",
         type: "line" as const,
         data: Array(recordsByDay.length).fill(targetCalories),
-        backgroundColor: "rgb(100, 0, 0)",
+        pointRadius: 0,
+        borderColor: "rgb(100, 0, 0)",
       },
     ],
   };
