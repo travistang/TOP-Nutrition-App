@@ -1,19 +1,44 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { RecoilRoot } from 'recoil';
-import { Chart as ChartJS, LineController, LineElement, PointElement, LinearScale, Title, ArcElement, Tooltip, Legend } from 'chart.js';
-import App from './App';
-import './index.css';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { RecoilRoot } from "recoil";
+import {
+  Chart as ChartJS,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  BarElement,
+  BarController,
+} from "chart.js";
+import App from "./App";
+import "./index.css";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import reportWebVitals from "./reportWebVitals";
 
 library.add(fas);
-ChartJS.register(LineController, LineElement, PointElement, LinearScale, Title, ArcElement, Tooltip, Legend);
+ChartJS.register(
+  LineController,
+  BarController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  BarElement
+);
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
