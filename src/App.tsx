@@ -7,6 +7,7 @@ import CreateRecordModal from './components/CreateRecordModal';
 import DailyNutritionGoalModal from './components/DailyNutritionGoalModal';
 import Fab from './components/Fab';
 import Header from './components/Header';
+import SplitMealModal from './components/SplitMealModal';
 import ConsumptionSummary from './pages/ConsumptionSummary';
 import { DEFAULT_CONSUMPTION } from './types/Consumption';
 
@@ -23,6 +24,7 @@ function App() {
       )}
       <CreateRecordModal />
       <DailyNutritionGoalModal />
+      <SplitMealModal />
     </div>
   );
 }
