@@ -47,7 +47,6 @@ export default function NutritionFacts({
         <span className="font-bold text-sm text-gray-100 text-ellipsis align-self-bottom flex-1">
           (per 100g)
         </span>
-        <span className="text-sm justify-self-end text-gray-100">in grams</span>
       </div>
       <ItemRow
         className="bg-blue-900 -mx-2 px-2 py-1"

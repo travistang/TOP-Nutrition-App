@@ -1,4 +1,4 @@
-import { endOfDay, startOfDay } from 'date-fns';
+import { differenceInMinutes, endOfDay, isAfter, startOfDay } from 'date-fns';
 import Dexie, { Table } from 'dexie';
 import { v4 as uuid } from 'uuid';
 import { Consumption } from '../types/Consumption';
@@ -25,14 +25,47 @@ class ConsumptionDatabase extends Dexie {
       .sortBy('date');
   }
 
-  add(consumption: Consumption) {
-    const record: ConsumptionRecord = { ...consumption, id: uuid() };
-    return this.consumptions.add(record);
+  private findSimilar(consumption: Consumption): Promise<ConsumptionRecord | undefined> {
+    return this.consumptions.filter(other => {
+      const diffMinutes = differenceInMinutes(consumption.date, other.date);
+      const isTimeSimilar = Math.abs(diffMinutes) <= 30;
+      const hasEqualNutrition = NutritionUtils.isEqual(consumption.nutritionPerHundred, other.nutritionPerHundred);
+      return (
+        other.name === consumption.name &&
+        isTimeSimilar &&
+        hasEqualNutrition
+      );
+    }).first();
   }
 
-  edit(id: string, newRecord: ConsumptionRecord) {
-    const { id: _, ...data } = newRecord;
-    return this.consumptions.update(id, data);
+  async mergeRecord(from: Consumption | ConsumptionRecord, to: ConsumptionRecord) {
+    const combinedRecord: ConsumptionRecord = {
+      ...to,
+      amount: from.amount + to.amount,
+    }
+    const editResult = await this.consumptions.update(to.id, combinedRecord);
+    const fromAsRecord = from as ConsumptionRecord;
+    if (fromAsRecord.id) {
+      await this.remove(fromAsRecord.id);
+    }
+    return editResult;
+  }
+
+  async add(consumption: Consumption) {
+    const similarRecord = await this.findSimilar(consumption);
+    if (similarRecord) {
+      return this.mergeRecord(consumption, similarRecord);
+    }
+    const newRecord: ConsumptionRecord = { ...consumption, id: uuid() };
+    return this.consumptions.add(newRecord);
+  }
+
+  async edit(id: string, newRecord: ConsumptionRecord) {
+    const similarRecord = await this.findSimilar(newRecord);
+    if (similarRecord && similarRecord.id !== id) {
+      return this.mergeRecord({ ...newRecord, id }, similarRecord);
+    }
+    return this.consumptions.update(id, newRecord);
   }
 
   async search(recordName: string) {
@@ -41,6 +74,26 @@ class ConsumptionDatabase extends Dexie {
       const hasSimilarResults = uniqueResults.find(res => NutritionUtils.isEqual(res.nutritionPerHundred, result.nutritionPerHundred));
       return hasSimilarResults ? uniqueResults : [...uniqueResults, result];
     }, [] as ConsumptionRecord[]);
+  }
+
+  async splitMeal(meal: ConsumptionRecord[], newMealRatio: number, nextMealDate: number) {
+    const newConsumptions: Consumption[] = meal.map(({id: _, ...prevRecord}) => {
+      return {
+        ...prevRecord,
+        date: nextMealDate,
+        amount: newMealRatio * prevRecord.amount,
+      };
+    });
+
+    const updatedOldConsumptions = meal.map(prevRecord => ({
+      ...prevRecord,
+      amount: ( 1 - newMealRatio) * prevRecord.amount,
+    }));
+
+    await Promise.all([
+      ...updatedOldConsumptions.map(updatedRecord => this.edit(updatedRecord.id, updatedRecord)),
+      ...newConsumptions.map(newRecord => this.add(newRecord))
+    ]);
   }
 
   remove(id: string) {

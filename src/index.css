@@ -2,12 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap'); */
 
+@font-face {
+  font-family: 'Clan Pro';
+  src: local("Clan Pro"), url(./fonts/clan-pro-cufonfonts/FFClanProRegular.TTF) format('trueface');
+}
 * {
   @apply text-gray-700;
-  font-family: 'Varela Round', sans-serif;
+  font-family: 'Clan Pro', Helvetica, Arial, sans-serif;
+  font-weight: 400;
 }
+
+input[type=range]::-webkit-slider-runnable-track {
+  @apply bg-gray-100 rounded-full;
+}
+
 
 @layer utilities {
   .page {

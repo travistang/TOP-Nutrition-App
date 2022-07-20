@@ -10,6 +10,7 @@ import NumberUtils from '../../utils/Number';
 import NutritionUtils from '../../utils/Nutrition';
 import Chip from '../Chip';
 import { MarcoNutritionColor } from '../../types/Nutrition';
+import { splitMealModalAtom } from '../../atoms/SplitMealModalAtom';
 
 type Props = {
   meal: ConsumptionRecord[];
@@ -17,6 +18,8 @@ type Props = {
 };
 export default function MealSummary({ meal, index }: Props) {
   const setCreateEditRecord = useSetRecoilState(createEditRecordAtom);
+  const setSplitMealModal = useSetRecoilState(splitMealModalAtom);
+
   const editRecord = (consumption: Consumption) => () => {
     setCreateEditRecord({
       modalOpened: true,
@@ -29,6 +32,10 @@ export default function MealSummary({ meal, index }: Props) {
       NutritionUtils.caloriesByAmount(con.nutritionPerHundred, con.amount)
     )
   );
+
+  const openSplitMealModal = () => {
+    setSplitMealModal({ modalOpened: true, meal })
+  }
 
   return (
     <div
@@ -43,7 +50,11 @@ export default function MealSummary({ meal, index }: Props) {
             color={MarcoNutritionColor.protein}
             className="h-6 items-center flex text-gray-100 text-xs px-2 justify-flex-end"
           />
-          <FontAwesomeIcon icon="pen" className="h-2 w-2 rounded-full p-2 bg-gray-400" />
+          <FontAwesomeIcon
+            onClick={openSplitMealModal}
+            icon="pen"
+            className="h-2 w-2 rounded-full p-2 bg-gray-400"
+          />
         </div>
       </div>
       {meal.map((consumption) => (

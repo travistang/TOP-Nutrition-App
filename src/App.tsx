@@ -22,7 +22,6 @@ function App() {
       <div className="page bg-gray-200">
         <Toaster />
         <Header />
-
         <Routes>
           <Route path="/" element={<ConsumptionSummary />} />
           <Route path="/stats" element={<PreviousStatistics />} />
