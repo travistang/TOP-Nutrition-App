@@ -25,7 +25,7 @@ export default function ItemRow({
         className
       )}
     >
-      <span className="font-bold text-gray-100 capitalize col-span-4 text-ellipsis">
+      <span className="font-bold text-gray-100 capitalize col-span-4 text-ellipsis overflow-hidden">
         {label}
       </span>
       {editable ? (
@@ -36,7 +36,7 @@ export default function ItemRow({
             onChange={onChange}
             className="col-span-1"
           />
-          <span className="text-sm font-bold ml-2 text-gray-100 flex-1 justify-self-end">
+          <span className="text-sm font-bold ml-2 text-gray-100 flex-1 justify-self-end text-ellipsis overflow-hidden">
             {unit}
           </span>
         </>

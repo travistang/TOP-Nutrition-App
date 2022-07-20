@@ -2,7 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faArrowDown, faArrowRight, faHamburger, faLineChart, faList, faPen, faPlateWheat, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faHamburger,
+  faLineChart,
+  faList,
+  faPen,
+  faPlateWheat,
+  faTrophy,
+} from "@fortawesome/free-solid-svg-icons";
 import { RecoilRoot } from "recoil";
 import {
   Chart as ChartJS,
@@ -24,7 +32,15 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserTracing } from "@sentry/tracing";
 
-library.add(faPen, faPlateWheat, faArrowDown, faTrophy, faHamburger, faLineChart, faList);
+library.add(
+  faPen,
+  faPlateWheat,
+  faArrowRight,
+  faTrophy,
+  faHamburger,
+  faLineChart,
+  faList
+);
 ChartJS.register(
   LineController,
   BarController,
