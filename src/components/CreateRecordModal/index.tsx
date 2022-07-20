@@ -16,6 +16,7 @@ import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
 import AutoCompleteInput from "../Input/AutoCompleteInput";
 import ConsumptionAutocompleteResult from "../Input/ConsumptionAutocompleteResult";
 import NumberInput from "../Input/NumberInput";
+import NumberSummary from "../NumberSummary";
 
 export default function CreateRecordModal() {
   const [createEditRecord, setCreateEditRecord] =
@@ -141,12 +142,11 @@ export default function CreateRecordModal() {
           onChange={updateAmount}
           className="col-span-2 col-start-1"
         />
-        <div className="rounded-lg col-start-4 col-end-7 text-yellow-400 p-2 flex flex-col items-end justify-center text-sm">
-          Total Calories:
-          <span className="font-bold text-xl text-yellow-400 ml-2">
-            {totalCaloriesByAmount.toFixed(2)} kcal
-          </span>
-        </div>
+        <NumberSummary
+          label="Total Calories:"
+          value={`${totalCaloriesByAmount.toFixed(2)} kcal`}
+          className="col-start-4 col-end-7"
+        />
         {isEditing ? (
           <Button
             text="Delete"
