@@ -6,6 +6,7 @@ const nanToZero = (num: number) => {
 };
 
 const sum = (...numbers: number[]) => numbers.reduce((sum, n) => sum + n, 0);
+const ratioToPercentageString = (num: number) => `${(num * 100).toFixed(1)}%`;
 
 const inputAsNumber = (numString: string) => {
   const recognizedNonNumericSymbol = [",", "."];
@@ -32,4 +33,5 @@ export default {
   isNumeric,
   isNumericDigit,
   stringToFloat,
+  ratioToPercentageString,
 };

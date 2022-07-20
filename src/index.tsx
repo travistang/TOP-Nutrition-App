@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import * as Sentry from "@sentry/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { RecoilRoot } from "recoil";
@@ -21,6 +22,7 @@ import App from "./App";
 import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserTracing } from "@sentry/tracing";
 
 library.add(fas);
 ChartJS.register(
@@ -36,6 +38,16 @@ ChartJS.register(
   CategoryScale,
   BarElement
 );
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+  integrations: [new BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
