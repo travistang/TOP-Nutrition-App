@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ConsumptionDatabase from "../database/ConsumptionDatabase";
 import SummaryWidgets from "../components/SummaryWidgets";
 import NutritionUtils from "../utils/Nutrition";
+import MealUtils from '../utils/Meal';
 import DateUtils from "../utils/Date";
 import MealSummary from "../components/MealSummary";
 
@@ -25,6 +26,7 @@ export default function ConsumptionSummary({
   );
   const nutritionRecords =
     consumptionsOfDay?.map(NutritionUtils.nutritionFromConsumption) ?? [];
+  const totalCaloriesIntake = MealUtils.totalNutrition(consumptionsOfDay ?? []).calories;
 
   return (
     <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
@@ -47,7 +49,10 @@ export default function ConsumptionSummary({
           </div>
         )}
         {consumptionsByMeals?.map((meal, index) => (
-          <MealSummary meal={meal} index={index} key={meal[0].id} />
+          <MealSummary
+            caloriesIntakeOfDay={totalCaloriesIntake}
+            meal={meal}
+            index={index} key={meal[0].id} />
         ))}
       </div>
     </div>
