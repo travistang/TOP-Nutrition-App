@@ -1,7 +1,6 @@
-import classNames from "classnames";
 import React from "react";
+import classNames from "classnames";
 import NumberInput from "../Input/NumberInput";
-import TextInput from "../Input/TextInput";
 
 type Props = {
   label: string;

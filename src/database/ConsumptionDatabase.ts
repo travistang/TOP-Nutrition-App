@@ -1,4 +1,4 @@
-import { differenceInMinutes, endOfDay, isAfter, startOfDay } from 'date-fns';
+import { differenceInMinutes, endOfDay, startOfDay } from 'date-fns';
 import Dexie, { Table } from 'dexie';
 import { v4 as uuid } from 'uuid';
 import { Consumption } from '../types/Consumption';
