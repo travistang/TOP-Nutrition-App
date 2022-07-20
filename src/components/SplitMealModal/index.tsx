@@ -74,9 +74,9 @@ export default function SplitMealModal() {
           label="Portion to next meal"
           value={summaryText}
           className="flex flex-col col-start-5 col-span-2 gap-1"/>
-        <div className="col-span-full flex flex-nowrap">
+        <div className="col-span-full flex flex-col items-center">
           <NutritionFacts nutrition={NutritionUtils.multiply(mealNutrition, 1 - splitRatio)} className="flex-1" />
-          <FontAwesomeIcon icon="arrow-right" className="self-center mx-2 text-white" />
+          <FontAwesomeIcon icon="arrow-down" className="self-center mx-2 text-white" />
           <NutritionFacts nutrition={NutritionUtils.multiply(mealNutrition, splitRatio)} className="flex-1" />
         </div>
         <Button
