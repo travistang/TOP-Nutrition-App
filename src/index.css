@@ -6,12 +6,12 @@
 
 @font-face {
   font-family: 'Clan Pro';
-  src: url(./fonts/clan-pro-cufonfonts/FFClanProRegular.TTF) format('trueface');
+  src: url(./fonts/clan-pro-cufonfonts/FFClanProRegular.TTF);
 }
 @font-face {
   font-family: 'Clan Pro';
   font-weight: 700;
-  src: url(./fonts/clan-pro-cufonfonts/FFClanProBold.TTF) format('trueface');
+  src: url(./fonts/clan-pro-cufonfonts/FFClanProBold.TTF);
 }
 
 * {
