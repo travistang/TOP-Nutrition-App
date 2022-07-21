@@ -7,11 +7,13 @@ import NutritionUtils from "../../utils/Nutrition";
 type Props = {
   className?: string;
   nutrition: Nutrition;
+  unit?: string;
   onChange?: (nutrition: Nutrition) => void;
 };
 export default function NutritionFacts({
   className,
   nutrition,
+  unit = 'per 100g',
   onChange,
 }: Props) {
   const editable = !!onChange;
@@ -44,9 +46,11 @@ export default function NutritionFacts({
         <span className="font-bold text-lg text-gray-100 text-ellipsis ">
           Nutrition Facts
         </span>
-        <span className="font-bold text-sm text-gray-100 text-ellipsis align-self-bottom flex-1">
-          (per 100g)
-        </span>
+        {unit && (
+          <span className="font-bold text-sm text-gray-100 text-ellipsis align-self-bottom flex-1">
+            ({unit})
+          </span>
+        )}
       </div>
       <ItemRow
         className="bg-blue-900 -mx-2 px-2 py-1"

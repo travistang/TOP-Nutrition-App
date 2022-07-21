@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { addDays, isAfter } from "date-fns";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import toast from "react-hot-toast";
+
 import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";
 import InputBase from "../Input/InputBase";
+import TextInput from "../Input/TextInput";
+import Button from "../Input/Button";
 import Modal from "../Modal";
 import NutritionFacts from "../NutritionFacts";
 import NutritionUtils from "../../utils/Nutrition";
 import DateUtils from "../../utils/Date";
-import NumberSummary from "../NumberSummary";
-import TextInput from "../Input/TextInput";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Button from "../Input/Button";
-import classNames from "classnames";
 import ConsumptionDatabase from "../../database/ConsumptionDatabase";
-import toast from "react-hot-toast";
+import PortionSummary from "./PortionSummary";
 
 type SplitMealFormValue = {
   splitRatio: number;
@@ -32,14 +33,9 @@ export default function SplitMealModal() {
     ...meal.map(NutritionUtils.nutritionFromConsumption)
   );
   const mealWeight = NutritionUtils.weight(mealNutrition);
-  const originalMealSummary = `≈${(mealWeight * (1 - splitRatio)).toFixed(
-    2
-  )}g, ${((1 - splitRatio) * 100).toFixed(0)}%`;
-  const summaryText = `≈${(mealWeight * splitRatio).toFixed(2)}g, ${(
-    splitRatio * 100
-  ).toFixed(0)}%`;
+
   const isFormValid =
-    0 < splitRatio && splitRatio < 1 && isAfter(nextMealDate, Date.now());
+    splitRatio > 0 && isAfter(nextMealDate, Date.now());
   const onClose = () => {
     setSplitMealModalState({ meal: [], modalOpened: false });
   };
@@ -87,18 +83,21 @@ export default function SplitMealModal() {
           }
           value={DateUtils.toInputFormat(nextMealDate)}
         />
-        <NumberSummary
-          label="Portion of current meal"
-          value={originalMealSummary}
-          className="flex flex-col col-start-1 col-span-3 gap-1"
+        <PortionSummary
+          label="Current meal"
+          mealWeight={mealWeight}
+          ratio={1 - splitRatio}
+          className='col-start-1'
         />
-        <NumberSummary
-          label="Portion to next meal"
-          value={summaryText}
-          className="flex flex-col col-start-4 col-span-3 gap-1"
+        <PortionSummary
+          label="Next meal"
+          mealWeight={mealWeight}
+          ratio={splitRatio}
         />
+
         <div className="col-span-full flex flex-no-wrap items-center">
           <NutritionFacts
+            unit=""
             nutrition={NutritionUtils.multiply(mealNutrition, 1 - splitRatio)}
             className="flex-1"
           />
@@ -107,6 +106,7 @@ export default function SplitMealModal() {
             className="self-center mx-1 text-white"
           />
           <NutritionFacts
+            unit=""
             nutrition={NutritionUtils.multiply(mealNutrition, splitRatio)}
             className="flex-1"
           />
