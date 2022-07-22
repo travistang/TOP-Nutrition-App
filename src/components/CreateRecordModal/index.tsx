@@ -119,12 +119,18 @@ export default function CreateRecordModal() {
             <ConsumptionAutocompleteResult record={record} key={record.id} />
           )}
         />
+        <NumberInput
+          label="Amount (g)"
+          value={consumption.amount}
+          onChange={updateAmount}
+          className="col-span-2"
+        />
         <TextInput
           label="Date"
           type="datetime-local"
           value={DateUtils.toInputFormat(consumption.date)}
           onChange={updateDate}
-          className="col-span-2"
+          className="col-span-full"
         />
         <NutritionFacts
           nutrition={consumption.nutritionPerHundred}
@@ -135,12 +141,6 @@ export default function CreateRecordModal() {
             })
           }
           className="col-span-full sm:col-span-3 md:col-span-2"
-        />
-        <NumberInput
-          label="Amount (g)"
-          value={consumption.amount}
-          onChange={updateAmount}
-          className="col-span-2 col-start-1"
         />
         <NumberSummary
           label="Total Calories:"
