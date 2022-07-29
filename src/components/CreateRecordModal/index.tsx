@@ -142,29 +142,31 @@ export default function CreateRecordModal() {
           }
           className="col-span-full sm:col-span-3 md:col-span-2"
         />
-        <NumberSummary
-          label="Total Calories:"
-          value={`${totalCaloriesByAmount.toFixed(2)} kcal`}
-          className="col-start-4 col-end-7"
-        />
-        {isEditing ? (
-          <Button
-            text="Delete"
-            textClassName="text-red-500"
-            onClick={deleteRecord}
+        <div className="grid grid-cols-6 col-span-full gap-2 bg-blue-500 sticky bottom-0">
+          <NumberSummary
+            label="Total Calories:"
+            value={`${totalCaloriesByAmount.toFixed(2)} kcal`}
+            className="col-start-4 col-end-7 sticky bottom-12"
           />
-        ) : (
-          <Button text="Reset" onClick={reset} />
-        )}
-        <Button
-          text={isEditing ? "Update" : "Record"}
-          className={classNames(
-            "rounded-lg h-12 col-span-2 col-start-5",
-            isFormValid ? "bg-blue-900" : "bg-blue-400 cursor-not-allowed"
+          {isEditing ? (
+            <Button
+              text="Delete"
+              textClassName="text-red-500"
+              onClick={deleteRecord}
+            />
+          ) : (
+            <Button text="Reset" onClick={reset} />
           )}
-          onClick={applyChanges}
-          textClassName={isFormValid ? "text-gray-200" : ""}
-        />
+          <Button
+            text={isEditing ? "Update" : "Record"}
+            className={classNames(
+              "rounded-lg h-12 col-span-2 col-start-5",
+              isFormValid ? "bg-blue-900" : "bg-blue-400 cursor-not-allowed"
+            )}
+            onClick={applyChanges}
+            textClassName={isFormValid ? "text-gray-200" : ""}
+          />
+        </div>
       </form>
     </Modal>
   );
