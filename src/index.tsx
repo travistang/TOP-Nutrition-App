@@ -4,11 +4,13 @@ import * as Sentry from "@sentry/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faArrowRight,
+  faDumbbell,
   faHamburger,
   faLineChart,
   faList,
   faPen,
   faPlateWheat,
+  faTimes,
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
 import { RecoilRoot } from "recoil";
@@ -39,7 +41,9 @@ library.add(
   faTrophy,
   faHamburger,
   faLineChart,
-  faList
+  faList,
+  faDumbbell,
+  faTimes,
 );
 ChartJS.register(
   LineController,
