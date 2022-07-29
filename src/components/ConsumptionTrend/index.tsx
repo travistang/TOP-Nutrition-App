@@ -55,8 +55,6 @@ export default function ConsumptionTrend({ previousRecords }: Props) {
         stacked: true,
       },
       y: {
-        min: 2000,
-        max: 4000,
         grid: {
           color: "rgba(0,0,0,0)",
         },
