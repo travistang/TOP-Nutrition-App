@@ -25,7 +25,7 @@ class ExerciseDatabase extends Dexie {
       .sortBy("date");
   }
 
-  async addRepetitionRecord(
+  async addRecord(
     exercise: CreateEditType<Exercise>,
     rep: Repetition,
     date = new Date()

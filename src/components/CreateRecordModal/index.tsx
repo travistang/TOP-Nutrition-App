@@ -8,7 +8,7 @@ import Modal from "../Modal";
 import NutritionFacts from "../NutritionFacts";
 import NutritionUtils from "../../utils/Nutrition";
 import DateUtils from "../../utils/Date";
-import Button from "../Input/Button";
+import Button, { ButtonStyle } from "../Input/Button";
 import ConsumptionDatabase, {
   ConsumptionRecord,
 } from "../../database/ConsumptionDatabase";
@@ -151,20 +151,22 @@ export default function CreateRecordModal() {
           {isEditing ? (
             <Button
               text="Delete"
+              buttonStyle={ButtonStyle.Clear}
               textClassName="text-red-500"
               onClick={deleteRecord}
             />
           ) : (
-            <Button text="Reset" onClick={reset} />
+            <Button
+              text="Reset"
+              buttonStyle={ButtonStyle.Clear}
+              onClick={reset}
+            />
           )}
           <Button
             text={isEditing ? "Update" : "Record"}
-            className={classNames(
-              "rounded-lg h-12 col-span-2 col-start-5",
-              isFormValid ? "bg-blue-900" : "bg-blue-400 cursor-not-allowed"
-            )}
+            disabled={!isFormValid}
+            className={classNames("rounded-lg h-12 col-span-2 col-start-5")}
             onClick={applyChanges}
-            textClassName={isFormValid ? "text-gray-200" : ""}
           />
         </div>
       </form>

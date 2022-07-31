@@ -11,6 +11,7 @@ import ConsumptionSummary from "./pages/ConsumptionSummary";
 import PreviousStatistics from "./pages/PreviousStatistics";
 import FabMenu from "./components/FabMenu";
 import MainFabButton from "./components/FabMenu/MainFabButton";
+import CreateExerciseSetModal from "./components/CreateExerciseSetModal";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <FabMenu />
           <CreateRecordModal />
           <DailyNutritionGoalModal />
+          <CreateExerciseSetModal />
           <SplitMealModal />
         </div>
       </BrowserRouter>
