@@ -3,6 +3,7 @@ import { endOfDay, startOfDay } from "date-fns";
 import Dexie, { Table } from "dexie";
 import { Exercise, ExerciseSet, Repetition } from "../types/Exercise";
 import { CreateEditType } from "../types/utils";
+import ExerciseUtils from "../utils/Exercise";
 
 export type ExerciseSetRecord = ExerciseSet & {
   id: string;
@@ -25,6 +26,21 @@ class ExerciseDatabase extends Dexie {
       .sortBy("date");
   }
 
+  async previousExercises() {
+    const exercises = (await this.exerciseSetRecord.toArray()).map(
+      (set) => set.exercise
+    );
+    return exercises.reduce<Exercise[]>(
+      (distinctExercises, exercise) =>
+        distinctExercises.find((ex) =>
+          ExerciseUtils.isSameExercise(ex, exercise)
+        )
+          ? distinctExercises
+          : [...distinctExercises, exercise],
+      []
+    );
+  }
+
   async addRecord(
     exercise: CreateEditType<Exercise>,
     rep: Repetition,
@@ -32,7 +48,7 @@ class ExerciseDatabase extends Dexie {
   ) {
     const exerciseSetRecord: ExerciseSetRecord = {
       id: uuid4(),
-      date: new Date(),
+      date: date.getTime(),
       exercise,
       repetitions: rep,
     };

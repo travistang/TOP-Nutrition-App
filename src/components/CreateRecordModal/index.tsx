@@ -134,6 +134,10 @@ export default function CreateRecordModal() {
         />
         <NutritionFacts
           nutrition={consumption.nutritionPerHundred}
+          servingNutrition={{
+            amount: consumption.amount,
+            ...NutritionUtils.nutritionFromConsumption(consumption),
+          }}
           onChange={(updatedNutrition) =>
             setConsumption({
               ...consumption,

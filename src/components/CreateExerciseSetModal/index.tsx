@@ -13,7 +13,6 @@ import ExerciseUtils from "../../utils/Exercise";
 import DateUtils from "../../utils/Date";
 import Button from "../Input/Button";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
-import classNames from "classnames";
 
 export default function CreateExerciseSetModal() {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(

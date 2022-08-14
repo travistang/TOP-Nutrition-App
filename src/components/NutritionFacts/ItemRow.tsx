@@ -5,6 +5,7 @@ import NumberInput from "../Input/NumberInput";
 type Props = {
   label: string;
   value: number;
+  secondValue?: number;
   onChange?: (value: number) => void;
   className?: string;
   unit?: string;
@@ -12,6 +13,7 @@ type Props = {
 export default function ItemRow({
   label,
   value,
+  secondValue,
   onChange,
   className,
   unit,
@@ -25,7 +27,7 @@ export default function ItemRow({
         className
       )}
     >
-      <span className="font-bold text-gray-100 capitalize col-span-4 text-ellipsis overflow-hidden">
+      <span className="font-bold text-gray-100 capitalize col-span-3 text-ellipsis overflow-hidden text-sm">
         {label}
       </span>
       {editable ? (
@@ -36,6 +38,11 @@ export default function ItemRow({
             onChange={onChange}
             className="col-span-1"
           />
+          {secondValue !== undefined && (
+            <span className="text-right text-gray-100 text-xs">
+              {secondValue.toFixed(1)}
+            </span>
+          )}
           <span className="text-sm font-bold ml-2 text-gray-100 flex-1 justify-self-end text-ellipsis overflow-hidden">
             {unit}
           </span>

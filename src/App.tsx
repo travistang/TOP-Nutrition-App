@@ -12,6 +12,8 @@ import PreviousStatistics from "./pages/PreviousStatistics";
 import FabMenu from "./components/FabMenu";
 import MainFabButton from "./components/FabMenu/MainFabButton";
 import CreateExerciseSetModal from "./components/CreateExerciseSetModal";
+import Footer from "./components/Footer";
+import WorkoutListPage from "./pages/WorkoutListPage";
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ConsumptionSummary />} />
             <Route path="/stats" element={<PreviousStatistics />} />
+            <Route path="/workouts" element={<WorkoutListPage />} />
           </Routes>
           <MainFabButton />
           <FabMenu />
@@ -30,6 +33,7 @@ function App() {
           <DailyNutritionGoalModal />
           <CreateExerciseSetModal />
           <SplitMealModal />
+          <Footer />
         </div>
       </BrowserRouter>
     </ErrorBoundary>

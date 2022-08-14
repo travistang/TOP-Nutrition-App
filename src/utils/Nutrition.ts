@@ -47,11 +47,13 @@ const nutritionFromConsumption = (consumption: Consumption): Nutrition => {
   };
 };
 
-const multiply = <T extends Nutrition>(nutrition: T, factor: number): T => Object.fromEntries(
-  Object.entries(nutrition).map(([key, value]) => [key,
-    typeof value === 'number' ? value * factor : value,
-  ])
-) as T;
+const multiply = <T extends Nutrition>(nutrition: T, factor: number): T =>
+  Object.fromEntries(
+    Object.entries(nutrition).map(([key, value]) => [
+      key,
+      typeof value === "number" ? value * factor : value,
+    ])
+  ) as T;
 
 const total = (...nutritionRecords: Nutrition[]) =>
   nutritionRecords.reduce((sum, nutrition) => {
@@ -73,18 +75,19 @@ const caloriesByNutrition = (nutrition: Nutrition): NutritionCalories => {
 };
 
 const isEqual = (a: Nutrition, b: Nutrition): boolean => {
-  return Object.keys(a).every(
-    (field) => {
-      const key = field as keyof Nutrition;
-      const diff = a[key] - b[key];
-      return Math.abs(diff) <= 0.01;
-    }
-  );
+  return Object.keys(a).every((field) => {
+    const key = field as keyof Nutrition;
+    const diff = a[key] - b[key];
+    return Math.abs(diff) <= 0.01;
+  });
 };
 
 const weight = (nutrition: Nutrition): number => {
-  return Object.values(MarcoNutrition).reduce((sum, marco) => sum + nutrition[marco], 0);
-}
+  return Object.values(MarcoNutrition).reduce(
+    (sum, marco) => sum + nutrition[marco],
+    0
+  );
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
