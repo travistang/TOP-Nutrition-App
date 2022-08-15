@@ -68,6 +68,12 @@ class ExerciseDatabase extends Dexie {
 
     return this.exerciseSetRecord.add(exerciseSetRecord);
   }
+
+  async deleteRecord(
+    id: string
+  ) {
+    return this.exerciseSetRecord.delete(id);
+  }
 }
 
 export default new ExerciseDatabase();

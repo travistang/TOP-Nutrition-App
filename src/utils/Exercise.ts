@@ -12,21 +12,29 @@ const isSameExercise = (a: Exercise, b: Exercise) =>
   ArrayUtils.isEqual(a.workingBodyParts, b.workingBodyParts);
 
 const groupWorkouts = (sets: ExerciseSet[]): ExerciseSet[][] => {
-  if (sets.length === 0) return [];
+  const setGroups: ExerciseSet[][] = [];
   for (let i = 0; i < sets.length; i++) {
-    if (i === sets.length - 1) return [sets];
-    const currentSet = sets[i],
-      nextSet = sets[i + 1],
-      differentSeconds = differenceInSeconds(nextSet.date, currentSet.date);
-    const isNextSetSimilar =
-      isSameExercise(nextSet.exercise, currentSet.exercise) ||
+    const currentSet = sets[i];
+    if (setGroups.length === 0) {
+      setGroups.push([sets[i]]);
+      continue;
+    }
+
+    const previousSet = sets[i - 1];
+    const differentSeconds = differenceInSeconds(currentSet.date, previousSet.date);
+    const isPreviousSetSimilar =
+      isSameExercise(previousSet.exercise, currentSet.exercise) ||
       differentSeconds <= 90;
 
-    if (!isNextSetSimilar) {
-      return [sets.slice(0, i), ...groupWorkouts(sets.slice(i))];
+    if (isPreviousSetSimilar) {
+      const lastGroup = setGroups[setGroups.length - 1];
+      setGroups[setGroups.length - 1] = [...lastGroup, currentSet];
+    } else {
+      setGroups.push([currentSet]);
     }
   }
-  return [sets];
+
+  return setGroups;
 };
 
 const isSuperSet = (sets: ExerciseSet[]) => {

@@ -12,7 +12,7 @@ export default function ExerciseSetOverview({ sets }: Props) {
   const exerciseName = isSuperSet ? "Super set" : sets[0].exercise.name;
 
   return (
-    <div className="flex flex-col rounded-lg shadow-lg items-stretch">
+    <div className="flex flex-col rounded-lg shadow-lg items-stretch mt-2">
       <div className="h-12 grid grid-cols-6 bg-gray-400 items-center rounded-t-lg shadow-lg sticky top-0 p-2">
         <span className="text-xs font-bold col-span-3">{exerciseName}</span>
         {!isSuperSet && (

@@ -36,7 +36,7 @@ export default function WorkoutListPage() {
           changeMonth(parse(monthString, "yyyy-MM", Date.now()))
         }
       />
-      <div className="p-2">
+      <div className="p-2 gap-2">
         <Calendar
           date={selectedMonth}
           selectedDate={selectedDate}
