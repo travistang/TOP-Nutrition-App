@@ -11,6 +11,7 @@ export type CreateEditExerciseRecordProps = {
   exercise: CreateEditType<Exercise>;
   repetition: Repetition;
   date: Date;
+  id?: string;
   modalOpened: boolean;
 };
 

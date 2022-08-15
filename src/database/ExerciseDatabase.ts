@@ -41,6 +41,19 @@ class ExerciseDatabase extends Dexie {
     );
   }
 
+  async updateRecord(
+    id: string,
+    exercise: CreateEditType<Exercise>,
+    rep: Repetition,
+    date: Date,
+  ) {
+    return this.exerciseSetRecord.update(id, {
+      exercise,
+      repetitions: rep,
+      date: date.getTime()
+    })
+  }
+
   async addRecord(
     exercise: CreateEditType<Exercise>,
     rep: Repetition,

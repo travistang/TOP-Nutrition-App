@@ -1,6 +1,6 @@
 import { format, isSameMonth, parse, startOfMonth } from "date-fns";
 import { useLiveQuery } from "dexie-react-hooks";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Calendar from "../components/Calendar";
 import ExerciseSetOverview from "../components/ExerciseSetOverview";
 import TextInput from "../components/Input/TextInput";
@@ -16,6 +16,7 @@ export default function WorkoutListPage() {
 
   const workoutsByExercises = ExerciseUtils.groupWorkouts(exercisesOfDay ?? []);
   console.log({ workoutsByExercises });
+
   const changeMonth = (newMonth: Date) => {
     setSelectedMonth(newMonth);
     const now = new Date();
@@ -35,7 +36,7 @@ export default function WorkoutListPage() {
           changeMonth(parse(monthString, "yyyy-MM", Date.now()))
         }
       />
-      <div className="rounded-lg bg-gray-300 p-2">
+      <div className="p-2">
         <Calendar
           date={selectedMonth}
           selectedDate={selectedDate}

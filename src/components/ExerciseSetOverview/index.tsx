@@ -1,9 +1,7 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { format } from "date-fns";
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EquipmentIcon, ExerciseSet } from "../../types/Exercise";
 import ExerciseUtils from "../../utils/Exercise";
-import RepetitionUtils from "../../utils/Repetition";
 import SetOverview from "./SetOverview";
 
 type Props = {
@@ -25,7 +23,7 @@ export default function ExerciseSetOverview({ sets }: Props) {
         )}
       </div>
       {sets.map((set) => (
-        <SetOverview set={set} />
+        <SetOverview key={set.id} set={set} />
       ))}
     </div>
   );

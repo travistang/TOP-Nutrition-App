@@ -1,5 +1,7 @@
-import { format } from "date-fns";
 import React from "react";
+import { format } from "date-fns";
+import { useSetRecoilState } from "recoil";
+import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
 import { ExerciseSet } from "../../types/Exercise";
 import RepetitionUtils from "../../utils/Repetition";
 
@@ -7,9 +9,21 @@ type Props = {
   set: ExerciseSet;
 };
 export default function SetOverview({ set }: Props) {
+  const setSetOverviewAtom = useSetRecoilState(createEditExerciseRecordAtom);
+
+  const onEdit = () => {
+    setSetOverviewAtom(value => ({
+      modalOpened: true,
+      exercise: set.exercise,
+      repetition: set.repetitions,
+      date: new Date(set.date),
+      id: set.id,
+    }));
+  }
+
   return (
-    <div className="grid grid-cols-6 px-2 h-8 items-center">
-      <span>{format(set.date, "HH:mm")}</span>
+    <div onClick={onEdit} className="grid grid-cols-6 px-2 h-8 items-center">
+      <span className="text-xs">{format(set.date, "HH:mm")}</span>
       <span className="text-right text-xs font-bold">
         {set.repetitions.weight}kg
       </span>

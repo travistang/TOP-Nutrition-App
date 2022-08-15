@@ -18,10 +18,10 @@ export default function CreateExerciseSetModal() {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
-  const { modalOpened, exercise, repetition, date } = createEditRecordAtom;
+  const { id, modalOpened, exercise, repetition, date } = createEditRecordAtom;
   const isFormValid =
     RepetitionUtils.isValid(repetition) && ExerciseUtils.isValid(exercise);
-
+  const isEditing = !!id;
   const setExerciseData = (field: keyof Exercise) => (value: any) => {
     setCreateEditRecordAtom((record) => ({
       ...record,
@@ -36,17 +36,31 @@ export default function CreateExerciseSetModal() {
     }));
   };
 
+  const resetCreateEditRecordAtom = () => setCreateEditRecordAtom({
+    modalOpened: false,
+    id: undefined,
+    exercise,
+    repetition: DEFAULT_REPETITION,
+    date: new Date(),
+  });
+
+  const onEdit = async () => {
+    if (!isFormValid || !id) return;
+    try {
+      await ExerciseDatabase.updateRecord(id, exercise, repetition, date);
+      toast.success("Exercise Updated");
+      resetCreateEditRecordAtom();
+    } catch {
+      toast.error("Failed to update exercise record");
+    }
+  }
+
   const onCreate = async () => {
     if (!isFormValid) return;
     try {
-      await ExerciseDatabase.addRecord(exercise, repetition);
+      await ExerciseDatabase.addRecord(exercise, repetition, date);
       toast.success("Exercise Recorded");
-      setCreateEditRecordAtom({
-        modalOpened: false,
-        exercise,
-        repetition: DEFAULT_REPETITION,
-        date: new Date(),
-      });
+      resetCreateEditRecordAtom();
     } catch {
       toast.error("Failed to save exercise record");
     }
@@ -95,7 +109,7 @@ export default function CreateExerciseSetModal() {
             className="rounded-lg h-12 w-16"
             disabled={!isFormValid}
             text="Record"
-            onClick={onCreate}
+            onClick={isEditing ? onEdit : onCreate}
           />
         </div>
       </form>
