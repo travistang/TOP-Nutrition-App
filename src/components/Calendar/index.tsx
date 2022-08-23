@@ -10,13 +10,18 @@ import {
   isSameDay,
 } from "date-fns";
 import React from "react";
+import { DayMarker } from "../../types/Calendar";
 import ArrayUtils from "../../utils/Array";
+import DateUtils from "../../utils/Date";
 import DayCell from "./DayCell";
+
+
 
 type Props = {
   date: Date | number;
   selectedDate?: Date;
-  onSelectDate: (date: Date) => void;
+  markers?: Record<string, DayMarker>;
+  onSelectDate?: (date: Date) => void;
   className?: string;
 };
 
@@ -25,12 +30,12 @@ export default function Calendar({
   className,
   selectedDate,
   onSelectDate,
+  markers,
 }: Props) {
   const now = Date.now();
   const monthStart = startOfMonth(date);
-  const monthEnd = endOfMonth(date);
   const monthStartsAtWeekday = getDay(monthStart);
-  const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
+  const daysInMonth = DateUtils.eachDaysOfMonth(date);
   return (
     <div
       className={classNames(
@@ -50,9 +55,11 @@ export default function Calendar({
         ArrayUtils.range(monthStartsAtWeekday).map((_) => <span />)}
       {daysInMonth.map((day) => (
         <DayCell
+          key={day.getTime()}
           date={day}
-          onSelect={() => onSelectDate(day)}
+          onSelect={() => onSelectDate?.(day)}
           selected={selectedDate && isSameDay(selectedDate, day)}
+          marker={markers?.[format(day, 'dd/MM/yyyy')]}
         />
       ))}
     </div>

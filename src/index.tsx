@@ -4,13 +4,23 @@ import * as Sentry from "@sentry/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faArrowRight,
+  faBezierCurve,
+  faCogs,
+  faDumbbell,
+  faGripLines,
   faHamburger,
   faLineChart,
   faList,
   faPen,
+  faPersonWalking,
   faPlateWheat,
+  faRobot,
+  faSearch,
+  faTimes,
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { BrowserTracing } from "@sentry/tracing";
 import { RecoilRoot } from "recoil";
 import {
   Chart as ChartJS,
@@ -30,16 +40,24 @@ import App from "./App";
 import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserTracing } from "@sentry/tracing";
 
 library.add(
+  faCogs,
+  faDumbbell,
   faPen,
   faPlateWheat,
   faArrowRight,
   faTrophy,
   faHamburger,
   faLineChart,
-  faList
+  faList,
+  faDumbbell,
+  faTimes,
+  faGripLines,
+  faBezierCurve,
+  faRobot,
+  faPersonWalking,
+  faSearch,
 );
 ChartJS.register(
   LineController,

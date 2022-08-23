@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";
 import InputBase from "../Input/InputBase";
 import TextInput from "../Input/TextInput";
-import Button from "../Input/Button";
+import Button, { ButtonStyle } from "../Input/Button";
 import Modal from "../Modal";
 import NutritionFacts from "../NutritionFacts";
 import NutritionUtils from "../../utils/Nutrition";
@@ -34,8 +34,7 @@ export default function SplitMealModal() {
   );
   const mealWeight = NutritionUtils.weight(mealNutrition);
 
-  const isFormValid =
-    splitRatio > 0 && isAfter(nextMealDate, Date.now());
+  const isFormValid = splitRatio > 0 && isAfter(nextMealDate, Date.now());
   const onClose = () => {
     setSplitMealModalState({ meal: [], modalOpened: false });
   };
@@ -87,7 +86,7 @@ export default function SplitMealModal() {
           label="Current meal"
           mealWeight={mealWeight}
           ratio={1 - splitRatio}
-          className='col-start-1'
+          className="col-start-1"
         />
         <PortionSummary
           label="Next meal"
@@ -111,15 +110,17 @@ export default function SplitMealModal() {
             className="flex-1"
           />
         </div>
-        <Button text="Cancel" type="button" onClick={onClose} />
+        <Button
+          buttonStyle={ButtonStyle.Clear}
+          text="Cancel"
+          type="button"
+          onClick={onClose}
+        />
         <Button
           text="Split"
           type="submit"
-          className={classNames(
-            "col-start-5 h-12 col-end-7 rounded-lg bg-blue-400",
-            isFormValid ? "bg-blue-900" : "bg-blue-400 cursor-not-allowed"
-          )}
-          textClassName={isFormValid ? "text-gray-200" : ""}
+          disabled={!isFormValid}
+          className="col-start-5 h-12 col-end-7 rounded-lg"
           onClick={splitMeal}
         />
       </div>

@@ -7,13 +7,15 @@ import NutritionUtils from "../../utils/Nutrition";
 type Props = {
   className?: string;
   nutrition: Nutrition;
+  servingNutrition?: Nutrition & { amount: number };
   unit?: string;
   onChange?: (nutrition: Nutrition) => void;
 };
 export default function NutritionFacts({
   className,
   nutrition,
-  unit = 'per 100g',
+  servingNutrition,
+  unit = "g",
   onChange,
 }: Props) {
   const editable = !!onChange;
@@ -42,19 +44,26 @@ export default function NutritionFacts({
         className
       )}
     >
-      <div className="flex flex-row items-center gap-2 col-span-full py-2">
-        <span className="font-bold text-lg text-gray-100 text-ellipsis ">
+      <div className="grid grid-cols-6 items-center gap-2 col-span-full py-2">
+        <span className="font-bold text-lg text-gray-100 text-ellipsis col-span-3">
           Nutrition Facts
         </span>
         {unit && (
           <span className="font-bold text-sm text-gray-100 text-ellipsis align-self-bottom flex-1">
-            ({unit})
+            100{unit}
+          </span>
+        )}
+        {servingNutrition && (
+          <span className="text-right font-bold text-sm text-gray-100 text-ellipsis align-self-bottom flex-1">
+            {servingNutrition.amount.toFixed(1)}
+            {unit}
           </span>
         )}
       </div>
       <ItemRow
         className="bg-blue-900 -mx-2 px-2 py-1"
         value={nutrition.calories}
+        secondValue={servingNutrition?.calories}
         label="Calories"
         onChange={editable ? updateCalories : undefined}
         unit="kcal"
@@ -63,6 +72,7 @@ export default function NutritionFacts({
         <ItemRow
           key={marcoNutrition}
           value={nutrition[marcoNutrition]}
+          secondValue={servingNutrition?.[marcoNutrition]}
           label={marcoNutrition}
           onChange={editable ? updateNutrition(marcoNutrition) : undefined}
           className="not:last-child:border-b"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { format, eachDayOfInterval, parse, startOfMonth } from "date-fns";
+import { format, parse } from "date-fns";
 
 import ConsumptionDatabase from "../database/ConsumptionDatabase";
 
@@ -8,18 +8,16 @@ import ConsumptionTrend from "../components/ConsumptionTrend";
 import MealDistributionTrend from "../components/MealDistributionTrend";
 import PreviousConsumptions from "../components/PreviousConsumptions";
 import TextInput from "../components/Input/TextInput";
-import { endOfMonth } from "date-fns/esm";
+import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
+import DateUtils from '../utils/Date';
 
 export default function PreviousStatistics() {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
 
   const previousRecords = useLiveQuery(async () => {
-    const datesOfMonth = eachDayOfInterval({
-      start: startOfMonth(selectedMonth),
-      end: endOfMonth(selectedMonth),
-    });
+    const daysInMonth = DateUtils.eachDaysOfMonth(selectedMonth);
     const recordsOfEachDay = await Promise.all(
-      datesOfMonth.map(
+      daysInMonth.map(
         async (date) =>
           [
             date.getTime(),
@@ -33,6 +31,7 @@ export default function PreviousStatistics() {
 
   return (
     <div className="flex flex-col overflow-y-auto flex-1 items-stretch gap-2 pb-12">
+      <StatisticsNavigateTab />
       <TextInput
         label=""
         type="month"
