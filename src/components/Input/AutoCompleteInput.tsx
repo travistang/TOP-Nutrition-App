@@ -21,7 +21,7 @@ export default function AutoCompleteInput<T>({
   const onSelectResult = (result: T) => {
     setShowingSuggestions(false);
     onSelectSearchResult(result);
-  }
+  };
 
   const onChangeWithSearch = (searchString: string) => {
     onChange(searchString);
@@ -40,7 +40,7 @@ export default function AutoCompleteInput<T>({
     <TextInput onChange={onChangeWithSearch} {...inputProps}>
       {showingSuggestions && <div className="z-40 absolute top-full rounded-lg translate-y-2 left-0 right-0 bg-blue-300 max-h-36 overflow-y-auto overflow-x-hidden">
         {searchResults.map(result => (
-          <div className='hover:bg-blue-400 h-14 py-1 px-2' onClick={() => onSelectResult(result)}>
+          <div key={JSON.stringify(result)} className='hover:bg-blue-400 h-14 py-1 px-2' onClick={() => onSelectResult(result)}>
             {renderResult(result)}
           </div>
         ))}

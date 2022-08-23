@@ -1,9 +1,10 @@
 import { uuid4 } from "@sentry/utils";
-import { endOfDay, startOfDay } from "date-fns";
+import { endOfDay, endOfMonth, startOfDay, startOfMonth } from "date-fns";
 import Dexie, { Table } from "dexie";
 import { Exercise, ExerciseSet, Repetition } from "../types/Exercise";
 import { CreateEditType } from "../types/utils";
 import ExerciseUtils from "../utils/Exercise";
+import ArrayUtils from "../utils/Array";
 
 export type ExerciseSetRecord = ExerciseSet & {
   id: string;
@@ -17,6 +18,25 @@ class ExerciseDatabase extends Dexie {
     this.version(1).stores({
       exerciseSetRecord: "++id,name,date",
     });
+  }
+
+  exercisesOfMonth(date = Date.now()) {
+    const monthStart = startOfMonth(date);
+    const monthEnd = endOfMonth(date);
+
+    return this.exerciseSetRecord
+      .where('date')
+      .between(monthStart.getTime(), monthEnd.getTime())
+      .sortBy('date');
+
+  }
+
+  async searchExercise(searchString: string) {
+    return this.exerciseSetRecord
+      .filter(workoutSet => workoutSet.exercise.name.toLowerCase().includes(searchString.toLowerCase()))
+      .toArray()
+      .then(workoutWithMatchingExercise => workoutWithMatchingExercise.map(workout => workout.exercise))
+      .then(exercises => ArrayUtils.distinct(exercises, (a, b) => a.name === b.name));
   }
 
   exercisesOfDay(date = Date.now()) {
@@ -51,7 +71,7 @@ class ExerciseDatabase extends Dexie {
       exercise,
       repetitions: rep,
       date: date.getTime()
-    })
+    });
   }
 
   async addRecord(

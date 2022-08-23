@@ -12,6 +12,14 @@ export enum BodyPart {
   Traps = "traps",
 }
 
+export enum ExerciseDayType {
+  Mixed = 'mixed',
+  Push = 'push',
+  Pull = 'pull',
+  Leg = 'leg',
+  Arm = 'arm',
+}
+
 export enum Equipment {
   Barbell = "barbell",
   Dumbbell = "dumbbell",
@@ -68,4 +76,12 @@ export const EquipmentIcon: Record<Equipment, IconProp> = {
   [Equipment.Cable]: "bezier-curve",
   [Equipment.Machine]: "robot",
   [Equipment.BodyWeight]: "person-walking",
+};
+
+export const ExerciseDayTypeColorMap: Record<ExerciseDayType, string> = {
+  [ExerciseDayType.Leg]: 'rgb(228, 177, 0)',
+  [ExerciseDayType.Push]: 'rgb(198, 95, 84)',
+  [ExerciseDayType.Pull]: 'rgb(76, 184, 154)',
+  [ExerciseDayType.Mixed]: 'rgb(150, 150, 150)',
+  [ExerciseDayType.Arm]: 'rgb(100, 100, 250)',
 };

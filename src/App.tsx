@@ -14,6 +14,7 @@ import MainFabButton from "./components/FabMenu/MainFabButton";
 import CreateExerciseSetModal from "./components/CreateExerciseSetModal";
 import Footer from "./components/Footer";
 import WorkoutListPage from "./pages/WorkoutListPage";
+import WorkoutStatistics from "./pages/WorkoutStatistics";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ConsumptionSummary />} />
             <Route path="/stats" element={<PreviousStatistics />} />
+            <Route path="/stats/workouts" element={<WorkoutStatistics />} />
             <Route path="/workouts" element={<WorkoutListPage />} />
           </Routes>
           <MainFabButton />

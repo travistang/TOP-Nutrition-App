@@ -15,6 +15,7 @@ import {
   faPersonWalking,
   faPlateWheat,
   faRobot,
+  faSearch,
   faTimes,
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
@@ -55,7 +56,8 @@ library.add(
   faGripLines,
   faBezierCurve,
   faRobot,
-  faPersonWalking
+  faPersonWalking,
+  faSearch,
 );
 ChartJS.register(
   LineController,

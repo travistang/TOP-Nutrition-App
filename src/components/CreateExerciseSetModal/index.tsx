@@ -12,6 +12,9 @@ import ExerciseUtils from "../../utils/Exercise";
 import DateUtils from "../../utils/Date";
 import Button from "../Input/Button";
 import useExerciseAction from "./useExerciseAction";
+import AutoCompleteInput from "../Input/AutoCompleteInput";
+import ExerciseDatabase from "../../database/ExerciseDatabase";
+import ExerciseAutocompleteResult from "../Input/ExerciseAutocompleteResult";
 
 export default function CreateExerciseSetModal() {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
@@ -52,9 +55,12 @@ export default function CreateExerciseSetModal() {
         onSubmit={(e) => e.preventDefault()}
         className="grid grid-cols-6 gap-y-4 gap-x-2 p-2"
       >
-        <TextInput
+        <AutoCompleteInput
           label="Exercise name"
           value={exercise.name}
+          onSearch={(searchString) => ExerciseDatabase.searchExercise(searchString)}
+          renderResult={(exercise: Exercise) => <ExerciseAutocompleteResult exercise={exercise} />}
+          onSelectSearchResult={(exercise: Exercise) => setCreateEditRecordAtom(record => ({ ...record, exercise }))}
           className="col-span-4"
           onChange={setExerciseData("name")}
         />
