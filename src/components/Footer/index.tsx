@@ -2,7 +2,6 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import classNames from "classnames";
 
 type FooterButtonConfig = {
   icon: IconProp;

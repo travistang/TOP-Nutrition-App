@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { addDays, isAfter } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
 import toast from "react-hot-toast";
 
 import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";

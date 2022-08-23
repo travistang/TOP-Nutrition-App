@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
-import { format, isSameMonth, parse } from "date-fns";
+import { format, startOfMonth, isSameMonth, parse } from "date-fns";
 import TextInput from "../components/Input/TextInput";
 import ExerciseDatabase from "../database/ExerciseDatabase";
 import ExerciseUtils from '../utils/Exercise';
 import WorkoutDayTypeWidget from "../components/WorkoutDayTypeWidget";
 import WorkoutTrendLineChart from "../components/WorkoutTrendLineChart";
-import { startOfMonth } from "date-fns/esm";
 
 export default function WorkoutStatistics() {
     const [selectedMonth, setSelectedMonth] = useState(new Date());
