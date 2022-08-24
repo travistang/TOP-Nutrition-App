@@ -9,7 +9,7 @@ import { CreateEditType } from "../types/utils";
 
 export type CreateEditExerciseRecordProps = {
   exercise: CreateEditType<Exercise>;
-  repetition: Repetition;
+  repetitions: Repetition;
   date: Date;
   id?: string;
   modalOpened: boolean;
@@ -22,7 +22,7 @@ export const createEditExerciseRecordAtom = atom<CreateEditExerciseRecordProps>(
       modalOpened: false,
       date: new Date(),
       exercise: DEFAULT_EXERCISE,
-      repetition: DEFAULT_REPETITION,
+      repetitions: DEFAULT_REPETITION,
     },
   }
 );

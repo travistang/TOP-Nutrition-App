@@ -1,15 +1,33 @@
 import React from 'react';
 import { ExerciseSetRecord } from '../../database/ExerciseDatabase';
-import ExerciseUtils from "../../utils/Exercise";
-import ExerciseSetOverview from '../ExerciseSetOverview';
+import ExerciseDomain from '../../domain/Exercise';
+import { ExerciseSetType } from '../../types/Exercise';
+import SetItem from './SetItem';
 
 type Props = {
     workouts: ExerciseSetRecord[];
 };
+type ExercisePropertiesIndices = Record<ExerciseSetType, number[]>;
+
+const computeSetProperties = (index: number, indiciesList: ExercisePropertiesIndices): ExerciseSetType[] => {
+    const propertyIndiciesPair = Object.entries(indiciesList) as [ExerciseSetType, number[]][];
+    return propertyIndiciesPair.reduce((properties, [property, indices]) => {
+        if (indices.includes(index)) {
+            return [...properties, property]
+        };
+        return properties;
+    }, [] as ExerciseSetType[]);
+}
 
 export default function WorkoutOfDayList({ workouts }: Props) {
-    const workoutsByExercises = ExerciseUtils.groupWorkouts(workouts ?? []);
-    if (workoutsByExercises.length === 0) {
+    const propertiesIndices = {
+        [ExerciseSetType.Dropset]: ExerciseDomain.detectDropSets(workouts),
+        [ExerciseSetType.Superset]: ExerciseDomain.detectSuperSets(workouts),
+        [ExerciseSetType.Warmup]: ExerciseDomain.detectWarmupSets(workouts),
+        [ExerciseSetType.SetEnd]: ExerciseDomain.detectWorkoutEnd(workouts),
+    }
+
+    if (workouts.length === 0) {
         return (
             <div className="flex items-center justify-center text-xs h-12">
                 You didn't do any exercise on this day
@@ -18,8 +36,13 @@ export default function WorkoutOfDayList({ workouts }: Props) {
     }
     return (
         <>
-            {workoutsByExercises.map((workout) => (
-                <ExerciseSetOverview key={workout[0].id} sets={workout} />
+            {workouts.map((set, index) => (
+                <SetItem
+                    set={set}
+                    key={set.id}
+                    index={index}
+                    properties={computeSetProperties(index, propertiesIndices)}
+                />
             ))}
         </>
     );
