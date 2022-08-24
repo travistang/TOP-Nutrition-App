@@ -1,6 +1,7 @@
 import { differenceInSeconds, format } from "date-fns";
 import { ExerciseSetRecord } from "../database/ExerciseDatabase";
 import { BodyPart, Exercise, ExerciseDayType, ExerciseSet } from "../types/Exercise";
+import NumberUtils from "./Number";
 import ArrayUtils from "./Array";
 import RepetitionUtils from './Repetition';
 
@@ -90,8 +91,22 @@ const totalVolume = (workouts: ExerciseSetRecord[]) => {
   return workouts.map(workout => RepetitionUtils.volume(workout.repetitions)).reduce((totalVolume, volume) => totalVolume + volume, 0);
 };
 
+const totalRepetitions = (workouts: ExerciseSetRecord[]) => {
+  return NumberUtils.sum(...workouts.map(workout => workout.repetitions.count));
+}
+const averageRepetitions = (workouts: ExerciseSetRecord[]) => {
+  return NumberUtils.safeDivide(totalRepetitions(workouts), workouts.length);
+}
+
+const averageVolume = (workouts: ExerciseSetRecord[]) => {
+  return NumberUtils.safeDivide(totalVolume(workouts), workouts.length);
+}
+
 const maxWeight = (workouts: ExerciseSetRecord[]) => {
   return workouts.reduce((maxWeight, workouts) => Math.max(maxWeight, workouts.repetitions.weight), 0);
+};
+const averageWeight = (workouts: ExerciseSetRecord[]) => {
+  return NumberUtils.safeDivide(totalVolume(workouts), totalRepetitions(workouts));
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -103,6 +118,12 @@ export default {
   bodyPartsWorked,
   computeExerciseDayType,
   filterWorkoutsWithExercise,
+
   totalVolume,
+  averageVolume,
+
+  averageRepetitions,
+
   maxWeight,
+  averageWeight
 };

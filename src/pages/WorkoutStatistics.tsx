@@ -38,14 +38,7 @@ export default function WorkoutStatistics() {
                 onSelectDate={setSelectedDate}
             />
             <WorkoutTrendLineChart
-                label="Exercise volume trend"
                 workoutsByDate={workoutsByDate}
-                extractDataPredicate={ExerciseUtils.totalVolume}
-            />
-            <WorkoutTrendLineChart
-                label="Exercise max weight trend"
-                workoutsByDate={workoutsByDate}
-                extractDataPredicate={ExerciseUtils.totalVolume}
             />
         </div>
     );

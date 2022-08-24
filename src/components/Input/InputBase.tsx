@@ -4,13 +4,14 @@ import React from 'react';
 export type InputBaseProps = {
   label: string;
   className?: string;
+  labelClassName?: string;
   children: React.ReactNode;
 };
 
-export default function InputBase({ label, className, children }:InputBaseProps) {
+export default function InputBase({ label, className, labelClassName, children }:InputBaseProps) {
   return (
     <div className={classNames("relative flex flex-col gap-2 items-stretch", className)}>
-      <div className="text-sm font-bold text-gray-100 leading-3">{label}</div>
+      <div className={classNames(labelClassName ?? "text-sm font-bold text-gray-100 leading-3")}>{label}</div>
       {children}
     </div>
   )
