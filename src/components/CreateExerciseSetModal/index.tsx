@@ -10,7 +10,7 @@ import RepetitionForm from "./RepetitionForm";
 import RepetitionUtils from "../../utils/Repetition";
 import ExerciseUtils from "../../utils/Exercise";
 import DateUtils from "../../utils/Date";
-import Button from "../Input/Button";
+import Button, { ButtonStyle } from "../Input/Button";
 import useExerciseAction from "./useExerciseAction";
 import AutoCompleteInput from "../Input/AutoCompleteInput";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
@@ -20,9 +20,9 @@ export default function CreateExerciseSetModal() {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
-  const { id, modalOpened, exercise, repetition, date } = createEditRecordAtom;
+  const { id, modalOpened, exercise, repetitions, date } = createEditRecordAtom;
   const isFormValid =
-    RepetitionUtils.isValid(repetition) && ExerciseUtils.isValid(exercise);
+    RepetitionUtils.isValid(repetitions) && ExerciseUtils.isValid(exercise);
   const isEditing = !!id;
 
   const { onCreate, onDelete, onEdit } = useExerciseAction();
@@ -90,6 +90,7 @@ export default function CreateExerciseSetModal() {
                 className="rounded-lg h-12 w-16 bg-transparent"
                 textClassName="text-red-500"
                 text="Delete"
+                buttonStyle={ButtonStyle.Clear}
                 onClick={onDelete}
               />
             )

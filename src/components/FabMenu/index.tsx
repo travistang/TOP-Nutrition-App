@@ -45,6 +45,7 @@ export default function FabMenu() {
           setCreateExerciseRecord((record) => ({
             ...record,
             modalOpened: true,
+            date: new Date(),
           }))
         }
         text="Add exercise set"

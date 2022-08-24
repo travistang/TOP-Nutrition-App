@@ -13,8 +13,6 @@ import ArrayUtils from "../../utils/Array";
 import DateUtils from "../../utils/Date";
 import DayCell from "./DayCell";
 
-
-
 type Props = {
   date: Date | number;
   selectedDate?: Date;

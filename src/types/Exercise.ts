@@ -12,6 +12,13 @@ export enum BodyPart {
   Traps = "traps",
 }
 
+export enum ExerciseSetType {
+  Dropset = "drop_set",
+  Warmup = "warmup",
+  Superset = "superset",
+  SetEnd = "set_end",
+}
+
 export enum ExerciseDayType {
   Mixed = 'mixed',
   Push = 'push',

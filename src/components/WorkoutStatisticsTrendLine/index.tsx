@@ -24,7 +24,7 @@ export default function WorkoutStatisticsTrendLine({ label, extractDataPredicate
     const dataByDateWithoutZero = ObjectUtils.filterValues(dataByDate, (value) => value > 0);
     if (Object.keys(dataByDateWithoutZero).length === 0) {
         return (
-            <span className="text-sm self-center h-12">No records can be shown </span>
+            <span className="text-xs self-center h-12">No records can be shown </span>
         );
     }
 

@@ -6,25 +6,25 @@ import NumberInput from "../Input/NumberInput";
 import NumberSummary from "../NumberSummary";
 
 export default function RepetitionForm() {
-  const [{ repetition }, setCreateEditRecordAtom] = useRecoilState(
+  const [{ repetitions }, setCreateEditRecordAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
 
-  const volume = repetition.count * repetition.weight;
+  const volume = repetitions.count * repetitions.weight;
   const updateRepetitionData = (field: keyof Repetition) => (value: number) =>
     setCreateEditRecordAtom((record) => ({
       ...record,
-      repetition: { ...repetition, [field]: value },
+      repetitions: { ...repetitions, [field]: value },
     }));
   return (
     <div className="col-span-full grid grid-cols-2 gap-2 p-4 pb-2 rounded-lg bg-blue-800">
       <NumberInput
-        value={repetition.weight}
+        value={repetitions.weight}
         label="Weight (kg)"
         onChange={updateRepetitionData("weight")}
       />
       <NumberInput
-        value={repetition.count}
+        value={repetitions.count}
         label="Repetitions"
         onChange={updateRepetitionData("count")}
       />

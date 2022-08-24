@@ -39,13 +39,6 @@ const groupWorkouts = (sets: ExerciseSet[]): ExerciseSet[][] => {
   return setGroups;
 };
 
-const isSuperSet = (sets: ExerciseSet[]) => {
-  if (sets.length <= 1) return false;
-  return sets
-    .slice(1)
-    .some((set) => !isSameExercise(set.exercise, sets[0].exercise));
-};
-
 const groupWorkoutsByDate = <T extends ExerciseSet>(sets: T[]): Record<string, T[]> => {
   const grouping: Record<string, T[]> = {};
   for (const set of sets) {
@@ -106,7 +99,6 @@ export default {
   isValid,
   isSameExercise,
   groupWorkouts,
-  isSuperSet,
   groupWorkoutsByDate,
   bodyPartsWorked,
   computeExerciseDayType,

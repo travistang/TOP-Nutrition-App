@@ -33,22 +33,22 @@ export default function useExerciseAction() {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
-  const { id, exercise, repetition, date } = createEditRecordAtom;
+  const { id, exercise, repetitions, date } = createEditRecordAtom;
   const isFormValid =
-    RepetitionUtils.isValid(repetition) && ExerciseUtils.isValid(exercise);
+    RepetitionUtils.isValid(repetitions) && ExerciseUtils.isValid(exercise);
 
   const resetCreateEditRecordAtom = () =>
     setCreateEditRecordAtom({
       modalOpened: false,
       id: undefined,
       exercise,
-      repetition: DEFAULT_REPETITION,
+      repetitions: DEFAULT_REPETITION,
       date: new Date(),
     });
 
   const onEdit = actionWithToastFeedback(
     async () => {
-      await ExerciseDatabase.updateRecord(id!, exercise, repetition, date);
+      await ExerciseDatabase.updateRecord(id!, exercise, repetitions, date);
       resetCreateEditRecordAtom();
     },
     {
@@ -60,7 +60,7 @@ export default function useExerciseAction() {
 
   const onCreate = actionWithToastFeedback(
     async () => {
-      await ExerciseDatabase.addRecord(exercise, repetition, date);
+      await ExerciseDatabase.addRecord(exercise, repetitions, date);
       resetCreateEditRecordAtom();
     },
     {
