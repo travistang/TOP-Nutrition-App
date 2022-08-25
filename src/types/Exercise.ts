@@ -38,6 +38,8 @@ export enum Equipment {
 export enum ExerciseMode {
   BothSides = "both_sides",
   AlternateSides = "alternate_sides",
+  Left = 'left',
+  Right = 'right'
 }
 
 export type Exercise = {
@@ -92,3 +94,5 @@ export const ExerciseDayTypeColorMap: Record<ExerciseDayType, string> = {
   [ExerciseDayType.Mixed]: 'rgb(150, 150, 150)',
   [ExerciseDayType.Arm]: 'rgb(100, 100, 250)',
 };
+
+export const OneSidedExerciseMode = [ExerciseMode.Left, ExerciseMode.Right];

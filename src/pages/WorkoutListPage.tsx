@@ -10,7 +10,7 @@ export default function WorkoutListPage() {
 
   return (
     <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
-      <div className="p-2 gap-2">
+      <div className="p-2 gap-2 pb-12">
         <WorkoutOfDayList workouts={exercisesOfDay ?? []} />
       </div>
     </div>

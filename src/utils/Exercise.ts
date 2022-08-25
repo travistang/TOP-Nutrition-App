@@ -1,6 +1,6 @@
 import { differenceInSeconds, format } from "date-fns";
 import { ExerciseSetRecord } from "../database/ExerciseDatabase";
-import { BodyPart, Exercise, ExerciseDayType, ExerciseSet } from "../types/Exercise";
+import { BodyPart, Exercise, ExerciseDayType, ExerciseSet, OneSidedExerciseMode } from "../types/Exercise";
 import NumberUtils from "./Number";
 import ArrayUtils from "./Array";
 import RepetitionUtils from './Repetition';
@@ -8,9 +8,9 @@ import RepetitionUtils from './Repetition';
 const isValid = (exercise: Exercise) =>
   !!exercise.name && exercise.workingBodyParts.length > 0;
 
+const isOneSided = (exercise: Exercise) => OneSidedExerciseMode.includes(exercise.exerciseMode);
 const isSameExercise = (a: Exercise, b: Exercise) =>
   a.name === b.name &&
-  a.exerciseMode === b.exerciseMode &&
   a.equipment === b.equipment &&
   ArrayUtils.isEqual(a.workingBodyParts, b.workingBodyParts);
 
@@ -112,6 +112,7 @@ const averageWeight = (workouts: ExerciseSetRecord[]) => {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   isValid,
+  isOneSided,
   isSameExercise,
   groupWorkouts,
   groupWorkoutsByDate,

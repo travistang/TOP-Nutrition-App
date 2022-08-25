@@ -12,7 +12,9 @@ const detectDropSets = (sets: ExerciseSetRecord[]): number[] => {
   sets.forEach((currentSet, index) => {
     const previousSetIndex = index - 1;
     const previousSet = sets[previousSetIndex];
+
     if (!previousSet) return;
+    if (ExerciseUtils.isOneSided(currentSet.exercise)) return;
 
     const setTimeSimilar = areSetTimeClose(currentSet, previousSet);
     const isSameExercise = ExerciseUtils.isSameExercise(currentSet.exercise, previousSet.exercise);
