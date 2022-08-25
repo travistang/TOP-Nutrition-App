@@ -1,8 +1,10 @@
 import React from 'react';
+import { differenceInMinutes } from 'date-fns';
 import { ExerciseSetRecord } from '../../database/ExerciseDatabase';
 import ExerciseDomain from '../../domain/Exercise';
 import { ExerciseSetType } from '../../types/Exercise';
 import SetItem from './SetItem';
+import TimerText from '../TimerText';
 
 type Props = {
     workouts: ExerciseSetRecord[];
@@ -34,6 +36,8 @@ export default function WorkoutOfDayList({ workouts }: Props) {
             </div>
         );
     }
+    const lastSet = workouts[workouts.length - 1];
+    const shouldShowTimer = (differenceInMinutes(Date.now(), lastSet.date) <= 5);
     return (
         <>
             {workouts.map((set, index) => (
@@ -44,6 +48,12 @@ export default function WorkoutOfDayList({ workouts }: Props) {
                     properties={computeSetProperties(index, propertiesIndices)}
                 />
             ))}
+            {shouldShowTimer && (
+                <div className="flex items-center justify-center text-xs opacity-75">
+                    Resting time:
+                    <TimerText className="font-bold ml-2" time={lastSet.date} />
+                </div>
+            )}
         </>
     );
 }

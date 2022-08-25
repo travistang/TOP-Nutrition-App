@@ -1,4 +1,4 @@
-import { uuid4 } from "@sentry/utils";
+import { v4 as uuid4 } from "uuid";
 import { endOfDay, endOfMonth, startOfDay, startOfMonth } from "date-fns";
 import Dexie, { Table } from "dexie";
 import { Exercise, ExerciseSet, Repetition } from "../types/Exercise";
