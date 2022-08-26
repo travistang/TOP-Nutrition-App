@@ -1,7 +1,15 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
+import MeasurementDatabase, { MeasurementRecord } from "../../database/MeasurementDatabase";
+import { Measurement } from "../../types/Measurement";
+import AutoCompleteInput from "../Input/AutoCompleteInput";
+import Button from "../Input/Button";
+import NumberInput from "../Input/NumberInput";
+import TextInput from "../Input/TextInput";
 import Modal from "../Modal";
+import DateUtils from '../../utils/Date';
+import toast from "react-hot-toast";
 
 export default function CreateMeasurementRecordModal() {
   const [createMeasurementRecord, setCreateMeasurementRecord] = useRecoilState(
@@ -10,19 +18,65 @@ export default function CreateMeasurementRecordModal() {
 
   const { modalOpened, record } = createMeasurementRecord;
   const isEditing = !!record.id;
+  const isFormValid = !!record.name && record.value !== 0;
+
   const modalLabel = isEditing ? "Editing record" : "Record measurement";
+  const setField = <T extends keyof Measurement>(field: T) => (value: Measurement[T]) => {
+    setCreateMeasurementRecord((atomValue) => ({ ...atomValue, record: { ...atomValue.record, [field]: value } }));
+  }
+  const onClose = () =>
+    setCreateMeasurementRecord((record) => ({
+      ...record,
+      modalOpened: false,
+    }));
+
+  const submitForm = async () => {
+    if (!isFormValid) return;
+    try {
+      await MeasurementDatabase.add(record);
+      toast.success("Measurement recorded");
+      onClose();
+    } catch {
+      toast.error("Failed to record measurement!");
+    }
+  }
   return (
     <Modal
-      onClose={() =>
-        setCreateMeasurementRecord((record) => ({
-          ...record,
-          modalOpened: false,
-        }))
-      }
+      onClose={onClose}
       opened={modalOpened}
       label={modalLabel}
     >
-      WIP
+      <form onSubmit={e => e.preventDefault()} className="grid grid-cols-6 gap-2 py-4">
+        <AutoCompleteInput
+          label="Measurement name"
+          value={record.name}
+          onChange={setField('name')}
+          onSelectSearchResult={result => setCreateMeasurementRecord(atomValue => ({...atomValue, record: result }))}
+          onSearch={searchString => MeasurementDatabase.search(searchString)}
+          renderResult={(result: MeasurementRecord) => <span className="text-xs font-bold">{result.name}</span>}
+          className="col-span-4"
+        />
+        <NumberInput
+          label="value"
+          className="col-span-2"
+          value={record.value}
+          onChange={setField('value')}
+        />
+        <TextInput
+          label="Date"
+          type="datetime-local"
+          value={DateUtils.toInputFormat(record.date)}
+          onChange={dateString => setField('date')(DateUtils.stringToDate(dateString))}
+          className="col-span-full"
+        />
+        <Button
+          type="submit"
+          disabled={!isFormValid}
+          onClick={submitForm}
+          text="Record"
+          className="h-12 col-end-7 col-span-2"
+        />
+      </form>
     </Modal>
   );
 }

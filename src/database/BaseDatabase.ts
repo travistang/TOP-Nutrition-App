@@ -14,9 +14,9 @@ const getTimeRange = (range: QueryTimeRange) => {
       return [startOfMonth, endOfMonth] as const;
   }
 }
-export default abstract class BaseDatabase extends Dexie {
+export default abstract class BaseDatabase<T> extends Dexie {
 
-  static getRecords<T>(table: Table<T>, {
+  getRecords(table: Table<T>, {
     date = Date.now(),
     dateField = 'date',
     timeRange = QueryTimeRange.Month
@@ -31,4 +31,5 @@ export default abstract class BaseDatabase extends Dexie {
       .sortBy(dateField);
   }
 
+  abstract search(searchString: string): Promise<T[]>;
 }

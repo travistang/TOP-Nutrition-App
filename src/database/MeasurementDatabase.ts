@@ -2,10 +2,12 @@ import { Table } from "dexie";
 import { v4 as uuid } from "uuid";
 import { Measurement } from "../types/Measurement";
 import BaseDatabase, { QueryTimeRange } from "./BaseDatabase";
+import ArrayUtils from '../utils/Array';
+import StringUtils from '../utils/String';
 
 export type MeasurementRecord = Measurement & { id: string };
 
-class MeasurementDatabase extends BaseDatabase {
+class MeasurementDatabase extends BaseDatabase<Measurement> {
   measurements!: Table<MeasurementRecord>;
 
   constructor() {
@@ -16,7 +18,7 @@ class MeasurementDatabase extends BaseDatabase {
   }
 
   getMeasurementsOfMonth(date = Date.now()) {
-    return MeasurementDatabase.getRecords(this.measurements, {
+    return this.getRecords(this.measurements, {
       date,
       timeRange: QueryTimeRange.Month,
     });
@@ -36,6 +38,13 @@ class MeasurementDatabase extends BaseDatabase {
 
   remove(id: string) {
     return this.measurements.delete(id);
+  }
+
+  async search(searchString: string) {
+    return ArrayUtils.distinct(
+      await (this.measurements.where('name').startsWithIgnoreCase(searchString).toArray()),
+      (a, b) => StringUtils.caseInsensitiveEqual(a.name, b.name),
+    );
   }
 }
 
