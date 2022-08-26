@@ -5,6 +5,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { fabMenuAtom } from "../../atoms/FabMenuAtom";
 import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
 import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
+import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 
 type Props = {
   text: string;
@@ -28,6 +29,9 @@ function FabMenuItem({ text, icon, onClick }: Props) {
 
 export default function FabMenu() {
   const setCreateEditRecord = useSetRecoilState(createEditRecordAtom);
+  const setCreateMeasurementRecord = useSetRecoilState(
+    createMeasurementRecordAtom
+  );
   const setCreateExerciseRecord = useSetRecoilState(
     createEditExerciseRecordAtom
   );
@@ -40,6 +44,16 @@ export default function FabMenu() {
       onClick={closeFabMenu}
       className="backdrop-blur-sm fixed inset-0 z-40 flex flex-col justify-end gap-2 pb-20"
     >
+      <FabMenuItem
+        onClick={() =>
+          setCreateMeasurementRecord((record) => ({
+            ...record,
+            modalOpened: true,
+          }))
+        }
+        text="Add measurement"
+        icon="ruler-horizontal"
+      />
       <FabMenuItem
         onClick={() =>
           setCreateExerciseRecord((record) => ({

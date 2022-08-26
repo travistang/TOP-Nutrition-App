@@ -15,6 +15,7 @@ import CreateExerciseSetModal from "./components/CreateExerciseSetModal";
 import Footer from "./components/Footer";
 import WorkoutListPage from "./pages/WorkoutListPage";
 import WorkoutStatistics from "./pages/WorkoutStatistics";
+import CreateMeasurementRecordModal from "./components/CreateMeasurementRecordModal";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <CreateRecordModal />
           <DailyNutritionGoalModal />
           <CreateExerciseSetModal />
+          <CreateMeasurementRecordModal />
           <SplitMealModal />
           <Footer />
         </div>

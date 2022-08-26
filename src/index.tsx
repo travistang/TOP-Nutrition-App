@@ -15,6 +15,7 @@ import {
   faPersonWalking,
   faPlateWheat,
   faRobot,
+  faRulerHorizontal,
   faSearch,
   faTimes,
   faTrophy,
@@ -58,6 +59,7 @@ library.add(
   faRobot,
   faPersonWalking,
   faSearch,
+  faRulerHorizontal
 );
 ChartJS.register(
   LineController,
