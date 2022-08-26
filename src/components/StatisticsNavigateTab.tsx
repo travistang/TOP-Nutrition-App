@@ -5,6 +5,7 @@ import Tab, { TabConfig } from './Tab';
 const LabelPathMapping: Record<string, string> = {
     'Nutrition': '/stats',
     'Workouts': '/stats/workouts',
+    'Measurements': '/stats/measurements',
 };
 export default function StatisticsNavigateTab() {
     const navigate = useNavigate();

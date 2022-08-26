@@ -63,11 +63,17 @@ export default function CreateMeasurementRecordModal() {
           onChange={setField('value')}
         />
         <TextInput
+          label="Unit"
+          value={record.unit}
+          onChange={setField('unit')}
+          className="col-span-1"
+        />
+        <TextInput
           label="Date"
           type="datetime-local"
           value={DateUtils.toInputFormat(record.date)}
           onChange={dateString => setField('date')(DateUtils.stringToDate(dateString))}
-          className="col-span-full"
+          className="col-span-5"
         />
         <Button
           type="submit"
