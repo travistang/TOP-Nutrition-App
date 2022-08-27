@@ -48,7 +48,7 @@ export default function ItemRow({
           </span>
         </>
       ) : (
-        <span className="font-bold text-gray-100">
+        <span className="font-bold text-gray-100 text-xs">
           {value.toFixed(1)}
           {unit}
         </span>

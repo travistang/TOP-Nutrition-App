@@ -15,6 +15,8 @@ import CreateExerciseSetModal from "./components/CreateExerciseSetModal";
 import Footer from "./components/Footer";
 import WorkoutListPage from "./pages/WorkoutListPage";
 import WorkoutStatistics from "./pages/WorkoutStatistics";
+import CreateMeasurementRecordModal from "./components/CreateMeasurementRecordModal";
+import MeasurementListPage from "./pages/MeasurementListPage";
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
             <Route path="/" element={<ConsumptionSummary />} />
             <Route path="/stats" element={<PreviousStatistics />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
+            <Route path="/stats/measurements" element={<MeasurementListPage />} />
             <Route path="/workouts" element={<WorkoutListPage />} />
           </Routes>
           <MainFabButton />
@@ -34,6 +37,7 @@ function App() {
           <CreateRecordModal />
           <DailyNutritionGoalModal />
           <CreateExerciseSetModal />
+          <CreateMeasurementRecordModal />
           <SplitMealModal />
           <Footer />
         </div>

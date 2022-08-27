@@ -6,7 +6,7 @@ import WorkoutOfDayList from "../components/WorkoutOfDayList";
 export default function WorkoutListPage() {
   const exercisesOfDay = useLiveQuery(() => {
     return ExerciseDatabase.exercisesOfDay(Date.now());
-  },);
+  });
 
   return (
     <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
