@@ -2,8 +2,9 @@ import { differenceInMinutes, endOfDay, startOfDay } from "date-fns";
 import Dexie, { Table } from "dexie";
 import { v4 as uuid } from "uuid";
 import { Consumption } from "../types/Consumption";
+import { Duration } from "../types/Duration";
 import NutritionUtils from "../utils/Nutrition";
-
+import DateUtils from "../utils/Date";
 export type ConsumptionRecord = Consumption & {
   id: string;
 };
@@ -130,6 +131,14 @@ class ConsumptionDatabase extends Dexie {
 
   remove(id: string) {
     return this.consumptions.delete(id);
+  }
+
+  async recordsInRange(date: Date | number, duration: Duration) {
+    const [start, end] = DateUtils.getIntervalFromDuration(date, duration);
+    return this.consumptions
+      .where("date")
+      .between(start.getTime(), end.getTime())
+      .sortBy("date");
   }
 }
 

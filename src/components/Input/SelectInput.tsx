@@ -31,12 +31,16 @@ export default function SelectInput({
   ...valueOrValues
 }: Props) {
   const valueAsSingleSelect = (valueOrValues as { value: string }).value;
-  const selectedValue = valueAsSingleSelect
-    ? [valueAsSingleSelect]
-    : (valueOrValues as { values: string[] }).values;
-
+  const selectedValue =
+    valueAsSingleSelect !== undefined
+      ? [valueAsSingleSelect]
+      : (valueOrValues as { values: string[] }).values;
   return (
-    <InputBase label={label} className={className} labelClassName={labelClassName}>
+    <InputBase
+      label={label}
+      className={className}
+      labelClassName={labelClassName}
+    >
       <select
         multiple={multiSelect}
         onChange={(e) => onSelect(e.target.value)}

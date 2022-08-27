@@ -4,6 +4,8 @@ import { Measurement } from "../types/Measurement";
 import BaseDatabase, { QueryTimeRange } from "./BaseDatabase";
 import ArrayUtils from "../utils/Array";
 import StringUtils from "../utils/String";
+import DateUtils from "../utils/Date";
+import { Duration } from "../types/Duration";
 
 export type MeasurementRecord = Measurement & { id: string };
 
@@ -59,6 +61,20 @@ class MeasurementDatabase extends BaseDatabase<Measurement> {
       )
       .count();
     return mismatchCount > 0;
+  }
+
+  async measurementLabels() {
+    return Array.from(
+      new Set((await this.measurements.toArray()).map((m) => m.name))
+    );
+  }
+
+  async recordsInRange(date: Date | number, duration: Duration) {
+    const [start, end] = DateUtils.getIntervalFromDuration(date, duration);
+    return this.measurements
+      .where("date")
+      .between(start.getTime(), end.getTime())
+      .sortBy("date");
   }
 }
 

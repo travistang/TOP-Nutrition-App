@@ -7,16 +7,21 @@ import {
   startOfDay,
   startOfMonth,
 } from "date-fns";
-import React from "react";
+import { useLiveQuery } from "dexie-react-hooks";
+import React, { useContext } from "react";
 import { Scatter } from "react-chartjs-2";
-import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
-import Section from "../Section";
+import ConsumptionDatabase from "../../database/ConsumptionDatabase";
+import BaseChartSection, { baseChartSectionContext } from "../BaseChartSection";
 
-type Props = {
-  previousRecords: (readonly [number, ConsumptionRecord[]])[];
-};
-export default function MealDistributionTrend({ previousRecords }: Props) {
-  const allRecords = previousRecords?.map(([, records]) => records).flat();
+const minutesSinceDayStart = (hour: number) => hour * 60;
+
+function MealDistributionTrendInner() {
+  const { date, duration } = useContext(baseChartSectionContext);
+  const allRecords = useLiveQuery(
+    () => ConsumptionDatabase.recordsInRange(date, duration),
+    [date, duration]
+  );
+
   const mealDistributionData = {
     datasets: [
       {
@@ -40,6 +45,8 @@ export default function MealDistributionTrend({ previousRecords }: Props) {
         grid: {
           color: "rgba(0,0,0,0)",
         },
+        min: minutesSinceDayStart(6),
+        max: minutesSinceDayStart(24),
         ticks: {
           callback: (label: string | number) => {
             const minutesSinceDayStart =
@@ -51,7 +58,6 @@ export default function MealDistributionTrend({ previousRecords }: Props) {
             return format(clockTime, "HH:mm");
           },
         },
-        beginAtZero: true,
       },
       x: {
         label: "date",
@@ -70,9 +76,13 @@ export default function MealDistributionTrend({ previousRecords }: Props) {
       },
     },
   };
+  return <Scatter options={options} data={mealDistributionData} />;
+}
+
+export default function MealDistributionTrend() {
   return (
-    <Section label="Meal time distribution">
-      <Scatter options={options} data={mealDistributionData} />
-    </Section>
+    <BaseChartSection label="Meal time distribution">
+      <MealDistributionTrendInner />
+    </BaseChartSection>
   );
 }

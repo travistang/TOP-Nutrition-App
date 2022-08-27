@@ -2,8 +2,9 @@ import { v4 as uuid4 } from "uuid";
 import { endOfDay, endOfMonth, startOfDay, startOfMonth } from "date-fns";
 import Dexie, { Table } from "dexie";
 import { Exercise, ExerciseSet, Repetition } from "../types/Exercise";
+import { Duration } from "../types/Duration";
 import { CreateEditType } from "../types/utils";
-import ExerciseUtils from "../utils/Exercise";
+import DateUtils from "../utils/Date";
 import ArrayUtils from "../utils/Array";
 
 export type ExerciseSetRecord = ExerciseSet & {
@@ -25,18 +26,33 @@ class ExerciseDatabase extends Dexie {
     const monthEnd = endOfMonth(date);
 
     return this.exerciseSetRecord
-      .where('date')
+      .where("date")
       .between(monthStart.getTime(), monthEnd.getTime())
-      .sortBy('date');
+      .sortBy("date");
+  }
 
+  async recordsInRange(date: Date | number, duration: Duration) {
+    const [start, end] = DateUtils.getIntervalFromDuration(date, duration);
+    return this.exerciseSetRecord
+      .where("date")
+      .between(start.getTime(), end.getTime())
+      .sortBy("date");
   }
 
   async searchExercise(searchString: string) {
     return this.exerciseSetRecord
-      .filter(workoutSet => workoutSet.exercise.name.toLowerCase().includes(searchString.toLowerCase()))
+      .filter((workoutSet) =>
+        workoutSet.exercise.name
+          .toLowerCase()
+          .includes(searchString.toLowerCase())
+      )
       .toArray()
-      .then(workoutWithMatchingExercise => workoutWithMatchingExercise.map(workout => workout.exercise))
-      .then(exercises => ArrayUtils.distinct(exercises, (a, b) => a.name === b.name));
+      .then((workoutWithMatchingExercise) =>
+        workoutWithMatchingExercise.map((workout) => workout.exercise)
+      )
+      .then((exercises) =>
+        ArrayUtils.distinct(exercises, (a, b) => a.name === b.name)
+      );
   }
 
   exercisesOfDay(date = Date.now()) {
@@ -46,31 +62,16 @@ class ExerciseDatabase extends Dexie {
       .sortBy("date");
   }
 
-  async previousExercises() {
-    const exercises = (await this.exerciseSetRecord.toArray()).map(
-      (set) => set.exercise
-    );
-    return exercises.reduce<Exercise[]>(
-      (distinctExercises, exercise) =>
-        distinctExercises.find((ex) =>
-          ExerciseUtils.isSameExercise(ex, exercise)
-        )
-          ? distinctExercises
-          : [...distinctExercises, exercise],
-      []
-    );
-  }
-
   async updateRecord(
     id: string,
     exercise: CreateEditType<Exercise>,
     rep: Repetition,
-    date: Date,
+    date: Date
   ) {
     return this.exerciseSetRecord.update(id, {
       exercise,
       repetitions: rep,
-      date: date.getTime()
+      date: date.getTime(),
     });
   }
 
@@ -89,9 +90,7 @@ class ExerciseDatabase extends Dexie {
     return this.exerciseSetRecord.add(exerciseSetRecord);
   }
 
-  async deleteRecord(
-    id: string
-  ) {
+  async deleteRecord(id: string) {
     return this.exerciseSetRecord.delete(id);
   }
 }
