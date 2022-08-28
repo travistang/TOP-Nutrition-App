@@ -1,14 +1,17 @@
 import { format, parse } from "date-fns";
 import React from "react";
 import { InputBaseProps } from "./InputBase";
-import TextInput from "./TextInput";
+import TextInput, { TextInputProps } from "./TextInput";
 
 export enum DateInputType {
   DateTime,
   Month,
 }
 
-type Props = Omit<InputBaseProps, "children" | "type"> & {
+type Props = Omit<
+  TextInputProps,
+  "children" | "type" | "value" | "onChange"
+> & {
   value: Date | number;
   onChange: (value: Date) => void;
   dateType: DateInputType;
