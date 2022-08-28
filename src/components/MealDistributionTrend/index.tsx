@@ -12,11 +12,13 @@ import React, { useContext } from "react";
 import { Scatter } from "react-chartjs-2";
 import ConsumptionDatabase from "../../database/ConsumptionDatabase";
 import BaseChartSection, { baseChartSectionContext } from "../BaseChartSection";
+import DateUtils from "../../utils/Date";
 
 const minutesSinceDayStart = (hour: number) => hour * 60;
 
 function MealDistributionTrendInner() {
   const { date, duration } = useContext(baseChartSectionContext);
+  const [durationStart] = DateUtils.getIntervalFromDuration(date, duration);
   const allRecords = useLiveQuery(
     () => ConsumptionDatabase.recordsInRange(date, duration),
     [date, duration]
@@ -67,10 +69,10 @@ function MealDistributionTrendInner() {
         ticks: {
           callback: (label: string | number) => {
             const actualDay = addDays(
-              startOfMonth(Date.now()),
+              durationStart,
               typeof label === "number" ? label : parseFloat(label)
             );
-            return format(actualDay, "MM/dd");
+            return format(actualDay, "dd/MM");
           },
         },
       },
