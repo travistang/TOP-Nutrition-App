@@ -3,6 +3,7 @@ import {
   eachDayOfInterval,
   endOfMonth,
   format,
+  parse,
   startOfMonth,
   subMonths,
 } from "date-fns";
@@ -92,7 +93,11 @@ const orderedRecordGroups = <
   [dateString: string]: T[];
 }): T[][] => {
   return Object.entries(dateRecordsMap)
-    .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
+    .sort(
+      (a, b) =>
+        parse(a[0], "dd/MM/yyyy", new Date()).getTime() -
+        parse(b[0], "dd/MM/yyyy", new Date()).getTime()
+    )
     .map(([, record]) => record);
 };
 

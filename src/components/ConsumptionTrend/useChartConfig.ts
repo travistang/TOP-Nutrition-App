@@ -46,7 +46,7 @@ export default function useChartConfig({
       )
     )
   );
-  console.log({ caloriesByNutritionByDay });
+  console.log({ recordsGroupedByDay, caloriesByNutritionByDay });
 
   const consumptionTrendData = {
     labels: eachDaysInDuration.map((day) => format(day, "dd/MM")),
