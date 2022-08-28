@@ -57,6 +57,8 @@ export default function WorkoutTrendLineConfigGroup({
         dateType={DateInputType.Month}
         value={selectMonth}
         onChange={setField("selectMonth")}
+        inputClassName="bg-gray-400 text-gray-700 text-sm"
+        innerInputClassName="text-gray-700"
         className="col-span-4"
         label=""
       />

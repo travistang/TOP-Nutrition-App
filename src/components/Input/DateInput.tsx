@@ -1,6 +1,5 @@
 import { format, parse } from "date-fns";
 import React from "react";
-import { InputBaseProps } from "./InputBase";
 import TextInput, { TextInputProps } from "./TextInput";
 
 export enum DateInputType {
