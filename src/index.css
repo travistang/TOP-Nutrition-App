@@ -5,25 +5,24 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap'); */
 
 @font-face {
-  font-family: 'Clan Pro';
+  font-family: "Clan Pro";
   src: url(./fonts/clan-pro-cufonfonts/FFClanProRegular.TTF);
 }
 @font-face {
-  font-family: 'Clan Pro';
+  font-family: "Clan Pro";
   font-weight: 700;
   src: url(./fonts/clan-pro-cufonfonts/FFClanProBold.TTF);
 }
 
 * {
   @apply text-gray-700;
-  font-family: 'Clan Pro', Helvetica, Arial, sans-serif;
+  font-family: "Clan Pro", Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
 
-input[type=range]::-webkit-slider-runnable-track {
+input[type="range"]::-webkit-slider-runnable-track {
   @apply bg-gray-100 rounded-full;
 }
-
 
 @layer utilities {
   .page {

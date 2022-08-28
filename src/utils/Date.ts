@@ -69,8 +69,7 @@ const getIntervalFromDuration = (date: Date | number, duration: Duration) => {
 
 const groupRecordsByDates = <T extends { date: Date | number }>(
   records: T[],
-  dates: (Date | number)[],
-  asArray?: boolean
+  dates: (Date | number)[]
 ): { [dateString: string]: T[] } => {
   const dateStrings = dates.map((date) => format(date, "dd/MM/yyyy"));
   const initialGroups: { [dateString: string]: T[] } = Object.assign(

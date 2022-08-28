@@ -1,45 +1,43 @@
-import React, { useState } from 'react';
-import { ExerciseSetRecord } from '../../database/ExerciseDatabase';
-import WorkoutChartBase from '../WorkoutChartBase';
-import WorkoutStatisticsTrendLine from '../WorkoutStatisticsTrendLine';
-import ExerciseUtils from '../../utils/Exercise';
-import SelectInput from '../Input/SelectInput';
+import React, { useState } from "react";
+import { WorkoutTrendMode } from "./types";
+import Section from "../Section";
+import WorkoutTrendLineConfigGroup, {
+  WorkoutTrendLineConfig,
+} from "./WorkoutTrendLineConfigGroup";
+import { Duration } from "../../types/Duration";
+import { useLiveQuery } from "dexie-react-hooks";
+import ExerciseDatabase from "../../database/ExerciseDatabase";
+import DateUtils from "../../utils/Date";
+import { Line } from "react-chartjs-2";
+import useChartData from "./useChartData";
 
-export enum WorkoutTrendMode {
-    TotalVolume = 'Total volume',
-    AverageVolume = 'Average volume',
-    MaxWeight = 'Max weight',
-    AverageWeight = 'Average weight',
-    AverageRepetition = 'Average repetitions',
-}
+export default function WorkoutTrendLineChart() {
+  const [config, setConfig] = useState<WorkoutTrendLineConfig>({
+    searchText: "",
+    selectedExercise: null,
+    selectMonth: new Date(),
+    duration: Duration.OneMonth,
+    trendMode: WorkoutTrendMode.MaxWeight,
+  });
+  const { selectMonth, duration } = config;
+  const daysInInterval = DateUtils.eachDaysOfIntervalFromDuration(
+    selectMonth,
+    duration
+  );
+  const workoutsByDates =
+    useLiveQuery(async () => {
+      const workouts = await ExerciseDatabase.recordsInRange(
+        selectMonth,
+        duration
+      );
+      return DateUtils.groupRecordsByDates(workouts, daysInInterval);
+    }, [selectMonth, duration]) ?? {};
+  const { chartOptions, data } = useChartData({ config, workoutsByDates });
 
-const WorkoutTrendModePredicateMap: Record<WorkoutTrendMode, ((sets: ExerciseSetRecord[]) => number)> = {
-    [WorkoutTrendMode.TotalVolume]: ExerciseUtils.totalVolume,
-    [WorkoutTrendMode.AverageVolume]: ExerciseUtils.averageVolume,
-    [WorkoutTrendMode.MaxWeight]: ExerciseUtils.maxWeight,
-    [WorkoutTrendMode.AverageWeight]: ExerciseUtils.averageWeight,
-    [WorkoutTrendMode.AverageRepetition]: ExerciseUtils.averageRepetitions,
-}
-
-type Props = {
-    workoutsByDate: Record<string, ExerciseSetRecord[]>;
-};
-
-export default function WorkoutTrendLineChart({ workoutsByDate }: Props) {
-    const [mode, selectMode] = useState<WorkoutTrendMode>(WorkoutTrendMode.AverageVolume);
-    return (
-        <WorkoutChartBase label="Workout trend" workoutsByDate={workoutsByDate}>
-            <SelectInput
-                label=""
-                value={mode}
-                className="pb-4"
-                inputClassName="bg-gray-400 text-gray-700 text-sm"
-                onSelect={mode => selectMode(mode as WorkoutTrendMode)}
-                options={Object.values(WorkoutTrendMode).map(mode => ({ label: mode, value: mode }))} />
-            <WorkoutStatisticsTrendLine
-                extractDataPredicate={WorkoutTrendModePredicateMap[mode]}
-                label={mode}
-            />
-        </WorkoutChartBase>
-    );
+  return (
+    <Section label="Workout trend">
+      <WorkoutTrendLineConfigGroup config={config} onChange={setConfig} />
+      <Line options={chartOptions} data={data} />
+    </Section>
+  );
 }

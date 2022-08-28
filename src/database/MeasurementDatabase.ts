@@ -4,12 +4,12 @@ import { Measurement } from "../types/Measurement";
 import BaseDatabase, { QueryTimeRange } from "./BaseDatabase";
 import ArrayUtils from "../utils/Array";
 import StringUtils from "../utils/String";
-import DateUtils from "../utils/Date";
+import DatabaseUtils from "../utils/Database";
 import { Duration } from "../types/Duration";
 
 export type MeasurementRecord = Measurement & { id: string };
 
-class MeasurementDatabase extends BaseDatabase<Measurement> {
+class MeasurementDatabase extends BaseDatabase<MeasurementRecord> {
   measurements!: Table<MeasurementRecord>;
 
   constructor() {
@@ -70,11 +70,7 @@ class MeasurementDatabase extends BaseDatabase<Measurement> {
   }
 
   async recordsInRange(date: Date | number, duration: Duration) {
-    const [start, end] = DateUtils.getIntervalFromDuration(date, duration);
-    return this.measurements
-      .where("date")
-      .between(start.getTime(), end.getTime())
-      .sortBy("date");
+    return DatabaseUtils.recordsInRange(this.measurements, date, duration);
   }
 }
 

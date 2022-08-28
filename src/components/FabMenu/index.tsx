@@ -16,12 +16,12 @@ function FabMenuItem({ text, icon, onClick }: Props) {
   return (
     <div
       onClick={onClick}
-      className="flex flex-row justify-end items-center gap-2 flex-nowrap px-4"
+      className="flex flex-row justify-end items-center gap-2 flex-nowrap px-4 text-sm font-bold"
     >
       {text}
       <FontAwesomeIcon
         icon={icon}
-        className="rounded-full bg-blue-500 p-2 h-8 w-8 items-center justify-center"
+        className="rounded-full bg-blue-500 child:fill-gray-200 p-2 h-8 w-8 items-center justify-center"
       />
     </div>
   );
@@ -62,7 +62,7 @@ export default function FabMenu() {
             date: new Date(),
           }))
         }
-        text="Add exercise set"
+        text="Add exercise"
         icon="dumbbell"
       />
       <FabMenuItem

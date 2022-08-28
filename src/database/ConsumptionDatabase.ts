@@ -4,7 +4,9 @@ import { v4 as uuid } from "uuid";
 import { Consumption } from "../types/Consumption";
 import { Duration } from "../types/Duration";
 import NutritionUtils from "../utils/Nutrition";
-import DateUtils from "../utils/Date";
+import DatabaseUtils from "../utils/Database";
+import StringUtils from "../utils/String";
+
 export type ConsumptionRecord = Consumption & {
   id: string;
 };
@@ -79,8 +81,9 @@ class ConsumptionDatabase extends Dexie {
 
   async search(recordName: string) {
     const searchResults = await this.consumptions
-      .where("name")
-      .startsWithIgnoreCase(recordName)
+      .filter((consumption) =>
+        StringUtils.searchCaseInsensitive(consumption.name, recordName)
+      )
       .toArray();
     return searchResults.reduce((uniqueResults, result) => {
       const hasSimilarResults = uniqueResults.find((res) =>
@@ -134,11 +137,7 @@ class ConsumptionDatabase extends Dexie {
   }
 
   async recordsInRange(date: Date | number, duration: Duration) {
-    const [start, end] = DateUtils.getIntervalFromDuration(date, duration);
-    return this.consumptions
-      .where("date")
-      .between(start.getTime(), end.getTime())
-      .sortBy("date");
+    return DatabaseUtils.recordsInRange(this.consumptions, date, duration);
   }
 }
 

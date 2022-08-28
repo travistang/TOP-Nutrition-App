@@ -52,7 +52,7 @@ export default function Button({
     <button
       type={type}
       className={classNames(
-        "outline-none border-none rounded-lg",
+        "flex items-center justify-center outline-none border-none rounded-lg",
         styles?.button,
         className
       )}

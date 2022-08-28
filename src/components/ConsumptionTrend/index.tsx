@@ -16,7 +16,7 @@ function ConsumptionTrendInner() {
   );
   const recordsInDuration = useLiveQuery(async () => {
     return ConsumptionDatabase.recordsInRange(date, duration);
-  }, [date]);
+  }, [date, duration]);
   const [selectedMeasurement, setSelectedMeasurement] = useState<string>("");
   const { measurements, allMeasurementNames } = useMeasurementData({
     date,

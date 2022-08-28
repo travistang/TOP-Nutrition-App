@@ -3,11 +3,9 @@ import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
 import { Consumption, DEFAULT_CONSUMPTION } from "../../types/Consumption";
-import TextInput from "../Input/TextInput";
 import Modal from "../Modal";
 import NutritionFacts from "../NutritionFacts";
 import NutritionUtils from "../../utils/Nutrition";
-import DateUtils from "../../utils/Date";
 import Button, { ButtonStyle } from "../Input/Button";
 import ConsumptionDatabase, {
   ConsumptionRecord,
@@ -17,6 +15,7 @@ import AutoCompleteInput from "../Input/AutoCompleteInput";
 import ConsumptionAutocompleteResult from "../Input/ConsumptionAutocompleteResult";
 import NumberInput from "../Input/NumberInput";
 import NumberSummary from "../NumberSummary";
+import DateInput, { DateInputType } from "../Input/DateInput";
 
 export default function CreateRecordModal() {
   const [createEditRecord, setCreateEditRecord] =
@@ -65,10 +64,10 @@ export default function CreateRecordModal() {
     });
   };
 
-  const updateDate = (dateString: string) => {
+  const updateDate = (date: Date) => {
     setConsumption({
       ...consumption,
-      date: DateUtils.stringToDate(dateString),
+      date: date.getTime(),
     });
   };
 
@@ -125,12 +124,19 @@ export default function CreateRecordModal() {
           onChange={updateAmount}
           className="col-span-2"
         />
-        <TextInput
+        <DateInput
           label="Date"
-          type="datetime-local"
-          value={DateUtils.toInputFormat(consumption.date)}
+          dateType={DateInputType.DateTime}
+          value={consumption.date}
           onChange={updateDate}
-          className="col-span-full"
+          className="col-span-4"
+        />
+        <Button
+          className="col-span-2 self-end h-12 gap-1"
+          onClick={() => updateDate(new Date())}
+          textClassName="text-xs gap-1 child:fill-gray-200"
+          text="Now"
+          icon="clock"
         />
         <NutritionFacts
           nutrition={consumption.nutritionPerHundred}
