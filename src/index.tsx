@@ -5,6 +5,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faArrowRight,
   faBezierCurve,
+  faClock,
   faCogs,
   faDumbbell,
   faGripLines,
@@ -59,7 +60,8 @@ library.add(
   faRobot,
   faPersonWalking,
   faSearch,
-  faRulerHorizontal
+  faRulerHorizontal,
+  faClock
 );
 ChartJS.register(
   LineController,

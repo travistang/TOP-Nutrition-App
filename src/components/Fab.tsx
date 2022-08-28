@@ -21,7 +21,10 @@ export default function Fab({ onClick, className, icon }: Props) {
       )}
       onClick={onClick}
     >
-      <FontAwesomeIcon icon={icon} className="text-gray-200 fill-gray-200" />
+      <FontAwesomeIcon
+        icon={icon}
+        className="text-gray-200 child:fill-gray-200"
+      />
     </button>
   );
 }

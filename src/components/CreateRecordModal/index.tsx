@@ -3,11 +3,9 @@ import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
 import { Consumption, DEFAULT_CONSUMPTION } from "../../types/Consumption";
-import TextInput from "../Input/TextInput";
 import Modal from "../Modal";
 import NutritionFacts from "../NutritionFacts";
 import NutritionUtils from "../../utils/Nutrition";
-import DateUtils from "../../utils/Date";
 import Button, { ButtonStyle } from "../Input/Button";
 import ConsumptionDatabase, {
   ConsumptionRecord,
@@ -131,7 +129,14 @@ export default function CreateRecordModal() {
           dateType={DateInputType.DateTime}
           value={consumption.date}
           onChange={updateDate}
-          className="col-span-full"
+          className="col-span-4"
+        />
+        <Button
+          className="col-span-2 self-end h-12 gap-1"
+          onClick={() => updateDate(new Date())}
+          textClassName="text-xs gap-1 child:fill-gray-200"
+          text="Now"
+          icon="clock"
         />
         <NutritionFacts
           nutrition={consumption.nutritionPerHundred}
