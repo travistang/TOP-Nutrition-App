@@ -5,6 +5,7 @@ import DateUtils from "../../utils/Date";
 import SelectInput from "../Input/SelectInput";
 import { Duration } from "../../types/Duration";
 import { format } from "date-fns";
+import DateInput, { DateInputType } from "../Input/DateInput";
 
 type Props = {
   label: string;
@@ -36,16 +37,16 @@ export default function BaseChartSection({
     <baseChartSectionContext.Provider value={baseCharSectionContextValue}>
       <Section label={label} className={className}>
         <div className="grid grid-cols-6 gap-2">
-          <TextInput
+          <DateInput
             label=""
-            type="month"
+            dateType={DateInputType.Month}
             className="col-span-4"
             inputClassName="bg-gray-400"
-            value={format(date, "yyyy-MM")}
-            onChange={(dateString) =>
+            value={date}
+            onChange={(date) =>
               setContextValues((contextValue) => ({
                 ...contextValue,
-                date: new Date(DateUtils.stringToDate(dateString)),
+                date,
               }))
             }
           />
