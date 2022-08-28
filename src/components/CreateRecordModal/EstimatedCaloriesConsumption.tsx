@@ -16,7 +16,6 @@ export default function EstimatedCaloriesConsumption({ record }: Props) {
       ConsumptionDatabase.consumptionsOfDay(new Date(record.date).getTime()),
     [record]
   );
-  console.log({ consumptionsOfDay });
   const caloriesFromRecord = NutritionUtils.caloriesByAmount(
     record.nutritionPerHundred,
     record.amount
