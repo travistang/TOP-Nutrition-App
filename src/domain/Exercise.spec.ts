@@ -204,9 +204,11 @@ describe("Exercise domain", () => {
         [],
       ],
     ])("detecting warmup set: %s", (_, sets, expectedIndices) => {
-      expect(ExerciseDomain.detectWarmupSets(sets).sort()).toEqual(expectedIndices);
+      expect(ExerciseDomain.detectWarmupSets(sets).sort()).toEqual(
+        expectedIndices
+      );
     });
-  })
+  });
 
   describe("detectWorkoutEnd", () => {
     it("should return empty array when given empty array", () => {
@@ -236,7 +238,7 @@ describe("Exercise domain", () => {
           generateDummySet(false, 10, 125),
           generateDummySet(false, 20, 127),
         ],
-        [],
+        [2],
       ],
       [
         "Detect workout end with multiple exercises: foreign exercises after",
@@ -245,7 +247,7 @@ describe("Exercise domain", () => {
           generateDummySet(false, 20, 125),
           generateDummySet(true, 5, 127),
         ],
-        [],
+        [2],
       ],
       [
         "Detect workout end with multiple exercises: combined",
@@ -260,7 +262,7 @@ describe("Exercise domain", () => {
           generateDummySet(false, 2, 127023000),
         ],
         [7],
-      ]
+      ],
     ])("detecting workout end: %s", (_, sets, expectedIndices) => {
       expect(ExerciseDomain.detectWorkoutEnd(sets).sort()).toEqual(
         expectedIndices
