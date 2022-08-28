@@ -12,6 +12,7 @@ import TextInput from "../Input/TextInput";
 import Modal from "../Modal";
 import DateUtils from "../../utils/Date";
 import toast from "react-hot-toast";
+import DateInput, { DateInputType } from "../Input/DateInput";
 
 export default function CreateMeasurementRecordModal() {
   const [createMeasurementRecord, setCreateMeasurementRecord] = useRecoilState(
@@ -85,13 +86,11 @@ export default function CreateMeasurementRecordModal() {
           onChange={setField("unit")}
           className="col-span-1"
         />
-        <TextInput
+        <DateInput
           label="Date"
-          type="datetime-local"
-          value={DateUtils.toInputFormat(record.date)}
-          onChange={(dateString) =>
-            setField("date")(DateUtils.stringToDate(dateString))
-          }
+          dateType={DateInputType.DateTime}
+          value={record.date}
+          onChange={(v) => setField("date")(v.getTime())}
           className="col-span-5"
         />
         <Button

@@ -6,14 +6,13 @@ import toast from "react-hot-toast";
 
 import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";
 import InputBase from "../Input/InputBase";
-import TextInput from "../Input/TextInput";
 import Button, { ButtonStyle } from "../Input/Button";
 import Modal from "../Modal";
 import NutritionFacts from "../NutritionFacts";
 import NutritionUtils from "../../utils/Nutrition";
-import DateUtils from "../../utils/Date";
 import ConsumptionDatabase from "../../database/ConsumptionDatabase";
 import PortionSummary from "./PortionSummary";
+import DateInput, { DateInputType } from "../Input/DateInput";
 
 type SplitMealFormValue = {
   splitRatio: number;
@@ -69,17 +68,17 @@ export default function SplitMealModal() {
             step={0.01}
           />
         </InputBase>
-        <TextInput
+        <DateInput
           label="Next meal date"
-          type="datetime-local"
+          dateType={DateInputType.DateTime}
           className="col-span-3"
           onChange={(mealDate) =>
             setForm({
-              nextMealDate: DateUtils.stringToDate(mealDate),
+              nextMealDate: mealDate.getTime(),
               splitRatio,
             })
           }
-          value={DateUtils.toInputFormat(nextMealDate)}
+          value={nextMealDate}
         />
         <PortionSummary
           label="Current meal"

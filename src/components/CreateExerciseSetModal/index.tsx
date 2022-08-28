@@ -15,6 +15,7 @@ import useExerciseAction from "./useExerciseAction";
 import AutoCompleteInput from "../Input/AutoCompleteInput";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
 import ExerciseAutocompleteResult from "../Input/ExerciseAutocompleteResult";
+import DateInput, { DateInputType } from "../Input/DateInput";
 
 export default function CreateExerciseSetModal() {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
@@ -34,10 +35,10 @@ export default function CreateExerciseSetModal() {
     }));
   };
 
-  const updateDate = (dateString: string) => {
+  const updateDate = (date: Date) => {
     setCreateEditRecordAtom((record) => ({
       ...record,
-      date: new Date(DateUtils.stringToDate(dateString)),
+      date,
     }));
   };
 
@@ -58,9 +59,15 @@ export default function CreateExerciseSetModal() {
         <AutoCompleteInput
           label="Exercise name"
           value={exercise.name}
-          onSearch={(searchString) => ExerciseDatabase.searchExercise(searchString)}
-          renderResult={(exercise: Exercise) => <ExerciseAutocompleteResult exercise={exercise} />}
-          onSelectSearchResult={(exercise: Exercise) => setCreateEditRecordAtom(record => ({ ...record, exercise }))}
+          onSearch={(searchString) =>
+            ExerciseDatabase.searchExercise(searchString)
+          }
+          renderResult={(exercise: Exercise) => (
+            <ExerciseAutocompleteResult exercise={exercise} />
+          )}
+          onSelectSearchResult={(exercise: Exercise) =>
+            setCreateEditRecordAtom((record) => ({ ...record, exercise }))
+          }
           className="col-span-4"
           onChange={setExerciseData("name")}
         />
@@ -74,27 +81,25 @@ export default function CreateExerciseSetModal() {
           field="exerciseMode"
           className="col-span-3"
         />
-        <TextInput
-          type="datetime-local"
+        <DateInput
+          dateType={DateInputType.DateTime}
           label="Date"
-          value={DateUtils.toInputFormat(date)}
+          value={date}
           onChange={updateDate}
           className="col-span-3"
         />
         <WorkingBodyPartInput />
         <RepetitionForm />
         <div className="col-span-full bg-blue-500 sticky bottom-0 py-2 flex items-center justify-between">
-          {
-            isEditing && (
-              <Button
-                className="rounded-lg h-12 w-16 bg-transparent"
-                textClassName="text-red-500"
-                text="Delete"
-                buttonStyle={ButtonStyle.Clear}
-                onClick={onDelete}
-              />
-            )
-          }
+          {isEditing && (
+            <Button
+              className="rounded-lg h-12 w-16 bg-transparent"
+              textClassName="text-red-500"
+              text="Delete"
+              buttonStyle={ButtonStyle.Clear}
+              onClick={onDelete}
+            />
+          )}
           <Button
             className="rounded-lg h-12 w-16 self-end"
             disabled={!isFormValid}

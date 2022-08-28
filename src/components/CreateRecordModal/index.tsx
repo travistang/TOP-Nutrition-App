@@ -17,6 +17,7 @@ import AutoCompleteInput from "../Input/AutoCompleteInput";
 import ConsumptionAutocompleteResult from "../Input/ConsumptionAutocompleteResult";
 import NumberInput from "../Input/NumberInput";
 import NumberSummary from "../NumberSummary";
+import DateInput, { DateInputType } from "../Input/DateInput";
 
 export default function CreateRecordModal() {
   const [createEditRecord, setCreateEditRecord] =
@@ -65,10 +66,10 @@ export default function CreateRecordModal() {
     });
   };
 
-  const updateDate = (dateString: string) => {
+  const updateDate = (date: Date) => {
     setConsumption({
       ...consumption,
-      date: DateUtils.stringToDate(dateString),
+      date: date.getTime(),
     });
   };
 
@@ -125,10 +126,10 @@ export default function CreateRecordModal() {
           onChange={updateAmount}
           className="col-span-2"
         />
-        <TextInput
+        <DateInput
           label="Date"
-          type="datetime-local"
-          value={DateUtils.toInputFormat(consumption.date)}
+          dateType={DateInputType.DateTime}
+          value={consumption.date}
           onChange={updateDate}
           className="col-span-full"
         />

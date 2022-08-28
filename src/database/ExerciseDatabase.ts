@@ -4,7 +4,7 @@ import Dexie, { Table } from "dexie";
 import { Exercise, ExerciseSet, Repetition } from "../types/Exercise";
 import { Duration } from "../types/Duration";
 import { CreateEditType } from "../types/utils";
-import DateUtils from "../utils/Date";
+import DatabaseUtils from "../utils/Database";
 import ArrayUtils from "../utils/Array";
 
 export type ExerciseSetRecord = ExerciseSet & {
@@ -32,11 +32,7 @@ class ExerciseDatabase extends Dexie {
   }
 
   async recordsInRange(date: Date | number, duration: Duration) {
-    const [start, end] = DateUtils.getIntervalFromDuration(date, duration);
-    return this.exerciseSetRecord
-      .where("date")
-      .between(start.getTime(), end.getTime())
-      .sortBy("date");
+    return DatabaseUtils.recordsInRange(this.exerciseSetRecord, date, duration);
   }
 
   async searchExercise(searchString: string) {
