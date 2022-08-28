@@ -16,6 +16,7 @@ import ConsumptionAutocompleteResult from "../Input/ConsumptionAutocompleteResul
 import NumberInput from "../Input/NumberInput";
 import NumberSummary from "../NumberSummary";
 import DateInput, { DateInputType } from "../Input/DateInput";
+import EstimatedCaloriesConsumption from "./EstimatedCaloriesConsumption";
 
 export default function CreateRecordModal() {
   const [createEditRecord, setCreateEditRecord] =
@@ -153,6 +154,7 @@ export default function CreateRecordModal() {
           className="col-span-full sm:col-span-3 md:col-span-2"
         />
         <div className="grid grid-cols-6 col-span-full gap-2 bg-blue-500 sticky bottom-0">
+          <EstimatedCaloriesConsumption record={consumption} />
           <NumberSummary
             label="Total Calories:"
             value={`${totalCaloriesByAmount.toFixed(2)} kcal`}
