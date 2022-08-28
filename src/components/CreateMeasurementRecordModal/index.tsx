@@ -4,15 +4,14 @@ import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import MeasurementDatabase, {
   MeasurementRecord,
 } from "../../database/MeasurementDatabase";
-import { Measurement } from "../../types/Measurement";
 import AutoCompleteInput from "../Input/AutoCompleteInput";
-import Button from "../Input/Button";
+import Button, { ButtonStyle } from "../Input/Button";
 import NumberInput from "../Input/NumberInput";
 import TextInput from "../Input/TextInput";
 import Modal from "../Modal";
-import DateUtils from "../../utils/Date";
-import toast from "react-hot-toast";
+import MeasurementDomain from "../../domain/Measurement";
 import DateInput, { DateInputType } from "../Input/DateInput";
+import { DEFAULT_MEASUREMENT, Measurement } from "../../types/Measurement";
 
 export default function CreateMeasurementRecordModal() {
   const [createMeasurementRecord, setCreateMeasurementRecord] = useRecoilState(
@@ -34,22 +33,19 @@ export default function CreateMeasurementRecordModal() {
     };
   const onClose = () =>
     setCreateMeasurementRecord((record) => ({
-      ...record,
+      record: DEFAULT_MEASUREMENT,
       modalOpened: false,
     }));
 
+  const onRemove = async () => {
+    if (await MeasurementDomain.removeRecord(record.id!)) {
+      onClose();
+    }
+  };
   const submitForm = async () => {
     if (!isFormValid) return;
-    try {
-      if (await MeasurementDatabase.isUnitMismatch(record)) {
-        toast.error("Unit mismatch with existing record!");
-        return;
-      }
-      await MeasurementDatabase.add(record);
-      toast.success("Measurement recorded");
+    if (await MeasurementDomain.createEditRecord(record)) {
       onClose();
-    } catch {
-      toast.error("Failed to record measurement!");
     }
   };
   return (
@@ -93,6 +89,16 @@ export default function CreateMeasurementRecordModal() {
           onChange={(v) => setField("date")(v.getTime())}
           className="col-span-5"
         />
+        {isEditing && (
+          <Button
+            type="button"
+            onClick={onRemove}
+            text="Delete"
+            textClassName="text-red-500"
+            buttonStyle={ButtonStyle.Clear}
+            className="h-12 col-start-1 col-span-2"
+          />
+        )}
         <Button
           type="submit"
           disabled={!isFormValid}

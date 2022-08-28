@@ -9,7 +9,7 @@ import { Duration } from "../types/Duration";
 
 export type MeasurementRecord = Measurement & { id: string };
 
-class MeasurementDatabase extends BaseDatabase<Measurement> {
+class MeasurementDatabase extends BaseDatabase<MeasurementRecord> {
   measurements!: Table<MeasurementRecord>;
 
   constructor() {
