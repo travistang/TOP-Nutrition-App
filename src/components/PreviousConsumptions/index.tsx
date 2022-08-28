@@ -1,9 +1,8 @@
-import { format, isSameMonth, startOfMonth } from "date-fns";
+import { isSameMonth, startOfMonth } from "date-fns";
 import React, { useState } from "react";
 import ConsumptionSummary from "../../pages/ConsumptionSummary";
 import Calendar from "../Calendar";
-import TextInput from "../Input/TextInput";
-import DateUtils from "../../utils/Date";
+import DateInput, { DateInputType } from "../Input/DateInput";
 
 export default function PreviousConsumptions() {
   const [month, setSelectedMonth] = useState(new Date());
@@ -13,15 +12,13 @@ export default function PreviousConsumptions() {
   return (
     <div className="py-2 px-1 rounded-lg bg-gray-300 flex flex-col ">
       <span className="text-xs mb-4 px-1">Previous consumptions</span>
-      <TextInput
+      <DateInput
         label=""
-        type="month"
+        dateType={DateInputType.Month}
         className="col-span-4"
         inputClassName="bg-gray-400"
-        value={format(month, "yyyy-MM")}
-        onChange={(dateString) =>
-          setSelectedMonth(new Date(DateUtils.stringToDate(dateString)))
-        }
+        value={month}
+        onChange={setSelectedMonth}
       />
       <Calendar
         date={month}

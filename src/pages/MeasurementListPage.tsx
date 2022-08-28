@@ -3,12 +3,11 @@ import { useLiveQuery } from "dexie-react-hooks";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { createMeasurementRecordAtom } from "../atoms/CreateMeasurementAtom";
-import TextInput from "../components/Input/TextInput";
+import DateInput, { DateInputType } from "../components/Input/DateInput";
 import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
 import MeasurementDatabase, {
   MeasurementRecord,
 } from "../database/MeasurementDatabase";
-import DateUtils from "../utils/Date";
 
 export default function MeasurementListPage() {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
@@ -23,13 +22,11 @@ export default function MeasurementListPage() {
   return (
     <div className="flex flex-col overflow-y-auto flex-1 items-stretch gap-2 pb-24">
       <StatisticsNavigateTab />
-      <TextInput
+      <DateInput
         label=""
-        type="month"
-        value={format(selectedMonth, "yyyy-MM")}
-        onChange={(monthString) =>
-          setSelectedMonth(new Date(DateUtils.stringToDate(monthString)))
-        }
+        dateType={DateInputType.Month}
+        value={selectedMonth}
+        onChange={setSelectedMonth}
       />
       {measurementsOfMonth?.map((measurement) => (
         <div
