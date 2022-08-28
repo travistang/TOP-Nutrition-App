@@ -30,7 +30,7 @@ function MealDistributionTrendInner() {
         label: "Meal distribution",
         data:
           allRecords?.map((record) => ({
-            x: differenceInDays(record.date, startOfMonth(record.date)),
+            x: differenceInDays(record.date, durationStart),
             y: differenceInMinutes(record.date, startOfDay(record.date)),
           })) ?? [],
         backgroundColor: "rgba(255, 99, 132, 1)",
