@@ -6,6 +6,7 @@ import { fabMenuAtom } from "../../atoms/FabMenuAtom";
 import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
 import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
+import { DEFAULT_MEASUREMENT } from "../../types/Measurement";
 
 type Props = {
   text: string;
@@ -46,10 +47,10 @@ export default function FabMenu() {
     >
       <FabMenuItem
         onClick={() =>
-          setCreateMeasurementRecord((record) => ({
-            ...record,
+          setCreateMeasurementRecord({
+            record: DEFAULT_MEASUREMENT,
             modalOpened: true,
-          }))
+          })
         }
         text="Add measurement"
         icon="ruler-horizontal"

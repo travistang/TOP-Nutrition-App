@@ -48,6 +48,18 @@ export default function CreateMeasurementRecordModal() {
       onClose();
     }
   };
+
+  const onAutoSelectMeasurement = (measurement: MeasurementRecord) => {
+    const { id: _, date: __, ...record } = measurement;
+    setCreateMeasurementRecord((atomValue) => ({
+      ...atomValue,
+      record: {
+        ...record,
+        date: atomValue.record.date,
+      },
+    }))
+  }
+
   return (
     <Modal onClose={onClose} opened={modalOpened} label={modalLabel}>
       <form
@@ -58,12 +70,7 @@ export default function CreateMeasurementRecordModal() {
           label="Measurement name"
           value={record.name}
           onChange={setField("name")}
-          onSelectSearchResult={(result) =>
-            setCreateMeasurementRecord((atomValue) => ({
-              ...atomValue,
-              record: result,
-            }))
-          }
+          onSelectSearchResult={onAutoSelectMeasurement}
           onSearch={(searchString) => MeasurementDatabase.search(searchString)}
           renderResult={(result: MeasurementRecord) => (
             <span className="text-xs font-bold">{result.name}</span>
