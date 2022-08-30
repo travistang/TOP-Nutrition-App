@@ -32,7 +32,7 @@ export default function SplitMealModal() {
   );
   const mealWeight = NutritionUtils.weight(mealNutrition);
 
-  const isFormValid = splitRatio > 0 && isAfter(nextMealDate, Date.now());
+  const isFormValid = splitRatio > 0;
   const onClose = () => {
     setSplitMealModalState({ meal: [], modalOpened: false });
   };
