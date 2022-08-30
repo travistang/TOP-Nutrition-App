@@ -26,7 +26,7 @@ export default function CreateExerciseSetModal() {
     RepetitionUtils.isValid(repetitions) && ExerciseUtils.isValid(exercise);
   const isEditing = !!id;
 
-  const { onCreate, onDelete, onEdit } = useExerciseAction();
+  const { onCreate, onDelete, onEdit, reset } = useExerciseAction();
 
   const setExerciseData = (field: keyof Exercise) => (value: any) => {
     setCreateEditRecordAtom((record) => ({
@@ -91,7 +91,7 @@ export default function CreateExerciseSetModal() {
         <WorkingBodyPartInput />
         <RepetitionForm />
         <div className="col-span-full bg-blue-500 sticky bottom-0 py-2 flex items-center justify-between">
-          {isEditing && (
+          {isEditing ? (
             <Button
               className="rounded-lg h-12 w-16 bg-transparent"
               textClassName="text-red-500"
@@ -99,6 +99,13 @@ export default function CreateExerciseSetModal() {
               buttonStyle={ButtonStyle.Clear}
               onClick={onDelete}
             />
+          ) : (
+              <Button
+                className="h-12 w-16"
+                text="Reset"
+                buttonStyle={ButtonStyle.Clear}
+                onClick={reset}
+              />
           )}
           <Button
             className="rounded-lg h-12 w-16 self-end"

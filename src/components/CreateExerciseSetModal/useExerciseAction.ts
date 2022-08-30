@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import RepetitionUtils from "../../utils/Repetition";
 import ExerciseUtils from "../../utils/Exercise";
 import { useRecoilState } from "recoil";
-import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
+import { createEditExerciseRecordAtom, DEFAULT_EXERCISE_RECORD } from "../../atoms/CreateEditExerciseRecordAtom";
 import { DEFAULT_REPETITION } from "../../types/Exercise";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
 
@@ -33,16 +33,16 @@ export default function useExerciseAction() {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
-  const { id, exercise, repetitions, date } = createEditRecordAtom;
+  const { id, exercise, repetitions, date, modalOpened } = createEditRecordAtom;
   const isFormValid =
     RepetitionUtils.isValid(repetitions) && ExerciseUtils.isValid(exercise);
 
-  const resetCreateEditRecordAtom = () =>
+  const resetCreateEditRecordAtom = (keepRepetitions = false) =>
     setCreateEditRecordAtom({
       modalOpened: false,
       id: undefined,
       exercise,
-      repetitions: DEFAULT_REPETITION,
+      repetitions: keepRepetitions ? repetitions : DEFAULT_REPETITION,
       date: new Date(),
     });
 
@@ -61,7 +61,7 @@ export default function useExerciseAction() {
   const onCreate = actionWithToastFeedback(
     async () => {
       await ExerciseDatabase.addRecord(exercise, repetitions, date);
-      resetCreateEditRecordAtom();
+      resetCreateEditRecordAtom(true);
     },
     {
       ignoreCondition: () => !isFormValid,
@@ -82,5 +82,16 @@ export default function useExerciseAction() {
     }
   );
 
-  return { onEdit, onCreate, onDelete };
+  const reset = () => {
+    setCreateEditRecordAtom({
+      ...DEFAULT_EXERCISE_RECORD,
+      modalOpened,
+    });
+  }
+  return {
+    onEdit,
+    onCreate,
+    onDelete,
+    reset,
+  };
 }

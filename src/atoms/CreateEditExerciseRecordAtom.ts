@@ -15,14 +15,14 @@ export type CreateEditExerciseRecordProps = {
   modalOpened: boolean;
 };
 
-export const createEditExerciseRecordAtom = atom<CreateEditExerciseRecordProps>(
-  {
-    key: "createEditExerciseRecord",
-    default: {
-      modalOpened: false,
-      date: new Date(),
-      exercise: DEFAULT_EXERCISE,
-      repetitions: DEFAULT_REPETITION,
-    },
-  }
-);
+export const DEFAULT_EXERCISE_RECORD = {
+  modalOpened: false,
+  date: new Date(),
+  exercise: DEFAULT_EXERCISE,
+  repetitions: DEFAULT_REPETITION,
+};
+
+export const createEditExerciseRecordAtom = atom<CreateEditExerciseRecordProps>({
+  key: "createEditExerciseRecord",
+  default: DEFAULT_EXERCISE_RECORD,
+});
