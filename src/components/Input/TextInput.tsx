@@ -10,6 +10,7 @@ export type TextInputProps = Omit<InputBaseProps, "children"> & {
   inputClassName?: string;
   innerInputClassName?: string;
   onChange: (newValue: string) => void;
+  onFocusChanged?: (focused: boolean) => void;
   type?: string;
   icon?: IconProp;
   children?: React.ReactNode;
@@ -25,7 +26,8 @@ export default function TextInput({
   inputClassName,
   innerInputClassName,
   value,
-  onChange
+  onChange,
+  onFocusChanged
 }: TextInputProps) {
   return (
     <InputBase label={label} className={className}>
@@ -41,6 +43,8 @@ export default function TextInput({
           type={type}
           inputMode={type === 'number' ? 'decimal' : undefined}
           pattern={type === 'number' ? '\\d*' : undefined}
+          onFocus={() => onFocusChanged?.(true)}
+          onBlur={() => onFocusChanged?.(false)}
           className={classNames("bg-transparent outline-none flex-1", innerInputClassName ?? "text-gray-100")}
           value={value}
           onChange={e => onChange(e.target.value)}

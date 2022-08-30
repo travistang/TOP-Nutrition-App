@@ -1,21 +1,16 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
-import { Exercise } from "../../types/Exercise";
-import TextInput from "../Input/TextInput";
 import Modal from "../Modal";
 import ExerciseFieldSelectInput from "./ExerciseFieldSelectInput";
 import WorkingBodyPartInput from "./WorkingBodyPartInput";
 import RepetitionForm from "./RepetitionForm";
 import RepetitionUtils from "../../utils/Repetition";
 import ExerciseUtils from "../../utils/Exercise";
-import DateUtils from "../../utils/Date";
 import Button, { ButtonStyle } from "../Input/Button";
 import useExerciseAction from "./useExerciseAction";
-import AutoCompleteInput from "../Input/AutoCompleteInput";
-import ExerciseDatabase from "../../database/ExerciseDatabase";
-import ExerciseAutocompleteResult from "../Input/ExerciseAutocompleteResult";
 import DateInput, { DateInputType } from "../Input/DateInput";
+import ExerciseNameInput from "./ExerciseNameInput";
 
 export default function CreateExerciseSetModal() {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
@@ -27,13 +22,6 @@ export default function CreateExerciseSetModal() {
   const isEditing = !!id;
 
   const { onCreate, onDelete, onEdit, reset } = useExerciseAction();
-
-  const setExerciseData = (field: keyof Exercise) => (value: any) => {
-    setCreateEditRecordAtom((record) => ({
-      ...record,
-      exercise: { ...exercise, [field]: value },
-    }));
-  };
 
   const updateDate = (date: Date) => {
     setCreateEditRecordAtom((record) => ({
@@ -56,21 +44,7 @@ export default function CreateExerciseSetModal() {
         onSubmit={(e) => e.preventDefault()}
         className="grid grid-cols-6 gap-y-4 gap-x-2 p-2"
       >
-        <AutoCompleteInput
-          label="Exercise name"
-          value={exercise.name}
-          onSearch={(searchString) =>
-            ExerciseDatabase.searchExercise(searchString)
-          }
-          renderResult={(exercise: Exercise) => (
-            <ExerciseAutocompleteResult exercise={exercise} />
-          )}
-          onSelectSearchResult={(exercise: Exercise) =>
-            setCreateEditRecordAtom((record) => ({ ...record, exercise }))
-          }
-          className="col-span-4"
-          onChange={setExerciseData("name")}
-        />
+        <ExerciseNameInput className="col-span-4" />
         <ExerciseFieldSelectInput
           label="Equipment"
           field="equipment"

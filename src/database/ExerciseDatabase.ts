@@ -1,11 +1,12 @@
 import { v4 as uuid4 } from "uuid";
-import { endOfDay, endOfMonth, startOfDay, startOfMonth } from "date-fns";
+import { endOfDay, endOfMonth, startOfDay, startOfMonth, subMinutes } from "date-fns";
 import Dexie, { Table } from "dexie";
 import { Exercise, ExerciseSet, Repetition } from "../types/Exercise";
 import { Duration } from "../types/Duration";
 import { CreateEditType } from "../types/utils";
 import DatabaseUtils from "../utils/Database";
 import ArrayUtils from "../utils/Array";
+import ExerciseUtils from "../utils/Exercise";
 
 export type ExerciseSetRecord = ExerciseSet & {
   id: string;
@@ -88,6 +89,13 @@ class ExerciseDatabase extends Dexie {
 
   async deleteRecord(id: string) {
     return this.exerciseSetRecord.delete(id);
+  }
+
+  async recentExercises() {
+    const timeConstraint = subMinutes(Date.now(), 5);
+    const recentRecords = await this.exerciseSetRecord.where('date').aboveOrEqual(timeConstraint.getTime()).toArray();
+    const recentExercises = recentRecords.map(record => record.exercise);
+    return ArrayUtils.distinct(recentExercises, ExerciseUtils.isSameExercise);
   }
 }
 
