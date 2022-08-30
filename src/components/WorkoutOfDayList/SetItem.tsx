@@ -32,7 +32,7 @@ export default function SetItem({ set, index, properties }: Props) {
         onClick={() => setEditingExerciseItem({ ...set, date: new Date(set.date), modalOpened: true})}
         className={classNames(
         "grid grid-cols-12 gap-1 items-center py-2",
-        properties.includes(ExerciseSetType.Warmup) && "opacity-80 bg-gray-500"
+        properties.includes(ExerciseSetType.Warmup) && "opacity-70"
       )}>
         <span className="capitalize col-span-2 text-xs font-bold flex items-center justify-center">
           {getIndexText(index, properties)}
