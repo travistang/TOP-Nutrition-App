@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 type Props = {
@@ -16,6 +17,9 @@ export default function Modal({ label, opened, onClose, children }: Props) {
       onClick={onClose}
     >
       <div className="flex-1 bg-opacity-50 backdrop-blur-sm" />
+      <div className="flex items-center pb-2 pr-2 justify-end backdrop-blur-sm">
+        <FontAwesomeIcon icon="times" className="w-4 h-4" />
+      </div>
       <div
         className="rounded-t-xl p-2 bg-blue-500 min-h-1/3 flex flex-col max-h-[85vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
