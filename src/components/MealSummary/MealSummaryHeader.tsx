@@ -9,6 +9,8 @@ import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";
 import { MarcoNutrition, MarcoNutritionColor } from "../../types/Nutrition";
 import Chip from "../Chip";
 import MealSummaryProgressBar from "./MealSummaryProgressBar";
+import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
+import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
 
 type Props = {
   meal: ConsumptionRecord[];
@@ -20,6 +22,7 @@ export default function MealSummaryHeader({
   index,
   caloriesIntakeOfDay,
 }: Props) {
+  const setCreateRecordAtom = useSetRecoilState(createEditRecordAtom);
   const setSplitMealModal = useSetRecoilState(splitMealModalAtom);
 
   const mealNutrition = MealUtils.totalNutrition(meal);
@@ -27,12 +30,23 @@ export default function MealSummaryHeader({
 
   const caloriesRatioAgainstTotal = mealCalories / caloriesIntakeOfDay;
 
-  const openSplitMealModal = () => {
+  const openSplitMealModal = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setSplitMealModal({ modalOpened: true, meal });
   };
 
+  const openCreateRecordModalForMeal = () => {
+    setCreateRecordAtom({
+      modalOpened: true,
+      record: {
+        ...DEFAULT_CONSUMPTION,
+        date: meal[0].date,
+      }
+    });
+  };
+
   return (
-    <div className="flex-shrink-0 sticky top-0 rounded-t-lg h-14 grid grid-cols-6 gap-1 items-center bg-gray-300 shadow-md -mx-2 px-2">
+    <div onClick={openCreateRecordModalForMeal} className="flex-shrink-0 sticky top-0 rounded-t-lg h-14 grid grid-cols-6 gap-1 items-center bg-gray-300 shadow-md -mx-2 px-2">
       <div className="flex flex-col col-span-4">
         <span className="text-gray-500 text-xs">
           <b>Meal {index + 1}</b> | {format(meal[0].date, "HH:mm")} |{" "}
