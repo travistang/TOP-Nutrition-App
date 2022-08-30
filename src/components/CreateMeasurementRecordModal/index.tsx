@@ -42,6 +42,7 @@ export default function CreateMeasurementRecordModal() {
       onClose();
     }
   };
+
   const submitForm = async () => {
     if (!isFormValid) return;
     if (await MeasurementDomain.createEditRecord(record)) {
