@@ -64,7 +64,7 @@ export default function CreateExerciseSetModal() {
         />
         <WorkingBodyPartInput />
         <RepetitionForm />
-        <div className="col-span-full bg-blue-500 sticky bottom-0 py-2 flex items-center justify-between">
+        <div className="col-span-full bg-gray-200 sticky bottom-0 py-2 flex items-center justify-between">
           {isEditing ? (
             <Button
               className="rounded-lg h-12 w-16 bg-transparent"

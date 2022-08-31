@@ -1,6 +1,6 @@
+import React from "react";
 import classNames from "classnames";
 import { format } from "date-fns";
-import React from "react";
 import { DayMarker, DayMarkerType } from "../../types/Calendar";
 
 type Props = {

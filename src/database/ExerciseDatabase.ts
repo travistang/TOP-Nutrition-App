@@ -93,7 +93,10 @@ class ExerciseDatabase extends Dexie {
 
   async recentExercises() {
     const timeConstraint = subMinutes(Date.now(), 5);
-    const recentRecords = await this.exerciseSetRecord.where('date').aboveOrEqual(timeConstraint.getTime()).toArray();
+    const recentRecords = await this.exerciseSetRecord
+      .where('date')
+      .aboveOrEqual(timeConstraint.getTime())
+      .toArray();
     const recentExercises = recentRecords.map(record => record.exercise);
     return ArrayUtils.distinct(recentExercises, ExerciseUtils.isSameExercise);
   }

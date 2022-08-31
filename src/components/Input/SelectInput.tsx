@@ -46,7 +46,7 @@ export default function SelectInput({
         onChange={(e) => onSelect(e.target.value)}
         className={classNames(
           "rounded-lg text-gray-200 h-12 px-2",
-          inputClassName ?? "bg-blue-600"
+          inputClassName ?? "bg-gray-400"
         )}
       >
         {options.map((option) => (

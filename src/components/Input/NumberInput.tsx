@@ -37,7 +37,7 @@ export default function NumberInput({
 
   return (
     <InputBase label={label} className={className}>
-      <div className="rounded-lg h-12 px-2 bg-blue-600 flex items-center overflow-hidden">
+      <div className="rounded-lg h-12 px-2 bg-gray-400 flex items-center overflow-hidden">
         <input
           type="text"
           pattern="\d*"

@@ -17,7 +17,7 @@ export default function RepetitionForm() {
       repetitions: { ...repetitions, [field]: value },
     }));
   return (
-    <div className="col-span-full grid grid-cols-2 gap-2 p-4 pb-2 rounded-lg bg-blue-800">
+    <div className="col-span-full grid grid-cols-2 gap-2 p-4 pb-2 rounded-lg">
       <NumberInput
         value={repetitions.weight}
         label="Weight (kg)"

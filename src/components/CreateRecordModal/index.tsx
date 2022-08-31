@@ -153,7 +153,7 @@ export default function CreateRecordModal() {
           }
           className="col-span-full sm:col-span-3 md:col-span-2"
         />
-        <div className="grid grid-cols-6 col-span-full gap-2 bg-blue-500 sticky bottom-0">
+        <div className="grid grid-cols-6 col-span-full gap-2 bg-gray-200 sticky bottom-0">
           <EstimatedCaloriesConsumption record={consumption} />
           <NumberSummary
             label="Total Calories:"

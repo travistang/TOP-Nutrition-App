@@ -45,11 +45,11 @@ export default function AutoCompleteInput<T>({
   const resultsToShow = shouldShowDefaultSuggestions ? defaultResults : searchResults;
   return (
     <TextInput onChange={onChangeWithSearch} {...inputProps} onFocusChanged={setFocused}>
-      {showSuggestions && <div className="z-40 absolute top-full rounded-lg translate-y-2 left-0 right-0 bg-blue-300 max-h-36 overflow-y-auto overflow-x-hidden">
+      {showSuggestions && <div className="z-40 absolute top-full rounded-lg translate-y-2 left-0 right-0 bg-gray-300 max-h-36 overflow-y-auto overflow-x-hidden">
         {resultsToShow.map(result => (
           <div
             key={JSON.stringify(result)}
-            className='hover:bg-blue-400 h-14 py-1 px-2'
+            className='hover:bg-gray-400 h-14 py-1 px-2'
             onClick={() => onSelectResult(result)}>
             {renderResult(result)}
           </div>

@@ -11,7 +11,7 @@ export type InputBaseProps = {
 export default function InputBase({ label, className, labelClassName, children }:InputBaseProps) {
   return (
     <div className={classNames("relative flex flex-col gap-2 items-stretch", className)}>
-      <div className={classNames(labelClassName ?? "text-sm font-bold text-gray-100 leading-3")}>{label}</div>
+      <div className={classNames(labelClassName ?? "text-xs leading-3")}>{label}</div>
       {children}
     </div>
   )

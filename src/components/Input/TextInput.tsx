@@ -33,7 +33,7 @@ export default function TextInput({
     <InputBase label={label} className={className}>
       <div className={classNames(
         "rounded-lg h-12 px-2 flex items-center overflow-hidden",
-        inputClassName ?? "bg-blue-600"
+        inputClassName ?? "bg-gray-400"
       )}>
         {
           icon && <FontAwesomeIcon icon={icon} className="w-4 h-4 mr-4" />

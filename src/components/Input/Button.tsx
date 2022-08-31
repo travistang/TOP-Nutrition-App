@@ -18,9 +18,9 @@ const buttonStyles: Record<
 > = {
   [ButtonStyle.Block]: {
     disabled: {
-      button: "bg-blue-400 cursor-not-allowed",
+      button: "bg-gray-400 cursor-not-allowed",
     },
-    active: { button: "bg-blue-900", text: "text-gray-200" },
+    active: { button: "bg-gray-900", text: "text-gray-200" },
   },
   [ButtonStyle.Clear]: {
     disabled: { text: "text-opacity-50 cursor-not-allowed" },

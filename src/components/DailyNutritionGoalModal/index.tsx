@@ -80,7 +80,7 @@ export default function DailyNutritionGoalModal() {
           onClick={() => saveForm()}
           text="Update Goal"
           textClassName="text-gray-200"
-          className="rounded-lg col-span-2 bg-blue-700 col-start-5 h-12"
+          className="rounded-lg col-span-2 bg-gray-700 col-start-5 h-12"
         />
       </form>
     </Modal>
