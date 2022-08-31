@@ -46,7 +46,7 @@ export default function MeasurementListPage() {
         </div>
       ))}
       {!measurementsOfMonth?.length && (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center text-xs h-full">
           You have no measurements this month
         </div>
       )}

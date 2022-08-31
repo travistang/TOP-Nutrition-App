@@ -9,11 +9,13 @@ type Props = {
   workouts: ExerciseSetRecord[];
 }
 export default function WorkoutSummary({ workouts }:Props) {
-  if (!workouts.length) return null;
+  // if (!workouts.length) return null;
+  const defaultWorkoutDayTypeString = `${ExerciseUtils.computeExerciseDayType(workouts)} day`;
+
   return (
     <div className="grid grid-cols-4 gap-2">
       <Section className='col-span-2' label="Workout day type">
-        <span className="capitalize font-bold">{ExerciseUtils.computeExerciseDayType(workouts)} day</span>
+        <span className="capitalize font-bold">{workouts.length === 0 ? 'N/A' : defaultWorkoutDayTypeString}</span>
       </Section>
       <DurationWidget workouts={workouts} />
       <Section className='col-span-2' label="Number of sets">

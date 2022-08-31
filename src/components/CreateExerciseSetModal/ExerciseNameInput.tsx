@@ -39,7 +39,7 @@ export default function ExerciseNameInput({ className }:Props) {
         <ExerciseAutocompleteResult exercise={exercise} />
       )}
       onSelectSearchResult={(exercise: Exercise) =>
-        setCreateEditRecordAtom((record) => ({ ...record, exercise }))
+        setCreateEditRecordAtom((record) => ({ ...record, exercise, date: new Date() }))
       }
       className={className}
       onChange={setName}

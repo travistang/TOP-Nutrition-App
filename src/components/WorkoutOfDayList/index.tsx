@@ -13,7 +13,7 @@ type Props = {
 export default function WorkoutOfDayList({ workouts }: Props) {
   if (workouts.length === 0) {
     return (
-      <div className="flex items-center justify-center text-xs h-12">
+      <div className="flex items-center justify-center text-xs flex-1 h-full">
         You didn't do any exercise on this day
       </div>
     );
