@@ -16,10 +16,9 @@ import ProgressBarWidget from "./ProgressBarWidget";
 import RollingDeficitWidget from "./RollingDeficitWidget";
 
 type Props = {
-  embedded?: boolean;
   nutritionRecords: Nutrition[];
 };
-export default function SummaryWidgets({ embedded, nutritionRecords }: Props) {
+export default function SummaryWidgets({ nutritionRecords }: Props) {
   const [{ targetCalories, targetNutritionIntake }] = useRecoilState(
     dailyNutritionGoalAtom
   );
