@@ -49,7 +49,7 @@ export default function CalorieWidget({
   return (
     <DoughnutWidget
       label="Marco distribution"
-      className="relative overflow-hidden col-span-1 row-span-2"
+      className="relative overflow-hidden col-span-2 row-span-2"
       data={doughnutChartData}>
       <FontAwesomeIcon
         onClick={() =>

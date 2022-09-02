@@ -14,13 +14,13 @@ export default function ProgressBarWidget({ label, className, value, color, tota
   return (
     <Section label={label} className={className}>
       <div className="flex flex-nowrap items-center gap-1">
-        <span className="text-sm font-bold" style={{color}}>{value.toFixed(1)}{unit}</span>
+        <span className="text-xl font-bold" style={{color}}>{value.toFixed(1)}{unit}</span>
         <span className="text-xs">/{totalValue.toFixed(1)}{unit}</span>
       </div>
       <ProgressBar
         totalValue={totalValue}
         data={[{ name: 'data', value, color }]}
-        className="w-full h-1" />
+        className="w-full h-2" />
     </Section>
   )
 }

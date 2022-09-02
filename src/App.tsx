@@ -17,6 +17,7 @@ import WorkoutListPage from "./pages/WorkoutListPage";
 import WorkoutStatistics from "./pages/WorkoutStatistics";
 import CreateMeasurementRecordModal from "./components/CreateMeasurementRecordModal";
 import MeasurementListPage from "./pages/MeasurementListPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
             <Route path="/stats/measurements" element={<MeasurementListPage />} />
             <Route path="/workouts" element={<WorkoutListPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Routes>
           <MainFabButton />
           <FabMenu />

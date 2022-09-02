@@ -1,5 +1,4 @@
 import React from "react";
-import { Doughnut } from "react-chartjs-2";
 import { useRecoilState } from "recoil";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import {
@@ -8,12 +7,13 @@ import {
   Nutrition,
 } from "../../types/Nutrition";
 import NutritionUtils from "../../utils/Nutrition";
-import Section from "../Section";
 import ScalarWidget from "../Widgets/ScalarWidget";
 import CalorieWidget from "./CalorieWidget";
-import GaugeWidget from "./GaugeWidget";
+
+import GaugeWidgetSection from "./GaugeWidgetSection";
 
 import ProgressBarWidget from "./ProgressBarWidget";
+import RollingDeficitWidget from "./RollingDeficitWidget";
 
 type Props = {
   embedded?: boolean;
@@ -27,7 +27,14 @@ export default function SummaryWidgets({ embedded, nutritionRecords }: Props) {
     NutritionUtils.caloriesByNutrition(totalNutritions);
 
   return (
-    <div className="grid grid-cols-3 grid-rows-[repeat(3,minmax(24px, 1fr))] gap-2">
+    <div className="grid grid-cols-6 grid-rows-[repeat(3,minmax(24px, 1fr))] gap-2">
+      <ScalarWidget
+        value={Math.round(targetCalories - totalNutritions.calories)}
+        label="Daily deficit"
+        className="col-span-3 row-span-1"
+        unit="kcal"
+      />
+      <RollingDeficitWidget />
       <CalorieWidget
         caloriesByNutrition={caloriesByNutrition}
         remainingCalories={Math.max(
@@ -41,31 +48,30 @@ export default function SummaryWidgets({ embedded, nutritionRecords }: Props) {
         color="rgb(100, 0, 0)"
         label="Calories today"
         unit="kcal"
-        className="row-span-1 col-span-2"
+        className="row-span-1 col-span-4"
       />
-      <ScalarWidget
-        value={Math.round(targetCalories - totalNutritions.calories)}
-        label="Daily deficit"
-        className="col-span-1 row-span-1"
-        unit="kcal"
+
+      <GaugeWidgetSection
+        label="Protein"
+        className="col-span-4 col-start-3"
+        color={MarcoNutritionColor[MarcoNutrition.protein]}
+        value={totalNutritions[MarcoNutrition.protein]}
+        maxValue={targetNutritionIntake[MarcoNutrition.protein]}
       />
-      <ScalarWidget
-        value={Math.round(targetCalories - totalNutritions.calories)}
-        label="Weekly deficit"
-        className="col-span-1 row-span-1"
-        unit="kcal"
+      <GaugeWidgetSection
+        label="Carbohydrates"
+        className="col-span-3"
+        color={MarcoNutritionColor[MarcoNutrition.carbohydrates]}
+        value={totalNutritions[MarcoNutrition.carbohydrates]}
+        maxValue={targetNutritionIntake[MarcoNutrition.carbohydrates]}
       />
-      <Section label="Protein consumption" className="flex flex-nowrap justify-around col-span-full rounded-lg h-min bg-gray-300">
-        <div className="flex flex-nowrap justify-around py-2 gap-2">
-          <GaugeWidget
-                unit="g"
-                className="flex-1"
-                color={MarcoNutritionColor[MarcoNutrition.protein]}
-                value={totalNutritions[MarcoNutrition.protein]}
-                maxValue={targetNutritionIntake[MarcoNutrition.protein]}
-                label={MarcoNutrition.protein} />
-        </div>
-      </Section>
+      <GaugeWidgetSection
+        label="Fat"
+        className="col-span-3"
+        color={MarcoNutritionColor[MarcoNutrition.fat]}
+        value={totalNutritions[MarcoNutrition.fat]}
+        maxValue={targetNutritionIntake[MarcoNutrition.fat]}
+      />
 
     </div>
   );

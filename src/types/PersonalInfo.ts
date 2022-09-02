@@ -1,6 +1,6 @@
 export enum Gender {
-  Male,
-  Female,
+  Male = 'male',
+  Female = 'female',
 };
 
 export type PersonalInfo = {

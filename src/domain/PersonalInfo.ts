@@ -7,6 +7,13 @@ const validate = (obj: { [key: string]: any; }) => {
   if (!obj.age) return false;
   return true;
 }
+
+export const DEFAULT_PERSONAL_INFO: PersonalInfo = {
+  age: 25,
+  gender: Gender.Male,
+  height: 170,
+};
+
 export const get = () => {
   const personalInfoString = localStorage.getItem(LS_PERSONAL_INFO_KEY) ?? '';
   try {
@@ -16,4 +23,8 @@ export const get = () => {
   } catch {
     return null;
   }
+};
+
+export const set = (personalInfo: PersonalInfo) => {
+  localStorage.setItem(LS_PERSONAL_INFO_KEY, JSON.stringify(personalInfo));
 }

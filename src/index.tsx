@@ -10,6 +10,7 @@ import {
   faDumbbell,
   faGripLines,
   faHamburger,
+  faInfoCircle,
   faLineChart,
   faList,
   faPen,
@@ -17,6 +18,7 @@ import {
   faPlateWheat,
   faRobot,
   faRulerHorizontal,
+  faSave,
   faSearch,
   faTimes,
   faTrophy,
@@ -61,7 +63,9 @@ library.add(
   faPersonWalking,
   faSearch,
   faRulerHorizontal,
-  faClock
+  faClock,
+  faInfoCircle,
+  faSave,
 );
 ChartJS.register(
   LineController,

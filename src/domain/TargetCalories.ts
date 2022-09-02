@@ -12,7 +12,6 @@ export const DEFAULT_CONFIG: TargetCaloriesConfig = {
 
 export const getMaintenanceCalories = (weight: number, personalInfo: PersonalInfo) => {
   const { height, gender, age } = personalInfo;
-
   // Harris-Benedict BMR Equation
   if (gender === Gender.Male) {
     return 88.4 + 13.4 * weight + 4.8 * height - 5.68 * age;
@@ -20,6 +19,7 @@ export const getMaintenanceCalories = (weight: number, personalInfo: PersonalInf
     return 447.6 + 9.25 * weight + 3.1 * height - 4.33 * age;
   }
 }
+
 export const setStoredConfig = (config: TargetCaloriesConfig) => {
   localStorage.setItem(LS_TARGET_CALORIES_KEY, JSON.stringify(config));
 };

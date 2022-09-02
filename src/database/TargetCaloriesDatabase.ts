@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import Dexie, { Table } from "dexie";
-import { startOfDay } from "date-fns";
+import { eachDayOfInterval, startOfDay } from "date-fns";
 import * as TargetCaloriesDomain from '../domain/TargetCalories';
 import { TargetCalories, TargetCaloriesType } from "../types/TargetCalories";
 
@@ -42,6 +42,21 @@ class TargetCaloriesDatabase extends Dexie {
   async targetCaloriesOfDay(date = Date.now()) {
     const config = await this.targetCalories.where('date').equals(date).first();
     if (config) return config;
+    return {
+      id: '',
+      date: startOfDay(date).getTime(),
+      value: TargetCaloriesDomain.DEFAULT_TARGET_CALORIES,
+      type: TargetCaloriesType.Computed,
+    } as TargetCalories;
+  }
+
+  async getTargetCaloriesInRange(startDate: Date | number, endDate: Date | number) {
+    const start = startOfDay(startDate);
+    const end = startOfDay(endDate);
+    const days = eachDayOfInterval({ start, end });
+    return Promise.all(
+      days.map(day => this.targetCaloriesOfDay(startOfDay(day).getTime()))
+    );
   }
 
 };

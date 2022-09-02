@@ -13,13 +13,12 @@ type Props = {
 
 
 export default function GaugeWidget({ value, maxValue, className, color, unit, label }:Props) {
-
   return (
-    <div className={classNames("relative flex flex-col justify-center items-center overflow-hidden", className)}>
-      <ProgressBar data={[{ name: label, value, color }]} totalValue={maxValue} className="h-4 w-full" />
-      <div className="flex flex-nowrap items-center self-end gap-2">
-        <span className="font-bold text-md" style={{ color }}>{value}{unit}</span>
-        <span className="text-xs">/{maxValue} {unit}</span>
+    <div className={classNames("relative flex flex-col justify-center overflow-hidden items-stretch", className)}>
+      <ProgressBar data={[{ name: label, value, color }]} totalValue={maxValue} className="h-2 w-full" />
+      <div className="flex flex-nowrap justify-between items-center">
+        <span className="font-bold text-xl">{value}{unit}</span>
+        <span className="text-xs">goal: {maxValue} {unit}</span>
       </div>
     </div>
   )
