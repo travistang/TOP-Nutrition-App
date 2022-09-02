@@ -30,11 +30,6 @@ export default function ConsumptionSummary({
 
   return (
     <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
-      {!embedded && (
-        <div className="flex flex-no-wrap items-center text-xs gap-1 pl-1 pb-1">
-          <span>Statistics today</span>
-        </div>
-      )}
       <SummaryWidgets embedded={embedded} nutritionRecords={nutritionRecords} />
       {!embedded && (
         <div className="flex flex-no-wrap pt-8 items-center text-xs gap-1 pb-2">

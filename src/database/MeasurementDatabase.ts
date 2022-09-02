@@ -72,6 +72,10 @@ class MeasurementDatabase extends BaseDatabase<MeasurementRecord> {
   async recordsInRange(date: Date | number, duration: Duration) {
     return DatabaseUtils.recordsInRange(this.measurements, date, duration);
   }
+
+  async lastRecordOfLabel(label: string) {
+    return await this.measurements.where('name').equals(label).last();
+  }
 }
 
 export default new MeasurementDatabase();
