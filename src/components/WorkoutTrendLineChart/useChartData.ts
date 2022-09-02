@@ -1,4 +1,3 @@
-import { Exercise } from "../../types/Exercise";
 import { WorkoutTrendMode } from "./types";
 import ExerciseUtils from "../../utils/Exercise";
 import DateUtils from "../../utils/Date";

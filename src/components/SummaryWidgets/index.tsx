@@ -20,8 +20,9 @@ type Props = {
   nutritionRecords: Nutrition[];
 };
 export default function SummaryWidgets({ embedded, nutritionRecords }: Props) {
-  const [{ targetCalories, targetNutritionIntake }, setDailyNutritionGoalAtom] =
-    useRecoilState(dailyNutritionGoalAtom);
+  const [{ targetCalories, targetNutritionIntake }] = useRecoilState(
+    dailyNutritionGoalAtom
+  );
   const totalNutritions = NutritionUtils.total(...nutritionRecords);
   const caloriesByNutrition =
     NutritionUtils.caloriesByNutrition(totalNutritions);
@@ -72,7 +73,6 @@ export default function SummaryWidgets({ embedded, nutritionRecords }: Props) {
         value={totalNutritions[MarcoNutrition.fat]}
         maxValue={targetNutritionIntake[MarcoNutrition.fat]}
       />
-
     </div>
   );
 }

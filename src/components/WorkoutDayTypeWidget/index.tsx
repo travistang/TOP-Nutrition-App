@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import ExerciseDatabase, {
-  ExerciseSetRecord,
-} from "../../database/ExerciseDatabase";
+import ExerciseDatabase from "../../database/ExerciseDatabase";
 import Calendar from "../Calendar";
 import Section from "../Section";
 import ObjectUtils from "../../utils/Object";

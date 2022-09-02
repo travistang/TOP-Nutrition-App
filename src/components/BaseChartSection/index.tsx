@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import TextInput from "../Input/TextInput";
 import Section from "../Section";
-import DateUtils from "../../utils/Date";
 import SelectInput from "../Input/SelectInput";
 import { Duration } from "../../types/Duration";
-import { format } from "date-fns";
 import DateInput, { DateInputType } from "../Input/DateInput";
 
 type Props = {
