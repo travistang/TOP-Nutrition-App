@@ -1,22 +1,18 @@
 import React from "react";
-import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
-import classNames from "classnames";
 import { Consumption, DEFAULT_CONSUMPTION } from "../../types/Consumption";
 import Modal from "../Modal";
 import NutritionFacts from "../NutritionFacts";
 import NutritionUtils from "../../utils/Nutrition";
-import Button, { ButtonStyle } from "../Input/Button";
-import ConsumptionDatabase, {
-  ConsumptionRecord,
-} from "../../database/ConsumptionDatabase";
+import Button from "../Input/Button";
 import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
-import AutoCompleteInput from "../Input/AutoCompleteInput";
-import ConsumptionAutocompleteResult from "../Input/ConsumptionAutocompleteResult";
 import NumberInput from "../Input/NumberInput";
 import NumberSummary from "../NumberSummary";
 import DateInput, { DateInputType } from "../Input/DateInput";
 import EstimatedCaloriesConsumption from "./EstimatedCaloriesConsumption";
+import SubmitButton from "./SubmitButton";
+import NameInput from "./NameInput";
+import ButtonRow from "./ButtonRow";
 
 export default function CreateRecordModal() {
   const [createEditRecord, setCreateEditRecord] =
@@ -28,27 +24,10 @@ export default function CreateRecordModal() {
   const setConsumption = (consumption: Consumption) =>
     setCreateEditRecord({ ...createEditRecord, record: consumption });
 
-  const reset = () =>
-    setConsumption({ ...DEFAULT_CONSUMPTION, date: Date.now() });
-
   const onClose = () => {
     setCreateEditRecord({
       modalOpened: false,
       record: { ...DEFAULT_CONSUMPTION, date: Date.now() },
-    });
-  };
-
-  const deleteRecord = async () => {
-    await ConsumptionDatabase.remove(consumption.id!);
-    toast.success("Record deleted");
-    onClose();
-  };
-
-  const useAutoCompleteResult = (record: ConsumptionRecord) => {
-    setConsumption({
-      ...consumption,
-      nutritionPerHundred: record.nutritionPerHundred,
-      name: record.name,
     });
   };
 
@@ -72,27 +51,6 @@ export default function CreateRecordModal() {
     });
   };
 
-  const applyChanges = async () => {
-    if (!isFormValid) return;
-    try {
-      if (!isEditing) {
-        await ConsumptionDatabase.add(consumption);
-        toast.success("Record created");
-        onClose();
-        return;
-      }
-      await ConsumptionDatabase.edit(
-        consumption.id as string,
-        consumption as ConsumptionRecord
-      );
-      toast.success("Record updated");
-      onClose();
-      return;
-    } catch {
-      toast.error("Something went wrong. Try again later!");
-    }
-  };
-
   const totalCaloriesByAmount = NutritionUtils.caloriesByAmount(
     consumption.nutritionPerHundred,
     consumption.amount
@@ -108,17 +66,7 @@ export default function CreateRecordModal() {
         onSubmit={(e) => e.preventDefault()}
         className="grid grid-cols-6 gap-2 p-2"
       >
-        <AutoCompleteInput
-          label="Name"
-          value={consumption.name}
-          onChange={updateField("name")}
-          className="col-span-4"
-          onSearch={ConsumptionDatabase.search.bind(ConsumptionDatabase)}
-          onSelectSearchResult={useAutoCompleteResult}
-          renderResult={(record) => (
-            <ConsumptionAutocompleteResult record={record} key={record.id} />
-          )}
-        />
+        <NameInput onChange={updateField("name")} consumption={consumption} />
         <NumberInput
           label="Amount (g)"
           value={consumption.amount}
@@ -160,25 +108,16 @@ export default function CreateRecordModal() {
             value={`${totalCaloriesByAmount.toFixed(2)} kcal`}
             className="col-start-4 col-end-7 sticky bottom-12"
           />
-          {isEditing ? (
-            <Button
-              text="Delete"
-              buttonStyle={ButtonStyle.Clear}
-              textClassName="text-red-500"
-              onClick={deleteRecord}
-            />
-          ) : (
-            <Button
-              text="Reset"
-              buttonStyle={ButtonStyle.Clear}
-              onClick={reset}
-            />
-          )}
-          <Button
-            text={isEditing ? "Update" : "Record"}
-            disabled={!isFormValid}
-            className={classNames("rounded-lg h-12 col-span-2 col-start-5")}
-            onClick={applyChanges}
+          <ButtonRow
+            onClose={onClose}
+            isEditing={isEditing}
+            consumption={consumption}
+          />
+          <SubmitButton
+            onClose={onClose}
+            consumption={consumption}
+            isFormValid={isFormValid}
+            isEditing={isEditing}
           />
         </div>
       </form>
