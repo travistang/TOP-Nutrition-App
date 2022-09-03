@@ -65,7 +65,7 @@ const getMarcoWidgetConfig = (
     total: targetNutritionIntake[MarcoNutrition.fat],
   },
 ];
-export default function SummaryWidgets({ embedded, nutritionRecords }: Props) {
+export default function SummaryWidgets({ nutritionRecords }: Props) {
   const [{ targetCalories, targetNutritionIntake }, setDailyNutritionGoalAtom] =
     useRecoilState(dailyNutritionGoalAtom);
   const totalNutrition = NutritionUtils.total(...nutritionRecords);
