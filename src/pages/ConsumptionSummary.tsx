@@ -8,6 +8,7 @@ import NutritionUtils from "../utils/Nutrition";
 import MealUtils from "../utils/Meal";
 import DateUtils from "../utils/Date";
 import MealSummary from "../components/MealSummary";
+import ShortSummary from "../components/SummaryWidgets/ShortSummary";
 
 type Props = {
   embedded?: boolean;
@@ -32,7 +33,9 @@ export default function ConsumptionSummary({
 
   return (
     <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
-      {!embedded && (
+      {embedded ? (
+        <ShortSummary nutritionRecords={nutritionRecords} />
+      ) : (
         <>
           <SummaryWidgets nutritionRecords={nutritionRecords} />
           <div className="flex flex-no-wrap pt-8 items-center text-xs gap-1 pb-2">
