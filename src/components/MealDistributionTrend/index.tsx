@@ -5,7 +5,6 @@ import {
   differenceInMinutes,
   format,
   startOfDay,
-  startOfMonth,
 } from "date-fns";
 import { useLiveQuery } from "dexie-react-hooks";
 import React, { useContext } from "react";

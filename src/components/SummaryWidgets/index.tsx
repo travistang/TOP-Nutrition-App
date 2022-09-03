@@ -17,7 +17,6 @@ import GaugeWidgetSection from "./GaugeWidgetSection";
 import RollingDeficitWidget from "./RollingDeficitWidget";
 
 type Props = {
-  embedded?: boolean;
   nutritionRecords: Nutrition[];
 };
 
