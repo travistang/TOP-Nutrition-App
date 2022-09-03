@@ -1,4 +1,4 @@
-import { differenceInMinutes, endOfDay, startOfDay } from "date-fns";
+import { differenceInMinutes, endOfDay, startOfDay, subDays } from "date-fns";
 import Dexie, { Table } from "dexie";
 import { v4 as uuid } from "uuid";
 import { Consumption } from "../types/Consumption";
@@ -138,6 +138,15 @@ class ConsumptionDatabase extends Dexie {
 
   async recordsInRange(date: Date | number, duration: Duration) {
     return DatabaseUtils.recordsInRange(this.consumptions, date, duration);
+  }
+
+  async recordsInThisWeek() {
+    const now = Date.now();
+    const dayStart = startOfDay(subDays(now, 7));
+    return this.consumptions
+      .where("date")
+      .between(dayStart.getTime(), endOfDay(now).getTime())
+      .toArray();
   }
 }
 

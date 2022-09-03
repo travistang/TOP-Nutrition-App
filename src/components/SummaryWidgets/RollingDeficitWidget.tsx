@@ -1,64 +1,61 @@
-import { subDays, eachDayOfInterval, endOfDay, isSameDay } from "date-fns";
-import { useLiveQuery } from "dexie-react-hooks";
 import React from "react";
-import ConsumptionDatabase from "../../database/ConsumptionDatabase";
-import TargetCaloriesDatabase from "../../database/TargetCaloriesDatabase";
+import { useLiveQuery } from "dexie-react-hooks";
+import ConsumptionDatabase, {
+  ConsumptionRecord,
+} from "../../database/ConsumptionDatabase";
+import * as TargetCaloriesDomain from "../../domain/TargetCalories";
 import ScalarWidget from "../Widgets/ScalarWidget";
-import ArrayUtils from "../../utils/Array";
 import NutritionUtils from "../../utils/Nutrition";
-import Dexie from "dexie";
+import MeasurementDatabase from "../../database/MeasurementDatabase";
+import { useRecoilValue } from "recoil";
+import { personalInfoAtom } from "../../atoms/PersonalInfoAtom";
+import { PersonalInfo } from "../../types/PersonalInfo";
+
+const computeTotalDeficit = (
+  currentWeight: number | null,
+  personalInfo: PersonalInfo,
+  previousConsumptions: ConsumptionRecord[]
+) => {
+  if (!currentWeight) return null;
+  const maintenanceCalories = TargetCaloriesDomain.getMaintenanceCalories(
+    currentWeight,
+    personalInfo
+  );
+  const nutritionsFromConsumptions = previousConsumptions.map(
+    NutritionUtils.nutritionFromConsumption
+  );
+  const totalNutritions = NutritionUtils.total(...nutritionsFromConsumptions);
+  return {
+    totalDeficit: maintenanceCalories * 7 - totalNutritions.calories,
+    maintenanceCalories,
+  };
+};
 
 export default function RollingDeficitWidget() {
-  const now = new Date();
-  const startDate = subDays(now, 7);
-  const eachPreviousDays = eachDayOfInterval({
-    start: startDate,
-    end: endOfDay(now),
-  });
-
-  const targetCaloriesPreviousDays =
-    useLiveQuery(() => {
-      return TargetCaloriesDatabase.getTargetCaloriesInRange(startDate, now);
-    }, [startDate]) ?? [];
-
   const previousConsumptions =
-    useLiveQuery(async () => {
-      const consumptions = await Dexie.Promise.all(
-        eachPreviousDays.map((day) =>
-          ConsumptionDatabase.consumptionsOfDay(day.getTime())
-        )
-      );
-      return consumptions.flat();
-    }, [eachPreviousDays]) ?? [];
-
-  const consumptionsTargetCaloriesPair = ArrayUtils.zipBy(
-    targetCaloriesPreviousDays,
-    previousConsumptions,
-    (targetCalories, consumption) =>
-      isSameDay(targetCalories.date, consumption.date)
+    useLiveQuery(() => ConsumptionDatabase.recordsInThisWeek()) ?? [];
+  const personalInfo = useRecoilValue(personalInfoAtom);
+  const currentWeight = useLiveQuery(() =>
+    MeasurementDatabase.lastRecordOfLabel("weight")
   );
 
-  const targetCaloriesActualCaloriesPair = consumptionsTargetCaloriesPair.map(
-    ([target, consumptions]) =>
-      [
-        target,
-        NutritionUtils.totalCalories(
-          NutritionUtils.total(
-            ...consumptions.map(NutritionUtils.nutritionFromConsumption)
-          )
-        ),
-      ] as const
-  );
+  const { totalDeficit, maintenanceCalories } =
+    computeTotalDeficit(
+      currentWeight?.value ?? null,
+      personalInfo,
+      previousConsumptions
+    ) ?? {};
 
-  const totalDifference = targetCaloriesActualCaloriesPair.reduce(
-    (deficit, [target, actual]) => deficit + target.value - actual,
-    0
-  );
   return (
     <ScalarWidget
-      value={Math.round(totalDifference)}
+      value={totalDeficit ? Math.round(totalDeficit) : null}
       label="7 Day total deficit"
       className="col-span-3 row-span-1"
+      extraInfo={
+        maintenanceCalories
+          ? `Maintenance: ${Math.round(maintenanceCalories)} kcal`
+          : "missing weight measurement"
+      }
       unit="kcal"
     />
   );
