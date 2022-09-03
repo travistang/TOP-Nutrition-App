@@ -22,6 +22,8 @@ import {
   faSearch,
   faTimes,
   faTrophy,
+  faCaretLeft,
+  faCaretRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { BrowserTracing } from "@sentry/tracing";
@@ -66,6 +68,8 @@ library.add(
   faClock,
   faInfoCircle,
   faSave,
+  faCaretLeft,
+  faCaretRight
 );
 ChartJS.register(
   LineController,

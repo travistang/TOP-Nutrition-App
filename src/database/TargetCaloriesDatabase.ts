@@ -1,10 +1,10 @@
 import { v4 as uuid } from "uuid";
 import Dexie, { Table } from "dexie";
-import { eachDayOfInterval, startOfDay } from "date-fns";
-import * as TargetCaloriesDomain from '../domain/TargetCalories';
+import { eachDayOfInterval, endOfDay, startOfDay } from "date-fns";
+import * as TargetCaloriesDomain from "../domain/TargetCalories";
 import { TargetCalories, TargetCaloriesType } from "../types/TargetCalories";
 
-export const LS_TARGET_CALORIES_KEY = '@nutritionApp/TargetCalories';
+export const LS_TARGET_CALORIES_KEY = "@nutritionApp/TargetCalories";
 
 class TargetCaloriesDatabase extends Dexie {
   targetCalories!: Table<TargetCalories>;
@@ -18,7 +18,8 @@ class TargetCaloriesDatabase extends Dexie {
   }
 
   private async generateTargetCaloriesToday() {
-    const computedTargetCalories = await TargetCaloriesDomain.computeTargetCaloriesOfDay();
+    const computedTargetCalories =
+      await TargetCaloriesDomain.computeTargetCaloriesOfDay();
     this.addTargetCalories({
       type: TargetCaloriesType.Computed,
       value: computedTargetCalories,
@@ -27,7 +28,10 @@ class TargetCaloriesDatabase extends Dexie {
   }
 
   async addTargetCalories(targetCalories: Omit<TargetCalories, "id">) {
-    const existingConfig = await this.targetCalories.where("date").equals(targetCalories.date).first();
+    const existingConfig = await this.targetCalories
+      .where("date")
+      .equals(targetCalories.date)
+      .first();
     if (!existingConfig) {
       this.targetCalories.add({
         ...targetCalories,
@@ -40,25 +44,27 @@ class TargetCaloriesDatabase extends Dexie {
   }
 
   async targetCaloriesOfDay(date = Date.now()) {
-    const config = await this.targetCalories.where('date').equals(date).first();
+    const config = await this.targetCalories.where("date").equals(date).first();
     if (config) return config;
     return {
-      id: '',
+      id: "",
       date: startOfDay(date).getTime(),
       value: TargetCaloriesDomain.DEFAULT_TARGET_CALORIES,
       type: TargetCaloriesType.Computed,
     } as TargetCalories;
   }
 
-  async getTargetCaloriesInRange(startDate: Date | number, endDate: Date | number) {
+  async getTargetCaloriesInRange(
+    startDate: Date | number,
+    endDate: Date | number
+  ) {
     const start = startOfDay(startDate);
-    const end = startOfDay(endDate);
-    const days = eachDayOfInterval({ start, end });
-    return Promise.all(
-      days.map(day => this.targetCaloriesOfDay(startOfDay(day).getTime()))
-    );
+    const end = endOfDay(endDate);
+    return this.targetCalories
+      .where("date")
+      .between(start.getTime(), end.getTime())
+      .toArray();
   }
-
-};
+}
 
 export default new TargetCaloriesDatabase();

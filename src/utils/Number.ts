@@ -23,7 +23,7 @@ const stringToFloat = (str: string) => {
 const isNumeric = (str: string) => {
   return /^\d*((\.|,)\d*)?$/.test(str);
 };
-const safeDivide = (a: number, b: number) => b === 0 ? 0 : a / b;
+const safeDivide = (a: number, b: number) => (b === 0 ? 0 : a / b);
 
 const isNumericDigit = (str: string) => str.match(/^[0-9.,]$/);
 // eslint-disable-next-line import/no-anonymous-default-export
