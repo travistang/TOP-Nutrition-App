@@ -66,8 +66,9 @@ const getMarcoWidgetConfig = (
   },
 ];
 export default function SummaryWidgets({ nutritionRecords }: Props) {
-  const [{ targetCalories, targetNutritionIntake }, setDailyNutritionGoalAtom] =
-    useRecoilState(dailyNutritionGoalAtom);
+  const [{ targetCalories, targetNutritionIntake }] = useRecoilState(
+    dailyNutritionGoalAtom
+  );
   const totalNutrition = NutritionUtils.total(...nutritionRecords);
   const caloriesByNutrition =
     NutritionUtils.caloriesByNutrition(totalNutrition);
