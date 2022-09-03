@@ -36,7 +36,7 @@ export default function GaugeWidget({
       />
       <div className="flex flex-nowrap justify-end items-center">
         <span className="font-bold text-xl self-end">
-          {value}
+          {value.toFixed(1)}
           {unit}
         </span>
       </div>

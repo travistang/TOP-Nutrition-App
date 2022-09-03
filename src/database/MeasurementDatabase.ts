@@ -74,7 +74,7 @@ class MeasurementDatabase extends BaseDatabase<MeasurementRecord> {
   }
 
   async lastRecordOfLabel(label: string) {
-    return await this.measurements.where('name').equals(label).last();
+    return await this.measurements.where("name").equalsIgnoreCase(label).last();
   }
 }
 
