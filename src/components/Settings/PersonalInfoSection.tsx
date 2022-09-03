@@ -8,9 +8,6 @@ import {
 import NumberInput from "../Input/NumberInput";
 import SelectInput from "../Input/SelectInput";
 import Section from "../Section";
-import * as PersonalInfoDomain from "../../domain/PersonalInfo";
-import Button from "../Input/Button";
-import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import { personalInfoAtom } from "../../atoms/PersonalInfoAtom";
 
@@ -23,11 +20,6 @@ export default function PersonalInfoSection() {
     (value: PersonalInfo[K]) => {
       setPersonalInfo({ ...personalInfo, [field]: value });
     };
-
-  const onSave = () => {
-    PersonalInfoDomain.set(personalInfo);
-    toast.success("Changes saved");
-  };
 
   return (
     <Section label="Personal information">
