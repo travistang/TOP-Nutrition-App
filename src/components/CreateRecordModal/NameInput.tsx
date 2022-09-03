@@ -17,6 +17,7 @@ export default function NameInput({ onChange, consumption }: Props) {
   const useAutoCompleteResult = ({
     id: _,
     date: __,
+    amount: ___,
     ...usingRecord
   }: ConsumptionRecord) => {
     setCreateEditRecord((atom) => {
