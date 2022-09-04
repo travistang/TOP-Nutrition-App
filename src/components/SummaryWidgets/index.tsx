@@ -1,6 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
+import { useMaintenanceCalories } from "../../domain/MaintenanceCalories";
 import {
   CaloriesColor,
   MarcoNutrition,
@@ -15,6 +16,7 @@ import CalorieWidget from "./CalorieWidget";
 import GaugeWidgetSection from "./GaugeWidgetSection";
 
 import RollingDeficitWidget from "./RollingDeficitWidget";
+import TodayDeficitWidget from "./TodayDeficitWidget";
 
 type Props = {
   nutritionRecords: Nutrition[];
@@ -69,6 +71,7 @@ export default function SummaryWidgets({ nutritionRecords }: Props) {
   const [{ targetCalories, targetNutritionIntake }] = useRecoilState(
     dailyNutritionGoalAtom
   );
+  const maintenanceCalories = useMaintenanceCalories();
   const totalNutrition = NutritionUtils.total(...nutritionRecords);
   const caloriesByNutrition =
     NutritionUtils.caloriesByNutrition(totalNutrition);
@@ -79,13 +82,11 @@ export default function SummaryWidgets({ nutritionRecords }: Props) {
   );
   return (
     <div className="grid grid-cols-6 grid-rows-[repeat(3,minmax(24px, 1fr))] gap-2">
-      <ScalarWidget
-        value={Math.round(targetCalories - totalNutrition.calories)}
-        label="Daily deficit"
-        className="col-span-3 row-span-1"
-        unit="kcal"
+      <TodayDeficitWidget
+        maintenanceCalories={maintenanceCalories}
+        caloriesConsumed={totalNutrition.calories}
       />
-      <RollingDeficitWidget />
+      <RollingDeficitWidget maintenanceCalories={maintenanceCalories} />
       <CalorieWidget
         caloriesByNutrition={caloriesByNutrition}
         remainingCalories={Math.max(
