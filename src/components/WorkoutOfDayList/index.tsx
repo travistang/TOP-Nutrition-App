@@ -25,9 +25,6 @@ export default function WorkoutOfDayList({ workouts }: Props) {
     [ExerciseSetType.SetEnd]: ExerciseDomain.detectWorkoutEnd(workouts),
   };
 
-  const lastSet = workouts[workouts.length - 1];
-  const shouldShowTimer =
-    Math.abs(differenceInMinutes(Date.now(), lastSet.date)) <= 5;
   return (
     <>
       {workouts.map((set, index) => (
@@ -38,12 +35,6 @@ export default function WorkoutOfDayList({ workouts }: Props) {
           propertiesIndices={propertiesIndices}
         />
       ))}
-      {shouldShowTimer && (
-        <div className="flex items-center justify-center text-xs opacity-75">
-          Resting time:
-          <TimerText className="font-bold ml-2" time={lastSet.date} />
-        </div>
-      )}
     </>
   );
 }

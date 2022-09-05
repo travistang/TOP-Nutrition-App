@@ -10,7 +10,6 @@ import {
   NutritionCalories,
 } from "../../types/Nutrition";
 import NutritionUtils from "../../utils/Nutrition";
-import ScalarWidget from "../Widgets/ScalarWidget";
 import CalorieWidget from "./CalorieWidget";
 
 import GaugeWidgetSection from "./GaugeWidgetSection";
