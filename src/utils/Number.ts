@@ -5,6 +5,14 @@ const nanToZero = (num: number) => {
   return num;
 };
 
+const min = (...numbers: (number | null)[]) => {
+  const numOrInfinity = numbers.map(n => n === null ? Infinity : n);
+  return Math.min(...numOrInfinity);
+}
+const max = (...numbers: (number | null)[]) => {
+  const numOrInfinity = numbers.map(n => n === null ? -Infinity : n);
+  return Math.max(...numOrInfinity);
+}
 const sum = (...numbers: number[]) => numbers.reduce((sum, n) => sum + n, 0);
 const ratioToPercentageString = (num: number) => `${(num * 100).toFixed(1)}%`;
 
@@ -29,6 +37,7 @@ const isNumericDigit = (str: string) => str.match(/^[0-9.,]$/);
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   nanToZero,
+  min, max,
   sum,
   inputAsNumber,
   isNumeric,

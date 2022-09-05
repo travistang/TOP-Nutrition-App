@@ -7,6 +7,7 @@ import MeasurementUtils from "../../utils/Measurement";
 import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import { Measurement } from "../../types/Measurement";
+import { getMeasurementsRange } from "./utils";
 
 type Props = {
   eachDaysInDuration: Date[];
@@ -31,6 +32,7 @@ export default function useChartConfig({
     .map(MeasurementUtils.average)
     .map((avg) => avg?.value ?? null);
 
+  const measurementAxisRange = getMeasurementsRange(averageMeasurementsByDay);
   const recordsGroupedByDay = DateUtils.groupRecordsByDates(
     records,
     eachDaysInDuration
@@ -99,6 +101,7 @@ export default function useChartConfig({
       measurements: {
         type: "linear" as const,
         position: "right" as const,
+        ...measurementAxisRange,
         grid: {
           color: "rgba(0,0,0,0)",
         },
