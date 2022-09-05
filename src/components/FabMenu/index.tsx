@@ -4,9 +4,10 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { fabMenuAtom } from "../../atoms/FabMenuAtom";
 import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
-import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
+import { createEditExerciseRecordAtom, DEFAULT_EXERCISE_RECORD } from "../../atoms/CreateEditExerciseRecordAtom";
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import { DEFAULT_MEASUREMENT } from "../../types/Measurement";
+import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
 
 type Props = {
   text: string;
@@ -57,8 +58,8 @@ export default function FabMenu() {
       />
       <FabMenuItem
         onClick={() =>
-          setCreateExerciseRecord((record) => ({
-            ...record,
+          setCreateExerciseRecord(() => ({
+            ...DEFAULT_EXERCISE_RECORD,
             modalOpened: true,
             date: new Date(),
           }))
@@ -68,8 +69,8 @@ export default function FabMenu() {
       />
       <FabMenuItem
         onClick={() =>
-          setCreateEditRecord((record) => ({
-            ...record,
+          setCreateEditRecord(() => ({
+            record: DEFAULT_CONSUMPTION,
             modalOpened: true,
           }))
         }
