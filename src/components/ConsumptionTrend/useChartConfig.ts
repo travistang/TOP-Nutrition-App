@@ -54,7 +54,6 @@ export default function useChartConfig({
     min(eachDaysInDuration),
     max(eachDaysInDuration)
   );
-  console.log({ targetCaloriesChartData });
   const measurementsGroupedByDay = DateUtils.groupRecordsByDates(
     measurements,
     eachDaysInDuration
