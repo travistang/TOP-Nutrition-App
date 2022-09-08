@@ -1,8 +1,9 @@
 import React from "react";
 import { useRecoilState } from "recoil";
+import { isSameDay } from "date-fns";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import { useMaintenanceCalories } from "../../domain/MaintenanceCalories";
-import { DEFAULT_TARGET_CALORIES } from "../../domain/TargetCalories";
+import { DEFAULT_TARGET_CALORIES, useTargetCalories } from "../../domain/TargetCalories";
 import {
   CaloriesColor,
   MarcoNutrition,
@@ -17,6 +18,7 @@ import GaugeWidgetSection from "./GaugeWidgetSection";
 
 import RollingDeficitWidget from "./RollingDeficitWidget";
 import TodayDeficitWidget from "./TodayDeficitWidget";
+import ObjectUtils from '../../utils/Object';
 
 type Props = {
   nutritionRecords: Nutrition[];
@@ -67,16 +69,18 @@ const getMarcoWidgetConfig = (
     total: targetNutritionIntake[MarcoNutrition.fat],
   },
 ];
+const now = Date.now();
 export default function SummaryWidgets({ nutritionRecords }: Props) {
-  // TODO: Change this
-  const targetCalories = DEFAULT_TARGET_CALORIES;
+  const targetCaloriesByDay = useTargetCalories(now, now);
+  const maintenanceCalories = useMaintenanceCalories();
   const [{ targetNutritionIntake }] = useRecoilState(
     dailyNutritionGoalAtom
-  );
-  const maintenanceCalories = useMaintenanceCalories();
+    );
+
   const totalNutrition = NutritionUtils.total(...nutritionRecords);
   const caloriesByNutrition =
     NutritionUtils.caloriesByNutrition(totalNutrition);
+  const targetCalories = ObjectUtils.findByKey(targetCaloriesByDay, day => isSameDay(new Date(day), now)) ?? DEFAULT_TARGET_CALORIES;
   const marcoWidgetConfigs = getMarcoWidgetConfig(
     totalNutrition,
     targetCalories,

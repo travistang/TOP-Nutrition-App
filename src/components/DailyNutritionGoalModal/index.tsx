@@ -14,6 +14,7 @@ import SelectInput from "../Input/SelectInput";
 import { TargetCaloriesConfig, TargetCaloriesConfigType } from "../../types/TargetCalories";
 import { AllKey } from "../../types/utils";
 import { getDefaultTargetCaloriesConfig } from "../../domain/TargetCalories";
+import TargetCaloriesForm from "./TargetCaloriesForm";
 
 type FormProps = Omit<DailyNutritionGoal, "modalOpened">;
 export default function DailyNutritionGoalModal() {
@@ -70,21 +71,26 @@ export default function DailyNutritionGoalModal() {
         {Object.values(MarcoNutrition).map((marco) => (
           <NumberInput
             key={marco}
-            label={`${marco} intake (g)`}
+            label={`${marco} (g)`}
             className="col-span-2"
             value={nutritionGoalPlaceholder.targetNutritionIntake[marco]}
             onChange={updatePlaceholderMarco(marco)}
           />
         ))}
-        <span className="col-span-full text-xs">
-          Target calories
-        </span>
+        <hr className="col-span-full my-2" />
         <SelectInput
           className="col-span-3"
           label="Target calories type"
           value={nutritionGoalPlaceholder.targetCaloriesConfig.type}
           onSelect={updateTargetCaloriesConfig('type')}
           options={Object.values(TargetCaloriesConfigType).map(type => ({ label: type, value: type }))}
+        />
+        <TargetCaloriesForm
+          targetCaloriesConfigPlaceholder={nutritionGoalPlaceholder.targetCaloriesConfig}
+          onUpdatePlaceholder={newConfig => setNutritionGoalPlaceholder({
+            ...nutritionGoalPlaceholder,
+            targetCaloriesConfig: newConfig
+          })}
         />
         <Button
           type="button"

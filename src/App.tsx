@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Toaster } from "react-hot-toast";
 import { ErrorBoundary } from "@sentry/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import runAllMigrations from './migrations';
 
 import CreateRecordModal from "./components/CreateRecordModal";
 import DailyNutritionGoalModal from "./components/DailyNutritionGoalModal";
@@ -22,10 +20,6 @@ import MeasurementListPage from "./pages/MeasurementListPage";
 import SettingsPage from "./pages/SettingsPage";
 
 function App() {
-  useEffect(() => {
-    runAllMigrations();
-  }, []);
-
   return (
     <ErrorBoundary>
       <BrowserRouter basename="/TOP-Nutrition-App">
@@ -33,7 +27,7 @@ function App() {
           <Toaster />
           <Header />
           <Routes>
-            <Route path="/" element={<ConsumptionSummary />} />
+            <Route path="/" element={<ConsumptionSummary date={new Date()} />} />
             <Route path="/stats" element={<PreviousStatistics />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
             <Route path="/stats/measurements" element={<MeasurementListPage />} />

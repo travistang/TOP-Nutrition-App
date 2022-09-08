@@ -3,6 +3,8 @@ import {
   eachDayOfInterval,
   endOfMonth,
   format,
+  isBefore,
+  isSameDay,
   parse,
   startOfMonth,
   subMonths,
@@ -101,6 +103,19 @@ const orderedRecordGroups = <
     .map(([, record]) => record);
 };
 
+const getMostRecentRecords = <T extends { date: Date | number }>(
+  records: T[],
+  onDate: Date | number
+): T[] => {
+  const recordsBeforeDate = records
+    .filter(r => isBefore(r.date, onDate))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  if (recordsBeforeDate.length === 0) return [];
+  const mostRecentDay = recordsBeforeDate[0].date;
+  return recordsBeforeDate.filter(record => isSameDay(mostRecentDay, record.date));
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   eachDaysOfMonth,
@@ -111,4 +126,5 @@ export default {
   eachDaysOfIntervalFromDuration,
   groupRecordsByDates,
   orderedRecordGroups,
+  getMostRecentRecords,
 };

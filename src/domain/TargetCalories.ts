@@ -1,56 +1,37 @@
-import { PhysicalActivityLevel } from "../types/PersonalInfo";
+import { eachDayOfInterval, endOfDay, startOfDay, subMonths } from "date-fns";
+import { useLiveQuery } from "dexie-react-hooks";
 import {
   TargetCaloriesConfig,
   TargetCaloriesConfigType,
 } from "../types/TargetCalories";
+import * as DailyNutritionGoalAtom from '../atoms/DailyNutritionGoalAtom';
+import * as MaintenanceCaloriesDomain from '../domain/MaintenanceCalories';
+import MeasurementDatabase, { MeasurementRecord } from "../database/MeasurementDatabase";
+import NumberUtils from '../utils/Number';
+import StringUtils from '../utils/String';
+import ObjectUtils from '../utils/Object';
+import DateUtils from '../utils/Date';
+import { PersonalInfo } from "../types/PersonalInfo";
+import { useRecoilValue } from "recoil";
+import { personalInfoAtom } from "../atoms/PersonalInfoAtom";
 
 export const DEFAULT_TARGET_CALORIES = 2500;
-export const LS_TARGET_CALORIES_KEY = "@nutritionApp/TargetCalories";
 export const DEFAULT_CONFIG: TargetCaloriesConfig = {
   type: TargetCaloriesConfigType.Constant,
-  value: 2500,
-};
-export const PALFactor: Record<PhysicalActivityLevel, number> = {
-  [PhysicalActivityLevel.Sedentary]: 1.2,
-  [PhysicalActivityLevel.LightlyActive]: 1.375,
-  [PhysicalActivityLevel.ModeratelyActive]: 1.55,
-  [PhysicalActivityLevel.VeryActive]: 1.725,
-  [PhysicalActivityLevel.ExtremelyActive]: 1.9,
+  value: DEFAULT_TARGET_CALORIES,
 };
 
-export const setStoredConfig = (config: TargetCaloriesConfig) => {
-  localStorage.setItem(LS_TARGET_CALORIES_KEY, JSON.stringify(config));
-};
+export const computeTargetCalories = (
+  weight: number,
+  personalInfo: PersonalInfo,
+) => {
+  const nutritionGoal = DailyNutritionGoalAtom.getStoredValue();
+  const { targetCaloriesConfig: config } = nutritionGoal;
+  const maintenanceCalories = MaintenanceCaloriesDomain.getMaintenanceCalories(
+    weight,
+    personalInfo,
+  );
 
-const validateConfig = (config: { [key: string]: any }) => {
-  if (!Object.values(TargetCaloriesConfigType).includes(config.type))
-    return false;
-  const calorieConfig = config as TargetCaloriesConfig;
-  switch (calorieConfig.type) {
-    case TargetCaloriesConfigType.Constant:
-      return config.value > 0;
-    case TargetCaloriesConfigType.FromMaintenanceCalories:
-      return true;
-    default:
-      return false;
-  }
-};
-export const getStoredConfig = (): TargetCaloriesConfig => {
-  const storedConfig = localStorage.getItem(LS_TARGET_CALORIES_KEY) ?? "";
-  try {
-    const config = JSON.parse(storedConfig);
-    if (!validateConfig(config)) throw new Error("Invalid config");
-    return config;
-  } catch {
-    setStoredConfig(DEFAULT_CONFIG);
-    return DEFAULT_CONFIG;
-  }
-};
-export const computeTargetCaloriesOfDay = async (
-  maintenanceCalories?: number,
-  date?: Date | number,
-): Promise<number> => {
-  const config = getStoredConfig();
   switch (config.type) {
     case TargetCaloriesConfigType.Constant:
       return config.value;
@@ -73,4 +54,38 @@ export const getDefaultTargetCaloriesConfig = (type: TargetCaloriesConfigType): 
         surplus: DEFAULT_TARGET_CALORIES,
       };
   }
-}
+};
+
+export function useTargetCalories(startTime: Date | number, endTime: Date | number) {
+  const personalInfo = useRecoilValue(personalInfoAtom);
+  const daysInInterval = eachDayOfInterval({ start: startTime, end: endTime });
+  const weightRecordsInPeriod = useLiveQuery(() =>
+    MeasurementDatabase.measurements
+      .where("date")
+      .between(
+        startOfDay(subMonths(startTime, 1)).getTime(),
+        endOfDay(endTime).getTime())
+      .filter((record) => StringUtils.caseInsensitiveEqual(record.name, 'weight'))
+      .toArray(),
+    [startTime, endTime]
+  ) ?? [];
+
+  const weightRecordsByDays: Record<number, MeasurementRecord[]> =
+    Object.fromEntries(
+      daysInInterval.map((day) => [
+        day,
+        DateUtils.getMostRecentRecords(weightRecordsInPeriod, day),
+      ])
+    );
+
+  const targetCaloriesByDay = ObjectUtils.mapValues(
+    weightRecordsByDays,
+    (records) => {
+      if (records.length === 0) return null;
+      const averageWeight = NumberUtils.average(...records.map(record => record.value));
+      return computeTargetCalories(averageWeight, personalInfo);
+    }
+  );
+
+  return targetCaloriesByDay;
+};

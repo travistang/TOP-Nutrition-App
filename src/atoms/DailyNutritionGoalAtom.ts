@@ -3,7 +3,7 @@ import { NutritionCalories } from "../types/Nutrition";
 import { TargetCaloriesConfig, TargetCaloriesConfigType } from "../types/TargetCalories";
 import LocalStorageUtils from '../utils/LocalStorage';
 
-export const LS_DAILY_NUTRITION_GOAL_KEY = '@nutrition_tracker/daily_nutrition_goal';
+export const LS_DAILY_NUTRITION_GOAL_KEY = '@nutritionApp/daily_nutrition_goal';
 export const DEFAULT_NUTRITION_GOAL: DailyNutritionGoal = {
   modalOpened: false,
   targetNutritionIntake: {
@@ -22,13 +22,13 @@ export type DailyNutritionGoal = {
   targetCaloriesConfig: TargetCaloriesConfig;
   modalOpened: boolean;
 };
-const saveNutritionGoal: AtomEffect<DailyNutritionGoal> = ({ onSet }) => {
+export const saveNutritionGoal: AtomEffect<DailyNutritionGoal> = ({ onSet }) => {
   onSet((newValue) => {
     LocalStorageUtils.setStore(LS_DAILY_NUTRITION_GOAL_KEY, newValue);
   });
 }
 
-const getDefaultValue = (): DailyNutritionGoal => {
+export const getStoredValue = (): DailyNutritionGoal => {
   return (
     LocalStorageUtils.getFromStore(LS_DAILY_NUTRITION_GOAL_KEY) ??
     DEFAULT_NUTRITION_GOAL
@@ -36,6 +36,6 @@ const getDefaultValue = (): DailyNutritionGoal => {
 }
 export const dailyNutritionGoalAtom = atom<DailyNutritionGoal>({
   key: "dailyNutritionGoal",
-  default: getDefaultValue(),
+  default: getStoredValue(),
   effects: [saveNutritionGoal],
 });

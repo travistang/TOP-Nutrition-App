@@ -12,15 +12,16 @@ import ShortSummary from "../components/SummaryWidgets/ShortSummary";
 
 type Props = {
   embedded?: boolean;
-  date?: Date;
+  date: Date;
 };
 export default function ConsumptionSummary({
   embedded,
-  date = new Date(),
+  date,
 }: Props) {
-  const consumptionsOfDay = useLiveQuery(() => {
-    return ConsumptionDatabase.consumptionsOfDay(date.getTime());
-  }, [date]);
+  const consumptionsOfDay = useLiveQuery(() =>
+    ConsumptionDatabase.consumptionsOfDay(date.getTime()),
+    [date]
+  );
   const consumptionsByMeals = DateUtils.groupByTimeInterval(
     consumptionsOfDay ?? [],
     30

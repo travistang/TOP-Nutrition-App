@@ -3,9 +3,17 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useRecoilValue } from "recoil";
 import { personalInfoAtom } from "../atoms/PersonalInfoAtom";
 import MeasurementDatabase, { MeasurementRecord } from "../database/MeasurementDatabase";
-import { Gender, PersonalInfo } from "../types/PersonalInfo";
-import { PALFactor } from "./TargetCalories";
+import { Gender, PersonalInfo, PhysicalActivityLevel } from "../types/PersonalInfo";
 import * as PersonalInfoDomain from "../domain/PersonalInfo";
+
+export const PALFactor: Record<PhysicalActivityLevel, number> = {
+  [PhysicalActivityLevel.Sedentary]: 1.2,
+  [PhysicalActivityLevel.LightlyActive]: 1.375,
+  [PhysicalActivityLevel.ModeratelyActive]: 1.55,
+  [PhysicalActivityLevel.VeryActive]: 1.725,
+  [PhysicalActivityLevel.ExtremelyActive]: 1.9,
+};
+
 
 export const computeMaintenanceCaloriesOfDay = async (day: Date | number) => {
   const recordsOnDay = await MeasurementDatabase
@@ -41,7 +49,8 @@ export function useMaintenanceCalories(
 ): { maintenanceCalories: number; currentWeight: MeasurementRecord } | null;
 export function useMaintenanceCalories(withCurrentWeight: any): any {
   const currentWeight = useLiveQuery(() =>
-    MeasurementDatabase.lastRecordOfLabel("weight")
+    MeasurementDatabase.lastRecordOfLabel("weight"),
+    []
   );
   const personalInfo = useRecoilValue(personalInfoAtom);
   if (!currentWeight) return null;
