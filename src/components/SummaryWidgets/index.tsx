@@ -2,6 +2,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import { useMaintenanceCalories } from "../../domain/MaintenanceCalories";
+import { DEFAULT_TARGET_CALORIES } from "../../domain/TargetCalories";
 import {
   CaloriesColor,
   MarcoNutrition,
@@ -67,7 +68,9 @@ const getMarcoWidgetConfig = (
   },
 ];
 export default function SummaryWidgets({ nutritionRecords }: Props) {
-  const [{ targetCalories, targetNutritionIntake }] = useRecoilState(
+  // TODO: Change this
+  const targetCalories = DEFAULT_TARGET_CALORIES;
+  const [{ targetNutritionIntake }] = useRecoilState(
     dailyNutritionGoalAtom
   );
   const maintenanceCalories = useMaintenanceCalories();

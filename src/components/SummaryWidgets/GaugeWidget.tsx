@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React from "react";
 import ProgressBar from "../ProgressBar";
@@ -27,7 +28,7 @@ export default function GaugeWidget({
       )}
     >
       <span className="text-xs">
-        goal: {maxValue} {unit}
+        <FontAwesomeIcon icon='trophy' className="w-3 h-3" /> {maxValue} {unit}
       </span>
       <ProgressBar
         data={[{ name: label, value, color }]}

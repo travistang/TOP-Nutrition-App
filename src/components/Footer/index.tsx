@@ -42,7 +42,11 @@ export default function Footer() {
       <div className="flex flex-nowrap relative items-center justify-around h-full">
         <WorkoutTimer />
         {footerButtonConfigs.map((config) => (
-          <div className="p-2 relative flex flex-col items-center flex-1" onClick={goToPage(config.path)}>
+          <div
+            key={config.path}
+            className="p-2 relative flex flex-col items-center flex-1"
+            onClick={goToPage(config.path)}
+          >
             <FontAwesomeIcon
               key={config.path}
               icon={config.icon}

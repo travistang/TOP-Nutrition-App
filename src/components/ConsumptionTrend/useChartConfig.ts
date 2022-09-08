@@ -1,13 +1,12 @@
-import { useRecoilValue } from "recoil";
 import { format } from "date-fns";
 import { MarcoNutrition, MarcoNutritionColor } from "../../types/Nutrition";
 import NutritionUtils from "../../utils/Nutrition";
 import DateUtils from "../../utils/Date";
 import MeasurementUtils from "../../utils/Measurement";
 import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
-import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import { Measurement } from "../../types/Measurement";
 import { getMeasurementsRange } from "./utils";
+import { DEFAULT_TARGET_CALORIES } from "../../domain/TargetCalories";
 
 type Props = {
   eachDaysInDuration: Date[];
@@ -20,7 +19,6 @@ export default function useChartConfig({
   eachDaysInDuration,
   measurements,
 }: Props) {
-  const { targetCalories } = useRecoilValue(dailyNutritionGoalAtom);
   const measurementsGroupedByDay = DateUtils.groupRecordsByDates(
     measurements,
     eachDaysInDuration
@@ -65,7 +63,7 @@ export default function useChartConfig({
         label: "target calories",
         yAxisID: "calories",
         type: "line" as const,
-        data: Array(recordsByDay.length).fill(targetCalories),
+        data: Array(recordsByDay.length).fill(DEFAULT_TARGET_CALORIES),
         pointRadius: 0,
         borderColor: "rgb(100, 0, 0)",
       },

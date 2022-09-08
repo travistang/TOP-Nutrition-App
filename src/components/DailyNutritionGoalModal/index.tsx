@@ -10,22 +10,19 @@ import Button from "../Input/Button";
 import NumberUtils from "../../utils/Number";
 import Modal from "../Modal";
 import NumberInput from "../Input/NumberInput";
+import SelectInput from "../Input/SelectInput";
+import { TargetCaloriesConfig, TargetCaloriesConfigType } from "../../types/TargetCalories";
+import { AllKey } from "../../types/utils";
+import { getDefaultTargetCaloriesConfig } from "../../domain/TargetCalories";
 
 type FormProps = Omit<DailyNutritionGoal, "modalOpened">;
 export default function DailyNutritionGoalModal() {
   const [
-    { modalOpened, targetNutritionIntake, targetCalories },
+    { modalOpened, targetNutritionIntake, targetCaloriesConfig },
     setDailyNutritionGoalAtom,
   ] = useRecoilState(dailyNutritionGoalAtom);
   const [nutritionGoalPlaceholder, setNutritionGoalPlaceholder] =
-    useState<FormProps>({ targetCalories, targetNutritionIntake });
-
-  const updatePlaceholderCalories = (value: number) => {
-    setNutritionGoalPlaceholder({
-      ...nutritionGoalPlaceholder,
-      targetCalories: value,
-    });
-  };
+    useState<FormProps>({ targetCaloriesConfig, targetNutritionIntake });
 
   const onClose = () =>
     setDailyNutritionGoalAtom((atom) => ({ ...atom, modalOpened: false }));
@@ -41,6 +38,23 @@ export default function DailyNutritionGoalModal() {
       });
     };
 
+  const updateTargetCaloriesConfig = <T extends AllKey<TargetCaloriesConfig>>(field: T) => (value: any) => {
+    if (field === 'type') {
+      const newTargetConfig = getDefaultTargetCaloriesConfig(value as TargetCaloriesConfigType);
+      setNutritionGoalPlaceholder({
+        ...nutritionGoalPlaceholder,
+        targetCaloriesConfig: newTargetConfig,
+      });
+      return;
+    }
+    setNutritionGoalPlaceholder({
+      ...nutritionGoalPlaceholder,
+      targetCaloriesConfig: {
+        ...nutritionGoalPlaceholder.targetCaloriesConfig,
+        [field]: value,
+      }
+    })
+  }
   const saveForm = (e?: React.FormEvent) => {
     e?.preventDefault();
     setDailyNutritionGoalAtom({
@@ -53,12 +67,6 @@ export default function DailyNutritionGoalModal() {
   return (
     <Modal onClose={onClose} opened={modalOpened} label="Daily nutrition goals">
       <form onSubmit={saveForm} className="grid grid-cols-6 gap-2 py-4">
-        <NumberInput
-          label="Target calories (kcal)"
-          className="col-span-6"
-          value={nutritionGoalPlaceholder.targetCalories}
-          onChange={updatePlaceholderCalories}
-        />
         {Object.values(MarcoNutrition).map((marco) => (
           <NumberInput
             key={marco}
@@ -68,6 +76,15 @@ export default function DailyNutritionGoalModal() {
             onChange={updatePlaceholderMarco(marco)}
           />
         ))}
+        <span className="col-span-full text-xs">
+          Target calories
+        </span>
+        <SelectInput
+          label="Target calories type"
+          value={nutritionGoalPlaceholder.targetCaloriesConfig.type}
+          onSelect={updateTargetCaloriesConfig('type')}
+          options={Object.values(TargetCaloriesConfigType).map(type => ({ label: type, value: type }))}
+        />
         <Button
           type="button"
           onClick={onClose}

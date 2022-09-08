@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import Dexie, { Table } from "dexie";
-import { eachDayOfInterval, endOfDay, startOfDay } from "date-fns";
+import { endOfDay, startOfDay } from "date-fns";
 import * as TargetCaloriesDomain from "../domain/TargetCalories";
 import { TargetCalories, TargetCaloriesType } from "../types/TargetCalories";
 
@@ -10,8 +10,8 @@ class TargetCaloriesDatabase extends Dexie {
   targetCalories!: Table<TargetCalories>;
   constructor() {
     super("targetCaloriesDatabase");
-    this.version(1).stores({
-      targetCalories: "++id,date",
+    this.version(2).stores({
+      targetCalories: "++id,date,type",
     });
 
     this.generateTargetCaloriesToday();
@@ -24,6 +24,13 @@ class TargetCaloriesDatabase extends Dexie {
       type: TargetCaloriesType.Computed,
       value: computedTargetCalories,
       date: startOfDay(Date.now()).getTime(),
+    });
+  }
+
+  async editTargetCalories(id: string, targetCalories: Pick<TargetCalories, "type" | "value">) {
+    const { type, value } = targetCalories;
+    this.targetCalories.update(id, {
+      type, value,
     });
   }
 

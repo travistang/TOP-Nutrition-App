@@ -69,7 +69,8 @@ library.add(
   faInfoCircle,
   faSave,
   faCaretLeft,
-  faCaretRight
+  faCaretRight,
+  faTrophy
 );
 ChartJS.register(
   LineController,
