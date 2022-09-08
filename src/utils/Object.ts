@@ -17,9 +17,14 @@ const findByKey = <K extends KeyType, T>(records: Record<K, T>, predicate: (key:
     return matchingPair[1] as T;
 }
 
+const valueBySortedKey = <K extends KeyType, T>(records: Record<K, T>, sortFn: (a: K, b: K) => number): T[] => {
+    const sortedPair = Object.entries<T>(records).sort(([a], [b]) => sortFn(a as K, b as K));
+    return sortedPair.map(([, v]) => v);
+}
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   mapValues,
   filterValues,
   findByKey,
+  valueBySortedKey,
 };
