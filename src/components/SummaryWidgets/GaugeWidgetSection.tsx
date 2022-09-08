@@ -27,7 +27,7 @@ export default function GaugeWidgetSection({
         className
       )}
     >
-      <div className="flex flex-nowrap justify-around gap-2">
+      <div className="flex flex-nowrap justify-around gap-2 -mt-4">
         <GaugeWidget
           unit={unit}
           className="flex-1"
