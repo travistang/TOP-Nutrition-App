@@ -1,6 +1,7 @@
 
 export enum TargetCaloriesType {
   Computed = 'computed',
+  Default = 'default',
   Manual = 'manual'
 }
 
@@ -12,15 +13,20 @@ export type TargetCalories = {
 };
 
 export enum TargetCaloriesConfigType {
-  Constant,
-  FromMaintenanceCalories,
+  Constant = 'Manual',
+  FromMaintenanceCalories = 'From maintenance calories',
 };
 
-export type TargetCaloriesConfig = {
+export type ConstantTargetCaloriesConfig = {
   type: TargetCaloriesConfigType.Constant;
   value: number;
-} | {
+};
+
+export type MaintenanceSurplusTargetCaloriesConfig = {
   type: TargetCaloriesConfigType.FromMaintenanceCalories;
-  measurementName: string;
   surplus: number;
 }
+
+export type TargetCaloriesConfig =
+  | ConstantTargetCaloriesConfig
+  | MaintenanceSurplusTargetCaloriesConfig;

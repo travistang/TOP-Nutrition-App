@@ -27,7 +27,7 @@ function App() {
           <Toaster />
           <Header />
           <Routes>
-            <Route path="/" element={<ConsumptionSummary />} />
+            <Route path="/" element={<ConsumptionSummary date={new Date()} />} />
             <Route path="/stats" element={<PreviousStatistics />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
             <Route path="/stats/measurements" element={<MeasurementListPage />} />

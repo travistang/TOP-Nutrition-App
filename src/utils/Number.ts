@@ -5,6 +5,8 @@ const nanToZero = (num: number) => {
   return num;
 };
 
+const average = (...numbers: number[]) => safeDivide(sum(...numbers), numbers.length);
+
 const min = (...numbers: (number | null)[]) => {
   const numOrInfinity = numbers.map(n => n === null ? Infinity : n);
   return Math.min(...numOrInfinity);
@@ -37,6 +39,7 @@ const isNumericDigit = (str: string) => str.match(/^[0-9.,]$/);
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   nanToZero,
+  average,
   min, max,
   sum,
   inputAsNumber,

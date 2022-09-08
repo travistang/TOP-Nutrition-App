@@ -1,7 +1,5 @@
 import React from "react";
-import { differenceInMinutes } from "date-fns";
 import { ExerciseSetRecord } from "../../database/ExerciseDatabase";
-import TimerText from "../TimerText";
 import SetEntry from "./SetEntry";
 import { ExerciseSetType } from "../../types/Exercise";
 import ExerciseDomain from "../../domain/Exercise";

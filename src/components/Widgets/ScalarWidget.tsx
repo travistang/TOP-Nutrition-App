@@ -19,7 +19,7 @@ export default function ScalarWidget({
     <Section className={className} label={label}>
       <div className="flex flex-col">
         <div className="capitalize font-bold text-xl">
-          {value === null ? "N/A" : `${value} ${unit}`}
+          {value === null ? "N/A" : `${value} ${unit ?? ''}`}
         </div>
         {extraInfo && <span className="text-xs">{extraInfo}</span>}
       </div>

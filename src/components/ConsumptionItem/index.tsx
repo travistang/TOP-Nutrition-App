@@ -7,8 +7,7 @@ import {
 } from "../../types/Nutrition";
 import ProgressBar from "../ProgressBar";
 import NutritionUtils from "../../utils/Nutrition";
-import { useRecoilValue } from "recoil";
-import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
+import { DEFAULT_TARGET_CALORIES } from "../../domain/TargetCalories";
 
 type Props = {
   mealCalories: number;
@@ -20,7 +19,6 @@ export default function ConsumptionItem({
   consumption,
   onClick,
 }: Props) {
-  const { targetCalories } = useRecoilValue(dailyNutritionGoalAtom);
   const itemCalories = NutritionUtils.caloriesByAmount(
     consumption.nutritionPerHundred,
     consumption.amount
@@ -55,7 +53,7 @@ export default function ConsumptionItem({
         </span>
       </div>
       <ProgressBar
-        totalValue={targetCalories}
+        totalValue={DEFAULT_TARGET_CALORIES}
         className="col-span-4 h-1 col-start-1"
         data={progressBarData}
       />

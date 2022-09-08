@@ -10,11 +10,11 @@ import SelectInput from "../Input/SelectInput";
 import Section from "../Section";
 import { useRecoilState } from "recoil";
 import { personalInfoAtom } from "../../atoms/PersonalInfoAtom";
+import CurrentWeightInfo from "./CurrentWeightInfo";
 
 export default function PersonalInfoSection() {
   const [personalInfo, setPersonalInfo] =
     useRecoilState<PersonalInfo>(personalInfoAtom);
-
   const onChange =
     <K extends keyof PersonalInfo>(field: K) =>
     (value: PersonalInfo[K]) => {
@@ -60,6 +60,7 @@ export default function PersonalInfoSection() {
           <FontAwesomeIcon icon="info-circle" /> Data will be stored locally for
           calculating your maintenance calories.
         </span>
+        <CurrentWeightInfo />
       </div>
     </Section>
   );
