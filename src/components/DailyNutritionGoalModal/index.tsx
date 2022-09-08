@@ -70,8 +70,8 @@ export default function DailyNutritionGoalModal() {
         {Object.values(MarcoNutrition).map((marco) => (
           <NumberInput
             key={marco}
-            label={`Target ${marco} intake (g)`}
-            className="col-span-3"
+            label={`${marco} intake (g)`}
+            className="col-span-2"
             value={nutritionGoalPlaceholder.targetNutritionIntake[marco]}
             onChange={updatePlaceholderMarco(marco)}
           />
@@ -80,6 +80,7 @@ export default function DailyNutritionGoalModal() {
           Target calories
         </span>
         <SelectInput
+          className="col-span-3"
           label="Target calories type"
           value={nutritionGoalPlaceholder.targetCaloriesConfig.type}
           onSelect={updateTargetCaloriesConfig('type')}
