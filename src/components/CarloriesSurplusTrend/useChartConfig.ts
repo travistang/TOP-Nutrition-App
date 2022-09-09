@@ -1,4 +1,4 @@
-import { format, isSameDay } from "date-fns";
+import { format, isFuture, isSameDay } from "date-fns";
 import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
 import { MarcoNutritionColor } from "../../types/Nutrition";
 import ArrayUtils from "../../utils/Array";
@@ -29,7 +29,7 @@ export default function useChartConfig(
         return [date, surplus] as const;
       })
       .sort((a, b) => a[0] - b[0])
-      .map(([, v]) => v);
+      .map(([date, v]) => isFuture(date) ? null : v);
 
     const caloriesDeficitData = caloriesSurplusByDay.map(surplus => surplus && surplus < 0 ? surplus : null);
     const caloriesSurplusData = caloriesSurplusByDay.map(surplus => surplus && surplus > 0 ? surplus : null);
