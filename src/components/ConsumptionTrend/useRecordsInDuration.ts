@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ConsumptionDatabase, { ConsumptionRecord } from '../../database/ConsumptionDatabase';
 import { baseChartSectionContext } from './BaseChartSection';
 
