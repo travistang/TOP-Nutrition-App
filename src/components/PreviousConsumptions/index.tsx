@@ -1,7 +1,6 @@
 import { isSameMonth, startOfMonth } from "date-fns";
 import React, { useState } from "react";
 import ConsumptionSummary from "../../pages/ConsumptionSummary";
-import { MarcoNutritionColor } from "../../types/Nutrition";
 import Calendar from "../Calendar";
 import DateInput, { DateInputType } from "../Input/DateInput";
 import useRingConfig from "./useRingConfig";
