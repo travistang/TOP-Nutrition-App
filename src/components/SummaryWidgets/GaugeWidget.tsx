@@ -1,7 +1,8 @@
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React from "react";
 import ProgressBar from "../ProgressBar";
+import NumberUtils from '../../utils/Number';
 
 type Props = {
   label: string;
@@ -27,15 +28,20 @@ export default function GaugeWidget({
         className
       )}
     >
-      <span className="text-xs">
-        <FontAwesomeIcon icon='trophy' className="w-3 h-3" /> {maxValue} {unit}
-      </span>
+      <div className="flex w-full items-center justify-end">
+        <span className="text-gray-500 font-bold text-xs self-start">
+          {NumberUtils.ratioToPercentageString(value / maxValue)}
+        </span>
+      </div>
       <ProgressBar
         data={[{ name: label, value, color }]}
         totalValue={maxValue}
         className="h-2 w-full"
       />
-      <div className="flex flex-nowrap justify-end items-center">
+      <div className="flex flex-nowrap justify-between items-center">
+        <span className="text-xs">
+          <FontAwesomeIcon icon='trophy' className="w-3 h-3" /> {maxValue.toFixed(0)} {unit}
+        </span>
         <span className="font-bold text-xl self-end">
           {value.toFixed(1)}
           {unit}

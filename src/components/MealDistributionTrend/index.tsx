@@ -10,7 +10,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import React, { useContext } from "react";
 import { Scatter } from "react-chartjs-2";
 import ConsumptionDatabase from "../../database/ConsumptionDatabase";
-import BaseChartSection, { baseChartSectionContext } from "../BaseChartSection";
+import BaseChartSection, { baseChartSectionContext } from "../ConsumptionTrend/BaseChartSection";
 import DateUtils from "../../utils/Date";
 
 const minutesSinceDayStart = (hour: number) => hour * 60;

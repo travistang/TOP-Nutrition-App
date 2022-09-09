@@ -1,14 +1,14 @@
 import { eachDayOfInterval, endOfDay, startOfDay, subMonths } from "date-fns";
-import { useLiveQuery } from "dexie-react-hooks";
 import {
   TargetCaloriesConfig,
   TargetCaloriesConfigType,
 } from "../types/TargetCalories";
 import * as DailyNutritionGoalAtom from '../atoms/DailyNutritionGoalAtom';
 import * as MaintenanceCaloriesDomain from '../domain/MaintenanceCalories';
-import MeasurementDatabase, { MeasurementRecord } from "../database/MeasurementDatabase";
+import MeasurementDomain from '../domain/Measurement';
+
+import  { MeasurementRecord } from "../database/MeasurementDatabase";
 import NumberUtils from '../utils/Number';
-import StringUtils from '../utils/String';
 import ObjectUtils from '../utils/Object';
 import DateUtils from '../utils/Date';
 import { PersonalInfo } from "../types/PersonalInfo";
@@ -59,16 +59,10 @@ export const getDefaultTargetCaloriesConfig = (type: TargetCaloriesConfigType): 
 export function useTargetCalories(startTime: Date | number, endTime: Date | number) {
   const personalInfo = useRecoilValue(personalInfoAtom);
   const daysInInterval = eachDayOfInterval({ start: startTime, end: endTime });
-  const weightRecordsInPeriod = useLiveQuery(() =>
-    MeasurementDatabase.measurements
-      .where("date")
-      .between(
-        startOfDay(subMonths(startTime, 1)).getTime(),
-        endOfDay(endTime).getTime())
-      .filter((record) => StringUtils.caseInsensitiveEqual(record.name, 'weight'))
-      .toArray(),
-    [startTime, endTime]
-  ) ?? [];
+  const weightRecordsInPeriod = MeasurementDomain.useMeasurementsInRange(
+    "weight",
+    [subMonths(startOfDay(startTime), 2), endOfDay(endTime)]
+  );
 
   const weightRecordsByDays: Record<number, MeasurementRecord[]> =
     Object.fromEntries(

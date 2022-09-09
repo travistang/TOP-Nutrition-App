@@ -1,22 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
-import ConsumptionDatabase from "../../database/ConsumptionDatabase";
 import DateUtils from "../../utils/Date";
-import { useLiveQuery } from "dexie-react-hooks";
-import BaseChartSection, { baseChartSectionContext } from "../BaseChartSection";
+import BaseChartSection, { baseChartSectionContext } from "./BaseChartSection";
 import useChartConfig from "./useChartConfig";
 import SelectInput from "../Input/SelectInput";
 import useMeasurementData from "./useMeasurementData";
+import useRecordsInDuration from "./useRecordsInDuration";
 
 function ConsumptionTrendInner() {
   const { date, duration } = useContext(baseChartSectionContext);
+  console.log({ date });
   const eachDaysInDuration = DateUtils.eachDaysOfIntervalFromDuration(
     date,
     duration
   );
-  const recordsInDuration = useLiveQuery(async () => {
-    return ConsumptionDatabase.recordsInRange(date, duration);
-  }, [date, duration]);
+  const recordsInDuration = useRecordsInDuration();
   const [selectedMeasurement, setSelectedMeasurement] = useState<string>("");
   const { measurements, allMeasurementNames } = useMeasurementData({
     date,
