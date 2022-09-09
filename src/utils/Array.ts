@@ -30,6 +30,15 @@ const zipBy = <T, U>(ts: T[], us: U[], zipFn: (t: T, u: U) => boolean): [T, U[]]
     ]
   }, []);
 }
+const groupBy = <T>(ts: T[], groupFn: (t: T) => string): Record<string, T[]> => {
+  return ts.reduce((groups, t) => {
+    const key = groupFn(t);
+    return {
+      ...groups,
+      [key]: [...(groups[key] ?? []), t]
+    }
+  }, {} as Record<string, T[]>);
+}
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   range,
@@ -38,4 +47,5 @@ export default {
   distinct,
   hasSome,
   zipBy,
+  groupBy,
 };
