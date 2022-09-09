@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import MeasurementDatabase, {
   MeasurementRecord,
 } from "../database/MeasurementDatabase";
 import { Measurement } from "../types/Measurement";
+import StringUtils from '../utils/String';
 
 const createEditRecord = async (
   record: Measurement & Partial<MeasurementRecord>
@@ -38,8 +40,32 @@ const removeRecord = async (id: string) => {
   }
 };
 
+const useMeasurementsInRange = (name: string, [startTime, endTime]: [Date | number, Date | number]) => {
+  const [measurements, setMeasurements] = useState<MeasurementRecord[]>([]);
+  useEffect(() => {
+    console.log({ name, startTime, endTime });
+    MeasurementDatabase.transaction('r', MeasurementDatabase.measurements, () => {
+      MeasurementDatabase.measurements
+        .where('date')
+        .between(
+          new Date(startTime).getTime(),
+          new Date(endTime).getTime(),
+        )
+        .filter((record) => StringUtils.caseInsensitiveEqual(record.name, name))
+        .toArray()
+        .then(newMeasurements => {
+          if (measurements.length !== newMeasurements.length) {
+            setMeasurements(newMeasurements);
+          }
+        })
+    })
+  }, [measurements, name, startTime, endTime]);
+  return measurements;
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   createEditRecord,
   removeRecord,
+  useMeasurementsInRange,
 };

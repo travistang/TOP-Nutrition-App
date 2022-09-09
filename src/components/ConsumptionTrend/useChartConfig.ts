@@ -85,6 +85,15 @@ export default function useChartConfig({
   const consumptionTrendData = {
     labels: eachDaysInDuration.map((day) => format(day, "dd/MM")),
     datasets: [
+      {
+        label: "Measurements",
+        type: "line" as const,
+        yAxisID: "measurements",
+        data: averageMeasurementsByDay,
+        backgroundColor: "rgb(100, 0, 255)",
+        borderColor: "rgb(100, 0, 255)",
+      },
+      targetCaloriesChartData,
       ...Object.values(MarcoNutrition).map((marco) => ({
         label: marco,
         type: "bar" as const,
@@ -94,15 +103,6 @@ export default function useChartConfig({
         ),
         backgroundColor: MarcoNutritionColor[marco],
       })),
-      targetCaloriesChartData,
-      {
-        label: "Measurements",
-        type: "line" as const,
-        yAxisID: "measurements",
-        data: averageMeasurementsByDay,
-        backgroundColor: "rgb(100, 0, 100)",
-        borderColor: "rgb(100, 0, 100)",
-      },
     ],
   };
 

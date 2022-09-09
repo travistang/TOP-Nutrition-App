@@ -5,7 +5,7 @@ import { Doughnut } from "react-chartjs-2";
 import Section from '../Section';
 
  const chartOptions = {
-  animation: { duration: 100 },
+  animation: { duration: 1000 },
   plugins: { tooltip: { enabled: false }, legend: { display: false } },
 };
 type Props = {
