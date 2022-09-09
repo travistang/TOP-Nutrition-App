@@ -13,7 +13,7 @@ export default function Ring({ ringConfig }: Props) {
     const { value, color } = ring;
     const newPercentage = percentage + value / allValues;
     const newStyleString = styleString +
-      `${styleString ? ',' : ''}conic-gradient(transparent, ${percentage}turn, transparent, ${percentage}turn, ${color}, ${percentage + newPercentage}turn, ${color}, ${percentage + newPercentage}turn, transparent)`;
+      `${styleString ? ',' : ''}conic-gradient(transparent, ${percentage}turn, transparent, ${percentage}turn, ${color}, ${newPercentage}turn, ${color}, ${newPercentage}turn, transparent)`;
     return [
       newStyleString,
       newPercentage

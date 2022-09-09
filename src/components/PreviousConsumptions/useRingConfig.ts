@@ -26,6 +26,7 @@ export default function useRingConfig(month: Date | number) {
       color: MarcoNutritionColor[marco],
       value: nutritionOfDay[marco],
     })) as RingConfig;
+
   });
 
   return nutritionsByDates;
