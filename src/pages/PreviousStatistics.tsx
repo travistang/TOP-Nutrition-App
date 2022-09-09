@@ -7,7 +7,6 @@ import PreviousConsumptions from "../components/PreviousConsumptions";
 import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
 
 export default function PreviousStatistics() {
-  console.log('render');
   return (
     <div className="flex flex-col overflow-y-auto flex-1 items-stretch gap-2 pb-12">
       <StatisticsNavigateTab />

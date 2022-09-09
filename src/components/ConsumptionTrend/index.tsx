@@ -9,7 +9,6 @@ import useRecordsInDuration from "./useRecordsInDuration";
 
 function ConsumptionTrendInner() {
   const { date, duration } = useContext(baseChartSectionContext);
-  console.log({ date });
   const eachDaysInDuration = DateUtils.eachDaysOfIntervalFromDuration(
     date,
     duration

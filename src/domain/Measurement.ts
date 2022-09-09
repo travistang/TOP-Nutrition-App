@@ -43,7 +43,6 @@ const removeRecord = async (id: string) => {
 const useMeasurementsInRange = (name: string, [startTime, endTime]: [Date | number, Date | number]) => {
   const [measurements, setMeasurements] = useState<MeasurementRecord[]>([]);
   useEffect(() => {
-    console.log({ name, startTime, endTime });
     MeasurementDatabase.transaction('r', MeasurementDatabase.measurements, () => {
       MeasurementDatabase.measurements
         .where('date')
@@ -57,8 +56,8 @@ const useMeasurementsInRange = (name: string, [startTime, endTime]: [Date | numb
           if (measurements.length !== newMeasurements.length) {
             setMeasurements(newMeasurements);
           }
-        })
-    })
+        });
+    });
   }, [measurements, name, startTime, endTime]);
   return measurements;
 }

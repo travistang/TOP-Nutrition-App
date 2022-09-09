@@ -12,11 +12,13 @@ import { DayMarker } from "../../types/Calendar";
 import ArrayUtils from "../../utils/Array";
 import DateUtils from "../../utils/Date";
 import DayCell from "./DayCell";
+import { RingConfig } from "./Ring";
 
 type Props = {
   date: Date | number;
   selectedDate?: Date;
   markers?: Record<string, DayMarker>;
+  rings?: Record<string, RingConfig>;
   onSelectDate?: (date: Date) => void;
   className?: string;
 };
@@ -27,6 +29,7 @@ export default function Calendar({
   selectedDate,
   onSelectDate,
   markers,
+  rings,
 }: Props) {
   const now = Date.now();
   const monthStart = startOfMonth(date);
@@ -56,6 +59,7 @@ export default function Calendar({
           onSelect={() => onSelectDate?.(day)}
           selected={selectedDate && isSameDay(selectedDate, day)}
           marker={markers?.[format(day, 'dd/MM/yyyy')]}
+          ringConfig={rings?.[format(day, 'dd/MM/yyyy')]}
         />
       ))}
     </div>
