@@ -1,5 +1,5 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import MeasurementDatabase, {
   MeasurementRecord,
@@ -11,31 +11,16 @@ import TextInput from "../Input/TextInput";
 import Modal from "../Modal";
 import MeasurementDomain from "../../domain/Measurement";
 import DateInput, { DateInputType } from "../Input/DateInput";
-import { DEFAULT_MEASUREMENT, Measurement } from "../../types/Measurement";
+import useMeasurementRecordMutation from "./useMeasurementRecordMutation";
 
 export default function CreateMeasurementRecordModal() {
-  const [createMeasurementRecord, setCreateMeasurementRecord] = useRecoilState(
-    createMeasurementRecordAtom
-  );
+  const createMeasurementRecord = useRecoilValue(createMeasurementRecordAtom);
+  const { onClose, setField, onAutoSelectMeasurement } = useMeasurementRecordMutation();
 
   const { modalOpened, record } = createMeasurementRecord;
   const isEditing = !!record.id;
   const isFormValid = !!record.name && record.value !== 0;
-
   const modalLabel = isEditing ? "Editing record" : "Record measurement";
-  const setField =
-    <T extends keyof Measurement>(field: T) =>
-    (value: Measurement[T]) => {
-      setCreateMeasurementRecord((atomValue) => ({
-        ...atomValue,
-        record: { ...atomValue.record, [field]: value },
-      }));
-    };
-  const onClose = () =>
-    setCreateMeasurementRecord((record) => ({
-      record: DEFAULT_MEASUREMENT,
-      modalOpened: false,
-    }));
 
   const onRemove = async () => {
     if (await MeasurementDomain.removeRecord(record.id!)) {
@@ -49,17 +34,6 @@ export default function CreateMeasurementRecordModal() {
       onClose();
     }
   };
-
-  const onAutoSelectMeasurement = (measurement: MeasurementRecord) => {
-    const { id: _, date: __, ...record } = measurement;
-    setCreateMeasurementRecord((atomValue) => ({
-      ...atomValue,
-      record: {
-        ...record,
-        date: atomValue.record.date,
-      },
-    }))
-  }
 
   return (
     <Modal onClose={onClose} opened={modalOpened} label={modalLabel}>

@@ -11,6 +11,12 @@ const filterValues = <K extends KeyType, T>(records: Record<K, T>, filterFn: (t:
     return Object.fromEntries(filteredEntries) as Record<K, T>;
 };
 
+const filterKeys = <T extends {[key: string]: any}, Ks extends keyof T>(record: T, filteringKeys: Ks[]): Pick<T, Ks> => {
+    const entries = Object.entries(record) as [Ks, T[Ks]][];
+    const filteredEntries = entries.filter(([key]) => filteringKeys.includes(key));
+    return Object.fromEntries(filteredEntries) as Pick<T, Ks>;
+}
+
 const findByKey = <K extends KeyType, T>(records: Record<K, T>, predicate: (key: K) => boolean): T | undefined => {
     const matchingPair = Object.entries(records).find(([k]) => predicate(k as K));
     if (!matchingPair) return;
@@ -27,4 +33,5 @@ export default {
   filterValues,
   findByKey,
   valueBySortedKey,
+  filterKeys,
 };
