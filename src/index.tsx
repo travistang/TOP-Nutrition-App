@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import "dexie-export-import";
 import {
   faArrowRight,
   faBezierCurve,
@@ -24,6 +25,8 @@ import {
   faTrophy,
   faCaretLeft,
   faCaretRight,
+  faFileImport,
+  faFileExport,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { BrowserTracing } from "@sentry/tracing";
@@ -70,7 +73,9 @@ library.add(
   faSave,
   faCaretLeft,
   faCaretRight,
-  faTrophy
+  faTrophy,
+  faFileImport,
+  faFileExport,
 );
 ChartJS.register(
   LineController,
