@@ -1,6 +1,8 @@
 import { ExportProgress } from 'dexie-export-import/dist/export';
 import { ImportProgress } from 'dexie-export-import/dist/import';
 import React, { useRef, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { confirmationAtom } from '../../atoms/ConfirmationAtom';
 import { exportDatabase, importDatabase } from '../../domain/ImportExport';
 import { MarcoNutrition } from '../../types/Nutrition';
 import Button, { ButtonStyle } from '../Input/Button';
@@ -9,6 +11,7 @@ import Section from '../Section';
 
 export default function ExportImportSection() {
   const [progress, setProgress] = useState(0);
+  const setConfimationConfig = useSetRecoilState(confirmationAtom);
   const fileSelectRef = useRef<HTMLInputElement | null>(null);
 
   const selectImportFile = () => {
@@ -33,9 +36,14 @@ export default function ExportImportSection() {
     const file = e.target.files?.[0];
     if (!file) return;
     const blob = new Blob([file], { type: 'application/json' });
-    // TODO: ask for confimration
-    await importDatabase(blob, (importProgress) => {
-      return updateProgress(importProgress);
+    setConfimationConfig({
+      modalOpened: true,
+      description: "This will erase ALL your consumption records. Are you sure to proceed?",
+      onConfirm: () => {
+        importDatabase(blob, (importProgress) => {
+          return updateProgress(importProgress);
+        });
+      }
     })
 
   }
