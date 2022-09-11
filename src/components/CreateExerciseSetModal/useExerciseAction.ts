@@ -85,6 +85,7 @@ export default function useExerciseAction() {
   const reset = () => {
     setCreateEditRecordAtom({
       ...DEFAULT_EXERCISE_RECORD,
+      date: new Date(),
       modalOpened,
     });
   }
