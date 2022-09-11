@@ -2,6 +2,9 @@ import { differenceInSeconds } from "date-fns";
 import { ExerciseSetRecord } from "../database/ExerciseDatabase";
 import ExerciseUtils from '../utils/Exercise';
 import ArrayUtils from '../utils/Array';
+import ObjectUtils from '../utils/Object';
+import StringUtils from '../utils/String';
+import { BodyPart } from "../types/Exercise";
 
 const areSetTimeClose = (a: ExerciseSetRecord, b: ExerciseSetRecord) =>
   Math.abs(differenceInSeconds(a.date, b.date)) <= 60;
@@ -103,10 +106,33 @@ const detectWorkoutEnd = (sets: ExerciseSetRecord[]): number[] => {
 
   return workoutEndIndices;
 }
+
+const detectWorkoutPartFromName = (name: string) => {
+  const bodyPartKeywords: Record<BodyPart, string[]> = {
+    [BodyPart.Biceps]: ['bicep', 'biceps'],
+    [BodyPart.Triceps]: ['tricep', 'Triceps'],
+    [BodyPart.Back]: ['lat', 'lats', 'back', 'row'],
+    [BodyPart.Chest]: ['chest'],
+    [BodyPart.Shoulders]: ['shoulder', 'Shoulders'],
+    [BodyPart.Traps]: [],
+    [BodyPart.Abs]: ['abs', 'core', 'abdomen'],
+    [BodyPart.Legs]: ['calve', 'calves', 'leg', 'legs', 'quad', 'glute', 'hip', 'hips']
+  };
+
+  const wordList = name.split(' ');
+  const partsWithMatchedWords = ObjectUtils.filterValues(bodyPartKeywords, keywords => ArrayUtils.hasSome(
+    wordList,
+    keywords,
+    StringUtils.caseInsensitiveEqual
+  ));
+
+  return Object.keys(partsWithMatchedWords) as BodyPart[];
+}
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   detectDropSets,
   detectSuperSets,
   detectWarmupSets,
   detectWorkoutEnd,
+  detectWorkoutPartFromName,
 };

@@ -20,7 +20,13 @@ const distinct = <T>(arr: T[], compareFn?: (a: T, b: T) => boolean): T[] => {
   return result;
 };
 
-const hasSome = <T>(a: T[], b: T[]) => a.some((el) => b.includes(el));
+const hasSome = <T>(a: T[], b: T[], compareFn?: (a: T, b: T) => boolean) => {
+  if (!compareFn)
+    return a.some((el) => b.includes(el));
+
+  return a.some((el) => b.some((bEl) => compareFn(el, bEl)));
+
+};
 const zipBy = <T, U>(ts: T[], us: U[], zipFn: (t: T, u: U) => boolean): [T, U[]][] => {
   return ts.reduce<[T, U[]][]>((result, t) => {
     const matchingUs = us.filter(u => zipFn(t, u));
