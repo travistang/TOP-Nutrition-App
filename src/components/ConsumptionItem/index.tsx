@@ -7,7 +7,6 @@ import {
 } from "../../types/Nutrition";
 import ProgressBar from "../ProgressBar";
 import NutritionUtils from "../../utils/Nutrition";
-import { DEFAULT_TARGET_CALORIES } from "../../domain/TargetCalories";
 import { targetCaloriesContext } from "../MealSummary/TargetCaloriesContext";
 
 type Props = {
