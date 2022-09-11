@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useRecoilState } from "recoil";
-import { isSameDay } from "date-fns";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import { useMaintenanceCalories } from "../../domain/MaintenanceCalories";
-import { DEFAULT_TARGET_CALORIES, useTargetCalories } from "../../domain/TargetCalories";
 import {
   CaloriesColor,
   MarcoNutrition,
@@ -18,7 +16,7 @@ import GaugeWidgetSection from "./GaugeWidgetSection";
 
 import RollingDeficitWidget from "./RollingDeficitWidget";
 import TodayDeficitWidget from "./TodayDeficitWidget";
-import ObjectUtils from '../../utils/Object';
+import { targetCaloriesContext } from "../MealSummary/TargetCaloriesContext";
 
 type Props = {
   nutritionRecords: Nutrition[];
@@ -26,13 +24,13 @@ type Props = {
 
 const getMarcoWidgetConfig = (
   totalNutrition: Nutrition,
-  targetCalories: number,
+  targetCalories: number | null,
   targetNutritionIntake: NutritionCalories
 ): {
   label: string;
   color: string;
   value: number;
-  total: number;
+  total: number | null;
   unit: string;
   className: string;
 }[] => [
@@ -69,9 +67,9 @@ const getMarcoWidgetConfig = (
     total: targetNutritionIntake[MarcoNutrition.fat],
   },
 ];
-const now = Date.now();
+
 export default function SummaryWidgets({ nutritionRecords }: Props) {
-  const targetCaloriesByDay = useTargetCalories(now, now);
+  const targetCalories = useContext(targetCaloriesContext);
   const maintenanceCalories = useMaintenanceCalories();
   const [{ targetNutritionIntake }] = useRecoilState(
     dailyNutritionGoalAtom
@@ -80,12 +78,12 @@ export default function SummaryWidgets({ nutritionRecords }: Props) {
   const totalNutrition = NutritionUtils.total(...nutritionRecords);
   const caloriesByNutrition =
     NutritionUtils.caloriesByNutrition(totalNutrition);
-  const targetCalories = ObjectUtils.findByKey(targetCaloriesByDay, day => isSameDay(new Date(day), now)) ?? DEFAULT_TARGET_CALORIES;
   const marcoWidgetConfigs = getMarcoWidgetConfig(
     totalNutrition,
     targetCalories,
     targetNutritionIntake
   );
+
   return (
     <div className="grid grid-cols-6 grid-rows-[repeat(3,minmax(24px, 1fr))] gap-2">
       <TodayDeficitWidget
@@ -95,10 +93,10 @@ export default function SummaryWidgets({ nutritionRecords }: Props) {
       <RollingDeficitWidget maintenanceCalories={maintenanceCalories} />
       <CalorieWidget
         caloriesByNutrition={caloriesByNutrition}
-        remainingCalories={Math.max(
+        remainingCalories={targetCalories ? Math.max(
           0,
           targetCalories - totalNutrition.calories
-        )}
+        ): 0}
       />
       {marcoWidgetConfigs.map((config) => (
         <GaugeWidgetSection

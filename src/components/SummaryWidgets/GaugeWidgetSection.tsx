@@ -7,7 +7,7 @@ type Props = {
   label: string;
   color: string;
   value: number;
-  maxValue: number;
+  maxValue: number | null;
   className?: string;
   unit?: string;
 };
@@ -27,7 +27,10 @@ export default function GaugeWidgetSection({
         className
       )}
     >
-      <div className="flex flex-nowrap justify-around gap-2 -mt-4">
+      <div className={classNames(
+        "flex flex-nowrap justify-around gap-2",
+        maxValue !== null && "-mt-4"
+      )}>
         <GaugeWidget
           unit={unit}
           className="flex-1"

@@ -6,7 +6,6 @@ const nanToZero = (num: number) => {
 };
 
 const average = (...numbers: number[]) => safeDivide(sum(...numbers), numbers.length);
-
 const min = (...numbers: (number | null)[]) => {
   const numOrInfinity = numbers.map(n => n === null ? Infinity : n);
   return Math.min(...numOrInfinity);
@@ -16,7 +15,7 @@ const max = (...numbers: (number | null)[]) => {
   return Math.max(...numOrInfinity);
 }
 const sum = (...numbers: number[]) => numbers.reduce((sum, n) => sum + n, 0);
-const ratioToPercentageString = (num: number) => `${(num * 100).toFixed(1)}%`;
+const ratioToPercentageString = (num: number) => !Number.isFinite(num) ? '--' : `${(num * 100).toFixed(1)}%`;
 
 const inputAsNumber = (numString: string) => {
   const recognizedNonNumericSymbol = [",", "."];

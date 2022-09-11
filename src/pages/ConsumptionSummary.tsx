@@ -34,18 +34,18 @@ export default function ConsumptionSummary({
   ).calories;
 
   return (
-    <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
-      {embedded ? (
-        <ShortSummary nutritionRecords={nutritionRecords} />
-      ) : (
-        <>
-          <SummaryWidgets nutritionRecords={nutritionRecords} />
-          <div className="flex flex-no-wrap pt-8 items-center text-xs gap-1 pb-2">
-            <span>Meals today</span>
-          </div>
-        </>
-      )}
-      <TargetCaloriesContextProvider date={date}>
+    <TargetCaloriesContextProvider date={date}>
+      <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
+        {embedded ? (
+          <ShortSummary nutritionRecords={nutritionRecords} />
+        ) : (
+          <>
+            <SummaryWidgets nutritionRecords={nutritionRecords} />
+            <div className="flex flex-no-wrap pt-8 items-center text-xs gap-1 pb-2">
+              <span>Meals today</span>
+            </div>
+          </>
+        )}
         <div className="flex flex-col min-h-1/2 pb-16">
           {!embedded && !consumptionsOfDay?.length && (
             <div className="h-full w-full flex flex-col gap-2 items-center justify-center text-sm">
@@ -62,7 +62,7 @@ export default function ConsumptionSummary({
             />
           ))}
         </div>
-      </TargetCaloriesContextProvider>
-    </div>
+      </div>
+    </TargetCaloriesContextProvider>
   );
 }
