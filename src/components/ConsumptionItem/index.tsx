@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Consumption } from "../../types/Consumption";
 import {
   MarcoNutrition,
@@ -8,6 +8,7 @@ import {
 import ProgressBar from "../ProgressBar";
 import NutritionUtils from "../../utils/Nutrition";
 import { DEFAULT_TARGET_CALORIES } from "../../domain/TargetCalories";
+import { targetCaloriesContext } from "../MealSummary/TargetCaloriesContext";
 
 type Props = {
   mealCalories: number;
@@ -19,6 +20,7 @@ export default function ConsumptionItem({
   consumption,
   onClick,
 }: Props) {
+  const targetCalories = useContext(targetCaloriesContext);
   const itemCalories = NutritionUtils.caloriesByAmount(
     consumption.nutritionPerHundred,
     consumption.amount
@@ -53,7 +55,7 @@ export default function ConsumptionItem({
         </span>
       </div>
       <ProgressBar
-        totalValue={DEFAULT_TARGET_CALORIES}
+        totalValue={targetCalories ?? undefined}
         className="col-span-4 h-1 col-start-1"
         data={progressBarData}
       />
