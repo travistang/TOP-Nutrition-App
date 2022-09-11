@@ -9,6 +9,7 @@ import MealUtils from "../utils/Meal";
 import DateUtils from "../utils/Date";
 import MealSummary from "../components/MealSummary";
 import ShortSummary from "../components/SummaryWidgets/ShortSummary";
+import TargetCaloriesContextProvider from "../components/MealSummary/TargetCaloriesContext";
 
 type Props = {
   embedded?: boolean;
@@ -44,22 +45,24 @@ export default function ConsumptionSummary({
           </div>
         </>
       )}
-      <div className="flex flex-col min-h-1/2  pb-16">
-        {!embedded && !consumptionsOfDay?.length && (
-          <div className="h-full w-full flex flex-col gap-2 items-center justify-center text-sm">
-            <FontAwesomeIcon icon="hamburger" className="text-3xl" />
-            You haven't eatten anything yet today...
-          </div>
-        )}
-        {consumptionsByMeals?.map((meal, index) => (
-          <MealSummary
-            caloriesIntakeOfDay={totalCaloriesIntake}
-            meal={meal}
-            index={index}
-            key={meal[0].id}
-          />
-        ))}
-      </div>
+      <TargetCaloriesContextProvider date={date}>
+        <div className="flex flex-col min-h-1/2 pb-16">
+          {!embedded && !consumptionsOfDay?.length && (
+            <div className="h-full w-full flex flex-col gap-2 items-center justify-center text-sm">
+              <FontAwesomeIcon icon="hamburger" className="text-3xl" />
+              You haven't eatten anything yet today...
+            </div>
+          )}
+          {consumptionsByMeals?.map((meal, index) => (
+            <MealSummary
+              caloriesIntakeOfDay={totalCaloriesIntake}
+              meal={meal}
+              index={index}
+              key={meal[0].id}
+            />
+          ))}
+        </div>
+      </TargetCaloriesContextProvider>
     </div>
   );
 }
