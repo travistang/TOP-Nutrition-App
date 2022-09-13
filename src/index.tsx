@@ -1,33 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
-import { library } from "@fortawesome/fontawesome-svg-core";
 import "dexie-export-import";
-import {
-  faArrowRight,
-  faBezierCurve,
-  faClock,
-  faCogs,
-  faDumbbell,
-  faGripLines,
-  faHamburger,
-  faInfoCircle,
-  faLineChart,
-  faList,
-  faPen,
-  faPersonWalking,
-  faPlateWheat,
-  faRobot,
-  faRulerHorizontal,
-  faSave,
-  faSearch,
-  faTimes,
-  faTrophy,
-  faCaretLeft,
-  faCaretRight,
-  faFileImport,
-  faFileExport,
-} from "@fortawesome/free-solid-svg-icons";
 
 import { BrowserTracing } from "@sentry/tracing";
 import { RecoilRoot } from "recoil";
@@ -49,34 +23,10 @@ import App from "./App";
 import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import { loadIcons } from "./setup/icon";
 
-library.add(
-  faCogs,
-  faDumbbell,
-  faPen,
-  faPlateWheat,
-  faArrowRight,
-  faTrophy,
-  faHamburger,
-  faLineChart,
-  faList,
-  faDumbbell,
-  faTimes,
-  faGripLines,
-  faBezierCurve,
-  faRobot,
-  faPersonWalking,
-  faSearch,
-  faRulerHorizontal,
-  faClock,
-  faInfoCircle,
-  faSave,
-  faCaretLeft,
-  faCaretRight,
-  faTrophy,
-  faFileImport,
-  faFileExport,
-);
+loadIcons();
+
 ChartJS.register(
   LineController,
   BarController,

@@ -1,9 +1,10 @@
+import { format } from 'date-fns';
 import { ExportProgress } from 'dexie-export-import/dist/export';
 import { ImportProgress } from 'dexie-export-import/dist/import';
 import React, { useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { confirmationAtom } from '../../atoms/ConfirmationAtom';
-import { exportDatabase, importDatabase } from '../../domain/ImportExport';
+import { downloadBlob, exportDatabase, importDatabase } from '../../domain/ImportExport';
 import { MarcoNutrition } from '../../types/Nutrition';
 import Button, { ButtonStyle } from '../Input/Button';
 import ProgressBar from '../ProgressBar';
@@ -29,7 +30,15 @@ export default function ExportImportSection() {
   const exportConsumptionDatabase = () => {
     exportDatabase((exportProgress) => {
       return updateProgress(exportProgress);
-    });
+    },
+    async (blob: Blob) => {
+      const fileName = `TOP-Nutrition-App-export-${format(
+        Date.now(),
+        "yyyy-MM-dd-HH-mm"
+      )}.json`;
+      downloadBlob(blob, fileName);
+    }
+    );
   };
 
   const importFile: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
