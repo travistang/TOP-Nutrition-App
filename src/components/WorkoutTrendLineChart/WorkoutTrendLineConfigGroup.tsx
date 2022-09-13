@@ -1,11 +1,7 @@
 import React from "react";
 import { Duration } from "../../types/Duration";
 import AutoCompleteInput from "../Input/AutoCompleteInput";
-import ArrayUtils from "../../utils/Array";
-import StringUtils from "../../utils/String";
-import ExerciseUtils from "../../utils/Exercise";
 import { Exercise } from "../../types/Exercise";
-import { useLiveQuery } from "dexie-react-hooks";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
 import ExerciseAutocompleteResult from "../Input/ExerciseAutocompleteResult";
 import DateInput, { DateInputType } from "../Input/DateInput";
@@ -36,21 +32,8 @@ export default function WorkoutTrendLineConfigGroup({
         ...config,
         [field]: value,
       });
-    };
-  const workoutsInDuration = useLiveQuery(() => {
-    return ExerciseDatabase.recordsInRange(selectMonth, duration);
-  }, [selectMonth, duration]);
+      };
 
-  const exerciseList = ArrayUtils.distinct(
-    workoutsInDuration?.map((workout) => workout.exercise) ?? [],
-    ExerciseUtils.isSameExercise
-  );
-
-  const getExerciseSearchResult = async (searchString: string) => {
-    return exerciseList.filter((exercise) =>
-      StringUtils.searchCaseInsensitive(exercise.name, searchString)
-    );
-  };
   return (
     <div className="grid grid-cols-6 gap-1 mb-4">
       <DateInput
@@ -89,7 +72,7 @@ export default function WorkoutTrendLineConfigGroup({
             searchText: exercise.name,
           });
         }}
-        onSearch={getExerciseSearchResult}
+        onSearch={searchString => ExerciseDatabase.searchExercise(searchString)}
         renderResult={(exercise: Exercise) => (
           <ExerciseAutocompleteResult exercise={exercise} />
         )}

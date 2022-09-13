@@ -49,6 +49,7 @@ Sentry.init({
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
+  denyUrls: [/localhost/i, /127\.0\.0\.1/i],
 });
 
 const root = ReactDOM.createRoot(

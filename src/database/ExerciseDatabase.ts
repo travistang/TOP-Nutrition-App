@@ -1,5 +1,11 @@
 import { v4 as uuid4 } from "uuid";
-import { endOfDay, endOfMonth, startOfDay, startOfMonth, subMinutes } from "date-fns";
+import {
+  endOfDay,
+  endOfMonth,
+  startOfDay,
+  startOfMonth,
+  subMinutes,
+} from "date-fns";
 import Dexie, { Table } from "dexie";
 import { Exercise, ExerciseSet, Repetition } from "../types/Exercise";
 import { Duration } from "../types/Duration";
@@ -7,6 +13,7 @@ import { CreateEditType } from "../types/utils";
 import DatabaseUtils from "../utils/Database";
 import ArrayUtils from "../utils/Array";
 import ExerciseUtils from "../utils/Exercise";
+import StringUtils from "../utils/String";
 
 export type ExerciseSetRecord = ExerciseSet & {
   id: string;
@@ -39,16 +46,15 @@ class ExerciseDatabase extends Dexie {
   async searchExercise(searchString: string) {
     return this.exerciseSetRecord
       .filter((workoutSet) =>
-        workoutSet.exercise.name
-          .toLowerCase()
-          .includes(searchString.toLowerCase())
+        StringUtils.searchCaseInsensitive(
+          workoutSet.exercise.name,
+          searchString
+        )
       )
       .toArray()
-      .then((workoutWithMatchingExercise) =>
-        workoutWithMatchingExercise.map((workout) => workout.exercise)
-      )
+      .then((workouts) => workouts.map((workout) => workout.exercise))
       .then((exercises) =>
-        ArrayUtils.distinct(exercises, (a, b) => a.name === b.name)
+        ArrayUtils.distinct(exercises, ExerciseUtils.isSameExercise)
       );
   }
 
@@ -92,12 +98,12 @@ class ExerciseDatabase extends Dexie {
   }
 
   async recentExercises() {
-    const timeConstraint = subMinutes(Date.now(), 5);
+    const timeConstraint = subMinutes(Date.now(), 10);
     const recentRecords = await this.exerciseSetRecord
-      .where('date')
+      .where("date")
       .aboveOrEqual(timeConstraint.getTime())
       .toArray();
-    const recentExercises = recentRecords.map(record => record.exercise);
+    const recentExercises = recentRecords.map((record) => record.exercise);
     return ArrayUtils.distinct(recentExercises, ExerciseUtils.isSameExercise);
   }
 }

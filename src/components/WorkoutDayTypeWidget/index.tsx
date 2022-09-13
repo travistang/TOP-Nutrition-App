@@ -70,7 +70,7 @@ export default function WorkoutDayTypeWidget() {
           </div>
         ))}
       </div>
-      <div className="py-2">
+      <div className="py-2 max-h-24 overflow-y-auto">
         <WorkoutOfDayList workouts={workoutOnSelectedDate} />
       </div>
     </Section>
