@@ -14,8 +14,8 @@ export default function DayRow({ intervalCount, data }: Props) {
           <div
             key={`${hasDataInInterval}-${index}`}
           className={classNames(
-            "h-8 flex-1 flex-shrink-0",
-            hasDataInInterval ? "bg-highlight" : 'bg-gray-400',
+            "h-8 flex-1 flex-shrink-0 border-gray-400 border-opacity-50",
+            hasDataInInterval ? "bg-highlight" : '',
           )}
           />
       ))}

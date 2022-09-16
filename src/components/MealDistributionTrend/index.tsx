@@ -14,7 +14,14 @@ function MealDistributionTrendInner() {
     [date, duration]
   );
 
-  return <TimetableChart data={allRecords ?? []} startDate={durationStart} endDate={durationEnd} />;
+  return (
+    <TimetableChart
+      className="border rounded-lg border-gray-400 my-2"
+      data={allRecords ?? []}
+      startDate={durationStart}
+      endDate={durationEnd}
+    />
+  );
 }
 
 export default function MealDistributionTrend() {

@@ -5,6 +5,8 @@ import DateUtils from '../../utils/Date';
 import ObjectUtils from '../../utils/Object';
 import { groupDataWithinDay } from './utils';
 import DayRow from './DayRow';
+import DateAxis from './DateAxis';
+import TimeAxis from './TimeAxis';
 
 type Props<T> = {
   startDate: Date | number;
@@ -23,13 +25,17 @@ export default function TimetableChart<T extends { date: Date | number; }>({ sta
     dataOfDay => groupDataWithinDay(dataOfDay, 60)
   );
   return (
-    <div className={classNames("flex flex-row flex-nowrap w-full col-span-full py-2 h-36", className)}>
-      {daysInInterval.map((day) =>
-        <DayRow
-          intervalCount={24}
-          data={grouppedDataByDay[format(day, "dd/MM/yyyy")]}
-        />)
-      }
+    <div className="flex flex-row flex-wrap">
+      <TimeAxis intervalInMinute={60} />
+      <div className={classNames("flex flex-row flex-nowrap flex-1 col-span-full h-36", className)}>
+        {daysInInterval.map((day) =>
+          <DayRow
+            intervalCount={24}
+            data={grouppedDataByDay[format(day, "dd/MM/yyyy")]}
+          />)
+        }
+      </div>
+      <DateAxis daysInInterval={daysInInterval} />
     </div>
   )
 }
