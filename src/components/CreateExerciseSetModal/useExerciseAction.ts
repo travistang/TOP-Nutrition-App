@@ -2,7 +2,10 @@ import toast from "react-hot-toast";
 import RepetitionUtils from "../../utils/Repetition";
 import ExerciseUtils from "../../utils/Exercise";
 import { useRecoilState } from "recoil";
-import { createEditExerciseRecordAtom, DEFAULT_EXERCISE_RECORD } from "../../atoms/CreateEditExerciseRecordAtom";
+import {
+  createEditExerciseRecordAtom,
+  DEFAULT_EXERCISE_RECORD,
+} from "../../atoms/CreateEditExerciseRecordAtom";
 import { DEFAULT_REPETITION } from "../../types/Exercise";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
 
@@ -41,6 +44,7 @@ export default function useExerciseAction() {
     setCreateEditRecordAtom({
       modalOpened: false,
       id: undefined,
+      readonly: false,
       exercise,
       repetitions: keepRepetitions ? repetitions : DEFAULT_REPETITION,
       date: new Date(),
@@ -88,7 +92,7 @@ export default function useExerciseAction() {
       date: new Date(),
       modalOpened,
     });
-  }
+  };
   return {
     onEdit,
     onCreate,

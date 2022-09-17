@@ -1,4 +1,4 @@
-import { differenceInSeconds } from "date-fns/esm";
+import { differenceInSeconds } from "date-fns";
 import React from "react";
 
 type Props = {

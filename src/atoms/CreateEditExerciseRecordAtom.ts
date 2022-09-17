@@ -12,17 +12,21 @@ export type CreateEditExerciseRecordProps = {
   repetitions: Repetition;
   date: Date;
   id?: string;
+  readonly: boolean;
   modalOpened: boolean;
 };
 
 export const DEFAULT_EXERCISE_RECORD = {
   modalOpened: false,
   date: new Date(),
+  readonly: false,
   exercise: DEFAULT_EXERCISE,
   repetitions: DEFAULT_REPETITION,
 };
 
-export const createEditExerciseRecordAtom = atom<CreateEditExerciseRecordProps>({
-  key: "createEditExerciseRecord",
-  default: DEFAULT_EXERCISE_RECORD,
-});
+export const createEditExerciseRecordAtom = atom<CreateEditExerciseRecordProps>(
+  {
+    key: "createEditExerciseRecord",
+    default: DEFAULT_EXERCISE_RECORD,
+  }
+);
