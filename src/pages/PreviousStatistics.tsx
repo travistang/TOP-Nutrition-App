@@ -8,7 +8,7 @@ import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
 
 export default function PreviousStatistics() {
   return (
-    <div className="flex flex-col overflow-y-auto flex-1 items-stretch gap-2 pb-12">
+    <div className="flex flex-col overflow-y-auto overflow-x-hidden flex-1 items-stretch gap-2 pb-12">
       <StatisticsNavigateTab />
       <ConsumptionTrend />
       <CaloriesSurplusTrend />
