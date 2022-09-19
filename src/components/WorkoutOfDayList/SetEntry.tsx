@@ -44,17 +44,17 @@ export default function SetEntry({
     !ArrayUtils.hasSome(dropSetOrSuperSetIndex, [index, index + 1]);
   return (
     <>
-      <SetItem
-        set={set}
-        index={index}
-        properties={computeSetProperties(index, propertiesIndices)}
-      />
       {shouldShowRestTime && (
         <RestTimeText
           currentSetTime={set.date}
           nextSetTime={workouts[index + 1].date}
         />
       )}
+      <SetItem
+        set={set}
+        index={index}
+        properties={computeSetProperties(index, propertiesIndices)}
+      />
     </>
   );
 }

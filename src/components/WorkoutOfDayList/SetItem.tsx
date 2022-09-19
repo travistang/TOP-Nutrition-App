@@ -75,9 +75,6 @@ export default function SetItem({ set, index, properties }: Props) {
           <FontAwesomeIcon icon="pen" />
         </div>
       </div>
-      {properties.includes(ExerciseSetType.SetEnd) && (
-        <span className="h-1 w-full bg-gray-700 roudned-full" />
-      )}
     </>
   );
 }
