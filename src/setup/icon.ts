@@ -25,6 +25,7 @@ import {
   faFileImport,
   faFileExport,
   faRefresh,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const loadIcons = () => library.add(
@@ -53,5 +54,6 @@ export const loadIcons = () => library.add(
   faTrophy,
   faFileImport,
   faFileExport,
-  faRefresh
+  faRefresh,
+  faPlus
 );

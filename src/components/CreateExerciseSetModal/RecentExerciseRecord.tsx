@@ -5,6 +5,7 @@ import ExerciseDatabase from "../../database/ExerciseDatabase";
 import ArrayUtils from "../../utils/Array";
 import ObjectUtils from "../../utils/Object";
 import PreviousWorkoutList from "./PreviousWorkoutList";
+import RecentExerciseStatistics from "./RecentExerciseStatistics";
 
 type Props = {
   exerciseName: string;
@@ -29,10 +30,13 @@ export default function RecentExerciseRecord({ exerciseName }: Props) {
   );
 
   return (
-    <div className="flex flex-col max-h-[1/2vh] overflow-y-auto">
-      {sortedWorkoutGroups.map((records) => (
-        <PreviousWorkoutList key={records[0].id} workouts={records} />
-      ))}
+    <div className= "flex flex-col max-h-[1/2vh] overflow-y-auto pb-12">
+      <RecentExerciseStatistics recentExercises={exerciseRecords ?? []} />
+      <div className="flex flex-1 flex-col overflow-y-auto items-stretch snap-y snap-proximity">
+        {sortedWorkoutGroups.map((records) => (
+          <PreviousWorkoutList key={records[0].id} workouts={records} />
+        ))}
+      </div>
     </div>
   );
 }

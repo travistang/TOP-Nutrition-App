@@ -5,14 +5,10 @@ import Modal from "../Modal";
 import useModalOpenedMode, {
   ExerciseModalOpenMode,
 } from "./useModalOpenedMode";
-import CreateEditExerciseForm from "./CreateEditExerciseForm";
-import { Exercise } from "../../types/Exercise";
-import PreviousWorkoutList from "./PreviousWorkoutList";
-import RecentExerciseRecord from "./RecentExerciseRecord";
+import CreateEditExerciseForm from "./CreateEditExerciseForm";import RecentExerciseRecord from "./RecentExerciseRecord";
 
 const getModalHeader = (
   openingMode: ExerciseModalOpenMode,
-  exercise: Exercise
 ) => {
   switch (openingMode) {
     case ExerciseModalOpenMode.Adding:
@@ -20,7 +16,7 @@ const getModalHeader = (
     case ExerciseModalOpenMode.Editing:
       return "Editing workout";
     case ExerciseModalOpenMode.Viewing:
-      return `Recent records of ${exercise.name}`;
+      return "Recent records of";
   }
 };
 
@@ -31,7 +27,7 @@ export default function CreateExerciseSetModal() {
   const openingMode = useModalOpenedMode();
   const isViewingExercise = openingMode === ExerciseModalOpenMode.Viewing;
   const { modalOpened, exercise } = createEditRecordAtom;
-  const modalHeader = getModalHeader(openingMode, exercise);
+  const modalHeader = getModalHeader(openingMode);
   const closeModal = () => {
     setCreateEditRecordAtom({ ...createEditRecordAtom, modalOpened: false });
   };

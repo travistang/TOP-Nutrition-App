@@ -36,7 +36,7 @@ export default function PreviousWorkoutList({ workouts }: Props) {
   };
   return (
     <>
-      <span className="w-full text-xs sticky top-0 font-bold text-center opacity-75 pt-4 px-2">
+      <span className="w-full text-xs sticky z-10 top-0 font-bold text-center py-4 px-2 rounded-full text-opacity-75 bg-gray-200">
         {getWorkoutDateString(workoutDate)}
       </span>
       {workouts.map((set) => (

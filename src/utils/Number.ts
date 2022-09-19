@@ -14,6 +14,12 @@ const max = (...numbers: (number | null)[]) => {
   const numOrInfinity = numbers.map(n => n === null ? -Infinity : n);
   return Math.max(...numOrInfinity);
 }
+
+const range = (...numbers: (number | null)[]) => {
+  const validNumbers = numbers.filter(n => n !== null);
+  return [min(...validNumbers), max(...validNumbers)];
+}
+
 const sum = (...numbers: number[]) => numbers.reduce((sum, n) => sum + n, 0);
 const ratioToPercentageString = (num: number) => !Number.isFinite(num) ? '--' : `${(num * 100).toFixed(1)}%`;
 
@@ -40,6 +46,7 @@ export default {
   nanToZero,
   average,
   min, max,
+  range,
   sum,
   inputAsNumber,
   isNumeric,
