@@ -11,8 +11,11 @@ import ExerciseAutocompleteResult from '../Input/ExerciseAutocompleteResult';
 
 type Props = {
   className?: string;
-}
-export default function ExerciseNameInput({ className }:Props) {
+  showDefaultSuggestions?: boolean;
+  inputRef?: React.MutableRefObject<HTMLInputElement | null>;
+  onSelected: () => void;
+};
+export default function ExerciseNameInput({ className, showDefaultSuggestions, inputRef, onSelected }: Props) {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
@@ -35,22 +38,29 @@ export default function ExerciseNameInput({ className }:Props) {
     }));
   };
 
+  const onSelectExercise = (exercise: Exercise) => {
+    setCreateEditRecordAtom((record) => ({ ...record, exercise, date: new Date() }));
+    onSelected();
+  };
+
   return (
     <AutoCompleteInput
+      inline
+      icon="search"
+      placeholder='Search for exercise...'
+      inputRef={inputRef}
       label="Exercise name"
       value={exercise.name}
-      defaultResults={recentExercises}
+      defaultResults={showDefaultSuggestions ? recentExercises : []}
       onSearch={(searchString) =>
         ExerciseDatabase.searchExercise(searchString)
       }
       renderResult={(exercise: Exercise) => (
         <ExerciseAutocompleteResult exercise={exercise} />
       )}
-      onSelectSearchResult={(exercise: Exercise) =>
-        setCreateEditRecordAtom((record) => ({ ...record, exercise, date: new Date() }))
-      }
+      onSelectSearchResult={onSelectExercise}
       className={className}
       onChange={setName}
     />
-  )
+  );
 }

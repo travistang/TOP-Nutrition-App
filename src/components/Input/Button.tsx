@@ -38,7 +38,7 @@ type Props = {
   type?: "submit" | "button" | "reset";
 };
 export default function Button({
-  type,
+  type = "button",
   className,
   text,
   icon,
@@ -56,7 +56,7 @@ export default function Button({
         styles?.button,
         className
       )}
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
     >
       {icon && (
         <FontAwesomeIcon

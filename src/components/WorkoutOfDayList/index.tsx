@@ -26,14 +26,16 @@ export default function WorkoutOfDayList({ workouts }: Props) {
   return (
     <>
       <span className='text-xs text-opacity-75 text-center py-2'>Newest</span>
-      {workouts.reverse().map((set, index) => (
-        <SetEntry
-          workouts={workouts}
-          index={workouts.length - 1 - index}
-          key={set.id}
-          propertiesIndices={propertiesIndices}
-        />
-      ))}
+      <div className="flex flex-col-reverse w-full items-stretch">
+        {workouts.map((set, index) => (
+          <SetEntry
+            workouts={workouts}
+            index={index}
+            key={set.id}
+            propertiesIndices={propertiesIndices}
+          />
+        ))}
+      </div>
       <span className='text-xs text-opacity-75 text-center py-2'>Oldest</span>
     </>
   );

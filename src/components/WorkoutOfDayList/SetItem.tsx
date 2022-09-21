@@ -11,9 +11,12 @@ type Props = {
   index: number;
   set: ExerciseSetRecord;
   properties: ExerciseSetType[];
+  preview?: boolean;
 };
 
-const getIndexText = (index: number, properties: ExerciseSetType[]): string => {
+const getIndexText = (index: number, properties: ExerciseSetType[], preview?: boolean): string => {
+  if (preview) return "preview";
+
   if (properties.includes(ExerciseSetType.Dropset)) {
     return "dropset";
   }
@@ -24,12 +27,14 @@ const getIndexText = (index: number, properties: ExerciseSetType[]): string => {
 
   return `#${index + 1}`;
 };
-export default function SetItem({ set, index, properties }: Props) {
+export default function SetItem({ set, index, properties, preview }: Props) {
   const setEditingExerciseItem = useSetRecoilState(
     createEditExerciseRecordAtom
   );
 
   const viewExercise = (readonly: boolean) => (e: React.MouseEvent) => {
+    if (preview) return;
+
     setEditingExerciseItem({
       ...set,
       readonly,
@@ -48,7 +53,7 @@ export default function SetItem({ set, index, properties }: Props) {
         )}
       >
         <span className="capitalize col-span-2 text-xs font-bold flex items-center justify-center">
-          {getIndexText(index, properties)}
+          {getIndexText(index, properties, preview)}
         </span>
         <span className="h-min col-span-2 text-xs font-bold flex items-center justify-center text-gray-200 mx-2">
           <FontAwesomeIcon
@@ -70,7 +75,7 @@ export default function SetItem({ set, index, properties }: Props) {
         </div>
         <div
           onClick={viewExercise(false)}
-          className="col-span-2 flex items-center justify-center"
+          className={classNames("col-span-2 flex items-center justify-center", preview && "hidden")}
         >
           <FontAwesomeIcon icon="pen" />
         </div>

@@ -87,6 +87,13 @@ export const EquipmentIcon: Record<Equipment, IconProp> = {
   [Equipment.BodyWeight]: "person-walking",
 };
 
+export const ExerciseModeIcon: Record<ExerciseMode, IconProp> = {
+  [ExerciseMode.AlternateSides]: "arrow-right-arrow-left",
+  [ExerciseMode.BothSides]: "arrows-up-to-line",
+  [ExerciseMode.Left]: "arrow-left",
+  [ExerciseMode.Right]: "arrow-right",
+}
+
 export const ExerciseDayTypeColorMap: Record<ExerciseDayType, string> = {
   [ExerciseDayType.Leg]: 'rgb(228, 177, 0)',
   [ExerciseDayType.Push]: 'rgb(198, 95, 84)',
