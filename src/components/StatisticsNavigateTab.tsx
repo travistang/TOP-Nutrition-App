@@ -10,7 +10,7 @@ const LabelPathMapping: Record<string, string> = {
 export default function StatisticsNavigateTab() {
     const navigate = useNavigate();
     const location = useLocation();
-    const isTagSelected = (config: TabConfig) => LabelPathMapping[config.label] === location.pathname;
+    const isTagSelected = (config: TabConfig) => LabelPathMapping[config.label ?? ''] === location.pathname;
     return (
         <Tab className="sticky top-0 z-20" options={Object.entries(LabelPathMapping).map(([label, path]) => ({
             label, onClick: () => navigate(path)
