@@ -40,12 +40,20 @@ const isNumeric = (str: string) => {
 };
 const safeDivide = (a: number, b: number) => (b === 0 ? 0 : a / b);
 
+const numberToFormattedDigit = (nInHundred: number, integer?: boolean) => {
+  if (!Number.isFinite(nInHundred)) return "0,00";
+  const integerPart = Math.floor(nInHundred / 100);
+  const decimalPart = Math.floor(nInHundred % 100);
+  return integer ? integerPart : `${integerPart},${decimalPart.toString().slice(0, 2).padStart(2, '0')}`;
+}
+
 const isNumericDigit = (str: string) => str.match(/^[0-9.,]$/);
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   nanToZero,
   average,
-  min, max,
+  min,
+  max,
   range,
   sum,
   inputAsNumber,
@@ -54,4 +62,5 @@ export default {
   stringToFloat,
   safeDivide,
   ratioToPercentageString,
+  numberToFormattedDigit,
 };

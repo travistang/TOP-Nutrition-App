@@ -1,11 +1,14 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
 import Modal from "../Modal";
 import useModalOpenedMode, {
   ExerciseModalOpenMode,
 } from "./useModalOpenedMode";
-import CreateEditExerciseForm from "./CreateEditExerciseForm";import RecentExerciseRecord from "./RecentExerciseRecord";
+import RecentExerciseRecord from "./RecentExerciseRecord";
+import StepCreateEditExerciseForm from "./StepCreateEditExerciseForm";
+import { featureToggleAtom } from "../../atoms/FeatureToggleAtom";
+import CreateEditExerciseForm from "./CreateEditExerciseForm";
 
 const getModalHeader = (
   openingMode: ExerciseModalOpenMode,
@@ -21,6 +24,7 @@ const getModalHeader = (
 };
 
 export default function CreateExerciseSetModal() {
+  const featureToggle = useRecoilValue(featureToggleAtom);
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
@@ -32,12 +36,13 @@ export default function CreateExerciseSetModal() {
     setCreateEditRecordAtom({ ...createEditRecordAtom, modalOpened: false });
   };
 
+  const Form = featureToggle.stepExerciseWorkoutForm ? CreateEditExerciseForm : StepCreateEditExerciseForm;
   return (
     <Modal onClose={closeModal} opened={modalOpened} label={modalHeader}>
       {isViewingExercise ? (
         <RecentExerciseRecord exerciseName={exercise.name} />
       ) : (
-        <CreateEditExerciseForm />
+        <Form />
       )}
     </Modal>
   );

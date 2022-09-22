@@ -26,6 +26,14 @@ import {
   faFileExport,
   faRefresh,
   faPlus,
+  faTag,
+  faWeightHanging,
+  faArrowRightArrowLeft,
+  faArrowsUpToLine,
+  faArrowLeft,
+  faCheckCircle,
+  faCalendar,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const loadIcons = () => library.add(
@@ -55,5 +63,14 @@ export const loadIcons = () => library.add(
   faFileImport,
   faFileExport,
   faRefresh,
-  faPlus
+  faPlus,
+  faTag,
+  faWeightHanging,
+  faArrowRightArrowLeft,
+  faArrowsUpToLine,
+  faArrowLeft,
+  faArrowRight,
+  faCheckCircle,
+  faCalendar,
+  faCheck,
 );

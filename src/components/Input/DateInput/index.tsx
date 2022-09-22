@@ -72,7 +72,6 @@ export default function DateInput({
             mode={dateType}
             value={new Date(value)}
             onSelectDate={onSelectDate}
-            showingDate={showingDate}
           />
         )}
       </InputBase>

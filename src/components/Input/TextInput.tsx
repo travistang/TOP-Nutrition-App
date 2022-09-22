@@ -6,6 +6,7 @@ import InputBase, { InputBaseProps } from './InputBase';
 
 export type TextInputProps = Omit<InputBaseProps, "children"> & {
   value: string;
+  inputRef?: React.MutableRefObject<HTMLInputElement | null>;
   placeholder?: string;
   inputClassName?: string;
   innerInputClassName?: string;
@@ -26,6 +27,7 @@ export default function TextInput({
   inputClassName,
   innerInputClassName,
   value,
+  inputRef,
   onChange,
   onFocusChanged
 }: TextInputProps) {
@@ -39,6 +41,7 @@ export default function TextInput({
           icon && <FontAwesomeIcon icon={icon} className="w-4 h-4 mr-4" />
         }
         <input
+          ref={inputRef}
           placeholder={placeholder}
           type={type}
           inputMode={type === 'number' ? 'decimal' : undefined}
