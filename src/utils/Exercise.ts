@@ -60,8 +60,11 @@ const bodyPartsWorked = <T extends ExerciseSet>(sets: T[]): BodyPart[] => {
 
 const computeExerciseDayType = <T extends ExerciseSet>(sets: T[]): ExerciseDayType => {
   const bodyParts = bodyPartsWorked(sets);
+  const auxillaryParts = [BodyPart.Abs, BodyPart.Traps];
+
   const isEveryPartInList = (list: BodyPart[]) => {
-    return bodyParts.every(part => list.includes(part));
+    const allMatchingParts = [...auxillaryParts, ...list];
+    return bodyParts.every((part) => allMatchingParts.includes(part));
   };
 
   if (isEveryPartInList([BodyPart.Triceps, BodyPart.Shoulders, BodyPart.Chest])) {
