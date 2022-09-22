@@ -41,9 +41,9 @@ export default function RepetitionInputGroup({ step }: StepFormProps) {
 
   const { title, field, unit, integer } = FormConfigMap[step] as FormConfig;
   return (
-    <div className="flex flex-col items-stretch">
+    <div key={step} className="flex flex-col items-stretch">
       <span className="text-xs">{title}</span>
-      <DigitInput integer={integer} value={repetitions[field]} onChange={updateRepetition(field)} unit={unit} />
+      <DigitInput integer={integer} defaultValue={repetitions[field]} onChange={updateRepetition(field)} unit={unit} />
     </div>
   );
 }

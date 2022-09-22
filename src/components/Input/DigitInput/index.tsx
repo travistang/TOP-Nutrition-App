@@ -1,56 +1,58 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
-import NumberUtils from '../../../utils/Number';
+import useInitialValue from '../../../hooks/useInitialValue';
 import Keypad from './Keypad';
-import useDigitLogic from './useDigitLogic';
+import { addDigit, removeDigit, numberToString, stringToNumber, displayValue } from './utils/digitLogic';
 
 type Props = {
-  value: number;
+  defaultValue: number;
   onChange: (newValue: number) => void;
   unit?: string;
   className?: string;
   integer?: boolean;
-  hideKeypad?: boolean;
-}
-export default function DigitInput({ integer, value, onChange, className, unit, hideKeypad }: Props) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [focused, setFocused] = useState(false);
-  const { valueHundred, addDigit, removeDigit } = useDigitLogic({ value, onChange, integer });
-  const onFocus = () => {
-    setFocused(true);
-    inputRef?.current?.focus();
-  }
+};
 
-  const handleInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const value =  e.target.valueAsNumber / 100;
-    onChange(Number.isFinite(value) ? value : 0);
+
+
+export default function DigitInput({ integer, defaultValue, onChange, className, unit }: Props) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [digitString, setDigitString] = useState('');
+  const initialValue = useInitialValue(defaultValue);
+  useEffect(() => {
+    if (initialValue !== null) {
+      setDigitString(numberToString(initialValue, integer));
+    }
+
+  }, [initialValue, integer]);
+
+  const inputDigit = (n: number) => {
+    const newString = addDigit(digitString, n);
+    setDigitString(newString);
+    onChange(stringToNumber(newString, integer));
+  };
+
+  const deleteDigit = () => {
+    const newString = removeDigit(digitString);
+    setDigitString(newString);
+    onChange(stringToNumber(newString, integer));
   }
 
   return (
     <div className={classNames("flex flex-col items-stretch gap-2", className)}>
-      <div onClick={onFocus} className="flex flex-row flex-nowrap items-end gap-4">
+      <div className="flex flex-row flex-nowrap items-end gap-4">
         <div
           onClick={() => inputRef.current?.focus()}
           className={classNames(
             "rounded-lg  p-2 flex flex-nowrap flex-1",
-            focused ? "bg-gray-400" : "bg-gray-200"
           )}
         >
-          <input
-            ref={inputRef}
-            disabled={!hideKeypad}
-            className="hidden"
-            value={value * 100}
-            type="number"
-            onChange={handleInput}
-          />
           <span className="text-4xl flex-1 text-right">
-            {NumberUtils.numberToFormattedDigit(valueHundred, integer)}
+            {displayValue(digitString, integer)}
           </span>
         </div>
         {unit && <span className="text-3xl">{unit}</span>}
       </div>
-      {!hideKeypad && <Keypad onDigitInput={addDigit} onBackspace={removeDigit} />}
+      <Keypad onDigitInput={inputDigit} onBackspace={deleteDigit} />
     </div>
-  )
+  );
 }
