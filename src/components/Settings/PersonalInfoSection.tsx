@@ -20,7 +20,7 @@ export default function PersonalInfoSection() {
     (value: PersonalInfo[K]) => {
       setPersonalInfo({ ...personalInfo, [field]: value });
     };
-
+  console.log({ personalInfo });
   return (
     <Section label="Personal information">
       <div className="grid grid-cols-6 gap-2 pt-2">

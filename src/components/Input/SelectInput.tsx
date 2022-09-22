@@ -53,7 +53,7 @@ export default function SelectInput({
           <option
             key={option.label}
             value={option.value}
-            selected={selectedValue.includes(option.value)}
+            selected={selectedValue?.includes(option.value)}
           >
             {option.label}
           </option>

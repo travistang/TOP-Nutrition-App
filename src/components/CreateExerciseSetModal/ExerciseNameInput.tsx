@@ -13,7 +13,7 @@ type Props = {
   className?: string;
   showDefaultSuggestions?: boolean;
   inputRef?: React.MutableRefObject<HTMLInputElement | null>;
-  onSelected: () => void;
+  onSelected?: () => void;
 };
 export default function ExerciseNameInput({ className, showDefaultSuggestions, inputRef, onSelected }: Props) {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
@@ -40,7 +40,7 @@ export default function ExerciseNameInput({ className, showDefaultSuggestions, i
 
   const onSelectExercise = (exercise: Exercise) => {
     setCreateEditRecordAtom((record) => ({ ...record, exercise, date: new Date() }));
-    onSelected();
+    onSelected?.();
   };
 
   return (
