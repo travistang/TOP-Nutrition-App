@@ -28,7 +28,7 @@ const canProceedToNextStep = (step: CreateExerciseStep, exerciseValue: CreateEdi
     case CreateExerciseStep.Weight:
       return exerciseValue.repetitions.weight > 1;
     case CreateExerciseStep.Repetition:
-      return exerciseValue.repetitions.weight > 0;
+      return exerciseValue.repetitions.count > 0;
     default:
       return true;
   }
