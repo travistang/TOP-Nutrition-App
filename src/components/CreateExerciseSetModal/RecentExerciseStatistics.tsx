@@ -6,7 +6,6 @@ import Button, { ButtonStyle } from '../Input/Button';
 import ScalarWidget from '../Widgets/ScalarWidget';
 import { useSetRecoilState } from 'recoil';
 import { createEditExerciseRecordAtom } from '../../atoms/CreateEditExerciseRecordAtom';
-import { DEFAULT_REPETITION } from '../../types/Exercise';
 
 type Props = {
   recentExercises: ExerciseSetRecord[];

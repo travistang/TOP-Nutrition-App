@@ -24,6 +24,7 @@ export default function TimeForm({ step }: StepFormProps) {
     if (useCurrentTime) {
       setDate(new Date());
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useCurrentTime]);
 
   if (step !== CreateExerciseStep.Time) return null;
