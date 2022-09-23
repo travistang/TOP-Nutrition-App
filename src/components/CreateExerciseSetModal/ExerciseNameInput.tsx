@@ -14,8 +14,9 @@ type Props = {
   showDefaultSuggestions?: boolean;
   inputRef?: React.MutableRefObject<HTMLInputElement | null>;
   onSelected?: () => void;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 };
-export default function ExerciseNameInput({ className, showDefaultSuggestions, inputRef, onSelected }: Props) {
+export default function ExerciseNameInput({ className, showDefaultSuggestions, inputRef, onSelected, onKeyDown }: Props) {
   const [createEditRecordAtom, setCreateEditRecordAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
@@ -61,6 +62,7 @@ export default function ExerciseNameInput({ className, showDefaultSuggestions, i
       onSelectSearchResult={onSelectExercise}
       className={className}
       onChange={setName}
+      onKeyDown={onKeyDown}
     />
   );
 }

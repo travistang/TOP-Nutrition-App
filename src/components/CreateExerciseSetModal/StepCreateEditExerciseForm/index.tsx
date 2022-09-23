@@ -1,19 +1,17 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React from 'react';
 import toast from 'react-hot-toast';
 import { useRecoilState } from 'recoil';
-import { createEditExerciseRecordAtom, CreateEditExerciseRecordProps, DEFAULT_EXERCISE_RECORD } from '../../../atoms/CreateEditExerciseRecordAtom';
+import { createEditExerciseRecordAtom, CreateEditExerciseRecordProps } from '../../../atoms/CreateEditExerciseRecordAtom';
 import ExerciseDatabase from '../../../database/ExerciseDatabase';
-import CheckboxInput from '../../Input/CheckboxInput';
-import StepList from '../../StepList';
+import ProgressiveForm from '../../ProgressiveForm';
+import { ProgressiveFormConfig } from '../../ProgressiveForm/context';
 import ExerciseFormPreview from './ExerciseFormPreview';
 import ExerciseNameAndTypeForm from './ExerciseNameAndTypeForm';
-import ProceedButtonGroup from './ProceedButtonGroup';
 import RepetitionInputGroup from './RepetitionInputGroup';
 import TimeForm from './TimeForm';
-import { CreateExerciseStep, CreateExerciseStepIconMap, StepFormProps } from './types';
+import { CreateExerciseStep, CreateExerciseStepIconMap } from './types';
 
-const FormComponentMap: Partial<Record<CreateExerciseStep, React.FC<StepFormProps>>> = {
+const FormComponentMap: Record<CreateExerciseStep, React.FC<any>> = {
   [CreateExerciseStep.Name]: ExerciseNameAndTypeForm,
   [CreateExerciseStep.Type]: ExerciseNameAndTypeForm,
   [CreateExerciseStep.Weight]: RepetitionInputGroup,
@@ -35,15 +33,9 @@ const canProceedToNextStep = (step: CreateExerciseStep, exerciseValue: CreateEdi
 };
 
 export default function StepCreateEditExerciseForm() {
-  const [exerciseSetValue, setExerciseSetValue] = useRecoilState(createEditExerciseRecordAtom);
-  const [step, setStep] = useState<CreateExerciseStep>(CreateExerciseStep.Name);
-  const [addAnotherSet, setAddAnotherSet] = useState(false);
+  const [exerciseSetValue] = useRecoilState(createEditExerciseRecordAtom);
 
   const isEditing = !!exerciseSetValue.id;
-  const canProceed = canProceedToNextStep(step, exerciseSetValue);
-  const isLastStep = step === CreateExerciseStep.Time;
-  const FormComponent = FormComponentMap[step];
-
   const onSubmit = async () => {
     const { id, exercise, repetitions, date } = exerciseSetValue;
     if (isEditing) {
@@ -53,41 +45,21 @@ export default function StepCreateEditExerciseForm() {
       await ExerciseDatabase.addRecord(exercise, repetitions, date);
       toast.success("Record added");
     }
-
-    if (addAnotherSet && !isEditing) {
-      setStep(CreateExerciseStep.Name);
-      setExerciseSetValue({
-        ...exerciseSetValue,
-        date: new Date(),
-        modalOpened: true
-      });
-    } else {
-      setExerciseSetValue(DEFAULT_EXERCISE_RECORD);
-    }
   };
 
+  const progressiveFormConfig: ProgressiveFormConfig = {
+    steps: Object.values(CreateExerciseStep).map(step => ({
+      icon: CreateExerciseStepIconMap[step as CreateExerciseStep],
+      formComponent: FormComponentMap[step as CreateExerciseStep],
+      key: step as string,
+    })),
+    onSubmit,
+    nextStep: (step: number) => canProceedToNextStep(step, exerciseSetValue) ? step + 1 : null,
+  }
+
   return (
-    <div className='flex flex-col items-stretch min-h-[50vh]'>
-      <StepList
-        className="pb-2"
-        stepIcons={Object.values(CreateExerciseStepIconMap)}
-        currentStep={step}
-      />
-      <div className="flex-1 flex flex-col items-stretch gap-2">
-        <ExerciseFormPreview step={step} onGotoStep={setStep} />
-        {FormComponent && <FormComponent step={step} onGotoStep={setStep} />}
-      </div>
-      {isLastStep && (
-        !isEditing ? <CheckboxInput onCheck={() => setAddAnotherSet(!addAnotherSet)} selected={addAnotherSet} label="Add another set" />
-          : <span className="text-xs"><FontAwesomeIcon icon="info-circle" className="mr-2" />You are updating an existing record</span>
-      )}
-      <ProceedButtonGroup
-        step={step}
-        setStep={setStep}
-        isLastStep={isLastStep}
-        canProceed={canProceed}
-        onSubmit={onSubmit}
-      />
-    </div>
+    <ProgressiveForm config={progressiveFormConfig} className="min-h-[50vh]">
+      <ExerciseFormPreview />
+    </ProgressiveForm>
   );
 }

@@ -19,7 +19,6 @@ export default function MealSummaryProgressBar({ mealNutrition }: Props) {
     color: MarcoNutritionColor[marco],
   }));
 
-  // TODO: Findout target calories of day
   return (
     <ProgressBar
       className="col-span-12 h-1 col-start-1"

@@ -12,6 +12,7 @@ export type TextInputProps = Omit<InputBaseProps, "children"> & {
   innerInputClassName?: string;
   onChange: (newValue: string) => void;
   onFocusChanged?: (focused: boolean) => void;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   type?: string;
   icon?: IconProp;
   children?: React.ReactNode;
@@ -29,6 +30,7 @@ export default function TextInput({
   value,
   inputRef,
   onChange,
+  onKeyDown,
   onFocusChanged
 }: TextInputProps) {
   return (
@@ -48,6 +50,7 @@ export default function TextInput({
           pattern={type === 'number' ? '\\d*' : undefined}
           onFocus={() => onFocusChanged?.(true)}
           onBlur={() => onFocusChanged?.(false)}
+          onKeyDown={onKeyDown}
           className={classNames("bg-transparent outline-none flex-1", innerInputClassName ?? "text-gray-100")}
           value={value}
           onChange={e => onChange(e.target.value)}

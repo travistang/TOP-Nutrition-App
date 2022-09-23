@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { createEditExerciseRecordAtom } from '../../../atoms/CreateEditExerciseRecordAtom';
+import CheckboxInput from '../../Input/CheckboxInput';
 import { DateInputType } from '../../Input/DateInput';
 import DateTimePicker from '../../Input/DateInput/DateTimePicker';
 import TabSelectInput, { Option } from '../../Input/TabSelectInput';
+import { progressiveFormContext } from '../../ProgressiveForm/context';
 import { CreateExerciseStep, StepFormProps } from './types';
 
 const TimeInputOptions: Option<boolean>[] = [{
@@ -16,7 +19,9 @@ const TimeInputOptions: Option<boolean>[] = [{
   value: false,
 }]
 export default function TimeForm({ step }: StepFormProps) {
+  const { toggleRestartOnComplete, restartOnComplete } = useContext(progressiveFormContext);
   const [exerciseAtom, setExerciseAtom] = useRecoilState(createEditExerciseRecordAtom);
+  const isEditing = !!exerciseAtom.id;
   const [useCurrentTime, setUseCurrentTime] = useState(true);
   const setDate = (date: Date) => setExerciseAtom(atom => ({ ...atom, date }));
 
@@ -41,6 +46,9 @@ export default function TimeForm({ step }: StepFormProps) {
           <DateTimePicker calendarClassName="gap-y-1" inline value={date} onSelectDate={setDate} mode={DateInputType.DateTime} />
         </div>
       )}
+      {!isEditing ? <CheckboxInput onCheck={toggleRestartOnComplete} selected={restartOnComplete} label="Add another set" />
+          : <span className="text-xs"><FontAwesomeIcon icon="info-circle" className="mr-2" />You are updating an existing record</span>
+      }
     </>
   );
 }
