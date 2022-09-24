@@ -1,10 +1,10 @@
 import { isBefore } from "date-fns";
-import { useLiveQuery } from "dexie-react-hooks";
 import { useRecoilValue } from "recoil";
 import { personalInfoAtom } from "../atoms/PersonalInfoAtom";
-import MeasurementDatabase, { MeasurementRecord } from "../database/MeasurementDatabase";
+import MeasurementDatabase from "../database/MeasurementDatabase";
 import { Gender, PersonalInfo, PhysicalActivityLevel } from "../types/PersonalInfo";
 import * as PersonalInfoDomain from "../domain/PersonalInfo";
+import { useCurrentBodyWeight } from "./BodyWeight";
 
 export const PALFactor: Record<PhysicalActivityLevel, number> = {
   [PhysicalActivityLevel.Sedentary]: 1.2,
@@ -43,17 +43,11 @@ export const getMaintenanceCalories = (
   }
 };
 
-export function useMaintenanceCalories(withCurrentWeight?: false): number | null;
-export function useMaintenanceCalories(
-  withCurrentWeight: true
-): { maintenanceCalories: number; currentWeight: MeasurementRecord } | null;
-export function useMaintenanceCalories(withCurrentWeight: any): any {
-  const currentWeight = useLiveQuery(() =>
-    MeasurementDatabase.lastRecordOfLabel("weight"),
-    []
-  );
+export function useMaintenanceCalories(): number | null {
+  const {currentWeight} = useCurrentBodyWeight();
   const personalInfo = useRecoilValue(personalInfoAtom);
-  if (!currentWeight) return null;
-  const maintenanceCalories = getMaintenanceCalories(currentWeight.value, personalInfo);
-  return withCurrentWeight ? { maintenanceCalories, currentWeight: currentWeight } : maintenanceCalories;
+  if (currentWeight === null) {
+    return null;
+  }
+  return getMaintenanceCalories(currentWeight, personalInfo);
 }

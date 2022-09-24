@@ -1,10 +1,11 @@
-import React from 'react';
-import { useRecoilState } from 'recoil';
-import { createEditExerciseRecordAtom } from '../../../atoms/CreateEditExerciseRecordAtom';
-import { Repetition } from '../../../types/Exercise';
-import { Modifier } from '../../../types/utils';
-import DigitInput from '../../Input/DigitInput';
-import { CreateExerciseStep, StepFormProps } from './types';
+import React, { useContext } from "react";
+import { useRecoilState } from "recoil";
+import { createEditExerciseRecordAtom } from "../../../atoms/CreateEditExerciseRecordAtom";
+import { Repetition } from "../../../types/Exercise";
+import { Modifier } from "../../../types/utils";
+import DigitInput from "../../Input/DigitInput";
+import { progressiveFormContext } from "../../ProgressiveForm/context";
+import { CreateExerciseStep } from "./types";
 
 type FormConfig = {
   title: string;
@@ -15,27 +16,36 @@ type FormConfig = {
 
 const FormConfigMap: Partial<Record<CreateExerciseStep, FormConfig>> = {
   [CreateExerciseStep.Weight]: {
-    title: 'Weight',
-    field: 'weight',
-    unit: 'kg',
+    title: "Weight",
+    field: "weight",
+    unit: "kg",
     integer: false,
   },
   [CreateExerciseStep.Repetition]: {
-    title: 'Repetition',
-    field: 'count',
-    unit: 'reps',
+    title: "Repetition",
+    field: "count",
+    unit: "reps",
     integer: true,
   },
 };
 
-export default function RepetitionInputGroup({ step }: StepFormProps) {
-  const [exerciseAtomValue, setExerciseAtomvalue] = useRecoilState(createEditExerciseRecordAtom);
+export default function RepetitionInputGroup() {
+  const { step } = useContext(progressiveFormContext);
+  const [exerciseAtomValue, setExerciseAtomvalue] = useRecoilState(
+    createEditExerciseRecordAtom
+  );
   const { repetitions } = exerciseAtomValue;
 
   const updateRepetition: Modifier<Repetition> = (field) => (value) => {
-    setExerciseAtomvalue(atom => ({ ...atom, repetitions: { ...atom.repetitions, [field]: value } }));
+    setExerciseAtomvalue((atom) => ({
+      ...atom,
+      repetitions: { ...atom.repetitions, [field]: value },
+    }));
   };
-  if (step !== CreateExerciseStep.Weight && step !== CreateExerciseStep.Repetition) {
+  if (
+    step !== CreateExerciseStep.Weight &&
+    step !== CreateExerciseStep.Repetition
+  ) {
     return null;
   }
 
@@ -43,7 +53,12 @@ export default function RepetitionInputGroup({ step }: StepFormProps) {
   return (
     <div key={step} className="flex flex-col items-stretch">
       <span className="text-xs">{title}</span>
-      <DigitInput integer={integer} defaultValue={repetitions[field]} onChange={updateRepetition(field)} unit={unit} />
+      <DigitInput
+        integer={integer}
+        defaultValue={repetitions[field]}
+        onChange={updateRepetition(field)}
+        unit={unit}
+      />
     </div>
   );
 }

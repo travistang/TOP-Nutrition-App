@@ -14,7 +14,11 @@ type Props = {
   preview?: boolean;
 };
 
-const getIndexText = (index: number, properties: ExerciseSetType[], preview?: boolean): string => {
+const getIndexText = (
+  index: number,
+  properties: ExerciseSetType[],
+  preview?: boolean
+): string => {
   if (preview) return "preview";
 
   if (properties.includes(ExerciseSetType.Dropset)) {
@@ -33,6 +37,7 @@ export default function SetItem({ set, index, properties, preview }: Props) {
   );
 
   const viewExercise = (readonly: boolean) => (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (preview) return;
 
     setEditingExerciseItem({
@@ -75,7 +80,10 @@ export default function SetItem({ set, index, properties, preview }: Props) {
         </div>
         <div
           onClick={viewExercise(false)}
-          className={classNames("col-span-2 flex items-center justify-center", preview && "hidden")}
+          className={classNames(
+            "col-span-2 flex items-center justify-center",
+            preview && "hidden"
+          )}
         >
           <FontAwesomeIcon icon="pen" />
         </div>
