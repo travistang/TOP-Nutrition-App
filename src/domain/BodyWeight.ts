@@ -12,15 +12,16 @@ export function useCurrentBodyWeight() {
       .equalsIgnoreCase(WEIGHT_RECORD_NAME)
       .reverse()
       .sortBy("date");
-  }, []);
-
-  const usingRecordsOnDay = recentWeightRecords?.[0].date ?? null;
+  });
+  const usingRecordsOnDay = recentWeightRecords?.[0]?.date ?? null;
   const weightsOnRecentDay = usingRecordsOnDay
     ? recentWeightRecords!
         .filter((record) => isSameDay(record.date, usingRecordsOnDay))
         .map((record) => record.value)
     : null;
 
-  const currentWeight = weightsOnRecentDay ? NumberUtils.average(...weightsOnRecentDay) : null;
+  const currentWeight = weightsOnRecentDay
+    ? NumberUtils.average(...weightsOnRecentDay)
+    : null;
   return { currentWeight, usingRecordsOnDay };
 }

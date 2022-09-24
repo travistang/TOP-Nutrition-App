@@ -7,13 +7,6 @@ export type ProgressiveFormStep = {
   key: string;
 };
 
-export type ProgressiveFormConfig = {
-  steps: ProgressiveFormStep[];
-  nextStep?: (currentStep: number) => number | null;
-  previousStep?: (currentStep: number) => number | null;
-  onSubmit: () => void;
-};
-
 export type ProgressiveFormContextValue = {
   step: number;
   steps: ProgressiveFormStep[];
@@ -27,12 +20,19 @@ export type ProgressiveFormContextValue = {
   goToStep: (step: number) => void;
 };
 
+export type ProgressiveFormConfig = {
+  steps: ProgressiveFormStep[];
+  nextStep?: (currentStep: number) => number | null;
+  previousStep?: (currentStep: number) => number | null;
+  onSubmit: (contextState: ProgressiveFormContextValue) => void;
+};
+
 export const progressiveFormContext =
   React.createContext<ProgressiveFormContextValue>({
     step: 0,
     steps: [],
     restartOnComplete: false,
-    toggleRestartOnComplete: () => { },
+    toggleRestartOnComplete: () => {},
     isLastStep: true,
     canProceed: false,
     canReturn: false,
