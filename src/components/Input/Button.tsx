@@ -27,7 +27,7 @@ const buttonStyles: Record<
     active: {},
   },
 };
-type Props = {
+export type Props = {
   className?: string;
   textClassName?: string;
   text?: string;
