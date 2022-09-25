@@ -4,6 +4,7 @@ import { createEditExerciseRecordAtom } from "../../../atoms/CreateEditExerciseR
 import { Repetition } from "../../../types/Exercise";
 import { Modifier } from "../../../types/utils";
 import DigitInput from "../../Input/DigitInput";
+import { InputMode } from "../../Input/DigitInput/utils/digitLogic";
 import { progressiveFormContext } from "../../ProgressiveForm/context";
 import { CreateExerciseStep } from "./types";
 
@@ -11,7 +12,7 @@ type FormConfig = {
   title: string;
   field: keyof Repetition;
   unit: string;
-  integer: boolean;
+  mode?: InputMode;
 };
 
 const FormConfigMap: Partial<Record<CreateExerciseStep, FormConfig>> = {
@@ -19,13 +20,12 @@ const FormConfigMap: Partial<Record<CreateExerciseStep, FormConfig>> = {
     title: "Weight",
     field: "weight",
     unit: "kg",
-    integer: false,
   },
   [CreateExerciseStep.Repetition]: {
     title: "Repetition",
     field: "count",
     unit: "reps",
-    integer: true,
+    mode: InputMode.Integer,
   },
 };
 
@@ -49,12 +49,12 @@ export default function RepetitionInputGroup() {
     return null;
   }
 
-  const { title, field, unit, integer } = FormConfigMap[step] as FormConfig;
+  const { title, field, unit, mode } = FormConfigMap[step] as FormConfig;
   return (
     <div key={step} className="flex flex-col items-stretch">
       <span className="text-xs">{title}</span>
       <DigitInput
-        integer={integer}
+        inputMode={mode}
         defaultValue={repetitions[field]}
         onChange={updateRepetition(field)}
         unit={unit}
