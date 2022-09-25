@@ -1,9 +1,8 @@
 import classNames from "classnames";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DateInputType } from "../Input/DateInput";
 import DateTimePicker from "../Input/DateInput/DateTimePicker";
 import TabSelectInput, { Option } from "../Input/TabSelectInput";
-import { progressiveFormContext } from "../ProgressiveForm/context";
 
 const TimeInputOptions: Option<boolean>[] = [
   {

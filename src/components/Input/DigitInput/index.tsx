@@ -1,8 +1,6 @@
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import useInitialValue from "../../../hooks/useInitialValue";
-import Tab from "../../Tab";
-import TabSelectInput from "../TabSelectInput";
 import InputModeToggle from "./InputModeToggle";
 import Keypad from "./Keypad";
 import {
