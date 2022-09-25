@@ -15,7 +15,7 @@ import ExerciseFormPreview from "./ExerciseFormPreview";
 import ExerciseNameAndTypeForm from "./ExerciseNameAndTypeForm";
 import RepetitionInputGroup from "./RepetitionInputGroup";
 import { getNextStep } from "./stepLogic";
-import TimeForm from "./TimeForm";
+import TimeForm from "./ExerciseTimeForm";
 import { CreateExerciseStep, CreateExerciseStepIconMap } from "./types";
 
 const FormComponentMap: Record<CreateExerciseStep, React.FC<any>> = {

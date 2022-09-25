@@ -1,11 +1,22 @@
 import classNames from "classnames";
 import React, { useContext } from "react";
-import Button, { ButtonStyle } from "../Input/Button";
+import Button, { ButtonStyle, Props as ButtonProps } from "../Input/Button";
 import { ProgressiveFormConfig, progressiveFormContext } from "./context";
 
 type Props = {
   config: ProgressiveFormConfig;
 };
+
+const nextButtonConfig: Partial<ButtonProps> = {
+  text: "Next",
+  icon: "caret-right",
+};
+
+const lastStepButtonConfig: Partial<ButtonProps> = {
+  text: "Submit",
+  icon: "check-circle",
+};
+
 export default function ProceedButtonGroup({ config }: Props) {
   const { onSubmit } = config;
   const formContextValue = useContext(progressiveFormContext);
@@ -38,16 +49,14 @@ export default function ProceedButtonGroup({ config }: Props) {
         />
       )}
       <Button
-        text={isLastStep ? "Submit" : "Next"}
-        icon={isLastStep ? "check-circle" : "caret-right"}
         disabled={!canProceed}
         className={classNames(
           "col-start-6 col-span-1 gap-2",
-          !isLastStep && "flex-row-reverse",
-          !canProceed && "opacity-0"
+          !canProceed ? "hidden" : "flex-row-reverse"
         )}
         buttonStyle={ButtonStyle.Clear}
         onClick={isLastStep ? onSubmitWithRestart : nextStep}
+        {...(isLastStep ? lastStepButtonConfig : nextButtonConfig)}
       />
     </div>
   );

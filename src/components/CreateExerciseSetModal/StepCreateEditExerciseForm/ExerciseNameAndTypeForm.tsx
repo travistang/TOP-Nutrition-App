@@ -7,9 +7,10 @@ import Button, { ButtonStyle } from "../../Input/Button";
 import SmallNotice from "../../SmallNotice";
 import ExerciseDatabase from "../../../database/ExerciseDatabase";
 import toast from "react-hot-toast";
+import { CreateExerciseStep } from "./types";
 
 export default function ExerciseNameAndTypeForm() {
-  const { nextStep } = useContext(progressiveFormContext);
+  const { nextStep, goToStep } = useContext(progressiveFormContext);
   const [{ id }, setExerciseAtomValue] = useRecoilState(
     createEditExerciseRecordAtom
   );
@@ -23,6 +24,10 @@ export default function ExerciseNameAndTypeForm() {
     if (keyEvent.key.toLowerCase() === "enter") {
       nextStep();
     }
+  };
+
+  const nextStepFromKnownExercise = () => {
+    goToStep(CreateExerciseStep.Weight);
   };
 
   const deleteRecord = async () => {
@@ -55,7 +60,7 @@ export default function ExerciseNameAndTypeForm() {
       <ExerciseNameInput
         showDefaultSuggestions
         inputRef={exerciseInputRef}
-        onSelected={nextStep}
+        onSelected={nextStepFromKnownExercise}
         onKeyDown={handleExerciseNameInputKey}
       />
     </div>
