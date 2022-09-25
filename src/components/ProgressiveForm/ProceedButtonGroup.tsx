@@ -10,7 +10,6 @@ type Props = {
 const nextButtonConfig: Partial<ButtonProps> = {
   text: "Next",
   icon: "caret-right",
-  className: "flex-row-reverse",
 };
 
 const lastStepButtonConfig: Partial<ButtonProps> = {
@@ -53,7 +52,7 @@ export default function ProceedButtonGroup({ config }: Props) {
         disabled={!canProceed}
         className={classNames(
           "col-start-6 col-span-1 gap-2",
-          !canProceed && "opacity-0"
+          !canProceed ? "hidden" : "flex-row-reverse"
         )}
         buttonStyle={ButtonStyle.Clear}
         onClick={isLastStep ? onSubmitWithRestart : nextStep}
