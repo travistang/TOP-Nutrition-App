@@ -14,7 +14,7 @@ import ExerciseBodyPartForm from "./ExerciseBodyPartForm";
 import ExerciseFormPreview from "./ExerciseFormPreview";
 import ExerciseNameAndTypeForm from "./ExerciseNameAndTypeForm";
 import RepetitionInputGroup from "./RepetitionInputGroup";
-import { getNextStep } from "./stepLogic";
+import { computeInitialStep, getNextStep } from "./stepLogic";
 import TimeForm from "./ExerciseTimeForm";
 import { CreateExerciseStep, CreateExerciseStepIconMap } from "./types";
 
@@ -67,8 +67,12 @@ export default function StepCreateEditExerciseForm() {
     nextStep: (step: number) => getNextStep(step, exerciseSetValue),
   };
 
+  const initialStep = computeInitialStep(exerciseSetValue);
   return (
-    <ProgressiveForm config={progressiveFormConfig} className="min-h-[50vh]">
+    <ProgressiveForm
+      initialStep={initialStep}
+      config={progressiveFormConfig}
+      className="min-h-[50vh]">
       <ExerciseFormPreview />
     </ProgressiveForm>
   );

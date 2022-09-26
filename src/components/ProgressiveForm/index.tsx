@@ -12,13 +12,15 @@ type Props = {
   config: ProgressiveFormConfig;
   className?: string;
   children?: React.ReactNode;
+  initialStep?: number;
 };
 export default function ProgressiveForm({
   config,
   className,
   children,
+  initialStep
 }: Props) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(initialStep ?? 0);
   const [restartOnComplete, setRestartOnComplete] = useState(false);
   const {
     steps: stepsConfig,

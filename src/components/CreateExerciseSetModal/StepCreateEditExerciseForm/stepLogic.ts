@@ -2,6 +2,14 @@ import { CreateEditExerciseRecordProps } from "../../../atoms/CreateEditExercise
 import { Equipment } from "../../../types/Exercise";
 import { CreateExerciseStep } from "./types";
 
+export const computeInitialStep = (
+  exerciseValue: CreateEditExerciseRecordProps
+) => {
+  const { exercise, id } = exerciseValue;
+  if (!!id || exercise.workingBodyParts.length !== 0) return CreateExerciseStep.Weight;
+  return CreateExerciseStep.Name;
+}
+
 const canProceedToNextStep = (
   step: CreateExerciseStep,
   exerciseValue: CreateEditExerciseRecordProps
