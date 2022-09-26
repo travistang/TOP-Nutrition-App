@@ -55,7 +55,7 @@ export default function PersonalInfoSection() {
             value: pal,
           }))}
         />
-        <SmallNotice icon="info-circle">
+        <SmallNotice className="col-span-full" icon="info-circle">
           Data will be stored locally for calculating your maintenance calories.
         </SmallNotice>
         <CurrentWeightInfo />
