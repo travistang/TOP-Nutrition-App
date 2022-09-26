@@ -5,10 +5,12 @@ import { InputMode } from "./utils/digitLogic";
 type Props = {
   usingMode: InputMode;
   onChangeMode: (mode: InputMode) => void;
+  className?: string;
 };
-export default function InputModeToggle({ usingMode, onChangeMode }: Props) {
+export default function InputModeToggle({ className, usingMode, onChangeMode }: Props) {
   return (
     <TabSelectInput
+      className={className}
       onSelect={onChangeMode}
       selected={usingMode}
       options={[

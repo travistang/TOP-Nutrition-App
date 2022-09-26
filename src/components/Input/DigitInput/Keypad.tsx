@@ -18,13 +18,13 @@ export default function Keypad({ className, onDigitInput, onBackspace }: Props) 
           onClick={() => onDigitInput(i)}
         />
       ))}
+      <Button className="col-span-2 h-10" text={'0'} onClick={() => onDigitInput(0)} />
       <Button
         className="h-10 bg-gray-600"
         textClassName='child:fill-gray-50'
         icon='arrow-left'
         onClick={onBackspace}
       />
-      <Button className="col-span-2 h-10" text={'0'} onClick={() => onDigitInput(0)} />
     </div>
   )
 }

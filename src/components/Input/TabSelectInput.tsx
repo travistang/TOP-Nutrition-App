@@ -14,8 +14,9 @@ type Props<T> = {
   selected: T;
   iconOnly?: boolean;
   onSelect: (value: T) => void;
+  className?: string;
 }
-export default function TabSelectInput<T>({ iconOnly, label, options, selected, onSelect}: Props<T>) {
+export default function TabSelectInput<T>({ className, iconOnly, label, options, selected, onSelect}: Props<T>) {
   const selectedOption = options.find(opt => opt.value === selected);
   return (
     <>
@@ -23,6 +24,7 @@ export default function TabSelectInput<T>({ iconOnly, label, options, selected, 
         {label}
       </span>
       <Tab
+        className={className}
         iconOnly={iconOnly}
         selected={(config) => !!selectedOption?.text && (config.label === selectedOption?.text)}
         options={options

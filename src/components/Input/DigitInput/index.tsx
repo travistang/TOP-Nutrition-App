@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import useInitialValue from "../../../hooks/useInitialValue";
+import Button, { ButtonStyle } from "../Button";
 import InputModeToggle from "./InputModeToggle";
 import Keypad from "./Keypad";
 import {
@@ -31,10 +32,8 @@ export default function DigitInput({
   const [digitString, setDigitString] = useState("");
   const initialValue = useInitialValue(defaultValue);
   const [usingMode, setUsingMode] = useState<InputMode>(
-    inputMode ?? InputMode.Decimal
+    inputMode ?? InputMode.Integer
   );
-
-  const canChangeMode = inputMode === undefined;
 
   useEffect(() => {
     if (initialValue !== null) {
@@ -42,23 +41,28 @@ export default function DigitInput({
     }
   }, [initialValue, usingMode]);
 
+  const updateValue = (newString: string) => {
+    setDigitString(newString);
+    onChange(stringToNumber(newString, usingMode));
+  };
   const inputDigit = (n: number) => {
     const newString = addDigit(digitString, n);
-    setDigitString(newString);
-    onChange(stringToNumber(newString, usingMode));
+    updateValue(newString);
   };
-
   const deleteDigit = () => {
     const newString = removeDigit(digitString);
-    setDigitString(newString);
-    onChange(stringToNumber(newString, usingMode));
+    updateValue(newString);
+  };
+  const reset = () => {
+    updateValue('');
   };
 
+  const canChangeMode = inputMode === undefined;
   return (
     <div className={classNames("flex flex-col items-stretch gap-2", className)}>
       <div className="flex flex-row flex-nowrap items-center gap-4">
         {canChangeMode && (
-          <InputModeToggle onChangeMode={setUsingMode} usingMode={usingMode} />
+          <InputModeToggle className="min-w-[33%]" onChangeMode={setUsingMode} usingMode={usingMode} />
         )}
         <div
           onClick={() => inputRef.current?.focus()}
@@ -69,6 +73,12 @@ export default function DigitInput({
           </span>
         </div>
         {unit && <span className="text-2xl self-end">{unit}</span>}
+        <Button
+          icon="delete-left"
+          onClick={reset}
+          className="ml-2"
+          buttonStyle={ButtonStyle.Clear}
+        />
       </div>
       <Keypad onDigitInput={inputDigit} onBackspace={deleteDigit} />
     </div>

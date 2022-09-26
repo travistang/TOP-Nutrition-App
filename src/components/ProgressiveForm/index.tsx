@@ -77,7 +77,7 @@ export default function ProgressiveForm({
         />
         {children}
         <StepComponent />
-        <div className="flex-1" />
+        <div className="flex-1 min-h-[16px]" />
         <ProceedButtonGroup config={config} />
       </div>
     </progressiveFormContext.Provider>
