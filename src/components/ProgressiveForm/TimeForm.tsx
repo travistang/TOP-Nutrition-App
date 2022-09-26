@@ -22,14 +22,16 @@ type Props = {
   date: Date;
   children?: React.ReactNode;
   className?: string;
+  useCurrentTimeByDefault?: boolean;
 };
 export default function TimeForm({
   setDate,
   date,
   children,
   className,
+  useCurrentTimeByDefault = true
 }: Props) {
-  const [useCurrentTime, setUseCurrentTime] = useState(true);
+  const [useCurrentTime, setUseCurrentTime] = useState(useCurrentTimeByDefault);
 
   useEffect(() => {
     if (useCurrentTime) {

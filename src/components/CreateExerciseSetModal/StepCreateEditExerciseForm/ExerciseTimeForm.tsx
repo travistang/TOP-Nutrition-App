@@ -20,7 +20,10 @@ export default function TimeForm() {
     setExerciseAtom((atom) => ({ ...atom, date }));
 
   return (
-    <ProgressiveTimeForm date={date} setDate={setDate}>
+    <ProgressiveTimeForm
+      date={date}
+      setDate={setDate}
+      useCurrentTimeByDefault={!isEditing}>
       {!isEditing ? (
         <CheckboxInput
           className="pt-4"
