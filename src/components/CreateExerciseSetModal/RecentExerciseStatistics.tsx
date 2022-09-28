@@ -14,7 +14,7 @@ export default function RecentExerciseStatistics({ recentExercises }: Props) {
   const setExerciseAtom = useSetRecoilState(createEditExerciseRecordAtom);
   const addExercise = () => {
     if (recentExercises.length === 0) return;
-    const { exercise, repetitions: recentRepetitions } = recentExercises[recentExercises.length - 1];
+    const { exercise, repetitions: recentRepetitions } = recentExercises[0];
     setExerciseAtom(atom => ({
       ...atom,
       readonly: false,
