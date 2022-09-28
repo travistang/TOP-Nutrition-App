@@ -9,7 +9,6 @@ type Props = {
   workouts: ExerciseSetRecord[];
 }
 export default function WorkoutSummary({ workouts }:Props) {
-  // if (!workouts.length) return null;
   const defaultWorkoutDayTypeString = `${ExerciseUtils.computeExerciseDayType(workouts)} day`;
 
   return (

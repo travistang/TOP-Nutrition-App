@@ -6,6 +6,7 @@ import ArrayUtils from "../../utils/Array";
 import ObjectUtils from "../../utils/Object";
 import PreviousWorkoutList from "./PreviousWorkoutList";
 import RecentExerciseStatistics from "./RecentExerciseStatistics";
+import StringUtils from '../../utils/String';
 
 type Props = {
   exerciseName: string;
@@ -14,7 +15,7 @@ export default function RecentExerciseRecord({ exerciseName }: Props) {
   const exerciseRecords = useLiveQuery(() => {
     return ExerciseDatabase.exerciseSetRecord
       .filter((record) => {
-        return record.exercise.name === exerciseName;
+        return StringUtils.caseInsensitiveEqual(record.exercise.name, exerciseName);
       })
       .reverse()
       .limit(25)

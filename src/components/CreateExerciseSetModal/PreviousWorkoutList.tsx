@@ -40,7 +40,7 @@ export default function PreviousWorkoutList({ workouts }: Props) {
         {getWorkoutDateString(workoutDate)}
       </span>
       {workouts.map((set) => (
-        <div className="w-full py-2 grid grid-cols-12">
+        <div key={set.id} className="w-full py-2 grid grid-cols-12">
           <span className="h-full col-span-2 text-xs font-bold flex items-center justify-center text-gray-200 mx-2">
             <FontAwesomeIcon
               icon={EquipmentIcon[set.exercise.equipment]}
