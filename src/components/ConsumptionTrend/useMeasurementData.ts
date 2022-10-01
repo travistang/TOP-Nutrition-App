@@ -1,6 +1,7 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import MeasurementDatabase from "../../database/MeasurementDatabase";
 import { Duration } from "../../types/Duration";
+import StringUtils from '../../utils/String';
 
 type Props = {
   date: Date | number;
@@ -16,12 +17,13 @@ export default function useMeasurementData({
     return MeasurementDatabase.measurementLabels();
   });
 
-  const measurementsOfMonth = useLiveQuery(() => {
+  const measurementsOfMonth = useLiveQuery(async () => {
     return MeasurementDatabase.recordsInRange(date, duration);
-  });
+  }, [date, duration]);
+
   const measurements =
     measurementsOfMonth?.filter(
-      (measurement) => measurement.name === selectedMeasurement
+      (measurement) => StringUtils.caseInsensitiveEqual(measurement.name, selectedMeasurement)
     ) ?? [];
 
   return {
