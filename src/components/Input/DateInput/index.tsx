@@ -47,6 +47,8 @@ export default function DateInput({
     } else {
       onChange(date);
     }
+
+    setShowingDate(null);
   };
 
   return (

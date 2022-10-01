@@ -48,6 +48,11 @@ const deepUpdate = <T>(record: T, key: KeyPaths<T>, value: any): T => {
   };
 };
 
+const multiDeepUpdate = <T>(record: T, updateMapping: Partial<Record<KeyPaths<T>, any>>) => {
+  return Object.entries(updateMapping).reduce<T>(
+    (result, [keyPath, value]) => deepUpdate(result, keyPath as KeyPaths<T>, value),
+    record);
+}
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   mapValues,
@@ -56,4 +61,5 @@ export default {
   valueBySortedKey,
   filterKeys,
   deepUpdate,
+  multiDeepUpdate,
 };

@@ -6,6 +6,7 @@ import AutoCompleteInput from '../../Input/AutoCompleteInput';
 import ConsumptionAutocompleteResult from '../../Input/ConsumptionAutocompleteResult';
 import { progressiveFormContext } from '../../ProgressiveForm/context';
 import { CreateConsumptionStep } from './types';
+import ObjectUtils from '../../../utils/Object';
 
 export default function ConsumptionNameForm() {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -21,8 +22,10 @@ export default function ConsumptionNameForm() {
   const onSelectItem = (item: ConsumptionRecord) => {
     setConsumptionRecord((atom) => {
       const { name, nutritionPerHundred } = item;
-      const updatedRecord = { ...atom.record, name, nutritionPerHundred };
-      return { ...atom, record: updatedRecord };
+      return ObjectUtils.multiDeepUpdate(atom, {
+        'record.name': name,
+        'record.nutritionPerHundred': nutritionPerHundred,
+      });
     });
     goToStep(CreateConsumptionStep.Amount);
   }
