@@ -26,7 +26,7 @@ export default function Keypad({
   keypadConfig
 }: Props) {
   const { left, right } = keypadConfig ?? {};
-  const commonButtonClassName = 'h-10';
+  const commonButtonClassName = 'h-12';
   return (
     <div className={classNames("grid grid-cols-3 gap-2 rtl", className)}>
       {[7,8,9,4,5,6,1,2,3].map(i => (
