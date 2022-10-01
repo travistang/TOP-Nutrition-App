@@ -5,8 +5,8 @@ import StepList from "../StepList";
 import {
   ProgressiveFormConfig,
   progressiveFormContext,
-  ProgressiveFormContextValue,
 } from "./context";
+import { prepareContextValue } from "./formLogic";
 
 type Props = {
   config: ProgressiveFormConfig;
@@ -22,52 +22,11 @@ export default function ProgressiveForm({
 }: Props) {
   const [step, setStep] = useState(initialStep ?? 0);
   const [restartOnComplete, setRestartOnComplete] = useState(false);
-  const {
-    steps: stepsConfig,
-    nextStep: nextStepCallback,
-    previousStep: previousStepCallback,
-  } = config;
-  const goToStep = (index: number) => {
-    if (0 <= index && index <= stepsConfig.length - 1) {
-      setStep(index);
-    }
-  };
-
-  const getStepTicker =
-    (offset: number, callback?: (step: number) => number | null) => () => {
-      const stepsFromCallback = callback?.(step);
-      if (stepsFromCallback !== undefined && stepsFromCallback !== null) {
-        goToStep(stepsFromCallback);
-        return;
-      }
-      goToStep(step + offset);
-    };
-
-  const nextStep = getStepTicker(1, nextStepCallback);
-  const previousStep = getStepTicker(-1, previousStepCallback);
-  const isLastStep = step >= config.steps.length - 1;
-  const canProceed =
-    isLastStep || (nextStepCallback ? nextStepCallback(step) !== null : true);
-  const canReturn =
-    step > 0 &&
-    (previousStepCallback ? previousStepCallback(step) !== null : true);
-
-  const toggleRestartOnComplete = () =>
-    setRestartOnComplete(!restartOnComplete);
-
-  const contextValue: ProgressiveFormContextValue = {
-    steps: config.steps,
-    step,
-    restartOnComplete,
-    toggleRestartOnComplete,
-    goToStep,
-    nextStep,
-    previousStep,
-    canProceed,
-    isLastStep,
-    canReturn,
-  };
-
+  const contextValue = prepareContextValue({
+    config,
+    step, setStep,
+    restartOnComplete, setRestartOnComplete
+  });
   const StepComponent = config.steps[step].formComponent;
   return (
     <progressiveFormContext.Provider value={contextValue}>
@@ -75,7 +34,7 @@ export default function ProgressiveForm({
         <StepList
           currentStep={step}
           className="pb-4 sticky top-6 bg-gray-200 z-20"
-          stepIcons={stepsConfig.map((conf) => conf.icon)}
+          stepIcons={config.steps.map((conf) => conf.icon)}
         />
         {children}
         <StepComponent />
