@@ -15,12 +15,10 @@ export type Optional<T, Ks extends keyof T> = T extends object
     }
   : T;
 
-export type DropTrailDot<T extends string> = T extends `${infer R}.` ? R : T;
 export type KeyPaths<T> = T extends object
   ? {
-      [K in Exclude<keyof T, number | symbol>]: DropTrailDot<
-        // @ts-ignore
-        `${K}` | `${K}.${KeyPaths<T[K]>}`
-      >;
+      [K in Exclude<keyof T, number | symbol>]:
+        | `${K}`
+        | `${K}.${KeyPaths<T[K]>}`;
     }[Exclude<keyof T, number | symbol>]
   : "";

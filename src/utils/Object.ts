@@ -30,10 +30,9 @@ const valueBySortedKey = <K extends KeyType, T>(records: Record<K, T>, sortFn: (
     return sortedPair.map(([, v]) => v);
 }
 
-const deepUpdate = <T extends object>(record: T, key: KeyPaths<T>, value: any): T => {
-  // @ts-ignore
+const deepUpdate = <T>(record: T, key: KeyPaths<T>, value: any): T => {
   if (!key) return record;
-  // @ts-ignore
+  if (key.endsWith('.')) return deepUpdate(record, key.slice(0, -1) as KeyPaths<T>, value);
   const [queryKey, ...rest] = key.split(".");
   const usingKey = queryKey as keyof T;
   if (rest.length === 0) {
@@ -43,7 +42,7 @@ const deepUpdate = <T extends object>(record: T, key: KeyPaths<T>, value: any): 
     ...record,
     [usingKey]: deepUpdate(
       record[usingKey],
-      rest.join(".") as KeyPaths<T[typeof queryKey]>,
+      rest.join(".") as KeyPaths<T[keyof T]>,
       value
     ),
   };
