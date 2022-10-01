@@ -9,7 +9,7 @@ import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";
 import { MarcoNutrition, MarcoNutritionColor } from "../../types/Nutrition";
 import Chip from "../Chip";
 import MealSummaryProgressBar from "./MealSummaryProgressBar";
-import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
+import { createEditRecordAtom, ModalOpenSource } from "../../atoms/CreateEditRecordAtom";
 import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
 
 type Props = {
@@ -37,7 +37,7 @@ export default function MealSummaryHeader({
 
   const openCreateRecordModalForMeal = () => {
     setCreateRecordAtom({
-      modalOpened: true,
+      openingSource: ModalOpenSource.MealHeader,
       record: {
         ...DEFAULT_CONSUMPTION,
         date: meal[0].date,

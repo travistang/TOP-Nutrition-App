@@ -18,7 +18,7 @@ export default function Modal({ label, opened, onClose, children }: Props) {
     >
       <div className="flex-1 bg-opacity-50 backdrop-blur-sm" />
       <div
-        className="shadow-xl rounded-t-xl p-2 bg-gray-200 min-h-1/3 flex flex-col max-h-[85vh] overflow-y-auto"
+        className="shadow-xl rounded-t-xl p-2 bg-gray-200 min-h-1/3 flex flex-col max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between text-sm sticky -top-2 bg-gray-200 z-10 -mt-2 py-2">

@@ -17,8 +17,3 @@ export const CreateExerciseStepIconMap: Record<CreateExerciseStep, IconProp> = {
   [CreateExerciseStep.Repetition]: "refresh",
   [CreateExerciseStep.Time]: "clock",
 };
-
-export type StepFormProps = {
-  step: CreateExerciseStep;
-  onGotoStep: (step: CreateExerciseStep) => void;
-};

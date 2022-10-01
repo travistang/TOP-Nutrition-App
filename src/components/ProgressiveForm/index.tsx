@@ -74,7 +74,7 @@ export default function ProgressiveForm({
       <div className={classNames("flex flex-col items-stretch", className)}>
         <StepList
           currentStep={step}
-          className="pb-4"
+          className="pb-4 sticky top-6 bg-gray-200 z-20"
           stepIcons={stepsConfig.map((conf) => conf.icon)}
         />
         {children}

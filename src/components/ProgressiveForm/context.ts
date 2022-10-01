@@ -25,6 +25,7 @@ export type ProgressiveFormConfig = {
   nextStep?: (currentStep: number) => number | null;
   previousStep?: (currentStep: number) => number | null;
   onSubmit: (contextState: ProgressiveFormContextValue) => void;
+  onRestart?: () => void;
 };
 
 export const progressiveFormContext =

@@ -6,13 +6,14 @@ import Section from '../Section';
 
 const FeatureToggleMap: Record<keyof FeatureToggle, string> = {
   stepExerciseWorkoutForm: 'Use old exercise form',
+  stepConsumptionForm: 'Use old consumption form',
 };
 
 export default function FeatureToggleSection() {
   const [featureToggle, setFeatureToggle] = useRecoilState(featureToggleAtom);
 
   return (
-    <Section label="Feature toggles">
+    <Section label="Feature toggles" className="gap-2">
       {Object.entries(FeatureToggleMap).map(([key, title]) => (
           <CheckboxInput
             label={title}

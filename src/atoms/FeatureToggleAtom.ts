@@ -3,9 +3,11 @@ import { createLocalStoragePersistenceAtom } from "./utils";
 export const LS_FEATURE_TOGGLE = '@nutritionApp/feature_toggle';
 export type FeatureToggle = {
   stepExerciseWorkoutForm: boolean;
+  stepConsumptionForm: boolean;
 }
 export const DEFAULT_FEATURE_TOGGLE: FeatureToggle = {
   stepExerciseWorkoutForm: false,
+  stepConsumptionForm: false,
 };
 
 export const featureToggleAtom = createLocalStoragePersistenceAtom<FeatureToggle>(

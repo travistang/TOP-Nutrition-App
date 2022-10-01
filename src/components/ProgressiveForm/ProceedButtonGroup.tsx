@@ -18,7 +18,7 @@ const lastStepButtonConfig: Partial<ButtonProps> = {
 };
 
 export default function ProceedButtonGroup({ config }: Props) {
-  const { onSubmit } = config;
+  const { onSubmit, onRestart } = config;
   const formContextValue = useContext(progressiveFormContext);
   const {
     step,
@@ -34,11 +34,12 @@ export default function ProceedButtonGroup({ config }: Props) {
     onSubmit(formContextValue);
     if (restartOnComplete) {
       goToStep(0);
+      onRestart?.();
     }
   };
 
   return (
-    <div className="grid grid-cols-6 items-center px-4 py-4">
+    <div className="grid grid-cols-6 items-center px-4 py-4 sticky -bottom-2 bg-gray-200">
       {step > 0 && (
         <Button
           text="Previous"
