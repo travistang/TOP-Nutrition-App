@@ -7,7 +7,6 @@ import NutritionUtils from "../../utils/Nutrition";
 import Button from "../Input/Button";
 import DateInput, { DateInputType } from "../Input/DateInput";
 import NumberInput from "../Input/NumberInput";
-import NumberSummary from "../NumberSummary";
 import NutritionFacts from "../NutritionFacts";
 import ScalarWidget from "../Widgets/ScalarWidget";
 import ButtonRow from "./ButtonRow";
