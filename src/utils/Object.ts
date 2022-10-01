@@ -1,3 +1,5 @@
+import { KeyPaths } from "../types/utils";
+
 type KeyType = string | number | symbol;
 const mapValues = <K extends KeyType, T, R = T>(records: Record<K, T>, mapFn: (t: T) => R): Record<K, R> => {
     const entries = Object.entries(records) as [K, T][];
@@ -27,6 +29,26 @@ const valueBySortedKey = <K extends KeyType, T>(records: Record<K, T>, sortFn: (
     const sortedPair = Object.entries<T>(records).sort(([a], [b]) => sortFn(a as K, b as K));
     return sortedPair.map(([, v]) => v);
 }
+
+const deepUpdate = <T extends object>(record: T, key: KeyPaths<T>, value: any): T => {
+  // @ts-ignore
+  if (!key) return record;
+  // @ts-ignore
+  const [queryKey, ...rest] = key.split(".");
+  const usingKey = queryKey as keyof T;
+  if (rest.length === 0) {
+    return { ...record, [usingKey]: value };
+  }
+  return {
+    ...record,
+    [usingKey]: deepUpdate(
+      record[usingKey],
+      rest.join(".") as KeyPaths<T[typeof queryKey]>,
+      value
+    ),
+  };
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   mapValues,
@@ -34,4 +56,5 @@ export default {
   findByKey,
   valueBySortedKey,
   filterKeys,
+  deepUpdate,
 };

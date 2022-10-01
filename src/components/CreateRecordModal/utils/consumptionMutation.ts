@@ -2,20 +2,15 @@ import { useSetRecoilState } from "recoil";
 import { createEditRecordAtom } from "../../../atoms/CreateEditRecordAtom";
 import { Nutrition } from "../../../types/Nutrition";
 import NutritionUtils from '../../../utils/Nutrition';
+import ObjectUtils from '../../../utils/Object';
 
 export function useConsumptionMutation() {
   const setCreateEditRecordAtom = useSetRecoilState(createEditRecordAtom);
 
   const updateCalories = (value: number) => {
-    setCreateEditRecordAtom(atom => ({
-      ...atom,
-      record: {
-        ...atom.record, nutritionPerHundred: {
-          ...atom.record.nutritionPerHundred,
-          calories: value
-        }
-      }
-    }));
+    setCreateEditRecordAtom((atom) =>
+      ObjectUtils.deepUpdate(atom, 'record.nutritionPerHundred.calories', value)
+    );
   }
   const updateNutrition = (marco: keyof Nutrition) => (value: number) => {
     if (marco === 'calories') {
@@ -29,13 +24,7 @@ export function useConsumptionMutation() {
         calories: totalCalories
       };
 
-      return {
-        ...atom,
-        record: {
-          ...atom.record,
-          nutritionPerHundred: finalNutrition,
-        },
-      };
+      return ObjectUtils.deepUpdate(atom, 'record.nutritionPerHundred', finalNutrition);
     })
   }
 
