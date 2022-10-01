@@ -21,6 +21,7 @@ export default function TimeForm() {
 
   return (
     <ProgressiveTimeForm
+      title="Exercise time"
       date={date}
       setDate={setDate}
       useCurrentTimeByDefault={!isEditing}>

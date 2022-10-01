@@ -4,8 +4,8 @@ import ConsumptionDatabase, {
   ConsumptionRecord,
 } from "../../database/ConsumptionDatabase";
 import { Consumption } from "../../types/Consumption";
-import NumberSummary from "../NumberSummary";
 import NutritionUtils from "../../utils/Nutrition";
+import ScalarWidget from "../Widgets/ScalarWidget";
 
 type Props = {
   record: Consumption & Partial<ConsumptionRecord>;
@@ -29,9 +29,10 @@ export default function EstimatedCaloriesConsumption({ record }: Props) {
 
   const projectedCalories = totalCaloriesOfDay + caloriesFromRecord;
   return (
-    <NumberSummary
+    <ScalarWidget
       label="Calories today:"
-      value={`${projectedCalories.toFixed(2)} kcal`}
+      value={projectedCalories}
+      unit="kcal"
       className="col-span-3 sticky bottom-12"
     />
   );

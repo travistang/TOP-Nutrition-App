@@ -1,20 +1,23 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
 import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
 
 import Modal from "../Modal";
 import CreateRecordForm from "./CreateRecordForm";
+import StepCreateConsumptionRecordForm from "./StepCreateConsumptionRecordForm";
+import { featureToggleAtom } from "../../atoms/FeatureToggleAtom";
 
 export default function CreateRecordModal() {
+  const { stepConsumptionForm} = useRecoilValue(featureToggleAtom);
   const [createEditRecord, setCreateEditRecord] =
     useRecoilState(createEditRecordAtom);
-  const { modalOpened, record: consumption } = createEditRecord;
+  const { openingSource, record: consumption } = createEditRecord;
   const isEditing = !!consumption.id;
 
   const onClose = () => {
     setCreateEditRecord({
-      modalOpened: false,
+      openingSource: null,
       record: { ...DEFAULT_CONSUMPTION, date: Date.now() },
     });
   };
@@ -22,11 +25,11 @@ export default function CreateRecordModal() {
 
   return (
     <Modal
-      opened={modalOpened}
+      opened={openingSource !== null}
       onClose={onClose}
       label={isEditing ? "Edit record" : "Create nutrition record"}
     >
-      <CreateRecordForm />
+      {stepConsumptionForm ? <CreateRecordForm/> : <StepCreateConsumptionRecordForm />}
     </Modal>
   );
 }

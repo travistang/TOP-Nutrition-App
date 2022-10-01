@@ -1,12 +1,9 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { createEditRecordAtom } from '../../atoms/CreateEditRecordAtom';
 import { fabMenuAtom } from '../../atoms/FabMenuAtom';
 import Fab from '../Fab';
 
 export default function MainFabButton() {
-  const [createEditRecord] =
-    useRecoilState(createEditRecordAtom);
   const [{ fabMenuOpened }, setFabMenuOpened] = useRecoilState(fabMenuAtom);
 
   const onClick = () => {
@@ -14,8 +11,6 @@ export default function MainFabButton() {
   }
 
   const icon = fabMenuOpened ? "times" : "pen";
-
-  if (createEditRecord.modalOpened) return null;
 
   return (
     <Fab

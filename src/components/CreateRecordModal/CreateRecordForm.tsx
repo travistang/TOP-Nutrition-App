@@ -9,6 +9,7 @@ import DateInput, { DateInputType } from "../Input/DateInput";
 import NumberInput from "../Input/NumberInput";
 import NumberSummary from "../NumberSummary";
 import NutritionFacts from "../NutritionFacts";
+import ScalarWidget from "../Widgets/ScalarWidget";
 import ButtonRow from "./ButtonRow";
 import EstimatedCaloriesConsumption from "./EstimatedCaloriesConsumption";
 import NameInput from "./NameInput";
@@ -26,7 +27,7 @@ export default function CreateRecordForm() {
 
   const onClose = () => {
     setCreateEditRecord({
-      modalOpened: false,
+      openingSource: null,
       record: { ...DEFAULT_CONSUMPTION, date: Date.now() },
     });
   };
@@ -97,9 +98,10 @@ export default function CreateRecordForm() {
       />
       <div className="grid grid-cols-6 col-span-full gap-2 bg-gray-200 sticky bottom-0">
         <EstimatedCaloriesConsumption record={consumption} />
-        <NumberSummary
+        <ScalarWidget
           label="Total Calories:"
-          value={`${totalCaloriesByAmount.toFixed(2)} kcal`}
+          value={totalCaloriesByAmount}
+          unit="kcal"
           className="col-start-4 col-end-7 sticky bottom-12"
         />
         <ButtonRow

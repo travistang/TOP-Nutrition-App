@@ -1,6 +1,6 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
+import { createEditRecordAtom, ModalOpenSource } from "../../atoms/CreateEditRecordAtom";
 import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
 import { Consumption } from "../../types/Consumption";
 import ConsumptionItem from "../ConsumptionItem";
@@ -21,7 +21,7 @@ export default function MealSummary({
   const setCreateEditRecord = useSetRecoilState(createEditRecordAtom);
   const editRecord = (consumption: Consumption) => () => {
     setCreateEditRecord({
-      modalOpened: true,
+      openingSource: ModalOpenSource.ConsumptionItem,
       record: consumption,
     });
   };

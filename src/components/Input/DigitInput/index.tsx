@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useInitialValue from "../../../hooks/useInitialValue";
 import Button, { ButtonStyle } from "../Button";
 import InputModeToggle from "./InputModeToggle";
-import Keypad from "./Keypad";
+import Keypad, { KeypadConfig } from "./Keypad";
 import {
   addDigit,
   removeDigit,
@@ -19,6 +19,7 @@ type Props = {
   unit?: string;
   className?: string;
   inputMode?: InputMode;
+  keypadConfig?: KeypadConfig;
 };
 
 export default function DigitInput({
@@ -27,6 +28,7 @@ export default function DigitInput({
   onChange,
   className,
   unit,
+  keypadConfig,
 }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [digitString, setDigitString] = useState("");
@@ -80,7 +82,7 @@ export default function DigitInput({
           buttonStyle={ButtonStyle.Clear}
         />
       </div>
-      <Keypad onDigitInput={inputDigit} onBackspace={deleteDigit} />
+      <Keypad onDigitInput={inputDigit} onBackspace={deleteDigit} keypadConfig={keypadConfig} />
     </div>
   );
 }

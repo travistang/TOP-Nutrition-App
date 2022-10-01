@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { fabMenuAtom } from "../../atoms/FabMenuAtom";
-import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
+import { createEditRecordAtom, ModalOpenSource } from "../../atoms/CreateEditRecordAtom";
 import { createEditExerciseRecordAtom, DEFAULT_EXERCISE_RECORD } from "../../atoms/CreateEditExerciseRecordAtom";
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import { DEFAULT_MEASUREMENT } from "../../types/Measurement";
@@ -71,7 +71,7 @@ export default function FabMenu() {
         onClick={() =>
           setCreateEditRecord(() => ({
             record: DEFAULT_CONSUMPTION,
-            modalOpened: true,
+            openingSource: ModalOpenSource.Cta,
           }))
         }
         text="Add consumption"

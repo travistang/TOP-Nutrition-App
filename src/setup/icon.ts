@@ -37,6 +37,7 @@ import {
   faPuzzlePiece,
   faTrash,
   faDeleteLeft,
+  faPieChart,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const loadIcons = () =>
@@ -80,4 +81,6 @@ export const loadIcons = () =>
     faPuzzlePiece,
     faTrash,
     faDeleteLeft,
+    faPieChart,
+    faCheckCircle,
   );

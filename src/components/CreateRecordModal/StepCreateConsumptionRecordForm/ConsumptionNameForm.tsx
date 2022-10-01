@@ -19,7 +19,8 @@ export default function ConsumptionNameForm() {
 
   const onSelectItem = (item: ConsumptionRecord) => {
     setConsumptionRecord((atom) => {
-      const updatedRecord = { ...atom.record, ...item };
+      const { name, nutritionPerHundred } = item;
+      const updatedRecord = { ...atom.record, name, nutritionPerHundred };
       return { ...atom, record: updatedRecord };
     });
     goToStep(CreateConsumptionStep.Amount);
@@ -27,6 +28,7 @@ export default function ConsumptionNameForm() {
 
   return (
     <AutoCompleteInput
+      inline
       label="Name"
       value={consumptionRecord.record.name}
       onChange={onSearchName}

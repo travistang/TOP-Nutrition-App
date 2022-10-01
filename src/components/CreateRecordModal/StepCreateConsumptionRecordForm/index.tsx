@@ -1,44 +1,76 @@
 import React from "react";
 import { useRecoilState } from "recoil";
+import toast from "react-hot-toast";
 import { createEditRecordAtom } from "../../../atoms/CreateEditRecordAtom";
-import { ProgressiveFormConfig, ProgressiveFormStep } from "../../ProgressiveForm/context";
+import { ProgressiveFormConfig, ProgressiveFormContextValue, ProgressiveFormStep } from "../../ProgressiveForm/context";
 import { CreateConsumptionStep, CreateConsumptionStepIconMap } from "./types";
-import EnumUtils from '../../../utils/Enum';
 import ProgressiveForm from "../../ProgressiveForm";
 import ConsumptionNameForm from "./ConsumptionNameForm";
+import ConsumptionDatabase, { ConsumptionRecord } from "../../../database/ConsumptionDatabase";
+import NutritionForm from "./NutritionForm";
+import WeightForm from "./WeightForm";
+import ConsumptionTimeForm from "./ConsumptionTimeForm";
+import { DEFAULT_CONSUMPTION } from "../../../types/Consumption";
+import ConsumptionPreview from "./ConsumptionPreview";
 
 const FormComponentMap: Record<CreateConsumptionStep, React.FC> = {
   [CreateConsumptionStep.Name]: ConsumptionNameForm,
-  [CreateConsumptionStep.Nutrition]: () => null,
-  [CreateConsumptionStep.Amount]: () => null,
-  [CreateConsumptionStep.Date]: () => null,
+  [CreateConsumptionStep.Nutrition]: NutritionForm,
+  [CreateConsumptionStep.Amount]: WeightForm,
+  [CreateConsumptionStep.Date]: ConsumptionTimeForm,
 }
 
-const steps: ProgressiveFormStep[] = EnumUtils
-  .numberEnumValues(CreateConsumptionStep)
+const steps: ProgressiveFormStep[] = Object.values(CreateConsumptionStep)
+  .filter((v) => !Number.isNaN(parseInt(v.toString())))
   .map((step) => ({
     icon: CreateConsumptionStepIconMap[step as CreateConsumptionStep],
     formComponent: FormComponentMap[step as CreateConsumptionStep],
     key: step.toString(),
   }));
 
-export default function CreateRecordModal() {
+export default function StepCreateConsumptionRecordForm() {
   const [consumptionRecord, setConsumptionRecord] = useRecoilState(
     createEditRecordAtom
   );
+  const { record } = consumptionRecord;
+  const isEditing = !!consumptionRecord.record.id;
+  const closeModal = () => setConsumptionRecord(value => ({ ...value, openingSource: null }));
 
-  const closeModal = () => setConsumptionRecord(value => ({ ...value, modalOpened: false }));
+  const onSubmit = async (contextValue: ProgressiveFormContextValue) => {
+    const { restartOnComplete } = contextValue;
+    if (isEditing) {
+      await ConsumptionDatabase.edit(record.id!, record as ConsumptionRecord);
+      toast.success("Record updated");
+      closeModal();
+    } else {
+      await ConsumptionDatabase.add(record);
+      toast.success("Record added");
+      if (!restartOnComplete) {
+        closeModal();
+      }
+    }
+  };
+
+  const onRestart = () => {
+    setConsumptionRecord((atom) => ({
+      ...atom,
+      record: { ...DEFAULT_CONSUMPTION, date: atom.record.date }
+    }));
+  };
 
   const progressiveFormConfig: ProgressiveFormConfig = {
     steps,
-    onSubmit: console.log,
-    // TODO: change this
+    onSubmit,
+    onRestart,
     nextStep: (step) => step + 1,
   }
 
   return (
-    <ProgressiveForm config={progressiveFormConfig}>
-      WIP {/* TODO: preview calories deficit and food item */}
+    <ProgressiveForm
+      config={progressiveFormConfig}
+      initialStep={isEditing ? CreateConsumptionStep.Amount : CreateConsumptionStep.Name}
+    >
+      <ConsumptionPreview record={record} />
     </ProgressiveForm>
   )
 }

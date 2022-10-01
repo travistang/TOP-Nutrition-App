@@ -20,6 +20,7 @@ const TimeInputOptions: Option<boolean>[] = [
 type Props = {
   setDate: (date: Date) => void;
   date: Date;
+  title: string;
   children?: React.ReactNode;
   className?: string;
   useCurrentTimeByDefault?: boolean;
@@ -27,6 +28,7 @@ type Props = {
 export default function TimeForm({
   setDate,
   date,
+  title,
   children,
   className,
   useCurrentTimeByDefault = true
@@ -42,14 +44,14 @@ export default function TimeForm({
 
   return (
     <div className={classNames("flex flex-col items-stretch", className)}>
-      <span className="text-xs">Exercise time</span>
+      <span className="text-xs">{title}</span>
       <TabSelectInput
         options={TimeInputOptions}
         selected={useCurrentTime}
         onSelect={setUseCurrentTime}
       />
       {!useCurrentTime && (
-        <div className="px-12">
+        <div className="px-12 pb-2">
           <DateTimePicker
             calendarClassName="gap-y-1"
             inline
