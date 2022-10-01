@@ -70,7 +70,7 @@ export default function StepCreateConsumptionRecordForm() {
       config={progressiveFormConfig}
       initialStep={isEditing ? CreateConsumptionStep.Amount : CreateConsumptionStep.Name}
     >
-      <ConsumptionPreview record={record} />
+      <ConsumptionPreview record={record} onClose={closeModal} />
     </ProgressiveForm>
   )
 }

@@ -18,6 +18,7 @@ import WorkoutStatistics from "./pages/WorkoutStatistics";
 import CreateMeasurementRecordModal from "./components/CreateMeasurementRecordModal";
 import MeasurementListPage from "./pages/MeasurementListPage";
 import SettingsPage from "./pages/SettingsPage";
+import ConfirmationModal from "./components/ConfirmationModal";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           </Routes>
           <MainFabButton />
           <FabMenu />
+          <ConfirmationModal />
           <CreateRecordModal />
           <DailyNutritionGoalModal />
           <CreateExerciseSetModal />
