@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { createEditRecordAtom } from '../../../atoms/CreateEditRecordAtom';
 import ConsumptionDatabase, { ConsumptionRecord } from '../../../database/ConsumptionDatabase';
@@ -8,6 +8,7 @@ import { progressiveFormContext } from '../../ProgressiveForm/context';
 import { CreateConsumptionStep } from './types';
 
 export default function ConsumptionNameForm() {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [consumptionRecord, setConsumptionRecord] = useRecoilState(createEditRecordAtom);
   const { goToStep } = useContext(progressiveFormContext);
   const onSearchName = (name: string) => {
@@ -26,9 +27,12 @@ export default function ConsumptionNameForm() {
     goToStep(CreateConsumptionStep.Amount);
   }
 
+  useEffect(() => inputRef?.current?.focus(), []);
+
   return (
     <AutoCompleteInput
       inline
+      inputRef={inputRef}
       label="Name"
       value={consumptionRecord.record.name}
       onChange={onSearchName}

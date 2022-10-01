@@ -2,6 +2,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import React from 'react';
+import Button, { ButtonStyle } from './Button';
 import InputBase, { InputBaseProps } from './InputBase';
 
 export type TextInputProps = Omit<InputBaseProps, "children"> & {
@@ -55,6 +56,7 @@ export default function TextInput({
           value={value}
           onChange={e => onChange(e.target.value)}
         />
+        {!!value && <Button icon="times" buttonStyle={ButtonStyle.Clear} onClick={() => onChange('')} />}
       </div>
       {children}
     </InputBase>
