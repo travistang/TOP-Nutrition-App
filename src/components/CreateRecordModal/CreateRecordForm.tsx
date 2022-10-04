@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import { createEditRecordAtom } from "../../atoms/CreateEditRecordAtom";
 import { Consumption, DEFAULT_CONSUMPTION } from "../../types/Consumption";
 import NutritionUtils from "../../utils/Nutrition";
+import ObjectUtils from '../../utils/Object';
 
 import Button from "../Input/Button";
 import DateInput, { DateInputType } from "../Input/DateInput";
@@ -22,26 +23,19 @@ export default function CreateRecordForm() {
   const isFormValid = !!consumption.name && consumption.amount > 0;
 
   const setConsumption = (consumption: Consumption) =>
-    setCreateEditRecord({ ...createEditRecord, record: consumption });
+    setCreateEditRecord(ObjectUtils.deepUpdate(createEditRecord, 'record', consumption));
 
   const onClose = () => {
-    setCreateEditRecord({
-      openingSource: null,
-      record: { ...DEFAULT_CONSUMPTION, date: Date.now() },
-    });
+    setCreateEditRecord(atom => ObjectUtils.multiDeepUpdate(atom, {
+      'openingSource': null,
+      record: ObjectUtils.deepUpdate(DEFAULT_CONSUMPTION, 'date', Date.now()),
+    }));
   };
   const updateField =
     (field: keyof Omit<Consumption, "nutritionPerHundred">) =>
       (value: string | number) => {
-        setConsumption({ ...consumption, [field]: value });
+        setConsumption(ObjectUtils.deepUpdate(consumption, field, value));
       };
-
-  const updateAmount = (value: number) => {
-    setConsumption({
-      ...consumption,
-      amount: value,
-    });
-  };
 
   const updateDate = (date: Date) => {
     setConsumption({
@@ -64,7 +58,7 @@ export default function CreateRecordForm() {
       <NumberInput
         label="Amount (g)"
         value={consumption.amount}
-        onChange={updateAmount}
+        onChange={updateField('amount')}
         className="col-span-2"
       />
       <DateInput

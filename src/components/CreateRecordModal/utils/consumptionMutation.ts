@@ -24,7 +24,11 @@ export function useConsumptionMutation() {
         calories: totalCalories
       };
 
-      return ObjectUtils.deepUpdate(atom, 'record.nutritionPerHundred', finalNutrition);
+      return ObjectUtils.deepUpdate(
+        atom,
+        "record.nutritionPerHundred",
+        finalNutrition
+      );
     })
   }
 

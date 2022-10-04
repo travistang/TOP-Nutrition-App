@@ -1,4 +1,4 @@
-import { KeyPaths } from "../types/utils";
+import { DeepValue, KeyPaths } from "../types/utils";
 
 type KeyType = string | number | symbol;
 const mapValues = <K extends KeyType, T, R = T>(records: Record<K, T>, mapFn: (t: T) => R): Record<K, R> => {
@@ -30,7 +30,7 @@ const valueBySortedKey = <K extends KeyType, T>(records: Record<K, T>, sortFn: (
     return sortedPair.map(([, v]) => v);
 }
 
-const deepUpdate = <T>(record: T, key: KeyPaths<T>, value: any): T => {
+const deepUpdate = <T>(record: T, key: KeyPaths<T>, value: DeepValue<T>): T => {
   if (!key) return record;
   if (key.endsWith('.')) return deepUpdate(record, key.slice(0, -1) as KeyPaths<T>, value);
   const [queryKey, ...rest] = key.split(".");
@@ -43,16 +43,27 @@ const deepUpdate = <T>(record: T, key: KeyPaths<T>, value: any): T => {
     [usingKey]: deepUpdate(
       record[usingKey],
       rest.join(".") as KeyPaths<T[keyof T]>,
-      value
+      value as DeepValue<T[keyof T]>,
     ),
   };
 };
 
-const multiDeepUpdate = <T>(record: T, updateMapping: Partial<Record<KeyPaths<T>, any>>) => {
+const multiDeepUpdate = <T>(
+  record: T,
+  updateMapping: Partial<
+    Record<KeyPaths<T>, DeepValue<T>>
+  >
+) => {
   return Object.entries(updateMapping).reduce<T>(
-    (result, [keyPath, value]) => deepUpdate(result, keyPath as KeyPaths<T>, value),
-    record);
-}
+    (result, [keyPath, value]) =>
+      deepUpdate(
+        result,
+        keyPath as KeyPaths<T>,
+        value as DeepValue<T>
+      ),
+    record
+  );
+};
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   mapValues,

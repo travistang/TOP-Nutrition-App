@@ -22,3 +22,18 @@ export type KeyPaths<T> = T extends object
         | `${K}.${KeyPaths<T[K]>}`;
     }[Exclude<keyof T, number | symbol>]
   : "";
+
+export type AssertKeyPaths<T, Ks> = Ks extends `${infer R}.${infer S}`
+  ? R extends keyof T
+    ? S extends AssertKeyPaths<T[R], S>
+      ? T
+      : never
+    : never
+  : never;
+
+export type DeepValue<T, Ks extends KeyPaths<T> = KeyPaths<T>> = Ks extends ""
+  ? T
+  : Ks extends keyof T
+  ? T[Ks]
+  : Ks extends `${infer R}.${infer K}`
+  ? R extends keyof T ? K extends KeyPaths<T[R]> ? DeepValue<T[R], K> : never : never : never;
