@@ -23,7 +23,7 @@ export default function RecentExerciseRecord({ exerciseName }: Props) {
   });
 
   const recordsByDate = ArrayUtils.groupBy(exerciseRecords ?? [], (record) =>
-    format(record.date, "dd/MM/yyyy")
+    format(record.date, "yyyy/MM/dd")
   );
   const sortedWorkoutGroups = ObjectUtils.valueBySortedKey(
     recordsByDate,
