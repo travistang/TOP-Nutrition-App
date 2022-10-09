@@ -8,9 +8,11 @@ import { EquipmentIcon } from "../../types/Exercise";
 import StringUtils from "../../utils/String";
 import { useSetRecoilState } from "recoil";
 import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
+import classNames from "classnames";
 
 type Props = {
   workouts: ExerciseSetRecord[];
+  dateStringClassName?: string;
 };
 
 const getWorkoutDateString = (workoutDate: Date | number) => {
@@ -19,7 +21,7 @@ const getWorkoutDateString = (workoutDate: Date | number) => {
   if (daysAgo < 15) return `${daysAgo} day(s) ago`;
   return `on ${format(workoutDate, "dd/MM")}`;
 };
-export default function PreviousWorkoutList({ workouts }: Props) {
+export default function PreviousWorkoutList({ workouts, dateStringClassName }: Props) {
   const setEditingExerciseItem = useSetRecoilState(
     createEditExerciseRecordAtom
   );
@@ -36,7 +38,10 @@ export default function PreviousWorkoutList({ workouts }: Props) {
   };
   return (
     <>
-      <span className="w-full text-xs sticky z-10 top-0 font-bold text-center py-4 px-2 rounded-full text-opacity-75 bg-gray-200">
+      <span className={classNames(
+        "w-full text-xs sticky z-10 top-0 font-bold text-center py-4 px-2 rounded-full text-opacity-75",
+        dateStringClassName
+      )}>
         {getWorkoutDateString(workoutDate)}
       </span>
       {workouts.map((set) => (

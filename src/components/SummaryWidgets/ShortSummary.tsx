@@ -23,6 +23,7 @@ export default function ShortSummary({ nutritionRecords }: Props) {
       <div className="flex flex-nowrap justify-between gap-2">
         {Object.values(MarcoNutrition).map((marco) => (
           <Chip
+            key={marco}
             text={`${totalNutrition[marco].toFixed(0)}g`}
             color={MarcoNutritionColor[marco]}
             className="flex-1 flex justify-center text-center text-gray-200"

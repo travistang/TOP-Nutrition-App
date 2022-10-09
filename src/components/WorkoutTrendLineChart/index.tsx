@@ -10,6 +10,7 @@ import ExerciseDatabase from "../../database/ExerciseDatabase";
 import DateUtils from "../../utils/Date";
 import { Line } from "react-chartjs-2";
 import useChartData from "./useChartData";
+import PreviousRecordsList from "./PreviousRecordsList";
 
 export default function WorkoutTrendLineChart() {
   const [config, setConfig] = useState<WorkoutTrendLineConfig>({
@@ -38,6 +39,10 @@ export default function WorkoutTrendLineChart() {
     <Section label="Workout trend">
       <WorkoutTrendLineConfigGroup config={config} onChange={setConfig} />
       <Line options={chartOptions} data={data} />
+      <PreviousRecordsList
+        selectedExercise={config.selectedExercise}
+        workoutsByDates={workoutsByDates}
+      />
     </Section>
   );
 }
