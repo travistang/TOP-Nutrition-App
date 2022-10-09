@@ -2,6 +2,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import classNames from 'classnames';
 import React from 'react';
 import Button from '../Button';
+import ArrayUtils from '../../../utils/Array';
 
 export type ButtonConfig = {
   icon: IconProp;
@@ -29,7 +30,7 @@ export default function Keypad({
   const commonButtonClassName = 'h-12';
   return (
     <div className={classNames("grid grid-cols-3 gap-2 rtl", className)}>
-      {[7,8,9,4,5,6,1,2,3].map(i => (
+      {ArrayUtils.range(9).map(i => i + 1).map(i => (
         <Button
           className={commonButtonClassName}
           text={i.toString()}

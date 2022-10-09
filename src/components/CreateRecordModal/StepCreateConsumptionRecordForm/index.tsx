@@ -12,6 +12,7 @@ import WeightForm from "./WeightForm";
 import ConsumptionTimeForm from "./ConsumptionTimeForm";
 import { DEFAULT_CONSUMPTION } from "../../../types/Consumption";
 import ConsumptionPreview from "./ConsumptionPreview";
+import { getNextStep } from "../stepLogic";
 
 const FormComponentMap: Record<CreateConsumptionStep, React.FC> = {
   [CreateConsumptionStep.Name]: ConsumptionNameForm,
@@ -62,7 +63,7 @@ export default function StepCreateConsumptionRecordForm() {
     steps,
     onSubmit,
     onRestart,
-    nextStep: (step) => step + 1,
+    nextStep: (step) => getNextStep(step, record),
   }
 
   return (

@@ -7,6 +7,7 @@ import Section from '../Section';
 const FeatureToggleMap: Record<keyof FeatureToggle, string> = {
   stepExerciseWorkoutForm: 'Use old exercise form',
   stepConsumptionForm: 'Use old consumption form',
+  stepMeasurementForm: 'Use old measurement form',
 };
 
 export default function FeatureToggleSection() {
