@@ -7,38 +7,22 @@ import ProgressiveForm from "../../ProgressiveForm";
 import {
   ProgressiveFormConfig,
   ProgressiveFormContextValue,
-  ProgressiveFormStep,
 } from "../../ProgressiveForm/context";
-import EquipmentForm from "./EquipmentForm";
-import ExerciseBodyPartForm from "./ExerciseBodyPartForm";
 import ExerciseFormPreview from "./ExerciseFormPreview";
-import ExerciseNameAndTypeForm from "./ExerciseNameAndTypeForm";
-import RepetitionInputGroup from "./RepetitionInputGroup";
+
 import { computeInitialStep, getNextStep } from "./stepLogic";
-import TimeForm from "./ExerciseTimeForm";
-import { CreateExerciseStep, CreateExerciseStepIconMap } from "./types";
+import { useRestartWithNewSetOption } from "./NewSetContext";
+import { steps } from "./stepConfig";
 
-const FormComponentMap: Record<CreateExerciseStep, React.FC<any>> = {
-  [CreateExerciseStep.Name]: ExerciseNameAndTypeForm,
-  [CreateExerciseStep.BodyPart]: ExerciseBodyPartForm,
-  [CreateExerciseStep.Type]: EquipmentForm,
-  [CreateExerciseStep.Weight]: RepetitionInputGroup,
-  [CreateExerciseStep.Repetition]: RepetitionInputGroup,
-  [CreateExerciseStep.Time]: TimeForm,
-};
-
-const steps: ProgressiveFormStep[] = Object.values(CreateExerciseStep)
-  .filter((n) => !Number.isNaN(parseInt(n as string)))
-  .map((step) => ({
-    icon: CreateExerciseStepIconMap[step as CreateExerciseStep],
-    formComponent: FormComponentMap[step as CreateExerciseStep],
-    key: step.toString(),
-  }));
 
 export default function StepCreateEditExerciseForm() {
   const [exerciseSetValue, setExerciseSetValue] = useRecoilState(
     createEditExerciseRecordAtom
   );
+  const restartWithNewSetOption = useRestartWithNewSetOption({
+    record: exerciseSetValue,
+    setExerciseRecord: setExerciseSetValue,
+  });
   const isEditing = !!exerciseSetValue.id;
 
   const closeModal = () => {
@@ -47,7 +31,6 @@ export default function StepCreateEditExerciseForm() {
 
   const onSubmit = async (contextValue: ProgressiveFormContextValue) => {
     const { id, exercise, repetitions, date } = exerciseSetValue;
-    const { restartOnComplete } = contextValue;
     if (isEditing) {
       await ExerciseDatabase.updateRecord(id!, exercise, repetitions, date);
       toast.success("Record updated");
@@ -55,9 +38,7 @@ export default function StepCreateEditExerciseForm() {
     } else {
       await ExerciseDatabase.addRecord(exercise, repetitions, date);
       toast.success("Record added");
-      if (!restartOnComplete) {
-        closeModal();
-      }
+      restartWithNewSetOption(contextValue.goToStep);
     }
   };
 

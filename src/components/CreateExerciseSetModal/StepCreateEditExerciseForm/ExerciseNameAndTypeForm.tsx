@@ -1,12 +1,12 @@
 import { useRecoilState } from "recoil";
 import React, { KeyboardEvent, useContext, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 import ExerciseNameInput from "../ExerciseNameInput";
 import { progressiveFormContext } from "../../ProgressiveForm/context";
 import { createEditExerciseRecordAtom } from "../../../atoms/CreateEditExerciseRecordAtom";
 import Button, { ButtonStyle } from "../../Input/Button";
 import SmallNotice from "../../SmallNotice";
 import ExerciseDatabase from "../../../database/ExerciseDatabase";
-import toast from "react-hot-toast";
 import { CreateExerciseStep } from "./types";
 
 export default function ExerciseNameAndTypeForm() {
