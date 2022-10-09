@@ -7,6 +7,7 @@ import useModalOpenedMode, {
 } from "./useModalOpenedMode";
 import RecentExerciseRecord from "./RecentExerciseRecord";
 import StepCreateEditExerciseForm from "./StepCreateEditExerciseForm";
+import NewSetContextProvider from "./StepCreateEditExerciseForm/NewSetContext";
 
 const getModalHeader = (
   openingMode: ExerciseModalOpenMode,
@@ -38,7 +39,9 @@ export default function CreateExerciseSetModal() {
       {isViewingExercise ? (
         <RecentExerciseRecord exerciseName={exercise.name} />
       ) : (
-        <StepCreateEditExerciseForm />
+        <NewSetContextProvider>
+          <StepCreateEditExerciseForm />
+        </NewSetContextProvider>
       )}
     </Modal>
   );

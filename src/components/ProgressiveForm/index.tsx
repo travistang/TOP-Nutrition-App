@@ -25,7 +25,8 @@ export default function ProgressiveForm({
   const contextValue = prepareContextValue({
     config,
     step, setStep,
-    restartOnComplete, setRestartOnComplete
+    restartOnComplete,
+    setRestartOnComplete
   });
   const StepComponent = config.steps[step].formComponent;
   return (

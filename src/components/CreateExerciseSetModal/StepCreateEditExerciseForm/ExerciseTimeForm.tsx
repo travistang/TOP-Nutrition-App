@@ -1,15 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useRecoilState } from "recoil";
 import { createEditExerciseRecordAtom } from "../../../atoms/CreateEditExerciseRecordAtom";
-import CheckboxInput from "../../Input/CheckboxInput";
-import { progressiveFormContext } from "../../ProgressiveForm/context";
 import ProgressiveTimeForm from "../../ProgressiveForm/TimeForm";
 import SmallNotice from "../../SmallNotice";
+import NewSetToggle from "./NewSetToggle";
 
 export default function TimeForm() {
-  const { toggleRestartOnComplete, restartOnComplete } = useContext(
-    progressiveFormContext
-  );
   const [exerciseAtom, setExerciseAtom] = useRecoilState(
     createEditExerciseRecordAtom
   );
@@ -26,12 +22,7 @@ export default function TimeForm() {
       setDate={setDate}
       useCurrentTimeByDefault={!isEditing}>
       {!isEditing ? (
-        <CheckboxInput
-          className="pt-4"
-          onCheck={toggleRestartOnComplete}
-          selected={restartOnComplete}
-          label="Add another set"
-        />
+        <NewSetToggle />
       ) : (
         <SmallNotice icon="info-circle">
           You are updating an existing record
