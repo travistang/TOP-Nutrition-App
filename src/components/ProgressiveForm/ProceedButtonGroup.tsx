@@ -28,12 +28,14 @@ export default function ProceedButtonGroup({ config }: Props) {
     isLastStep,
     canProceed,
     restartOnComplete,
+    toggleRestartOnComplete,
   } = formContextValue;
 
   const onSubmitWithRestart = () => {
     onSubmit(formContextValue);
     if (restartOnComplete) {
       goToStep(0);
+      toggleRestartOnComplete();
       onRestart?.();
     }
   };
