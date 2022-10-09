@@ -15,7 +15,6 @@ export default function PreviousRecordsList({ selectedExercise, workoutsByDates}
     workoutsByDates, (workouts) => workouts.some(
       workout => ExerciseUtils.isSameExercise(workout.exercise, selectedExercise))
   );
-  console.log({ datesWithSelectedWorkout });
   const workoutsSortedByDates = ObjectUtils.valueBySortedKey(
     datesWithSelectedWorkout,
     (dateStringA, dateStringB) => new Date(dateStringB).getTime() - new Date(dateStringA).getTime()
