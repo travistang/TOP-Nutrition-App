@@ -74,13 +74,13 @@ const groupRecordsByDates = <T extends { date: Date | number }>(
   records: T[],
   dates: (Date | number)[]
 ): { [dateString: string]: T[] } => {
-  const dateStrings = dates.map((date) => format(date, "dd/MM/yyyy"));
+  const dateStrings = dates.map((date) => format(date, "yyyy/MM/dd"));
   const initialGroups: { [dateString: string]: T[] } = Object.assign(
     {},
     ...dateStrings.map((dateString) => ({ [dateString]: [] }))
   );
   return records.reduce((groups, record) => {
-    const recordDateString = format(record.date, "dd/MM/yyyy");
+    const recordDateString = format(record.date, "yyyy/MM/dd");
     if (!groups[recordDateString]) return groups;
     return {
       ...groups,

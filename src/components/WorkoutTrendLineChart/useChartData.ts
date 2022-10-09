@@ -55,7 +55,7 @@ export default function useChartData({ config, workoutsByDates }: Props) {
       {
         label: "Trend",
         data: allDaysInInterval.map((date) => {
-          const dateKey = format(date, "dd/MM/yyyy");
+          const dateKey = format(date, "yyyy/MM/dd");
           return dataByDateWithoutZero[dateKey];
         }),
         borderColor: "rgb(198, 95, 84)",

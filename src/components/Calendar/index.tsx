@@ -51,7 +51,7 @@ export default function Calendar({
         </span>
       ))}
       {monthStartsAtWeekday > 0 &&
-        ArrayUtils.range(monthStartsAtWeekday).map((_) => <span />)}
+        ArrayUtils.range(monthStartsAtWeekday).map((i) => <span key={i} />)}
       {daysInMonth.map((day) => (
         <DayCell
           key={day.getTime()}
