@@ -1,6 +1,6 @@
 import React from 'react';
 import toast from 'react-hot-toast';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { createMeasurementRecordAtom } from '../../../atoms/CreateMeasurementAtom';
 import MeasurementDatabase from '../../../database/MeasurementDatabase';
 import { DEFAULT_MEASUREMENT } from '../../../types/Measurement';
