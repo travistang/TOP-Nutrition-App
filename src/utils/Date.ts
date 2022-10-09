@@ -97,8 +97,8 @@ const orderedRecordGroups = <
   return Object.entries(dateRecordsMap)
     .sort(
       (a, b) =>
-        parse(a[0], "dd/MM/yyyy", new Date()).getTime() -
-        parse(b[0], "dd/MM/yyyy", new Date()).getTime()
+        parse(a[0], "yyyy/MM/dd", new Date()).getTime() -
+        parse(b[0], "yyyy/MM/dd", new Date()).getTime()
     )
     .map(([, record]) => record);
 };

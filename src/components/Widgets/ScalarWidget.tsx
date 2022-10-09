@@ -16,7 +16,7 @@ export default function ScalarWidget({
   extraInfo,
 }: Props) {
   return (
-    <Section className={className} label={label}>
+    <Section className={className} label={label} labelClassName="font-bold">
       <div className="flex flex-col">
         <div className="capitalize font-bold text-xl">
           {value === null ? "N/A" : `${value.toFixed(1)} ${unit ?? ''}`}

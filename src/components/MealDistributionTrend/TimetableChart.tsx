@@ -31,7 +31,7 @@ export default function TimetableChart<T extends { date: Date | number; }>({ sta
         {daysInInterval.map((day) =>
           <DayRow
             intervalCount={24}
-            data={grouppedDataByDay[format(day, "dd/MM/yyyy")]}
+            data={grouppedDataByDay[format(day, "yyyy/MM/dd")]}
           />)
         }
       </div>

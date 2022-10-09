@@ -5,8 +5,9 @@ type Props = {
   children: React.ReactNode;
   label: string;
   className?: string;
+  labelClassName?: string;
 };
-export default function Section({ children, label, className }: Props) {
+export default function Section({ children, label, className, labelClassName }: Props) {
   return (
     <div
       className={classNames(
@@ -14,7 +15,7 @@ export default function Section({ children, label, className }: Props) {
         className
       )}
     >
-      <span className="text-xs">{label}</span>
+      <span className={classNames("text-xs", labelClassName)}>{label}</span>
       {children}
     </div>
   );
