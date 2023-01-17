@@ -16,7 +16,7 @@ export default function Fab({ onClick, className, icon }: Props) {
     <button
       className={classNames(
         fabMenuOpened ? "bottom-6" : "bottom-16 -translate-y-2",
-        "absolute right-4 h-12 w-12 rounded-full bg-blue-500 flex items-center justify-center z-50",
+        "absolute right-4 h-12 w-12 rounded-full bg-blue-500 flex items-center justify-center z-40",
         className
       )}
       onClick={onClick}

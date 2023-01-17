@@ -23,6 +23,10 @@ const footerButtonConfigs: FooterButtonConfig[] = [
     path: "/workouts",
   },
   {
+    icon: "box",
+    path: "/containers",
+  },
+  {
     icon: "cogs",
     path: "/settings",
   },
