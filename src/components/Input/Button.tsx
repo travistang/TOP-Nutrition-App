@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export enum ButtonStyle {
   Block,
+  BlockSecondary,
   Clear,
+  BlockDanger,
 }
 
 type StyleConfig = {
@@ -20,7 +22,19 @@ const buttonStyles: Record<
     disabled: {
       button: "bg-gray-400 cursor-not-allowed",
     },
-    active: { button: "bg-gray-900", text: "text-gray-200" },
+    active: { button: "bg-gray-900", text: "text-gray-200 child:fill-gray-200" },
+  },
+  [ButtonStyle.BlockDanger]: {
+    disabled: {
+      button: "bg-red-100 cursor-not-allowed",
+    },
+    active: { button: "bg-red-300", text: "text-red-500 child:fill-red-500" },
+  },
+  [ButtonStyle.BlockSecondary]: {
+    disabled: {
+      button: "bg-gray-300 cursor-not-allowed",
+    },
+    active: { button: "bg-gray-400", text: "text-gray-200" },
   },
   [ButtonStyle.Clear]: {
     disabled: { text: "text-opacity-50 cursor-not-allowed" },

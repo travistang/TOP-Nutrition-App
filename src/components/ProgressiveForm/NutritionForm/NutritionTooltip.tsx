@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Nutrition } from '../../../../types/Nutrition';
+import { Nutrition } from '../../../types/Nutrition';
 
 type Props = {
   field: keyof Nutrition;

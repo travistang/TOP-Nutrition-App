@@ -11,7 +11,7 @@ export type TextInputProps = Omit<InputBaseProps, "children"> & {
   placeholder?: string;
   inputClassName?: string;
   innerInputClassName?: string;
-  onChange: (newValue: string) => void;
+  onChange?: (newValue: string) => void;
   onFocusChanged?: (focused: boolean) => void;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   type?: string;
@@ -34,10 +34,11 @@ export default function TextInput({
   onKeyDown,
   onFocusChanged
 }: TextInputProps) {
+  const disabled = !onChange;
   return (
     <InputBase label={label} className={className}>
       <div className={classNames(
-        "rounded-lg h-12 px-2 flex items-center overflow-hidden",
+        "rounded-lg h-12 px-2 flex items-center",
         inputClassName ?? "bg-gray-400"
       )}>
         {
@@ -52,11 +53,16 @@ export default function TextInput({
           onFocus={() => onFocusChanged?.(true)}
           onBlur={() => onFocusChanged?.(false)}
           onKeyDown={onKeyDown}
-          className={classNames("bg-transparent outline-none flex-1", innerInputClassName ?? "text-gray-100")}
+          className={classNames(
+            "bg-transparent outline-none flex-1 w-[80%]",
+            disabled && "bg-opacity-70 text-opacity-70 cursor-not-allowed",
+            innerInputClassName ?? "text-gray-100"
+          )}
           value={value}
-          onChange={e => onChange(e.target.value)}
+          disabled={disabled}
+          onChange={e => onChange?.(e.target.value)}
         />
-        {!!value && <Button icon="times" buttonStyle={ButtonStyle.Clear} onClick={() => onChange('')} />}
+        {!!value && !disabled && <Button icon="times" buttonStyle={ButtonStyle.Clear} onClick={() => onChange?.('')} />}
       </div>
       {children}
     </InputBase>

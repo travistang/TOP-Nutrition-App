@@ -45,7 +45,6 @@ export default function ServerConnectionSection() {
           onClick={synchronize}
           className="h-12 col-span-3 col-start-4 gap-2"
           icon="refresh"
-          textClassName='child:fill-gray-200'
           text="Synchronize"
         />
       </div>

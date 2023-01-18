@@ -19,6 +19,8 @@ import CreateMeasurementRecordModal from "./components/CreateMeasurementRecordMo
 import MeasurementListPage from "./pages/MeasurementListPage";
 import SettingsPage from "./pages/SettingsPage";
 import ConfirmationModal from "./components/ConfirmationModal";
+import FoodContainerPage from "./pages/FoodContainerPage";
+import FoodContainerDetailPage from "./pages/FoodContainerDetailPage";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
             <Route path="/stats/measurements" element={<MeasurementListPage />} />
             <Route path="/workouts" element={<WorkoutListPage />} />
+            <Route path="/containers" element={<FoodContainerPage />} />
+            <Route path="/containers/:containerId" element={<FoodContainerDetailPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
           <MainFabButton />

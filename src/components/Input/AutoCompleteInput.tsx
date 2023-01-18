@@ -32,7 +32,7 @@ export default function AutoCompleteInput<T>({
   };
 
   const onChangeWithSearch = (searchString: string) => {
-    onChange(searchString);
+    onChange?.(searchString);
     setSearching(true);
     if (searchTimer.current) {
       clearTimeout(searchTimer.current);

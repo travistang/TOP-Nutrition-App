@@ -1,6 +1,5 @@
 import React from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ConsumptionDatabase from "../database/ConsumptionDatabase";
 import SummaryWidgets from "../components/SummaryWidgets";
@@ -10,6 +9,7 @@ import DateUtils from "../utils/Date";
 import MealSummary from "../components/MealSummary";
 import ShortSummary from "../components/SummaryWidgets/ShortSummary";
 import TargetCaloriesContextProvider from "../components/MealSummary/TargetCaloriesContext";
+import EmptyNotice from "../components/EmptyNotice";
 
 type Props = {
   embedded?: boolean;
@@ -48,10 +48,10 @@ export default function ConsumptionSummary({
         )}
         <div className="flex flex-col min-h-1/2 pb-16">
           {!embedded && !consumptionsOfDay?.length && (
-            <div className="h-full w-full flex flex-col gap-2 items-center justify-center text-sm">
-              <FontAwesomeIcon icon="hamburger" className="text-3xl" />
-              You haven't eatten anything yet today...
-            </div>
+            <EmptyNotice
+              icon="hamburger"
+              message="You haven't eatten anything yet today..."
+            />
           )}
           {consumptionsByMeals?.map((meal, index) => (
             <MealSummary

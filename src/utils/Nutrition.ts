@@ -24,7 +24,7 @@ const marcoNutritionByAmount = (
   return NumberUtils.nanToZero((nutrition[marco] * amountInGrams) / 100);
 };
 
-const nutritionFromConsumption = (consumption: Consumption): Nutrition => {
+const nutritionFromConsumption = <T extends Omit<Consumption, 'date'>>(consumption: T): Nutrition => {
   const caloriesConsumed = caloriesByAmount(
     consumption.nutritionPerHundred,
     consumption.amount

@@ -79,7 +79,6 @@ export default function ExportImportSection() {
           buttonStyle={ButtonStyle.Block}
           icon="file-import"
           className="h-12 gap-1"
-          textClassName='child:fill-gray-200'
           text="Import..." />
         <Button
           onClick={exportConsumptionDatabase}
