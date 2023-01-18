@@ -32,7 +32,7 @@ export type Props = {
   textClassName?: string;
   text?: string;
   icon?: IconProp;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
   disabled?: boolean;
   buttonStyle?: ButtonStyle;
   type?: "submit" | "button" | "reset";
