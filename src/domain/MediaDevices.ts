@@ -8,8 +8,9 @@ export const useRequestCameraPermission = (shouldRequest: boolean) => {
       const screenWidth = window.innerWidth;
       navigator?.mediaDevices?.getUserMedia({
         video: {
+          facingMode: { ideal: 'environment' },
           width: { ideal: screenWidth },
-          height: { ideal: screenWidth * 2 },
+          height: { ideal: screenWidth },
         },
       })
         .then(() => setPermissionGranted(true))
@@ -24,11 +25,11 @@ export const useEnumerateCameras = (shouldRequestPermission: boolean) => {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
 
   useEffect(() => {
-    if (!permissionGranted) return;
+    if (!permissionGranted || devices.length > 0) return;
     navigator?.mediaDevices?.enumerateDevices()
       .then((devices) => devices.filter(device => device.kind === 'videoinput'))
       .then(setDevices)
-  }, [permissionGranted]);
+  }, [permissionGranted, devices]);
 
   return devices;
 }

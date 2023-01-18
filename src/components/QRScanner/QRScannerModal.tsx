@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import QrScanner, { DetectResult } from 'react-qr-scanner';
 import { useEnumerateCameras } from '../../domain/MediaDevices';
 
@@ -17,12 +17,6 @@ type Props = {
 export default function QRScannerModal({ label, message, opened, onClose, onQRCodeDetected }:Props) {
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
   const availableCameras = useEnumerateCameras(opened);
-
-  useEffect(() => {
-    if (availableCameras.length > 0) {
-      setDeviceId(availableCameras[0].deviceId);
-    }
-  }, [availableCameras]);
 
   if (!opened || !availableCameras?.length) return null;
 
