@@ -34,7 +34,7 @@ export default function QRScannerModal({ label, message, opened, onClose, onQRCo
           onScan={onScan}
           onError={error => toast.error(error.message)}
           delay={500}
-          constraints={{ facingMode: { exact: "environment" }, audio: false, video: true }}
+          constraints={{ facingMode: { exact: "user" }, audio: false, video: true }}
           className="h-[33vh] col-span-full w-full"
         />
         <SmallNotice icon="info-circle" className="col-span-full">{message}</SmallNotice>
