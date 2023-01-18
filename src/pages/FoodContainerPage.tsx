@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import EmptyNotice from '../components/EmptyNotice';
 import FoodContainerList from '../components/FoodContainers/FoodContainerList';
 import RegisterFoodContainerModal from '../components/FoodContainers/RegisterFoodContainerModal';
+import Button, { ButtonStyle } from '../components/Input/Button';
 import FoodContainerDatabase from '../database/FoodContainerDatabase';
 
 export default function FoodContainerPage() {
@@ -23,8 +24,15 @@ export default function FoodContainerPage() {
           message="You did not register any food containers. Click here to register one"
         />
       )}
+      <Button
+        className="h-10 px-2 w-1/3 self-end min-w-fit"
+        icon='plus'
+        text='Register...'
+        textClassName='child:fill-gray-200'
+        buttonStyle={ButtonStyle.Block}
+        onClick={() => setRegisterFoodModalOpened(true)}
+      />
       <FoodContainerList
-        onRequestRegisterFoodContainer={() => setRegisterFoodModalOpened(true)}
         foodContainers={allFoodContainers ?? []}
       />
     </div>

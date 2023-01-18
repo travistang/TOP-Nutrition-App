@@ -1,6 +1,5 @@
 import React from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ConsumptionDatabase from "../database/ConsumptionDatabase";
 import SummaryWidgets from "../components/SummaryWidgets";
