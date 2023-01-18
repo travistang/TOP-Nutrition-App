@@ -5,7 +5,8 @@ import ExerciseDatabase from '../../database/ExerciseDatabase';
 import TimerText from '../TimerText';
 
 export default function WorkoutTimer() {
-  const lastSetOfToday = useLiveQuery(() => ExerciseDatabase.exercisesOfDay())?.at(-1);
+  const allWorkoutSetsOfToday = useLiveQuery(() => ExerciseDatabase.exercisesOfDay());
+  const lastSetOfToday = allWorkoutSetsOfToday?.[allWorkoutSetsOfToday?.length - 1];
   if (!lastSetOfToday) return null;
 
   const isSetTooOld = Math.abs(differenceInMinutes(Date.now(), lastSetOfToday.date)) >= 10;
