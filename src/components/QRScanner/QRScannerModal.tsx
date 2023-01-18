@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import QrScanner, { DetectResult } from 'react-qr-scanner';
 
@@ -14,7 +14,17 @@ type Props = {
   message: string;
 }
 export default function QRScannerModal({ label, message, opened, onClose, onQRCodeDetected }:Props) {
-  if (!opened) return null;
+  const [permissionGranted, setPermissionGranted] = useState(false);
+
+  useEffect(() => {
+    if (opened && !permissionGranted) {
+      navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
+        .then(() => setPermissionGranted(true))
+        .catch(onClose)
+    }
+  }, [opened, permissionGranted, onClose])
+
+  if (!opened || !permissionGranted) return null;
 
   const onScan = (result: DetectResult) => {
     const detectedCode = result?.text;
