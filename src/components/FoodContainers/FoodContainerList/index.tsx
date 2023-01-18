@@ -16,7 +16,7 @@ export default function FoodContainerList({ foodContainers }: Props) {
   if (!foodContainers.length) return null;
 
   return (
-    <Section label="Registered food containers">
+    <Section className="col-span-full" label="Registered food containers">
       {foodContainers.map((foodContainer) => (
         <FoodContainerOverview
           key={foodContainer.identifier}

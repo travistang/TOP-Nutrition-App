@@ -8,9 +8,18 @@ type Props = {
   modalMessage: string;
   modalLabel: string;
   className?: string;
-}
-export default function QRScanner({ onQrCodeDetected, modalMessage, modalLabel, className }: Props) {
-const [cameraModalOpened, setCameraModalOpened] = useState(false);
+  buttonStyle?: ButtonStyle;
+  buttonText?: string;
+};
+export default function QRScanner({
+  onQrCodeDetected,
+  modalMessage,
+  modalLabel,
+  buttonStyle = ButtonStyle.Clear,
+  buttonText,
+  className
+}: Props) {
+  const [cameraModalOpened, setCameraModalOpened] = useState(false);
 
   return (
     <>
@@ -22,10 +31,11 @@ const [cameraModalOpened, setCameraModalOpened] = useState(false);
         onQRCodeDetected={onQrCodeDetected} />
       <Button
         icon="qrcode"
-        buttonStyle={ButtonStyle.Clear}
+        text={buttonText}
+        buttonStyle={buttonStyle}
         className={classNames('items-center justify-center', className)}
         onClick={() => setCameraModalOpened(true)}
       />
     </>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import FoodContainerDatabase from '../../../database/FoodContainerDatabase';
 import { DEFAULT_FOOD_CONTAINER, FoodContainer } from '../../../types/FoodContainer';
@@ -21,13 +21,17 @@ export default function RegisterFoodContainerModal({ opened, onClose }: Props) {
 
   const isInputValid = !!foodContainer.identifier;
 
+  useEffect(() => {
+    if (opened) setFoodContainer(DEFAULT_FOOD_CONTAINER);
+  }, [opened]);
+
   const registerContainer = async () => {
     try {
       await FoodContainerDatabase.createFoodContainer(foodContainer.name, foodContainer.identifier);
       toast.success("Food container created");
       onClose();
     } catch {
-      toast.error("Failed to register food container. Check if identifier is unique!");
+      toast.error("Failed to register food container. Check if identifier and name are unique!");
     }
   }
   return (

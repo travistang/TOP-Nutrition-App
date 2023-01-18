@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import FoodContentList from '../components/FoodContainers/FoodContainerDetailPage/FoodContentList';
@@ -9,17 +9,21 @@ import FoodContainerSummarySection from '../components/FoodContainers/FoodContai
 import AddFoodContainerContentModal from '../components/FoodContainers/FoodContainerDetailPage/AddFoodContainerContentModal';
 import EditFoodContainerModal from '../components/FoodContainers/EditFoodContainerModal';
 import FoodContainerNutritionSummarySection from '../components/FoodContainers/FoodContainerDetailPage/FoodContainerNutritionSummarySection';
+import ConsumeFoodContainerModal from '../components/FoodContainers/ConsumeFoodContainerModal';
 
 export default function FoodContainerDetailPage() {
   const { containerId } = useParams();
   const navigate = useNavigate();
   const [isAddingContent, setIsAddingContent] = useState(false);
+  const [deletingContainer, setDeletingContainer] = useState(false);
+  const [isConsumeFoodContainerModalOpen, setIsConsumeFoodContainerModalOpen] = useState(false);
   const [isEditingFoodContainer, setIsEditingFoodContainer] = useState(false);
 
   const foodContainer = useLiveQuery(async () => {
+    if (deletingContainer) return null;
     if (containerId) {
       const result = await FoodContainerDatabase.getFoodContainerById(containerId);
-      if (!result) {
+      if (!result && !deletingContainer) {
         toast.error("Food container not found");
         navigate(-1);
         return null;
@@ -27,7 +31,24 @@ export default function FoodContainerDetailPage() {
       return result;
     }
     return null;
-  }, [containerId]);
+  }, [containerId, deletingContainer]);
+
+  const onRemoveContainer = useCallback(async () => {
+    if (!foodContainer) return;
+    try {
+      await FoodContainerDatabase.removeFoodContainer(foodContainer.identifier);
+      toast.success("Food container removed");
+      navigate(-1);
+    } catch {
+      toast.error("Failed to remove food container");
+    }
+  }, [foodContainer, navigate]);
+
+  useEffect(() => {
+    if (deletingContainer) {
+      onRemoveContainer();
+    }
+  }, [deletingContainer, onRemoveContainer]);
 
   if (!foodContainer) return null;
 
@@ -40,7 +61,13 @@ export default function FoodContainerDetailPage() {
       />
       <EditFoodContainerModal
         opened={isEditingFoodContainer}
+        onDelete={() => setDeletingContainer(true)}
         onClose={() => setIsEditingFoodContainer(false)}
+        foodContainer={foodContainer}
+      />
+      <ConsumeFoodContainerModal
+        opened={isConsumeFoodContainerModalOpen}
+        onClose={() => setIsConsumeFoodContainerModalOpen(false)}
         foodContainer={foodContainer}
       />
       <Button
@@ -65,10 +92,10 @@ export default function FoodContainerDetailPage() {
       />
       <Button
         icon="hamburger"
+        disabled={foodContainer.content.length === 0}
         text="Consume content"
-        onClick={() => navigate(-1)}
+        onClick={() => setIsConsumeFoodContainerModalOpen(true)}
         className="col-span-3 h-10"
-        textClassName='child:fill-gray-200'
         buttonStyle={ButtonStyle.Block}
       />
       <FoodContentList
@@ -77,5 +104,5 @@ export default function FoodContainerDetailPage() {
       />
     </div>
 
-  )
+  );
 }

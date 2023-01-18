@@ -1,7 +1,9 @@
 import Dexie, { Table } from "dexie";
+import { Consumption } from "../types/Consumption";
 import { Food } from "../types/Food";
 import { FoodContainer } from "../types/FoodContainer";
-
+import FoodContainerUtils from '../utils/FoodContainer';
+import ConsumptionDatabase from "./ConsumptionDatabase";
 class FoodContainerDatabase extends Dexie {
   foodContainers!: Table<FoodContainer>;
 
@@ -13,19 +15,10 @@ class FoodContainerDatabase extends Dexie {
   }
 
   async createFoodContainer(name: string | null, identifier: string) {
-    if (name) {
-      return this.foodContainers.add({
-        name,
-        identifier,
-        content: [],
-      });
-    }
-
-    const numContainers = (await this.getAll()).length;
-    const generatedName = `Food Container ${+numContainers + 1}`;
     return this.foodContainers.add({
-      name: generatedName,
-      identifier, content: []
+      name: name || `Food Container ${identifier}`,
+      identifier,
+      content: [],
     });
   }
 
@@ -33,8 +26,13 @@ class FoodContainerDatabase extends Dexie {
     return this.foodContainers.get(identifier);
   }
 
+  updateFoodContainerInfo(identifier: string, info: Pick<FoodContainer, "name">) {
+    return this.foodContainers.update(identifier, info);
+  }
+
   setFoodContainerContentById(identifier: string, content: Food[]) {
-    return this.foodContainers.update(identifier, { content });
+    const contentWithoutDuplicates = FoodContainerUtils.mergeDuplicatedFoodContent(content);
+    return this.foodContainers.update(identifier, { content: contentWithoutDuplicates });
   }
 
   getAll() {
@@ -43,6 +41,19 @@ class FoodContainerDatabase extends Dexie {
 
   removeFoodContainer(identifier: string) {
     return this.foodContainers.delete(identifier);
+  }
+
+  async consumeFoodContainer(identifier: string, date: number) {
+    const foodContainer = await this.getFoodContainerById(identifier);
+    if (!foodContainer) {
+      throw new Error(`Cannot consume food container that does not exist (id: ${identifier})`);
+    }
+
+    const addingConsumptions = foodContainer.content.map<Consumption>(food => ({ ...food, date }));
+    await Promise.all([
+      ...addingConsumptions.map((consumption) => ConsumptionDatabase.add(consumption)),
+      this.setFoodContainerContentById(identifier, []),
+    ]);
   }
 }
 

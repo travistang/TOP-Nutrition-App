@@ -11,7 +11,7 @@ type Props = {
 export default function TextSection({ text, title, className, textClassName }: Props) {
   return (
     <Section className={className} label={title}>
-      <span className={classNames(textClassName ?? "text-sm font-bold")}>
+      <span className={classNames(textClassName ?? "text-sm font-bold whitespace-nowrap text-ellipsis overflow-hidden")}>
         {text}
       </span>
     </Section>
