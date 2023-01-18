@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import QrScanner, { DetectResult } from 'react-qr-scanner';
+import { useEnumerateCameras } from '../../domain/MediaDevices';
 
 import Button, { ButtonStyle } from '../Input/Button';
+import SelectInput from '../Input/SelectInput';
 import Modal from '../Modal';
 import SmallNotice from '../SmallNotice';
 
@@ -14,17 +15,16 @@ type Props = {
   message: string;
 }
 export default function QRScannerModal({ label, message, opened, onClose, onQRCodeDetected }:Props) {
-  const [permissionGranted, setPermissionGranted] = useState(false);
+  const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
+  const availableCameras = useEnumerateCameras(opened);
 
   useEffect(() => {
-    if (opened && !permissionGranted) {
-      navigator?.mediaDevices?.getUserMedia({ video: { facingMode: { exact: 'environment' } } })
-        .then(() => setPermissionGranted(true))
-        .catch(onClose)
+    if (availableCameras.length > 0) {
+      setDeviceId(availableCameras[0].deviceId);
     }
-  }, [opened, permissionGranted, onClose])
+  }, [availableCameras]);
 
-  if (!opened || !permissionGranted) return null;
+  if (!opened || !availableCameras?.length) return null;
 
   const onScan = (result: DetectResult) => {
     const detectedCode = result?.text;
@@ -42,18 +42,26 @@ export default function QRScannerModal({ label, message, opened, onClose, onQRCo
       <div className="grid grid-cols-6 items-center justify-center gap-y-2">
         <QrScanner
           onScan={onScan}
-          onError={error => toast.error(error.message)}
+          onError={error => console.error(error)}
           delay={500}
-          constraints={{ facingMode: { exact: "environment" }, audio: false, video: true }}
-          className="h-[33vh] col-span-full w-full"
+          constraints={{ video: true, deviceId }}
+          className="h-[60vh] col-span-full w-full"
         />
+        {availableCameras.length > 0 && (
+          <SelectInput
+            className="col-span-3 col-start-4"
+            value={deviceId ?? ''}
+            onSelect={setDeviceId}
+            label=""
+            options={availableCameras.map(device => ({ label: device.label, value: device.deviceId }))} />
+        )}
         <SmallNotice icon="info-circle" className="col-span-full">{message}</SmallNotice>
         <Button
           onClick={onClose}
           buttonStyle={ButtonStyle.Clear}
           icon="times"
           text="Close scanner"
-          className="flex text-end col-start-5 col-span-2 items-center justify-end" />
+          className="flex col-start-4 col-span-3 items-center justify-end" />
       </div>
     </Modal>
   )
