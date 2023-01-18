@@ -1,9 +1,9 @@
-import { format } from "date-fns";
 import { useLiveQuery } from "dexie-react-hooks";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { createMeasurementRecordAtom } from "../atoms/CreateMeasurementAtom";
 import DateInput, { DateInputType } from "../components/Input/DateInput";
+import MeasurementRecordItem from "../components/MeasurementRecord";
 import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
 import MeasurementDatabase, {
   MeasurementRecord,
@@ -29,21 +29,11 @@ export default function MeasurementListPage() {
         onChange={setSelectedMonth}
       />
       {measurementsOfMonth?.map((measurement) => (
-        <div
-          onClick={() => onSelectMeasurement(measurement)}
-          className="flex flex-row justify-between"
-        >
-          <div className="flex flex-col gap-1">
-            <span className="text-sm font-bold">{measurement.name}</span>
-            <span className="text-xs opacity-70">
-              {format(measurement.date, "MM-dd HH:mm")}
-            </span>
-          </div>
-          <div className="flex items-center justify-center text-sm font-bold">
-            {measurement.value.toFixed(2)}
-            {measurement.unit}
-          </div>
-        </div>
+        <MeasurementRecordItem
+          measurement={measurement}
+          key={measurement.id}
+          onSelect={() => onSelectMeasurement(measurement)}
+        />
       ))}
       {!measurementsOfMonth?.length && (
         <div className="flex items-center justify-center text-xs h-full">

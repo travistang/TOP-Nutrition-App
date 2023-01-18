@@ -10,10 +10,6 @@ const createEditRecord = async (
   record: Measurement & Partial<MeasurementRecord>
 ) => {
   try {
-    if (await MeasurementDatabase.isUnitMismatch(record)) {
-      toast.error("Unit mismatch with existing record!");
-      return;
-    }
     const isEditing = !!record.id;
     if (isEditing) {
       await MeasurementDatabase.edit(record.id!, record as MeasurementRecord);
