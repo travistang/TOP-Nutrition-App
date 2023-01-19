@@ -10,7 +10,12 @@ export default function useQRCodeReaderControl(
   useEffect(() => {
     if (previewRef.current && !cameraControl.current) {
       codeReaderRef.current.decodeFromConstraints(
-        { video: { facingMode: { ideal: 'environment' } } },
+        {
+          video: {
+            facingMode: { ideal: 'environment' },
+            noiseSuppression: { ideal: true },
+          },
+        },
         previewRef.current,
         (result, error, control) => {
           cameraControl.current = control;
@@ -30,5 +35,6 @@ export default function useQRCodeReaderControl(
 
   return {
     stop: stopCamera,
+    switchOnCameraLight: (on: boolean) => cameraControl.current?.switchTorch?.(on),
   };
 }

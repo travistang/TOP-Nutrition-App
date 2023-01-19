@@ -49,6 +49,7 @@ export type Props = {
   onClick: (e: React.MouseEvent) => void;
   disabled?: boolean;
   buttonStyle?: ButtonStyle;
+  circle?: boolean;
   type?: "submit" | "button" | "reset";
 };
 export default function Button({
@@ -58,6 +59,7 @@ export default function Button({
   icon,
   onClick,
   disabled,
+  circle,
   buttonStyle = ButtonStyle.Block,
   textClassName,
 }: Props) {
@@ -66,7 +68,8 @@ export default function Button({
     <button
       type={type}
       className={classNames(
-        "flex items-center justify-center outline-none border-none rounded-lg gap-2",
+        "flex items-center justify-center outline-none border-none gap-2",
+        circle ? "rounded-full" : "rounded-lg",
         styles?.button,
         className
       )}
