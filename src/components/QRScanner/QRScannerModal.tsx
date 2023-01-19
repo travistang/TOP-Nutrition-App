@@ -1,10 +1,8 @@
-import React from 'react';
-import { QrReader, OnResultFunction } from 'react-qr-reader';
+import React, { useRef } from 'react';
 import { useRequestCameraPermission } from '../../domain/MediaDevices';
+import useQRCodeReaderControl from '../../hooks/useQRCodeReaderControl';
 
 import Button, { ButtonStyle } from '../Input/Button';
-import Modal from '../Modal';
-import SmallNotice from '../SmallNotice';
 
 type Props = {
   opened: boolean;
@@ -13,38 +11,34 @@ type Props = {
   label: string;
   message: string;
 }
-export default function QRScannerModal({ label, message, opened, onClose, onQRCodeDetected }:Props) {
+export default function QRScannerModal({ message, opened, onClose, onQRCodeDetected }:Props) {
   const hasPermission = useRequestCameraPermission(opened);
-
-  if (!opened || !hasPermission) return null;
-
-  const onScan: OnResultFunction = (result) => {
-    const detectedCode = result?.getText();
-    if (!detectedCode) return;
-
-    onQRCodeDetected(detectedCode);
+  const videoPreviewRef = useRef<HTMLVideoElement | null>(null);
+  const onCodeDetectedWithClose = (code: string) => {
+    onQRCodeDetected(code);
     onClose();
   }
 
+  const { stop } = useQRCodeReaderControl(videoPreviewRef, onCodeDetectedWithClose);
+  const onCloseWithCameraCleanup = () => {
+    stop();
+    onClose();
+  }
+  if (!opened || !hasPermission) return null;
+
   return (
-    <Modal
-      label={label}
-      opened={opened}
-      onClose={onClose}>
-      <div className="grid grid-cols-6 items-center justify-center gap-y-2">
-        <QrReader
-          onResult={onScan}
-          constraints={{ facingMode: { ideal: "environment" } }}
-          className="h-[60vh] col-span-full w-full"
-        />
-        <SmallNotice icon="info-circle" className="col-span-full">{message}</SmallNotice>
-        <Button
-          onClick={onClose}
-          buttonStyle={ButtonStyle.Clear}
-          icon="times"
-          text="Close scanner"
-          className="flex col-start-4 col-span-3 items-center justify-end" />
+    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+      <video className='object-cover absolute left-0 top-0 h-full w-full z-0' ref={videoPreviewRef} />
+      <div className="z-50 border-4 w-[60vw] h-[60vw] rounded-lg border-gray-200" style={{ boxShadow: '0 0 0 100vmax rgb(0 0 0 / .7)' }}  />
+      <Button
+        onClick={onCloseWithCameraCleanup}
+        buttonStyle={ButtonStyle.Clear}
+        icon="times"
+        textClassName='child:fill-gray-100 font-bold text-xl'
+        className="absolute top-8 right-8 h-16 w-16 z-50" />
+      <div className="absolute left-4 right-4 bottom-4 rounded-lg p-4 bg-gray-700 text-gray-300 z-50 text-center flex items-center">
+        {message}
       </div>
-    </Modal>
+    </div>
   )
 }

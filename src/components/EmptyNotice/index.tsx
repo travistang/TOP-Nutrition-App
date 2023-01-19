@@ -14,7 +14,7 @@ export default function EmptyNotice({ className, onClick, icon, message }: Props
     <div
       onClick={onClick}
       className={classNames(
-        "h-full w-full flex flex-col gap-2 items-center justify-center text-sm",
+        "h-full w-full flex flex-col gap-2 items-center justify-center text-center text-sm",
         !!onClick && "cursor-pointer",
         className)}
     >
