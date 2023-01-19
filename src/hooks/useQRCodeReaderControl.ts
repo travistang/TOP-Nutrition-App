@@ -12,6 +12,8 @@ export default function useQRCodeReaderControl(
       codeReaderRef.current.decodeFromConstraints(
         {
           video: {
+            height: { ideal: 4096 },
+            width: { ideal: 2160 },
             facingMode: { ideal: 'environment' },
             noiseSuppression: { ideal: true },
           },
