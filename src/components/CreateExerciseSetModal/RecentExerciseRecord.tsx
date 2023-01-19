@@ -1,5 +1,5 @@
 import React from "react";
-import { format } from "date-fns";
+import { differenceInMonths, format } from "date-fns";
 import { useLiveQuery } from "dexie-react-hooks";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
 import ArrayUtils from "../../utils/Array";
@@ -15,13 +15,12 @@ type Props = {
 };
 export default function RecentExerciseRecord({ exerciseName }: Props) {
   const exerciseRecords = useLiveQuery(() => {
+    const now = Date.now();
     return ExerciseDatabase.exerciseSetRecord
       .filter((record) => {
-        return StringUtils.caseInsensitiveEqual(record.exercise.name, exerciseName);
+        return StringUtils.caseInsensitiveEqual(record.exercise.name, exerciseName) && differenceInMonths(now, record.date) <= 6;
       })
-      .reverse()
-      .limit(25)
-      .sortBy("date");
+      .toArray()
   });
 
   const recordsByDate = ArrayUtils.groupBy(exerciseRecords ?? [], (record) =>

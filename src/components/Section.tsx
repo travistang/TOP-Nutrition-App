@@ -6,10 +6,12 @@ type Props = {
   label: string;
   className?: string;
   labelClassName?: string;
+  style?: React.CSSProperties;
 };
-export default function Section({ children, label, className, labelClassName }: Props) {
+export default function Section({ style, children, label, className, labelClassName }: Props) {
   return (
     <div
+      style={style}
       className={classNames(
         "rounded-lg bg-gray-300 p-2 flex flex-col",
         className

@@ -42,7 +42,9 @@ export default function PreviousWorkoutList({ workouts, dateStringClassName }: P
         "flex items-center justify-center w-full text-xs sticky z-10 top-0 py-4 px-2 rounded-full text-opacity-75",
         dateStringClassName
       )}>
-        <span className="w-max p-2 bg-gray-200 rounded-full font-bold text-center">{getWorkoutDateString(workoutDate)}</span>
+        <span className="w-[30vw] p-2 bg-gray-300 rounded-full font-bold text-center">
+          {getWorkoutDateString(workoutDate)}
+        </span>
       </div>
       {workouts.map((set) => (
         <div key={set.id} className="w-full py-2 grid grid-cols-12">

@@ -1,11 +1,13 @@
 import React from 'react';
 import { ExerciseSetRecord } from '../../database/ExerciseDatabase';
-import RepetitionUtils from '../../utils/Repetition';
 import NumberUtils from '../../utils/Number';
+import ExerciseUtils from '../../utils/Exercise';
 import Button, { ButtonStyle } from '../Input/Button';
 import ScalarWidget from '../Widgets/ScalarWidget';
 import { useSetRecoilState } from 'recoil';
 import { createEditExerciseRecordAtom } from '../../atoms/CreateEditExerciseRecordAtom';
+import { isSameDay } from 'date-fns';
+import { MarcoNutritionColor } from '../../types/Nutrition';
 
 type Props = {
   recentExercises: ExerciseSetRecord[];
@@ -24,12 +26,12 @@ export default function RecentExerciseStatistics({ recentExercises }: Props) {
       repetitions: recentRepetitions,
     }));
   }
+  const recordsGrouppedByDay = ExerciseUtils.groupWorkoutsByDate(recentExercises);
+  const recordsToday = recentExercises.filter(exercise => isSameDay(Date.now(), exercise.date));
+  const hasRecordsToday = recordsToday.length > 0;
   const exerciseName = recentExercises[0]?.exercise.name ?? '--';
-  const repetitions = recentExercises.map(e => e.repetitions);
-  const volumes = repetitions.map(RepetitionUtils.volume);
-  const weights = repetitions.map(r => r.weight);
-  const [minVolume, maxVolume] = NumberUtils.range(...volumes);
-  const [minWeight, maxWeight] = NumberUtils.range(...weights);
+  const maxWeight = ExerciseUtils.maxWeight(recentExercises);
+  const maxTotalVolume = NumberUtils.max(...Object.values(recordsGrouppedByDay).map(ExerciseUtils.totalVolume));
 
   return (
     <div className="grid grid-cols-6 gap-2 bg-gray-200">
@@ -42,10 +44,38 @@ export default function RecentExerciseStatistics({ recentExercises }: Props) {
         text="Add"
         icon="plus"
       />
-      <ScalarWidget className="col-span-3" value={minWeight} label="Min. weight" unit="kg" />
-      <ScalarWidget className="col-span-3" value={maxWeight} label="Max weight" unit="kg" />
-      <ScalarWidget className="col-span-3" value={minVolume} label="Min. volume" unit="kg x rep" />
-      <ScalarWidget className="col-span-3" value={maxVolume} label="Max volume" unit="kg x rep" />
+      <ScalarWidget
+        className="col-span-3"
+        value={maxTotalVolume}
+        label="Max. Total Volume"
+        unit="kg x rep"
+      />
+      <ScalarWidget
+        className="col-span-3"
+        value={maxWeight}
+        label="Max weight"
+        unit="kg"
+      />
+      {
+        hasRecordsToday && (
+          <>
+            <ScalarWidget
+              style={{backgroundColor: MarcoNutritionColor.carbohydrates}}
+              className="col-span-3"
+              value={ExerciseUtils.totalVolume(recordsToday)}
+              label="Today's total volume"
+              unit="kg x rep"
+              />
+            <ScalarWidget
+              style={{backgroundColor: MarcoNutritionColor.carbohydrates}}
+              className="col-span-3"
+              value={ExerciseUtils.maxWeight(recordsToday)}
+              label="Today's Max weight"
+              unit="kg"
+            />
+          </>
+        )
+      }
     </div>
   );
 }
