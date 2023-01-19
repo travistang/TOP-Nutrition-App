@@ -7,6 +7,8 @@ import ObjectUtils from "../../utils/Object";
 import PreviousWorkoutList from "./PreviousWorkoutList";
 import RecentExerciseStatistics from "./RecentExerciseStatistics";
 import StringUtils from '../../utils/String';
+import RecentExerciseStatisticsChart from "./RecentExerciseStatisticsChart";
+import { WorkoutTrendMode } from "../../types/Exercise";
 
 type Props = {
   exerciseName: string;
@@ -31,9 +33,11 @@ export default function RecentExerciseRecord({ exerciseName }: Props) {
   );
 
   return (
-    <div className= "flex flex-col max-h-[1/2vh] overflow-y-auto pb-12">
+    <div className= "flex flex-col gap-2 overflow-y-auto pb-12">
       <RecentExerciseStatistics recentExercises={exerciseRecords ?? []} />
-      <div className="flex flex-1 flex-col overflow-y-auto items-stretch snap-y snap-proximity">
+      <RecentExerciseStatisticsChart trendMode={WorkoutTrendMode.MaxWeight} workouts={exerciseRecords ?? []} />
+      <RecentExerciseStatisticsChart trendMode={WorkoutTrendMode.TotalVolume} workouts={exerciseRecords ?? []} />
+      <div className="flex flex-1 flex-col min-h-[30vh] overflow-y-auto items-stretch snap-y snap-proximity">
         {sortedWorkoutGroups.map((records) => (
           <PreviousWorkoutList key={records[0].id} workouts={records} />
         ))}

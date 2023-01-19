@@ -58,8 +58,8 @@ export default function Calendar({
           date={day}
           onSelect={() => onSelectDate?.(day)}
           selected={selectedDate && isSameDay(selectedDate, day)}
-          marker={markers?.[format(day, 'dd/MM/yyyy')]}
-          ringConfig={rings?.[format(day, 'dd/MM/yyyy')]}
+          marker={markers?.[format(day, 'yyyy/MM/dd')]}
+          ringConfig={rings?.[format(day, 'yyyy/MM/dd')]}
         />
       ))}
     </div>

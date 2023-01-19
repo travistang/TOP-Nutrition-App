@@ -1,12 +1,11 @@
 import React from "react";
 import { Duration } from "../../types/Duration";
 import AutoCompleteInput from "../Input/AutoCompleteInput";
-import { Exercise } from "../../types/Exercise";
+import { Exercise, WorkoutTrendMode } from "../../types/Exercise";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
 import ExerciseAutocompleteResult from "../Input/ExerciseAutocompleteResult";
 import DateInput, { DateInputType } from "../Input/DateInput";
 import SelectInput from "../Input/SelectInput";
-import { WorkoutTrendMode } from "./types";
 
 export type WorkoutTrendLineConfig = {
   searchText: string;

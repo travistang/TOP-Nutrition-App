@@ -34,7 +34,7 @@ export default function WorkoutDayTypeWidget() {
     })
   );
   const workoutOnSelectedDate =
-    workoutsByDate[format(selectedDate, "dd/MM/yyy")] ?? [];
+    workoutsByDate[format(selectedDate, "yyyy/MM/dd")] ?? [];
   const onSelectMonth = (newMonth: Date) => {
     setSelectedMonth(newMonth);
     const autoSelectedDate = isSameMonth(newMonth, Date.now())

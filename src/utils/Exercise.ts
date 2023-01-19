@@ -1,6 +1,6 @@
 import { differenceInSeconds, format } from "date-fns";
 import { ExerciseSetRecord } from "../database/ExerciseDatabase";
-import { BodyPart, Exercise, ExerciseDayType, ExerciseSet, OneSidedExerciseMode } from "../types/Exercise";
+import { BodyPart, Exercise, ExerciseDayType, ExerciseSet, OneSidedExerciseMode, WorkoutTrendMode } from "../types/Exercise";
 import NumberUtils from "./Number";
 import ArrayUtils from "./Array";
 import RepetitionUtils from './Repetition';
@@ -43,7 +43,7 @@ const groupWorkouts = (sets: ExerciseSet[]): ExerciseSet[][] => {
 const groupWorkoutsByDate = <T extends ExerciseSet>(sets: T[]): Record<string, T[]> => {
   const grouping: Record<string, T[]> = {};
   for (const set of sets) {
-    const dateString = format(new Date(set.date), 'dd/MM/yyyy');
+    const dateString = format(new Date(set.date), 'yyyy/MM/dd');
     grouping[dateString] = [...(grouping[dateString] ?? []), set];
   }
 
@@ -112,6 +112,21 @@ const averageWeight = (workouts: ExerciseSetRecord[]) => {
   return NumberUtils.safeDivide(totalVolume(workouts), totalRepetitions(workouts));
 };
 
+const computeWorkoutsStatistics = (workouts: ExerciseSetRecord[], workoutTrend: WorkoutTrendMode) => {
+  switch (workoutTrend) {
+    case WorkoutTrendMode.AverageRepetition:
+      return averageRepetitions(workouts);
+    case WorkoutTrendMode.AverageVolume:
+      return averageVolume(workouts);
+    case WorkoutTrendMode.AverageWeight:
+      return averageWeight(workouts);
+    case WorkoutTrendMode.MaxWeight:
+      return maxWeight(workouts);
+    case WorkoutTrendMode.TotalVolume:
+      return totalVolume(workouts);
+  }
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   isValid,
@@ -123,9 +138,10 @@ export default {
   computeExerciseDayType,
   filterWorkoutsWithExercise,
 
+  computeWorkoutsStatistics,
+
   totalVolume,
   averageVolume,
-
   averageRepetitions,
 
   maxWeight,

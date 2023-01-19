@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { WorkoutTrendMode } from "./types";
 import Section from "../Section";
 import WorkoutTrendLineConfigGroup, {
   WorkoutTrendLineConfig,
@@ -11,6 +10,7 @@ import DateUtils from "../../utils/Date";
 import { Line } from "react-chartjs-2";
 import useChartData from "./useChartData";
 import PreviousRecordsList from "./PreviousRecordsList";
+import { WorkoutTrendMode } from "../../types/Exercise";
 
 export default function WorkoutTrendLineChart() {
   const [config, setConfig] = useState<WorkoutTrendLineConfig>({

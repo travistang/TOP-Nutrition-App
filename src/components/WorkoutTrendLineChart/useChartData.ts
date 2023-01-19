@@ -1,10 +1,10 @@
-import { WorkoutTrendMode } from "./types";
 import ExerciseUtils from "../../utils/Exercise";
 import DateUtils from "../../utils/Date";
 import ObjectUtils from "../../utils/Object";
 import { ExerciseSetRecord } from "../../database/ExerciseDatabase";
 import { format } from "date-fns";
 import { WorkoutTrendLineConfig } from "./WorkoutTrendLineConfigGroup";
+import { WorkoutTrendMode } from "../../types/Exercise";
 
 const chartOptions = {
   plugins: { tooltip: { enabled: false }, legend: { display: false } },

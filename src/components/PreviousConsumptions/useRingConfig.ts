@@ -15,7 +15,7 @@ export default function useRingConfig(month: Date | number) {
 
   const consumptionsByDates = ArrayUtils.groupBy(
     consumptionsOfMonth ?? [],
-    (consumption) => format(consumption.date, "dd/MM/yyyy")
+    (consumption) => format(consumption.date, "yyyy/MM/dd")
   );
 
   const nutritionsByDates = ObjectUtils.mapValues(consumptionsByDates, records => {

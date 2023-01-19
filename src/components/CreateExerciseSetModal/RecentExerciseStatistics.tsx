@@ -32,7 +32,7 @@ export default function RecentExerciseStatistics({ recentExercises }: Props) {
   const [minWeight, maxWeight] = NumberUtils.range(...weights);
 
   return (
-    <div className="grid grid-cols-6 gap-2 sticky top-0 bg-gray-200">
+    <div className="grid grid-cols-6 gap-2 bg-gray-200">
       <span className="col-span-4">{exerciseName}</span>
       <Button
         onClick={addExercise}
