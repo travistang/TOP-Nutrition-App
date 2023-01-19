@@ -33,8 +33,13 @@ export default function useQRCodeReaderControl(
     cameraControl.current = null;
   };
 
+  const focusCamera = () => {;
+    cameraControl.current?.streamVideoConstraintsApply?.({ focusMode: "auto" } as MediaTrackConstraints);
+  }
+
   return {
     stop: stopCamera,
-    switchOnCameraLight: (on: boolean) => cameraControl.current?.switchTorch?.(on),
+    focusCamera,
+    cameraControl,
   };
 }

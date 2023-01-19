@@ -17,6 +17,10 @@ export const useRequestCameraPermission = (shouldRequest: boolean) => {
   return permissionGranted;
 };
 
+export const supportTorch = () => {
+  return (navigator?.mediaDevices.getSupportedConstraints() as { torch?: boolean; } | undefined)?.torch;
+}
+
 export const useEnumerateCameras = (shouldRequestPermission: boolean) => {
   const permissionGranted = useRequestCameraPermission(shouldRequestPermission);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
