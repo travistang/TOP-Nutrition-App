@@ -45,7 +45,7 @@ export default function QRScannerModal({ label, message, opened, onClose, onQRCo
           onScan={onScan}
           onError={error => console.error(error)}
           delay={500}
-          constraints={{ deviceId }}
+          constraints={{ facingMode: 'environment' }}
           className="h-[60vh] col-span-full w-full"
         />
         {availableCameras.length > 0 && (

@@ -10,7 +10,7 @@ type Props = {
 };
 export default function SmallNotice({ className, icon, children }: Props) {
   return (
-    <div className={classNames("flex items-center text-xs", className)}>
+    <div className={classNames("flex items-center text-xs text-center", className)}>
       <FontAwesomeIcon icon={icon} className="mr-2" />
       {children}
     </div>
