@@ -1,6 +1,5 @@
 import React from 'react';
-import toast from 'react-hot-toast';
-import QrScanner, { DetectResult } from 'react-qr-scanner';
+import { QrReader, OnResultFunction } from 'react-qr-reader';
 
 import Button, { ButtonStyle } from '../Input/Button';
 import Modal from '../Modal';
@@ -16,8 +15,8 @@ type Props = {
 export default function QRScannerModal({ label, message, opened, onClose, onQRCodeDetected }:Props) {
   if (!opened) return null;
 
-  const onScan = (result: DetectResult) => {
-    const detectedCode = result?.text;
+  const onScan: OnResultFunction = (result) => {
+    const detectedCode = result?.getText();
     if (!detectedCode) return;
 
     onQRCodeDetected(detectedCode);
@@ -30,11 +29,9 @@ export default function QRScannerModal({ label, message, opened, onClose, onQRCo
       opened={opened}
       onClose={onClose}>
       <div className="grid grid-cols-6 items-center justify-center gap-y-2">
-        <QrScanner
-          onScan={onScan}
-          onError={error => toast.error(error.message)}
-          delay={500}
-          constraints={{ facingMode: { exact: "environment" }, audio: false, video: true }}
+        <QrReader
+          onResult={onScan}
+          constraints={{ facingMode: { exact: "environment" } }}
           className="h-[33vh] col-span-full w-full"
         />
         <SmallNotice icon="info-circle" className="col-span-full">{message}</SmallNotice>
