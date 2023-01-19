@@ -68,7 +68,7 @@ export default function QRScannerModal({ message, opened, onClose, onQRCodeDetec
         buttonStyle={ButtonStyle.Clear}
         icon="times"
         textClassName='child:fill-gray-100 font-bold text-xl'
-        className="absolute top-8 right-8 h-16 w-16 z-50" />
+        className="absolute top-4 right-4 h-16 w-16 z-50" />
       <div className="absolute left-4 right-4 bottom-4 rounded-lg p-4 bg-gray-700 text-gray-300 z-50 text-center flex items-center">
         {message}
       </div>
