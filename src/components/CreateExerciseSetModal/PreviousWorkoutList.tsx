@@ -46,7 +46,7 @@ export default function PreviousWorkoutList({ workouts, dateStringClassName }: P
           {getWorkoutDateString(workoutDate)}
         </span>
       </div>
-      {workouts.map((set) => (
+      {workouts.sort((a, b) => b.date - a.date).map((set) => (
         <div key={set.id} className="w-full py-2 grid grid-cols-12">
           <span className="h-full col-span-2 text-xs font-bold flex items-center justify-center text-gray-200 mx-2">
             <FontAwesomeIcon
