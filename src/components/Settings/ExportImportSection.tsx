@@ -42,10 +42,8 @@ export default function ExportImportSection() {
   };
 
   const importFile: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
-    alert("importing file");
     const file = e.target.files?.[0];
     if (!file) return;
-    alert("opening file");
     const blob = new Blob([file], { type: 'application/json' });
     setConfimationConfig({
       modalOpened: true,

@@ -45,7 +45,7 @@ export default function QRScannerModal({ message, opened, onClose, onQRCodeDetec
     <div
       onClick={focusCamera}
       className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-      <video className='object-none absolute left-0 top-0 h-full w-full z-0' ref={videoPreviewRef} />
+      <video className='absolute left-0 top-0 h-full w-full z-0' ref={videoPreviewRef} />
       <div
         className="flex items-center justify-center relative z-50 border-4 w-[60vw] h-[60vw] rounded-lg border-gray-200"
         style={{ boxShadow: '0 0 0 100vmax rgb(0 0 0 / .7)' }}
