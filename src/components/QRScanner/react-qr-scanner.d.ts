@@ -8,7 +8,7 @@ declare module 'react-qr-scanner' {
     onError: (error: Error) => void;
     constraints?: MediaTrackConstraints & {
       audio?: boolean;
-      video?: boolean;
+      video?: boolean | { deviceId: string };
     };
     className?: string;
   };

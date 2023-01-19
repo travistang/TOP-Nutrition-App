@@ -38,7 +38,7 @@ export default function RegisterFoodContainerModal({ opened, onClose }: Props) {
     <Modal opened={opened} onClose={onClose} label="Register a food container">
       <div className="grid grid-cols-6 gap-2">
         <TextInput
-          className="col-span-2"
+          className="col-span-3"
           label="Container name (optional)"
           value={foodContainer.name}
           onChange={updateFoodContainer('name')}
@@ -69,7 +69,7 @@ export default function RegisterFoodContainerModal({ opened, onClose }: Props) {
           disabled={!isInputValid}
           onClick={registerContainer}
           buttonStyle={ButtonStyle.Block}
-          className="col-span-2 col-start-5 h-10 mt-10"
+          className="col-span-3 col-start-5 h-10 mt-10"
           textClassName="child:fill-gray-200"
         />
       </div>

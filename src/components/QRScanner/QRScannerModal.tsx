@@ -1,5 +1,6 @@
 import React from 'react';
 import { QrReader, OnResultFunction } from 'react-qr-reader';
+import { useRequestCameraPermission } from '../../domain/MediaDevices';
 
 import Button, { ButtonStyle } from '../Input/Button';
 import Modal from '../Modal';
@@ -13,7 +14,9 @@ type Props = {
   message: string;
 }
 export default function QRScannerModal({ label, message, opened, onClose, onQRCodeDetected }:Props) {
-  if (!opened) return null;
+  const hasPermission = useRequestCameraPermission(opened);
+
+  if (!opened || !hasPermission) return null;
 
   const onScan: OnResultFunction = (result) => {
     const detectedCode = result?.getText();
@@ -31,8 +34,8 @@ export default function QRScannerModal({ label, message, opened, onClose, onQRCo
       <div className="grid grid-cols-6 items-center justify-center gap-y-2">
         <QrReader
           onResult={onScan}
-          constraints={{ facingMode: { exact: "environment" } }}
-          className="h-[33vh] col-span-full w-full"
+          constraints={{ facingMode: { ideal: "environment" } }}
+          className="h-[60vh] col-span-full w-full"
         />
         <SmallNotice icon="info-circle" className="col-span-full">{message}</SmallNotice>
         <Button
@@ -40,7 +43,7 @@ export default function QRScannerModal({ label, message, opened, onClose, onQRCo
           buttonStyle={ButtonStyle.Clear}
           icon="times"
           text="Close scanner"
-          className="flex text-end col-start-5 col-span-2 items-center justify-end" />
+          className="flex col-start-4 col-span-3 items-center justify-end" />
       </div>
     </Modal>
   )
