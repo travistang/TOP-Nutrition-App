@@ -6,10 +6,13 @@ import { Duration } from "../types/Duration";
 import NutritionUtils from "../utils/Nutrition";
 import DatabaseUtils from "../utils/Database";
 import StringUtils from "../utils/String";
+import LocalStorageUtils from "../utils/LocalStorage";
 
 export type ConsumptionRecord = Consumption & {
   id: string;
 };
+
+const LS_LAST_SYNC_AT_KEY = "@nutritionApp/consumption_database_last_synced_at";
 
 class ConsumptionDatabase extends Dexie {
   consumptions!: Table<ConsumptionRecord>;
@@ -17,8 +20,36 @@ class ConsumptionDatabase extends Dexie {
   constructor() {
     super("consumptionDatabase");
     this.version(2).stores({
-      consumptions: "++id,name,date",
+      consumptions: "++id,name,date,version",
     });
+
+    this.consumptions.hook("creating", this.syncCreation.bind(this));
+    this.consumptions.hook("updating", this.syncUpdate.bind(this));
+  }
+
+  get lastSyncedAt() {
+    return +LocalStorageUtils.getFromStore(LS_LAST_SYNC_AT_KEY) || 0;
+  }
+
+  private updateLastSyncTime() {
+    LocalStorageUtils.setStore(LS_LAST_SYNC_AT_KEY, Date.now());
+  }
+
+  syncUpdate(
+    modifications: Object,
+    primary: any,
+    record: ConsumptionRecord,
+    transaction: any
+  ) {
+    // TODO: this
+    console.log("Updating record");
+    console.log({ record });
+  }
+
+  syncCreation(primary: any, record: ConsumptionRecord, transaction: any) {
+    // TODO: this
+    console.log("Creating record");
+    console.log({ record });
   }
 
   consumptionsOfDay(date = Date.now()) {
