@@ -23,11 +23,7 @@ import ConfirmationModal from "./components/ConfirmationModal";
 import FoodContainerPage from "./pages/FoodContainerPage";
 import FoodContainerDetailPage from "./pages/FoodContainerDetailPage";
 
-import useSynchronizeDatabase from "./database/synchronize/useSynchronizeDatabase";
-
 function App() {
-  useSynchronizeDatabase();
-
   return (
     <ErrorBoundary>
       <BrowserRouter basename="/TOP-Nutrition-App">

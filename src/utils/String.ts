@@ -2,6 +2,8 @@ const searchCaseInsensitive = (str: string, searchString: string) =>
   str.toLowerCase().includes(searchString.toLowerCase());
 const normalizeSnakeCase = (snakeCaseString: string) =>
   snakeCaseString.replace(/_/g, " ");
+const normalizeCamelCase = (camelCaseString: string) =>
+  camelCaseString.replace(/(.)([A-Z])/g, "$1 $2").toLowerCase();
 const caseInsensitiveEqual = (a: string, b: string) =>
   a.toLowerCase() === b.toLowerCase();
 const isUrl = (str: string) => {
@@ -16,6 +18,7 @@ const isUrl = (str: string) => {
 export default {
   searchCaseInsensitive,
   normalizeSnakeCase,
+  normalizeCamelCase,
   caseInsensitiveEqual,
   isUrl,
 };
