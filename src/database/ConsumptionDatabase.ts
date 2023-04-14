@@ -41,15 +41,9 @@ class ConsumptionDatabase extends Dexie {
     record: ConsumptionRecord,
     transaction: any
   ) {
-    // TODO: this
-    console.log("Updating record");
-    console.log({ record });
   }
 
   syncCreation(primary: any, record: ConsumptionRecord, transaction: any) {
-    // TODO: this
-    console.log("Creating record");
-    console.log({ record });
   }
 
   consumptionsOfDay(date = Date.now()) {
