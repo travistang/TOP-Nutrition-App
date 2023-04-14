@@ -7,15 +7,16 @@ import CreateRecordModal from "./components/CreateRecordModal";
 import DailyNutritionGoalModal from "./components/DailyNutritionGoalModal";
 import Header from "./components/Header";
 import SplitMealModal from "./components/SplitMealModal";
-import ConsumptionSummary from "./pages/ConsumptionSummary";
-import PreviousStatistics from "./pages/PreviousStatistics";
 import FabMenu from "./components/FabMenu";
 import MainFabButton from "./components/FabMenu/MainFabButton";
 import CreateExerciseSetModal from "./components/CreateExerciseSetModal";
 import Footer from "./components/Footer";
+import CreateMeasurementRecordModal from "./components/CreateMeasurementRecordModal";
+
+import ConsumptionSummary from "./pages/ConsumptionSummary";
+import PreviousStatistics from "./pages/PreviousStatistics";
 import WorkoutListPage from "./pages/WorkoutListPage";
 import WorkoutStatistics from "./pages/WorkoutStatistics";
-import CreateMeasurementRecordModal from "./components/CreateMeasurementRecordModal";
 import MeasurementListPage from "./pages/MeasurementListPage";
 import SettingsPage from "./pages/SettingsPage";
 import ConfirmationModal from "./components/ConfirmationModal";
@@ -30,13 +31,22 @@ function App() {
           <Toaster />
           <Header />
           <Routes>
-            <Route path="/" element={<ConsumptionSummary date={new Date()} />} />
+            <Route
+              path="/"
+              element={<ConsumptionSummary date={new Date()} />}
+            />
             <Route path="/stats" element={<PreviousStatistics />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
-            <Route path="/stats/measurements" element={<MeasurementListPage />} />
+            <Route
+              path="/stats/measurements"
+              element={<MeasurementListPage />}
+            />
             <Route path="/workouts" element={<WorkoutListPage />} />
             <Route path="/containers" element={<FoodContainerPage />} />
-            <Route path="/containers/:containerId" element={<FoodContainerDetailPage />} />
+            <Route
+              path="/containers/:containerId"
+              element={<FoodContainerDetailPage />}
+            />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
           <MainFabButton />
