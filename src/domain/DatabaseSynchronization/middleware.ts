@@ -2,7 +2,6 @@ import Dexie, { DBCore, DBCoreMutateRequest, DBCoreTable } from "dexie";
 import DatabaseSynchronization, { UpdateType } from ".";
 
 const createUpdateHandler = async (
-  database: DBCore,
   table: DBCoreTable,
   request: Extract<DBCoreMutateRequest, { type: "add" | "put" }>
 ) => {
@@ -29,7 +28,6 @@ const createUpdateHandler = async (
 };
 
 const deleteHandler = async (
-  database: DBCore,
   table: DBCoreTable,
   request: Extract<DBCoreMutateRequest, { type: "delete" }>
 ) => {
@@ -68,10 +66,10 @@ export const installSynchronizeMiddleware = (database: Dexie, name: string) => {
                 return table.mutate(mutateRequest);
               }
               if (mutateRequest.type === "delete") {
-                return deleteHandler(database, table, mutateRequest);
+                return deleteHandler(table, mutateRequest);
               }
 
-              return createUpdateHandler(database, table, mutateRequest);
+              return createUpdateHandler(table, mutateRequest);
             },
           };
         },
