@@ -1,24 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRecoilState } from "recoil";
-import {
-  serverConnectionAtom,
-  ServerConnectionConfig,
-} from "../../atoms/ServerConnectionAtom";
 import TextInput from "../Input/TextInput";
 import Section from "../Section";
+import LocalStorage from "../../utils/LocalStorage";
+import DatabaseSynchronization from "../../domain/DatabaseSynchronization";
+import Button, { ButtonStyle } from "../Input/Button";
 
 export default function ServerConnectionSection() {
-  const [config, setConfig] = useRecoilState(serverConnectionAtom);
-
-  const updateField =
-    <T extends keyof ServerConnectionConfig>(field: T) =>
-    (value: ServerConnectionConfig[T]) => {
-      setConfig({
-        ...config,
-        [field]: value,
-      });
-    };
+  const [remoteUrl, setRemoteUrl] = useState(
+    LocalStorage.getFromStore(DatabaseSynchronization.LS_DATABASE_KEY)
+  );
+  const updateUrl = () => {
+    LocalStorage.setStore(DatabaseSynchronization.LS_DATABASE_KEY, remoteUrl);
+  };
 
   return (
     <Section label="Server connections">
@@ -31,10 +25,17 @@ export default function ServerConnectionSection() {
           purposes.
         </span>
         <TextInput
-          value={config.topNutritionServiceUrl}
+          value={remoteUrl}
           className="col-span-full"
-          onChange={updateField("topNutritionServiceUrl")}
+          onChange={setRemoteUrl}
           label="TOP Nutrition Service URL"
+        />
+        <Button
+          onClick={updateUrl}
+          className="col-start-6"
+          text="Update"
+          icon="sync"
+          buttonStyle={ButtonStyle.Block}
         />
       </div>
     </Section>

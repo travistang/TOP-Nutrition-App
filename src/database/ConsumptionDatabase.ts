@@ -7,6 +7,7 @@ import NutritionUtils from "../utils/Nutrition";
 import DatabaseUtils from "../utils/Database";
 import StringUtils from "../utils/String";
 import LocalStorageUtils from "../utils/LocalStorage";
+import { installSynchronizeMiddleware } from "../domain/DatabaseSynchronization/middleware";
 
 export type ConsumptionRecord = Consumption & {
   id: string;
@@ -22,28 +23,10 @@ class ConsumptionDatabase extends Dexie {
     this.version(2).stores({
       consumptions: "++id,name,date,version",
     });
-
-    this.consumptions.hook("creating", this.syncCreation.bind(this));
-    this.consumptions.hook("updating", this.syncUpdate.bind(this));
   }
 
   get lastSyncedAt() {
     return +LocalStorageUtils.getFromStore(LS_LAST_SYNC_AT_KEY) || 0;
-  }
-
-  private updateLastSyncTime() {
-    LocalStorageUtils.setStore(LS_LAST_SYNC_AT_KEY, Date.now());
-  }
-
-  syncUpdate(
-    modifications: Object,
-    primary: any,
-    record: ConsumptionRecord,
-    transaction: any
-  ) {
-  }
-
-  syncCreation(primary: any, record: ConsumptionRecord, transaction: any) {
   }
 
   consumptionsOfDay(date = Date.now()) {
@@ -175,4 +158,10 @@ class ConsumptionDatabase extends Dexie {
   }
 }
 
-export default new ConsumptionDatabase();
+const consumptionDatabase = new ConsumptionDatabase();
+export default consumptionDatabase;
+
+installSynchronizeMiddleware(
+  consumptionDatabase,
+  "ConsumptionDatabaseSynchronizer"
+);
