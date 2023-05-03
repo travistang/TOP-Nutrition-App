@@ -11,6 +11,7 @@ import MeasurementDatabase, {
 import { FoodContainer } from "../../types/FoodContainer";
 import LocalStorage from "../../utils/LocalStorage";
 import FoodContainerDatabase from "../../database/FoodContainerDatabase";
+import { SynchronizableDatabase } from "../../database/BaseDatabase";
 
 export enum UpdateType {
   Created = "CREATED",
@@ -25,12 +26,11 @@ export type Changes<T> = {
 
 class DatabaseSynchronizer {
   readonly LS_DATABASE_KEY = "@nutritionApp/server_connection";
-  readonly LS_LAST_UPDATE_TIME = "@nutritionApp/last_sync";
-  readonly databaseMapping: Record<string, Dexie> = {
+  readonly databaseMapping: Record<string, SynchronizableDatabase<any>> = {
     consumptionDatabase: ConsumptionDatabase,
-    measurementDatabase: MeasurementDatabase,
-    foodContainerDatabase: FoodContainerDatabase,
-    exerciseDatabase: ExerciseDatabase,
+    // measurementDatabase: MeasurementDatabase,
+    // foodContainerDatabase: FoodContainerDatabase,
+    // exerciseDatabase: ExerciseDatabase,
   };
 
   setRemoteUrl(url: string) {
@@ -41,28 +41,20 @@ class DatabaseSynchronizer {
     return LocalStorage.getFromStore(this.LS_DATABASE_KEY) ?? "";
   }
 
-  get lastUpdateTime() {
-    return +LocalStorage.getFromStore(this.LS_LAST_UPDATE_TIME) || 0;
-  }
-
-  updateLastUpdateTime() {
-    return LocalStorage.setStore(this.LS_LAST_UPDATE_TIME, Date.now());
-  }
-
-  async reportToRemote<T>(
+  async reportToRemote<T extends string | object>(
     databaseName: string,
     updateType: UpdateType,
-    data: T
+    data: T[]
   ) {
     const url = this.remoteUrl;
     if (!url) return;
 
-    const postBody: Changes<T> = {
+    const postBody: Changes<T[]> = {
       data,
       type: updateType,
     };
 
-    const finalUrl = `url/${databaseName}`;
+    const finalUrl = `${url}/${databaseName}`;
     return fetch(finalUrl, {
       method: "post",
       body: JSON.stringify(postBody),
@@ -72,25 +64,14 @@ class DatabaseSynchronizer {
     });
   }
 
-  async fetchUpdatesFromRemote() {
+  async synchronizeWithRemote() {
     const baseUrl = this.remoteUrl;
     if (!baseUrl) return;
-    const url = `${baseUrl}?since=${this.lastUpdateTime}`;
-    const response = await fetch(url, {
-      method: "get",
-    });
-    const newData = (await response.json()) as Promise<{
-      consumptionDatabase: Changes<ConsumptionRecord>[];
-      measurementDatabase: Changes<MeasurementRecord>[];
-      foodContainerDatabase: Changes<FoodContainer>[];
-      exerciseDatabase: Changes<ExerciseSetRecord>[];
-    }>;
-
-    // TODO: insert new data?
-    for (const [databaseName, changes] of Object.entries(newData)) {
-    }
-
-    this.updateLastUpdateTime();
+    await Promise.all(
+      Object.values(this.databaseMapping).map((db) =>
+        db.synchronizeWithRemote(baseUrl)
+      )
+    );
   }
 }
 
