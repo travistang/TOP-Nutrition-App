@@ -47,7 +47,6 @@ export default function WorkoutDayTypeWidget() {
     <Section label="Workout day type">
       <DateInput
         dateType={DateInputType.Month}
-        label=""
         value={selectedMonth}
         onChange={onSelectMonth}
         inputClassName="bg-gray-400"

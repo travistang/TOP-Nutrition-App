@@ -35,7 +35,6 @@ export default function BaseChartSection({
       <Section label={label} className={className}>
         <div className="grid grid-cols-6 gap-2">
           <DateInput
-            label=""
             dateType={DateInputType.Month}
             className="col-span-4"
             inputClassName="bg-gray-400"

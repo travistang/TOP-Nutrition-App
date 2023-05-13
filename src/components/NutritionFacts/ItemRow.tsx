@@ -33,7 +33,6 @@ export default function ItemRow({
       {editable ? (
         <>
           <NumberInput
-            label=""
             value={value}
             onChange={onChange}
             className="col-span-1"

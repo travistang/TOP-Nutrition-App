@@ -23,7 +23,6 @@ export default function MeasurementListPage() {
     <div className="flex flex-col overflow-y-auto flex-1 items-stretch gap-2 pb-24">
       <StatisticsNavigateTab />
       <DateInput
-        label=""
         dateType={DateInputType.Month}
         value={selectedMonth}
         onChange={setSelectedMonth}

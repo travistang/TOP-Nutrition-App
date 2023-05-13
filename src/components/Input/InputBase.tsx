@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React from "react";
 
 export type InputBaseProps = {
-  label: string;
+  label?: string;
   className?: string;
   labelClassName?: string;
   children: React.ReactNode;
@@ -11,7 +11,7 @@ export type InputBaseProps = {
 
 export default function InputBase({
   onClick,
-  label,
+  label = "",
   className,
   labelClassName,
   children,
