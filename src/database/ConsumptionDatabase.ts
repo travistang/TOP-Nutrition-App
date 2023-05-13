@@ -1,49 +1,32 @@
 import { differenceInMinutes, endOfDay, startOfDay, subDays } from "date-fns";
-import Dexie, { Table } from "dexie";
+import { Table } from "dexie";
 import { v4 as uuid } from "uuid";
 import { Consumption } from "../types/Consumption";
 import { Duration } from "../types/Duration";
 import NutritionUtils from "../utils/Nutrition";
 import DatabaseUtils from "../utils/Database";
 import StringUtils from "../utils/String";
-import LocalStorageUtils from "../utils/LocalStorage";
+import { SynchronizableDatabase } from "./BaseDatabase";
 
 export type ConsumptionRecord = Consumption & {
   id: string;
 };
 
-const LS_LAST_SYNC_AT_KEY = "@nutritionApp/consumption_database_last_synced_at";
+class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
+  readonly LS_LAST_SYNC_AT_KEY =
+    "@nutritionApp/consumption_database_last_synced_at";
 
-class ConsumptionDatabase extends Dexie {
   consumptions!: Table<ConsumptionRecord>;
 
   constructor() {
-    super("consumptionDatabase");
-    this.version(2).stores({
+    super("consumptionDatabase", 3);
+    this.version(3).stores({
       consumptions: "++id,name,date,version",
     });
-
-    this.consumptions.hook("creating", this.syncCreation.bind(this));
-    this.consumptions.hook("updating", this.syncUpdate.bind(this));
   }
 
-  get lastSyncedAt() {
-    return +LocalStorageUtils.getFromStore(LS_LAST_SYNC_AT_KEY) || 0;
-  }
-
-  private updateLastSyncTime() {
-    LocalStorageUtils.setStore(LS_LAST_SYNC_AT_KEY, Date.now());
-  }
-
-  syncUpdate(
-    modifications: Object,
-    primary: any,
-    record: ConsumptionRecord,
-    transaction: any
-  ) {
-  }
-
-  syncCreation(primary: any, record: ConsumptionRecord, transaction: any) {
+  get tableToSync() {
+    return this.consumptions;
   }
 
   consumptionsOfDay(date = Date.now()) {
@@ -93,6 +76,7 @@ class ConsumptionDatabase extends Dexie {
       return this.mergeRecord(consumption, similarRecord);
     }
     const newRecord: ConsumptionRecord = { ...consumption, id: uuid() };
+    await this.registerChange("created", newRecord);
     return this.consumptions.add(newRecord);
   }
 
@@ -101,6 +85,7 @@ class ConsumptionDatabase extends Dexie {
     if (similarRecord && similarRecord.id !== id) {
       return this.mergeRecord({ ...newRecord, id }, similarRecord);
     }
+    await this.registerChange("updated", { ...newRecord, id });
     return this.consumptions.update(id, newRecord);
   }
 
@@ -157,7 +142,10 @@ class ConsumptionDatabase extends Dexie {
     ]);
   }
 
-  remove(id: string) {
+  async remove(id: string) {
+    const itemToRemove = await this.consumptions.get(id);
+    if (!itemToRemove) return;
+    await this.registerChange("deleted", itemToRemove);
     return this.consumptions.delete(id);
   }
 
@@ -175,4 +163,5 @@ class ConsumptionDatabase extends Dexie {
   }
 }
 
-export default new ConsumptionDatabase();
+const consumptionDatabase = new ConsumptionDatabase();
+export default consumptionDatabase;
