@@ -6,7 +6,7 @@ import { Duration } from "../types/Duration";
 import NutritionUtils from "../utils/Nutrition";
 import DatabaseUtils from "../utils/Database";
 import StringUtils from "../utils/String";
-import { Changes, SynchronizableDatabase } from "./BaseDatabase";
+import { SynchronizableDatabase } from "./BaseDatabase";
 
 export type ConsumptionRecord = Consumption & {
   id: string;
@@ -17,13 +17,11 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     "@nutritionApp/consumption_database_last_synced_at";
 
   consumptions!: Table<ConsumptionRecord>;
-  changes!: Table<Changes<ConsumptionRecord>>;
 
   constructor() {
-    super("consumptionDatabase");
+    super("consumptionDatabase", 3);
     this.version(3).stores({
       consumptions: "++id,name,date,version",
-      changes: "$$uuid,type,data,time",
     });
   }
 

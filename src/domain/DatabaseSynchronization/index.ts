@@ -1,16 +1,5 @@
-import Dexie from "dexie";
-import ConsumptionDatabase, {
-  ConsumptionRecord,
-} from "../../database/ConsumptionDatabase";
-import ExerciseDatabase, {
-  ExerciseSetRecord,
-} from "../../database/ExerciseDatabase";
-import MeasurementDatabase, {
-  MeasurementRecord,
-} from "../../database/MeasurementDatabase";
-import { FoodContainer } from "../../types/FoodContainer";
+import ConsumptionDatabase from "../../database/ConsumptionDatabase";
 import LocalStorage from "../../utils/LocalStorage";
-import FoodContainerDatabase from "../../database/FoodContainerDatabase";
 import { SynchronizableDatabase } from "../../database/BaseDatabase";
 
 export enum UpdateType {
@@ -25,7 +14,7 @@ export type Changes<T> = {
 };
 
 class DatabaseSynchronizer {
-  readonly LS_DATABASE_KEY = "@nutritionApp/server_connection";
+  readonly LS_DATABASE_KEY = "@nutritionApp/remote_sync_url";
   readonly databaseMapping: Record<string, SynchronizableDatabase<any>> = {
     consumptionDatabase: ConsumptionDatabase,
     // measurementDatabase: MeasurementDatabase,

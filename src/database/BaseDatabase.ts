@@ -47,6 +47,12 @@ export abstract class SynchronizableDatabase<
   changes!: Table<Changes<T>>;
   abstract readonly LS_LAST_SYNC_AT_KEY: string;
 
+  constructor(name: string, version: number) {
+    super(name);
+    this.version(version).stores({
+      changes: "++id,type,data,time",
+    });
+  }
   get lastSyncedAt() {
     return +LocalStorageUtils.getFromStore(this.LS_LAST_SYNC_AT_KEY) || 0;
   }
@@ -64,11 +70,12 @@ export abstract class SynchronizableDatabase<
   }
 
   protected async registerChange(type: Changes<T>["type"], data: T) {
+    const id = uuid();
     await this.changes.add({
       time: Date.now(),
       type,
       data,
-      id: uuid(),
+      id,
     });
   }
 
