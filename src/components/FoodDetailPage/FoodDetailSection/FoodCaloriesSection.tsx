@@ -1,21 +1,18 @@
-import React, { useContext } from "react";
-import { foodDetailContext } from "./FoodDetailContext";
-import { MarcoNutrition } from "../../../types/Nutrition";
+import React from "react";
+import { Nutrition } from "../../../types/Nutrition";
 import NutritionTooltip from "../../ProgressiveForm/NutritionForm/NutritionTooltip";
 
-const nutritionFields = [...Object.values(MarcoNutrition), "calories"] as const;
-export default function FoodCaloriesSection() {
-  const records = useContext(foodDetailContext);
-  const firstRecord = records[0];
-  if (!firstRecord) return null;
-
+type Props = {
+  nutrition: Nutrition;
+};
+export default function FoodCaloriesSection({ nutrition }: Props) {
   return (
     <div className="flex justify-between">
-      {nutritionFields.map((field) => (
+      {Object.entries(nutrition).map(([field, value]) => (
         <NutritionTooltip
           key={field}
-          field={field}
-          value={firstRecord.nutritionPerHundred[field]}
+          field={field as keyof Nutrition}
+          value={value}
         />
       ))}
     </div>

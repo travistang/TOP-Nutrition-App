@@ -1,7 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React, { ChangeEventHandler, useCallback, useMemo, useRef } from "react";
-import Button from "./Button";
+import React, {
+  ChangeEventHandler,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import Button from "../Button";
+import FullScreenImageViewer from "./FullScreenImageViewer";
 
 type Props = {
   className?: string;
@@ -9,6 +16,7 @@ type Props = {
   onChange: (image: Blob | null) => void;
 };
 export default function ImagePicker({ className, image, onChange }: Props) {
+  const [viewingImage, setViewingImage] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const imageSrc = useMemo(
     () => (image ? `url(${URL.createObjectURL(image)})` : ""),
@@ -34,6 +42,13 @@ export default function ImagePicker({ className, image, onChange }: Props) {
       onChange(null);
     },
     [onChange]
+  );
+  const togglePreview = useCallback(
+    (shouldPreviewOpen: boolean) => (e?: React.MouseEvent) => {
+      e?.stopPropagation();
+      setViewingImage(shouldPreviewOpen);
+    },
+    []
   );
 
   return (
@@ -72,7 +87,16 @@ export default function ImagePicker({ className, image, onChange }: Props) {
             className="z-30 w-4 h-4 rounded-full bg-red-500 absolute top-0 left-0 text-xs -translate-y-2 -translate-x-2"
             onClick={onClearImage}
           />
+          <Button
+            icon="expand"
+            className="z-30 w-4 h-4 rounded-full bg-gray-100 absolute bottom-0 right-0 text-xs translate-y-2 translate-x-2"
+            textClassName="child:fill-gray-800"
+            onClick={togglePreview(true)}
+          />
         </>
+      )}
+      {viewingImage && image && (
+        <FullScreenImageViewer image={image} onClose={togglePreview(false)} />
       )}
     </div>
   );

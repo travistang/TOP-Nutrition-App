@@ -1,4 +1,10 @@
-import { differenceInMinutes, endOfDay, startOfDay, subDays } from "date-fns";
+import {
+  differenceInMinutes,
+  endOfDay,
+  isSameMonth,
+  startOfDay,
+  subDays,
+} from "date-fns";
 import { Table } from "dexie";
 import { v4 as uuid } from "uuid";
 import { Consumption } from "../types/Consumption";
@@ -46,15 +52,19 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
       .sortBy("date");
   }
 
-  findRecordsWithSameFood(record: ConsumptionRecord) {
-    return this.consumptions
-      .filter(
-        (other) =>
-          NutritionUtils.isEqual(
-            record.nutritionPerHundred,
-            other.nutritionPerHundred
-          ) && record.name === other.name
-      )
+  findRecordsWithSameFood(record: ConsumptionRecord, month?: number) {
+    const sameFoodFilter = this.consumptions.filter(
+      (other) =>
+        NutritionUtils.isEqual(
+          record.nutritionPerHundred,
+          other.nutritionPerHundred
+        ) && record.name === other.name
+    );
+    if (!month) {
+      return sameFoodFilter.toArray();
+    }
+    return sameFoodFilter
+      .filter((other) => isSameMonth(month, other.date))
       .toArray();
   }
 

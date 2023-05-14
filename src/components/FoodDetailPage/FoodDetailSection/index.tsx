@@ -1,31 +1,26 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import FoodCaloriesSection from "./FoodCaloriesSection";
 import ConsumptionDatabase, {
   ConsumptionRecord,
   FoodDetails,
 } from "../../../database/ConsumptionDatabase";
-import FoodDetailContextProvider from "./FoodDetailContext";
 import Section from "../../Section";
 import ImagePicker from "../../Input/ImagePicker";
 import Button, { ButtonStyle } from "../../Input/Button";
-import { toast } from "react-hot-toast";
 
 type Props = {
-  records: ConsumptionRecord[];
+  selectedRecord: ConsumptionRecord;
 };
-export default function FoodDetailSection({ records }: Props) {
-  const [foodDetails, setFoodDetails] = useState<FoodDetails | undefined>(
-    undefined
-  );
+export default function FoodDetailSection({ selectedRecord }: Props) {
+  const [foodDetails, setFoodDetails] = useState<FoodDetails | undefined>();
   const [modified, setModified] = useState(false);
+
   useEffect(() => {
-    const record = records[0];
-    if (record) {
-      ConsumptionDatabase.getOrCreateFoodDetailByRecord(record).then(
-        setFoodDetails
-      );
-    }
-  }, [records]);
+    ConsumptionDatabase.getOrCreateFoodDetailByRecord(selectedRecord).then(
+      setFoodDetails
+    );
+  }, [selectedRecord]);
 
   const onChooseImage = useCallback(
     (image: Blob | null) => {
@@ -49,29 +44,27 @@ export default function FoodDetailSection({ records }: Props) {
   };
 
   return (
-    <FoodDetailContextProvider records={records}>
-      <Section label="Food information" className="gap-2">
-        <div className="flex justify-between items-center">
-          <h3 className="font-bold flex-1">{records[0].name}</h3>
-          <ImagePicker
-            className="w-16 h-16"
-            image={foodDetails?.image ?? null}
-            onChange={onChooseImage}
+    <Section label="Food information" className="gap-2">
+      <div className="flex justify-between items-center">
+        <h3 className="font-bold flex-1">{selectedRecord.name}</h3>
+        <ImagePicker
+          className="w-16 h-16"
+          image={foodDetails?.image ?? null}
+          onChange={onChooseImage}
+        />
+      </div>
+      {modified && (
+        <div className="flex justify-end">
+          <Button
+            buttonStyle={ButtonStyle.Block}
+            onClick={onSaveDetails}
+            icon="save"
+            text="Save"
+            className="w-16 text-xs h-8"
           />
         </div>
-        {modified && (
-          <div className="flex justify-end">
-            <Button
-              buttonStyle={ButtonStyle.Block}
-              onClick={onSaveDetails}
-              icon="save"
-              text="Save"
-              className="w-16 text-xs h-8"
-            />
-          </div>
-        )}
-        <FoodCaloriesSection />
-      </Section>
-    </FoodDetailContextProvider>
+      )}
+      <FoodCaloriesSection nutrition={selectedRecord.nutritionPerHundred} />
+    </Section>
   );
 }
