@@ -47,12 +47,12 @@ export abstract class SynchronizableDatabase<
   changes!: Table<Changes<T>>;
   abstract readonly LS_LAST_SYNC_AT_KEY: string;
 
-  constructor(name: string, version: number) {
-    super(name);
-    this.version(version).stores({
+  get changeDatabaseSchema() {
+    return {
       changes: "++id,type,data,time",
-    });
+    };
   }
+
   get lastSyncedAt() {
     return +LocalStorageUtils.getFromStore(this.LS_LAST_SYNC_AT_KEY) || 0;
   }

@@ -21,7 +21,7 @@ export default function FoodConsumptionHistory({
         value={date}
         onChange={onChangeDate}
       />
-      <FoodConsumptionCalendar records={records} />
+      <FoodConsumptionCalendar date={date} records={records} />
     </Section>
   );
 }

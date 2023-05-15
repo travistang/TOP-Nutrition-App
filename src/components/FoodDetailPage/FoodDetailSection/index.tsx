@@ -17,9 +17,11 @@ export default function FoodDetailSection({ selectedRecord }: Props) {
   const [modified, setModified] = useState(false);
 
   useEffect(() => {
-    ConsumptionDatabase.getOrCreateFoodDetailByRecord(selectedRecord).then(
-      setFoodDetails
-    );
+    if (selectedRecord) {
+      ConsumptionDatabase.getOrCreateFoodDetailByRecord(selectedRecord).then(
+        setFoodDetails
+      );
+    }
   }, [selectedRecord]);
 
   const onChooseImage = useCallback(

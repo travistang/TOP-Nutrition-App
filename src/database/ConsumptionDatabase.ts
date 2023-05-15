@@ -34,10 +34,21 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
   foodDetails!: Table<FoodDetails>;
 
   constructor() {
-    super("consumptionDatabase", 3);
+    super("consumptionDatabase");
+
+    this.version(2).stores({
+      consumptions: "++id,name,date,version",
+    });
+
+    this.version(3).stores({
+      consumptions: "++id,name,date,version",
+      ...this.changeDatabaseSchema,
+    });
+
     this.version(4).stores({
       consumptions: "++id,name,date,version",
       foodDetails: "++id,name",
+      ...this.changeDatabaseSchema,
     });
   }
 
@@ -61,11 +72,11 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
         ) && record.name === other.name
     );
     if (!month) {
-      return sameFoodFilter.toArray();
+      return sameFoodFilter.sortBy("date");
     }
     return sameFoodFilter
       .filter((other) => isSameMonth(month, other.date))
-      .toArray();
+      .sortBy("date");
   }
 
   private findSimilar(
@@ -92,24 +103,26 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
   async getOrCreateFoodDetailByRecord(
     record: ConsumptionRecord
   ): Promise<FoodDetails | undefined> {
-    const foodDetails = await this.foodDetails
-      .filter(
-        (foodDetails) =>
-          NutritionUtils.isEqual(
-            record.nutritionPerHundred,
-            foodDetails.nutritionPerHundred
-          ) && record.name === foodDetails.name
-      )
-      .first();
-    if (foodDetails) return foodDetails;
-    const newFoodDetails: FoodDetails = {
-      id: uuid(),
-      name: record.name,
-      nutritionPerHundred: record.nutritionPerHundred,
-      image: undefined,
-    };
-    await this.foodDetails.add(newFoodDetails);
-    return newFoodDetails;
+    return this.transaction("rw", this.foodDetails, async (transaction) => {
+      const foodDetails = await this.foodDetails
+        .filter(
+          (foodDetails) =>
+            NutritionUtils.isEqual(
+              record.nutritionPerHundred,
+              foodDetails.nutritionPerHundred
+            ) && record.name === foodDetails.name
+        )
+        .first();
+      if (foodDetails) return foodDetails;
+      const newFoodDetails: FoodDetails = {
+        id: uuid(),
+        name: record.name,
+        nutritionPerHundred: record.nutritionPerHundred,
+        image: undefined,
+      };
+      await this.foodDetails.add(newFoodDetails);
+      return newFoodDetails;
+    });
   }
 
   async mergeRecord(

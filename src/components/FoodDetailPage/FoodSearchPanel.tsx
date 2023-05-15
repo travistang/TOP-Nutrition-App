@@ -30,17 +30,19 @@ export default function FoodSearchPanel({ onClear, onRecordSelected }: Props) {
   );
 
   return (
-    <AutoCompleteInput
-      inline
-      placeholder="Search for food.."
-      icon="search"
-      value={searchString}
-      onChange={onChange}
-      onSearch={ConsumptionDatabase.search.bind(ConsumptionDatabase)}
-      onSelectSearchResult={selectRecordWithSetString}
-      renderResult={(record) => (
-        <ConsumptionAutocompleteResult record={record} key={record.id} />
-      )}
-    />
+    <div className="flex flex-col items-stretch">
+      <AutoCompleteInput
+        inline
+        placeholder="Search for food.."
+        icon="search"
+        value={searchString}
+        onChange={onChange}
+        onSearch={ConsumptionDatabase.search.bind(ConsumptionDatabase)}
+        onSelectSearchResult={selectRecordWithSetString}
+        renderResult={(record) => (
+          <ConsumptionAutocompleteResult record={record} key={record.id} />
+        )}
+      />
+    </div>
   );
 }

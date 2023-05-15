@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Calendar from "../../Calendar";
 import { ConsumptionRecord } from "../../../database/ConsumptionDatabase";
 import { DayMarker } from "../../../types/Calendar";
@@ -22,18 +22,14 @@ const getCalendarMarkers = (
 };
 
 type Props = {
+  date: Date;
   records: ConsumptionRecord[];
 };
-export default function FoodConsumptionCalendar({ records }: Props) {
-  const [date, setDate] = useState(Date.now());
+export default function FoodConsumptionCalendar({ date, records }: Props) {
   const markers = getCalendarMarkers(records);
   return (
     <>
-      <Calendar
-        date={date}
-        onSelectDate={(date) => setDate(date.getTime())}
-        markers={markers}
-      />
+      <Calendar date={date} markers={markers} />
     </>
   );
 }

@@ -4,6 +4,7 @@ import NutritionUtils from "../../../utils/Nutrition";
 import Chip from "../../Chip";
 import { ConsumptionRecord } from "../../../database/ConsumptionDatabase";
 import { MarcoNutrition, MarcoNutritionColor } from "../../../types/Nutrition";
+import EmptyNotice from "../../EmptyNotice";
 
 const getCaloriesTextByRecord = (record: ConsumptionRecord) => {
   const calories = NutritionUtils.caloriesByAmount(
@@ -30,6 +31,13 @@ type Props = {
 export default function RecentConsumptionList({ records }: Props) {
   return (
     <>
+      {records.length === 0 && (
+        <EmptyNotice
+          message="No consumption of this food in this month"
+          icon="hamburger"
+          className="h-36 flex-shrink-0"
+        />
+      )}
       {records.map((record) => (
         <div
           key={record.id}
