@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 
 type Props = {
   image: Blob;
@@ -6,9 +6,17 @@ type Props = {
 };
 export default function FullScreenImageViewer({ image, onClose }: Props) {
   const url = useMemo(() => URL.createObjectURL(image), [image]);
+  const onCloseWithStopPropagation = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onClose();
+    },
+    [onClose]
+  );
+
   return (
     <div
-      onClick={onClose}
+      onClick={onCloseWithStopPropagation}
       className="z-50 fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-80"
     >
       <img

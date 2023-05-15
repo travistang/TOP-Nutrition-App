@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import Button from "../Button";
-import FullScreenImageViewer from "./FullScreenImageViewer";
+import FullScreenImageViewer from "../../FullScreenImageViewer";
 
 type Props = {
   className?: string;

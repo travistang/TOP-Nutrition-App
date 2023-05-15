@@ -14,6 +14,7 @@ import DatabaseUtils from "../utils/Database";
 import StringUtils from "../utils/String";
 import { SynchronizableDatabase } from "./BaseDatabase";
 import { Nutrition } from "../types/Nutrition";
+import { Food } from "../types/Food";
 
 export type ConsumptionRecord = Consumption & {
   id: string;
@@ -101,7 +102,7 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
   }
 
   async getOrCreateFoodDetailByRecord(
-    record: ConsumptionRecord
+    record: Food
   ): Promise<FoodDetails | undefined> {
     return this.transaction("rw", this.foodDetails, async (transaction) => {
       const foodDetails = await this.foodDetails

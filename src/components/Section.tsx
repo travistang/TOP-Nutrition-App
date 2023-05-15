@@ -8,7 +8,13 @@ type Props = {
   labelClassName?: string;
   style?: React.CSSProperties;
 };
-export default function Section({ style, children, label, className, labelClassName }: Props) {
+export default function Section({
+  style,
+  children,
+  label,
+  className,
+  labelClassName,
+}: Props) {
   return (
     <div
       style={style}
@@ -17,7 +23,9 @@ export default function Section({ style, children, label, className, labelClassN
         className
       )}
     >
-      <span className={classNames("text-xs", labelClassName)}>{label}</span>
+      <span className={classNames("text-xs font-bold", labelClassName)}>
+        {label}
+      </span>
       {children}
     </div>
   );
