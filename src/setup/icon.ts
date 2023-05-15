@@ -45,6 +45,8 @@ import {
   faTimesCircle,
   faArrowsDownToLine,
   faBolt,
+  faImage,
+  faExpand,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const loadIcons = () =>
@@ -97,4 +99,6 @@ export const loadIcons = () =>
     faTimesCircle,
     faArrowsDownToLine,
     faBolt,
+    faImage,
+    faExpand
   );

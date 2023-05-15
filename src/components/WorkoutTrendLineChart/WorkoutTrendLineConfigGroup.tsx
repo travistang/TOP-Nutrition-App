@@ -31,7 +31,7 @@ export default function WorkoutTrendLineConfigGroup({
         ...config,
         [field]: value,
       });
-      };
+    };
 
   return (
     <div className="grid grid-cols-6 gap-1 mb-4">
@@ -42,7 +42,6 @@ export default function WorkoutTrendLineConfigGroup({
         inputClassName="bg-gray-400 text-gray-700 text-sm"
         innerInputClassName="text-gray-700"
         className="col-span-4"
-        label=""
       />
       <SelectInput
         label=""
@@ -56,7 +55,6 @@ export default function WorkoutTrendLineConfigGroup({
         }))}
       />
       <AutoCompleteInput
-        label=""
         icon="search"
         placeholder="Search exercises..."
         className="col-span-3"
@@ -71,7 +69,9 @@ export default function WorkoutTrendLineConfigGroup({
             searchText: exercise.name,
           });
         }}
-        onSearch={searchString => ExerciseDatabase.searchExercise(searchString)}
+        onSearch={(searchString) =>
+          ExerciseDatabase.searchExercise(searchString)
+        }
         renderResult={(exercise: Exercise) => (
           <ExerciseAutocompleteResult exercise={exercise} />
         )}

@@ -1,4 +1,10 @@
-import { differenceInMinutes, endOfDay, startOfDay, subDays } from "date-fns";
+import {
+  differenceInMinutes,
+  endOfDay,
+  isSameMonth,
+  startOfDay,
+  subDays,
+} from "date-fns";
 import { Table } from "dexie";
 import { v4 as uuid } from "uuid";
 import { Consumption } from "../types/Consumption";
@@ -7,9 +13,18 @@ import NutritionUtils from "../utils/Nutrition";
 import DatabaseUtils from "../utils/Database";
 import StringUtils from "../utils/String";
 import { SynchronizableDatabase } from "./BaseDatabase";
+import { Nutrition } from "../types/Nutrition";
+import { Food } from "../types/Food";
 
 export type ConsumptionRecord = Consumption & {
   id: string;
+};
+
+export type FoodDetails = {
+  id: string;
+  nutritionPerHundred: Nutrition;
+  name: string;
+  image?: Blob;
 };
 
 class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
@@ -17,11 +32,24 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     "@nutritionApp/consumption_database_last_synced_at";
 
   consumptions!: Table<ConsumptionRecord>;
+  foodDetails!: Table<FoodDetails>;
 
   constructor() {
-    super("consumptionDatabase", 3);
+    super("consumptionDatabase");
+
+    this.version(2).stores({
+      consumptions: "++id,name,date,version",
+    });
+
     this.version(3).stores({
       consumptions: "++id,name,date,version",
+      ...this.changeDatabaseSchema,
+    });
+
+    this.version(4).stores({
+      consumptions: "++id,name,date,version",
+      foodDetails: "++id,name",
+      ...this.changeDatabaseSchema,
     });
   }
 
@@ -36,22 +64,66 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
       .sortBy("date");
   }
 
+  findRecordsWithSameFood(record: ConsumptionRecord, month?: number) {
+    const sameFoodFilter = this.consumptions.filter(
+      (other) =>
+        NutritionUtils.isEqual(
+          record.nutritionPerHundred,
+          other.nutritionPerHundred
+        ) && record.name === other.name
+    );
+    if (!month) {
+      return sameFoodFilter.sortBy("date");
+    }
+    return sameFoodFilter
+      .filter((other) => isSameMonth(month, other.date))
+      .sortBy("date");
+  }
+
   private findSimilar(
     consumption: Consumption
   ): Promise<ConsumptionRecord | undefined> {
-    return this.consumptions
-      .filter((other) => {
-        const diffMinutes = differenceInMinutes(consumption.date, other.date);
-        const isTimeSimilar = Math.abs(diffMinutes) <= 30;
-        const hasEqualNutrition = NutritionUtils.isEqual(
-          consumption.nutritionPerHundred,
-          other.nutritionPerHundred
-        );
-        return (
-          other.name === consumption.name && isTimeSimilar && hasEqualNutrition
-        );
-      })
-      .first();
+    const filter = this.consumptions.filter((other) => {
+      const diffMinutes = differenceInMinutes(consumption.date, other.date);
+      const isTimeSimilar = Math.abs(diffMinutes) <= 30;
+      const hasEqualNutrition = NutritionUtils.isEqual(
+        consumption.nutritionPerHundred,
+        other.nutritionPerHundred
+      );
+      return (
+        other.name === consumption.name && isTimeSimilar && hasEqualNutrition
+      );
+    });
+    return filter.first();
+  }
+
+  async updateFoodDetails(foodDetails: FoodDetails) {
+    return this.foodDetails.update(foodDetails.id, foodDetails);
+  }
+
+  async getOrCreateFoodDetailByRecord(
+    record: Food
+  ): Promise<FoodDetails | undefined> {
+    return this.transaction("rw", this.foodDetails, async (transaction) => {
+      const foodDetails = await this.foodDetails
+        .filter(
+          (foodDetails) =>
+            NutritionUtils.isEqual(
+              record.nutritionPerHundred,
+              foodDetails.nutritionPerHundred
+            ) && record.name === foodDetails.name
+        )
+        .first();
+      if (foodDetails) return foodDetails;
+      const newFoodDetails: FoodDetails = {
+        id: uuid(),
+        name: record.name,
+        nutritionPerHundred: record.nutritionPerHundred,
+        image: undefined,
+      };
+      await this.foodDetails.add(newFoodDetails);
+      return newFoodDetails;
+    });
   }
 
   async mergeRecord(

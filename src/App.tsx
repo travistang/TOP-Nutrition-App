@@ -24,6 +24,7 @@ import MeasurementListPage from "./pages/MeasurementListPage";
 import SettingsPage from "./pages/SettingsPage";
 import FoodContainerPage from "./pages/FoodContainerPage";
 import FoodContainerDetailPage from "./pages/FoodContainerDetailPage";
+import FoodDetailPage from "./pages/FoodDetailPage";
 
 function App() {
   useDatabaseSynchronization();
@@ -40,6 +41,7 @@ function App() {
               element={<ConsumptionSummary date={new Date()} />}
             />
             <Route path="/stats" element={<PreviousStatistics />} />
+            <Route path="/stats/food" element={<FoodDetailPage />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
             <Route
               path="/stats/measurements"
