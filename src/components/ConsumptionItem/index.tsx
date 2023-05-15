@@ -7,7 +7,7 @@ import { Food } from "../../types/Food";
 import NumberUtils from "../../utils/Number";
 import Button, { ButtonStyle } from "../Input/Button";
 import ConsumptionDatabase from "../../database/ConsumptionDatabase";
-import ConsumptionItemImage from "./ConsumptionItemImage";
+import ConsumptionItemImage from "../ConsumptionItemImage";
 
 type Props = {
   mealCalories?: number;
@@ -58,7 +58,9 @@ export default function ConsumptionItem({
           textClassName="text-red-500"
         />
       )}
-      {withImagePreview && <ConsumptionItemImage consumption={consumption} />}
+      {withImagePreview && (
+        <ConsumptionItemImage className="h-full" consumption={consumption} />
+      )}
       <div className="flex-1 flex flex-col items-stretch gap-1 overflow-hidden">
         <span
           className={classNames(

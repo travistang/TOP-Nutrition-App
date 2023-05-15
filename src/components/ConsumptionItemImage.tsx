@@ -1,25 +1,27 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Food } from "../../types/Food";
-import ConsumptionDatabase from "../../database/ConsumptionDatabase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import FullScreenImageViewer from "../FullScreenImageViewer";
+import { Food } from "../types/Food";
+import ConsumptionDatabase from "../database/ConsumptionDatabase";
+import FullScreenImageViewer from "./FullScreenImageViewer";
+import classNames from "classnames";
 
 type Props = {
-  withImagePreview?: boolean;
+  className?: string;
   consumption: Food;
 };
-export default function ConsumptionItemImage({ consumption }: Props) {
+export default function ConsumptionItemImage({
+  className,
+  consumption,
+}: Props) {
   const [showFullSizeImage, setShowFullSizeImage] = useState(false);
-  const imageRef = useRef<Blob | null>(null);
-  const hasImage = !!imageRef.current;
-  const imageUrl = hasImage
-    ? `url(${URL.createObjectURL(imageRef.current!)})`
-    : undefined;
+  const [image, setImage] = useState<Blob | null>(null);
+  const hasImage = !!image;
+  const imageUrl = hasImage ? `url(${URL.createObjectURL(image)})` : undefined;
 
   useEffect(() => {
     ConsumptionDatabase.getOrCreateFoodDetailByRecord(consumption).then(
       (foodDetail) => {
-        imageRef.current = foodDetail?.image ?? null;
+        setImage(foodDetail?.image ?? null);
       }
     );
   }, [consumption]);
@@ -45,17 +47,17 @@ export default function ConsumptionItemImage({ consumption }: Props) {
       <div
         style={style}
         onClick={onClick}
-        className="flex-shrink-0 rounded-lg w-14 h-full m-2 bg-gray-400 flex items-center justify-center"
+        className={classNames(
+          "flex-shrink-0 rounded-lg w-14 m-2 bg-gray-400 flex items-center justify-center",
+          className
+        )}
       >
         {!hasImage && (
           <FontAwesomeIcon icon="image" className="w-4 h-4 child:fill-white" />
         )}
       </div>
       {showFullSizeImage && hasImage && (
-        <FullScreenImageViewer
-          onClose={onCloseFullSizeImage}
-          image={imageRef.current!}
-        />
+        <FullScreenImageViewer onClose={onCloseFullSizeImage} image={image} />
       )}
     </>
   );
