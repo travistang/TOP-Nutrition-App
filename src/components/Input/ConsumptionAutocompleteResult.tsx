@@ -29,7 +29,7 @@ export default function ConsumptionAutocompleteResult({
 
   return (
     <div className="flex gap-2 self-center">
-      <ConsumptionItemImage className="h-14" consumption={record} />
+      <ConsumptionItemImage className="h-10" consumption={record} />
       <div className="flex flex-col self-center flex-1">
         <div className="flex w-full items-center justify-between">
           <div className="font-bold text-gray200 text-sm">{record.name}</div>
