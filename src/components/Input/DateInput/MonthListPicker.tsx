@@ -1,3 +1,4 @@
+import React from "react";
 import classNames from "classnames";
 import {
   addMonths,
@@ -6,7 +7,6 @@ import {
   setMonth,
   startOfYear,
 } from "date-fns";
-import React from "react";
 import ArrayUtils from "../../../utils/Array";
 
 type Props = {
@@ -17,7 +17,7 @@ export default function MonthListPicker({ value, onChange }: Props) {
   const yearStart = startOfYear(Date.now());
 
   return (
-    <div className="grid grid-cols-3 gap-1">
+    <div className="grid grid-cols-3 gap-1 w-full">
       {ArrayUtils.range(12).map((n) => {
         const dateWithMonth = addMonths(yearStart, n);
         return (

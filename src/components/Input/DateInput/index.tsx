@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import { format, getHours, getMinutes } from "date-fns";
-import OutsideClickHandler from "react-outside-click-handler";
 import { setHours, setMinutes } from "date-fns/esm";
 import React, { useState } from "react";
 import InputBase from "../InputBase";
@@ -47,15 +46,10 @@ export default function DateInput({
     } else {
       onChange(date);
     }
-
-    setShowingDate(null);
   };
 
   return (
-    <OutsideClickHandler
-      onOutsideClick={() => setShowingDate(null)}
-      display="contents"
-    >
+    <>
       <InputBase
         {...inputProps}
         onClick={() => setShowingDate(showingDate ? null : new Date())}
@@ -69,14 +63,23 @@ export default function DateInput({
         >
           {format(value, dateFormat)}
         </div>
-        {showingDate && (
-          <DateTimePicker
-            mode={dateType}
-            value={new Date(value)}
-            onSelectDate={onSelectDate}
-          />
-        )}
       </InputBase>
-    </OutsideClickHandler>
+      {showingDate && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center px-8 py-[20vh]">
+          <div
+            onClick={() => setShowingDate(null)}
+            className="fixed inset-0 z-10 bg-gray-700 bg-opacity-50"
+          />
+          <div className="bg-gray-300 rounded-lg flex p-2 z-20">
+            <DateTimePicker
+              withNowButton
+              mode={dateType}
+              value={new Date(value)}
+              onSelectDate={onSelectDate}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }

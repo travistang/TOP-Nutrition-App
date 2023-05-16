@@ -1,21 +1,45 @@
-import classNames from 'classnames';
-import React from 'react';
-import NumberSummary from '../NumberSummary';
+import classNames from "classnames";
+import React from "react";
 
 type Props = {
-  label: string;
+  calories: number;
+  title: string;
   ratio: number;
-  mealWeight: number;
   className?: string;
+  reversed?: boolean;
 };
-export default function PortionSummary({ label, ratio, mealWeight, className }: Props) {
-  const summaryString = `≈${(mealWeight * ratio).toFixed(2)}g, ${(
-    ratio * 100
-  ).toFixed(0)}%`;
+export default function PortionSummary({
+  title,
+  className,
+  calories,
+  ratio,
+  reversed,
+}: Props) {
+  const caloriesString = calories.toFixed(1);
   return (
-    <NumberSummary
-      label={label}
-      value={summaryString}
-      className={classNames("flex flex-col col-span-3 gap-1", className)} />
+    <div
+      className={classNames(
+        "flex items-center gap-2",
+        reversed && "flex-row-reversed",
+        className
+      )}
+    >
+      <div className="flex flex-col">
+        <h4
+          className={classNames("text-xs font-bold", reversed && "text-right")}
+        >
+          {title}
+        </h4>
+        <div
+          className={classNames("flex gap-2", reversed && "flex-row-reverse")}
+        >
+          <h3 className="text-xl font-bold">
+            {caloriesString}
+            <span className="text-xs">kcal</span>
+          </h3>
+          <div className="text-xl">{(ratio * 100).toFixed(0)}%</div>
+        </div>
+      </div>
+    </div>
   );
 }

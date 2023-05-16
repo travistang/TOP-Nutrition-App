@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
 import { addDays } from "date-fns";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toast from "react-hot-toast";
 
 import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";
 import InputBase from "../Input/InputBase";
 import Button, { ButtonStyle } from "../Input/Button";
 import Modal from "../Modal";
-import NutritionFacts from "../NutritionFacts";
 import NutritionUtils from "../../utils/Nutrition";
 import ConsumptionDatabase from "../../database/ConsumptionDatabase";
-import PortionSummary from "./PortionSummary";
 import DateInput, { DateInputType } from "../Input/DateInput";
+import PortionSummary from "./PortionSummary";
 
 type SplitMealFormValue = {
   splitRatio: number;
@@ -30,12 +28,20 @@ export default function SplitMealModal() {
   const mealNutrition = NutritionUtils.total(
     ...meal.map(NutritionUtils.nutritionFromConsumption)
   );
-  const mealWeight = NutritionUtils.weight(mealNutrition);
+  const currentMealCalories = NutritionUtils.multiply(
+    mealNutrition,
+    1 - splitRatio
+  ).calories;
+  const nextMealCalories = NutritionUtils.multiply(
+    mealNutrition,
+    splitRatio
+  ).calories;
 
   const isFormValid = splitRatio > 0;
-  const onClose = () => {
+  const onClose = useCallback(() => {
     setSplitMealModalState({ meal: [], modalOpened: false });
-  };
+  }, []);
+
   const splitMeal = async () => {
     if (!isFormValid) {
       return;
@@ -49,6 +55,7 @@ export default function SplitMealModal() {
       toast.error("Failed to split meal");
     }
   };
+
   return (
     <Modal
       opened={modalOpened}
@@ -56,7 +63,13 @@ export default function SplitMealModal() {
       onClose={onClose}
     >
       <div className="grid grid-cols-6 gap-x-2 gap-y-4 py-2">
-        <InputBase label="Split ratio" className="col-span-full">
+        <PortionSummary
+          title="Current Meal"
+          className="col-start-1 col-span-full"
+          calories={currentMealCalories}
+          ratio={1 - splitRatio}
+        />
+        <InputBase label="" className="col-span-full">
           <input
             value={splitRatio}
             onChange={(e) =>
@@ -68,6 +81,13 @@ export default function SplitMealModal() {
             step={0.01}
           />
         </InputBase>
+        <PortionSummary
+          title="Next Meal"
+          className="col-span-full self-end flex-row-reverse"
+          calories={nextMealCalories}
+          ratio={splitRatio}
+          reversed
+        />
         <DateInput
           label="Next meal date"
           dateType={DateInputType.DateTime}
@@ -80,38 +100,12 @@ export default function SplitMealModal() {
           }
           value={nextMealDate}
         />
-        <PortionSummary
-          label="Current meal"
-          mealWeight={mealWeight}
-          ratio={1 - splitRatio}
-          className="col-start-1"
-        />
-        <PortionSummary
-          label="Next meal"
-          mealWeight={mealWeight}
-          ratio={splitRatio}
-        />
 
-        <div className="col-span-full flex flex-no-wrap items-center">
-          <NutritionFacts
-            unit=""
-            nutrition={NutritionUtils.multiply(mealNutrition, 1 - splitRatio)}
-            className="flex-1"
-          />
-          <FontAwesomeIcon
-            icon="arrow-right"
-            className="self-center mx-1 text-white"
-          />
-          <NutritionFacts
-            unit=""
-            nutrition={NutritionUtils.multiply(mealNutrition, splitRatio)}
-            className="flex-1"
-          />
-        </div>
         <Button
           buttonStyle={ButtonStyle.Clear}
           text="Cancel"
           type="button"
+          className="col-start-1"
           onClick={onClose}
         />
         <Button
