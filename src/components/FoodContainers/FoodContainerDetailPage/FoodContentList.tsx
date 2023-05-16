@@ -21,6 +21,7 @@ export default function FoodContentList({
     <>
       <Section
         className="col-span-full overflow-y-auto max-h-[50vh] pb-16"
+        labelClassName="sticky -top-2 -mt-2 pt-2"
         label="Content"
       >
         {isEmpty && (
