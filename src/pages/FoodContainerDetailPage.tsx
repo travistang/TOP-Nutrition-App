@@ -1,28 +1,31 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-import React, { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useNavigate, useParams } from 'react-router-dom';
-import FoodContentList from '../components/FoodContainers/FoodContainerDetailPage/FoodContentList';
-import Button, { ButtonStyle } from '../components/Input/Button';
-import FoodContainerDatabase from '../database/FoodContainerDatabase';
-import FoodContainerSummarySection from '../components/FoodContainers/FoodContainerDetailPage/FoodContainerSummarySection';
-import AddFoodContainerContentModal from '../components/FoodContainers/FoodContainerDetailPage/AddFoodContainerContentModal';
-import EditFoodContainerModal from '../components/FoodContainers/EditFoodContainerModal';
-import FoodContainerNutritionSummarySection from '../components/FoodContainers/FoodContainerDetailPage/FoodContainerNutritionSummarySection';
-import ConsumeFoodContainerModal from '../components/FoodContainers/ConsumeFoodContainerModal';
+import { useLiveQuery } from "dexie-react-hooks";
+import React, { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import FoodContentList from "../components/FoodContainers/FoodContainerDetailPage/FoodContentList";
+import Button, { ButtonStyle } from "../components/Input/Button";
+import FoodContainerDatabase from "../database/FoodContainerDatabase";
+import FoodContainerSummarySection from "../components/FoodContainers/FoodContainerDetailPage/FoodContainerSummarySection";
+import AddFoodContainerContentModal from "../components/FoodContainers/FoodContainerDetailPage/AddFoodContainerContentModal";
+import EditFoodContainerModal from "../components/FoodContainers/EditFoodContainerModal";
+import FoodContainerNutritionSummarySection from "../components/FoodContainers/FoodContainerDetailPage/FoodContainerNutritionSummarySection";
+import ConsumeFoodContainerModal from "../components/FoodContainers/ConsumeFoodContainerModal";
 
 export default function FoodContainerDetailPage() {
   const { containerId } = useParams();
   const navigate = useNavigate();
   const [isAddingContent, setIsAddingContent] = useState(false);
   const [deletingContainer, setDeletingContainer] = useState(false);
-  const [isConsumeFoodContainerModalOpen, setIsConsumeFoodContainerModalOpen] = useState(false);
+  const [isConsumeFoodContainerModalOpen, setIsConsumeFoodContainerModalOpen] =
+    useState(false);
   const [isEditingFoodContainer, setIsEditingFoodContainer] = useState(false);
 
   const foodContainer = useLiveQuery(async () => {
     if (deletingContainer) return null;
     if (containerId) {
-      const result = await FoodContainerDatabase.getFoodContainerById(containerId);
+      const result = await FoodContainerDatabase.getFoodContainerById(
+        containerId
+      );
       if (!result && !deletingContainer) {
         toast.error("Food container not found");
         navigate(-1);
@@ -53,7 +56,7 @@ export default function FoodContainerDetailPage() {
   if (!foodContainer) return null;
 
   return (
-    <div className="grid grid-cols-6 gap-2">
+    <div className="grid grid-cols-6 gap-2 pb-16 overflow-hidden">
       <AddFoodContainerContentModal
         opened={isAddingContent}
         foodContainer={foodContainer}
@@ -82,7 +85,7 @@ export default function FoodContainerDetailPage() {
         foodContainer={foodContainer}
       />
       <FoodContainerNutritionSummarySection foodContainer={foodContainer} />
-      <div className='col-span-full my-2' />
+      <div className="col-span-full my-2" />
       <Button
         icon="plus"
         text="Add content..."
@@ -103,6 +106,5 @@ export default function FoodContainerDetailPage() {
         foodContainer={foodContainer}
       />
     </div>
-
   );
 }

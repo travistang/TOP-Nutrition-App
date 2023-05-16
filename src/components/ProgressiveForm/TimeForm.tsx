@@ -31,7 +31,7 @@ export default function TimeForm({
   title,
   children,
   className,
-  useCurrentTimeByDefault = true
+  useCurrentTimeByDefault = true,
 }: Props) {
   const [useCurrentTime, setUseCurrentTime] = useState(useCurrentTimeByDefault);
 
@@ -54,7 +54,6 @@ export default function TimeForm({
         <div className="px-12 pb-2">
           <DateTimePicker
             calendarClassName="gap-y-1"
-            inline
             value={date}
             onSelectDate={setDate}
             mode={DateInputType.DateTime}

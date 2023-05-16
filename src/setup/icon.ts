@@ -1,7 +1,9 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import {
-  faArrowRight,
+  faCaretUp,
+  faCaretDown,
+  faArrowDown,
   faBezierCurve,
   faClock,
   faCogs,
@@ -51,6 +53,8 @@ import {
 
 export const loadIcons = () =>
   library.add(
+    faCaretUp,
+    faCaretDown,
     faCogs,
     faDumbbell,
     faPen,
@@ -58,7 +62,6 @@ export const loadIcons = () =>
     faQrcode,
     faLightbulb,
     faPlateWheat,
-    faArrowRight,
     faTrophy,
     faHamburger,
     faLineChart,
@@ -86,7 +89,7 @@ export const loadIcons = () =>
     faArrowRightArrowLeft,
     faArrowsUpToLine,
     faArrowLeft,
-    faArrowRight,
+    faArrowDown,
     faCheckCircle,
     faCalendar,
     faCheck,

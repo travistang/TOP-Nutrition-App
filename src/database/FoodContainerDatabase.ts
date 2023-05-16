@@ -2,7 +2,7 @@ import Dexie, { Table } from "dexie";
 import { Consumption } from "../types/Consumption";
 import { Food } from "../types/Food";
 import { FoodContainer } from "../types/FoodContainer";
-import FoodContainerUtils from '../utils/FoodContainer';
+import FoodContainerUtils from "../utils/FoodContainer";
 import ConsumptionDatabase from "./ConsumptionDatabase";
 class FoodContainerDatabase extends Dexie {
   foodContainers!: Table<FoodContainer>;
@@ -26,13 +26,36 @@ class FoodContainerDatabase extends Dexie {
     return this.foodContainers.get(identifier);
   }
 
-  updateFoodContainerInfo(identifier: string, info: Pick<FoodContainer, "name">) {
+  findContainerByName(searchString: string) {
+    return this.foodContainers
+      .filter((container) =>
+        container.name.toLowerCase().includes(searchString.toLowerCase())
+      )
+      .toArray();
+  }
+
+  updateFoodContainerInfo(
+    identifier: string,
+    info: Pick<FoodContainer, "name">
+  ) {
     return this.foodContainers.update(identifier, info);
   }
 
   setFoodContainerContentById(identifier: string, content: Food[]) {
-    const contentWithoutDuplicates = FoodContainerUtils.mergeDuplicatedFoodContent(content);
-    return this.foodContainers.update(identifier, { content: contentWithoutDuplicates });
+    const contentWithoutDuplicates =
+      FoodContainerUtils.mergeDuplicatedFoodContent(content);
+    return this.foodContainers.update(identifier, {
+      content: contentWithoutDuplicates,
+    });
+  }
+
+  async addFoodContentToContainer(identifier: string, content: Food[]) {
+    const foodContainer = await this.getFoodContainerById(identifier);
+    if (!foodContainer) {
+      throw new Error("Cannot add food content to non-existent food container");
+    }
+    const finalContents = [...foodContainer.content, ...content];
+    return this.setFoodContainerContentById(identifier, finalContents);
   }
 
   getAll() {
@@ -46,12 +69,18 @@ class FoodContainerDatabase extends Dexie {
   async consumeFoodContainer(identifier: string, date: number) {
     const foodContainer = await this.getFoodContainerById(identifier);
     if (!foodContainer) {
-      throw new Error(`Cannot consume food container that does not exist (id: ${identifier})`);
+      throw new Error(
+        `Cannot consume food container that does not exist (id: ${identifier})`
+      );
     }
 
-    const addingConsumptions = foodContainer.content.map<Consumption>(food => ({ ...food, date }));
+    const addingConsumptions = foodContainer.content.map<Consumption>(
+      (food) => ({ ...food, date })
+    );
     await Promise.all([
-      ...addingConsumptions.map((consumption) => ConsumptionDatabase.add(consumption)),
+      ...addingConsumptions.map((consumption) =>
+        ConsumptionDatabase.add(consumption)
+      ),
       this.setFoodContainerContentById(identifier, []),
     ]);
   }

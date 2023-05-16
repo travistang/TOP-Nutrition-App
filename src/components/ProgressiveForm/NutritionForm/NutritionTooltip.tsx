@@ -14,6 +14,7 @@ export default function NutritionTooltip({
   selected = false,
   value,
 }: Props) {
+  const unit = field === "calories" ? "kcal" : "g";
   return (
     <div
       key={field}
@@ -24,7 +25,10 @@ export default function NutritionTooltip({
       )}
     >
       <span className="text-xs">{field}</span>
-      <span className="font-bold text-lg">{value.toFixed(1)}</span>
+      <div className="flex items-end font-bold text-lg">
+        {value.toFixed(1)}
+        <span className="font-bold text-sm">{unit}</span>
+      </div>
       <span
         className={
           !selected

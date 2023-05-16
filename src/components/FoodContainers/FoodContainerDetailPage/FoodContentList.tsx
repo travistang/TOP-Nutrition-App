@@ -1,23 +1,28 @@
-import React from 'react';
-import { FoodContainer } from '../../../types/FoodContainer';
-import ConsumptionItem from '../../ConsumptionItem';
-import EmptyNotice from '../../EmptyNotice';
-import Section from '../../Section';
-import useFoodContentMutation from './AddFoodContainerContentModal/useFoodContentMutation';
+import React from "react";
+import { FoodContainer } from "../../../types/FoodContainer";
+import ConsumptionItem from "../../ConsumptionItem";
+import EmptyNotice from "../../EmptyNotice";
+import Section from "../../Section";
+import useFoodContentMutation from "./AddFoodContainerContentModal/useFoodContentMutation";
 
 type Props = {
   foodContainer: FoodContainer;
   onRequestAddFoodContent: () => void;
 };
-export default function FoodContentList({ onRequestAddFoodContent, foodContainer }: Props) {
+export default function FoodContentList({
+  onRequestAddFoodContent,
+  foodContainer,
+}: Props) {
   const { onRemoveFoodContent } = useFoodContentMutation(foodContainer);
 
   const isEmpty = foodContainer.content.length === 0;
 
   return (
     <>
-
-      <Section className='col-span-full' label="Content">
+      <Section
+        className="col-span-full overflow-y-auto max-h-[50vh] pb-16"
+        label="Content"
+      >
         {isEmpty && (
           <EmptyNotice
             icon="box"

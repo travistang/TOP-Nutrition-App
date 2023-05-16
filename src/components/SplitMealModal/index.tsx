@@ -1,126 +1,111 @@
-import React, { useState } from "react";
+import React, { useCallback } from "react";
 import { useRecoilState } from "recoil";
-import { addDays } from "date-fns";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toast from "react-hot-toast";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";
-import InputBase from "../Input/InputBase";
-import Button, { ButtonStyle } from "../Input/Button";
-import Modal from "../Modal";
-import NutritionFacts from "../NutritionFacts";
-import NutritionUtils from "../../utils/Nutrition";
-import ConsumptionDatabase from "../../database/ConsumptionDatabase";
-import PortionSummary from "./PortionSummary";
-import DateInput, { DateInputType } from "../Input/DateInput";
 
-type SplitMealFormValue = {
-  splitRatio: number;
-  nextMealDate: number;
-};
+import Button, { ButtonStyle } from "../Input/Button";
+import DateInput, { DateInputType } from "../Input/DateInput";
+import TabSelectInput from "../Input/TabSelectInput";
+
+import MealSplitView from "./MealSplitView";
+import Modal from "../Modal";
+import useSplitMealForm, { SplitMealMode } from "./useSplitMealForm";
+import FoodContainerPicker from "./FoodContainerPicker";
+
+const splitMealModeOptions = [
+  {
+    text: "Next meal",
+    icon: "hamburger" as IconProp,
+    value: SplitMealMode.NextMeal,
+  },
+  {
+    text: "To container",
+    icon: "box" as IconProp,
+    value: SplitMealMode.ToContainer,
+  },
+];
 
 export default function SplitMealModal() {
   const [splitMealModalState, setSplitMealModalState] =
     useRecoilState(splitMealModalAtom);
-  const [{ splitRatio, nextMealDate }, setForm] = useState<SplitMealFormValue>({
-    splitRatio: 1,
-    nextMealDate: addDays(Date.now(), 1).getTime(),
-  });
   const { modalOpened, meal } = splitMealModalState;
-  const mealNutrition = NutritionUtils.total(
-    ...meal.map(NutritionUtils.nutritionFromConsumption)
-  );
-  const mealWeight = NutritionUtils.weight(mealNutrition);
+  const {
+    splitRatio,
+    nextMealDate,
+    splitMealMode,
+    targetFoodContainerId,
+    setFormValue,
+    split,
+    isFormValid,
+  } = useSplitMealForm(meal);
 
-  const isFormValid = splitRatio > 0;
-  const onClose = () => {
+  const onClose = useCallback(() => {
     setSplitMealModalState({ meal: [], modalOpened: false });
-  };
-  const splitMeal = async () => {
-    if (!isFormValid) {
-      return;
-    }
+  }, [setSplitMealModalState]);
 
-    try {
-      await ConsumptionDatabase.splitMeal(meal, splitRatio, nextMealDate);
+  const splitMealWithFeedback = async () => {
+    const mealSplit = await split();
+    if (mealSplit) {
       toast.success("Meal split!");
       onClose();
-    } catch {
+    } else {
       toast.error("Failed to split meal");
     }
   };
+
   return (
     <Modal
       opened={modalOpened}
       label="Splitting meal for later time"
       onClose={onClose}
     >
-      <div className="grid grid-cols-6 gap-x-2 gap-y-4 py-2">
-        <InputBase label="Split ratio" className="col-span-full">
-          <input
-            value={splitRatio}
-            onChange={(e) =>
-              setForm({ nextMealDate, splitRatio: parseFloat(e.target.value) })
-            }
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-          />
-        </InputBase>
-        <DateInput
-          label="Next meal date"
-          dateType={DateInputType.DateTime}
-          className="col-span-3"
-          onChange={(mealDate) =>
-            setForm({
-              nextMealDate: mealDate.getTime(),
-              splitRatio,
-            })
-          }
-          value={nextMealDate}
+      <div className="flex flex-col items-stretch gap-x-2 gap-y-4 py-2">
+        <MealSplitView
+          meal={meal}
+          splitRatio={splitRatio}
+          onChangeRatio={setFormValue("splitRatio")}
         />
-        <PortionSummary
-          label="Current meal"
-          mealWeight={mealWeight}
-          ratio={1 - splitRatio}
-          className="col-start-1"
+        <TabSelectInput
+          onSelect={setFormValue("splitMealMode")}
+          options={splitMealModeOptions}
+          selected={splitMealMode}
         />
-        <PortionSummary
-          label="Next meal"
-          mealWeight={mealWeight}
-          ratio={splitRatio}
-        />
-
-        <div className="col-span-full flex flex-no-wrap items-center">
-          <NutritionFacts
-            unit=""
-            nutrition={NutritionUtils.multiply(mealNutrition, 1 - splitRatio)}
-            className="flex-1"
+        {splitMealMode === SplitMealMode.NextMeal && (
+          <DateInput
+            label="Next meal date"
+            dateType={DateInputType.DateTime}
+            className="col-span-3"
+            onChange={(mealDate) => {
+              setFormValue("splitMealMode")(mealDate.getTime());
+            }}
+            value={nextMealDate}
           />
-          <FontAwesomeIcon
-            icon="arrow-right"
-            className="self-center mx-1 text-white"
+        )}
+        {splitMealMode === SplitMealMode.ToContainer && (
+          <FoodContainerPicker
+            selectedContainerId={targetFoodContainerId ?? null}
+            label="Choose the food container"
+            onSelect={setFormValue("targetFoodContainerId")}
           />
-          <NutritionFacts
-            unit=""
-            nutrition={NutritionUtils.multiply(mealNutrition, splitRatio)}
-            className="flex-1"
+        )}
+        <div className="flex items-center justify-between">
+          <Button
+            buttonStyle={ButtonStyle.Clear}
+            text="Cancel"
+            type="button"
+            className="h-12 px-2"
+            onClick={onClose}
+          />
+          <Button
+            text="Split"
+            type="submit"
+            disabled={!isFormValid}
+            className="h-12 px-2"
+            onClick={splitMealWithFeedback}
           />
         </div>
-        <Button
-          buttonStyle={ButtonStyle.Clear}
-          text="Cancel"
-          type="button"
-          onClick={onClose}
-        />
-        <Button
-          text="Split"
-          type="submit"
-          disabled={!isFormValid}
-          className="col-start-5 h-12 col-end-7 rounded-lg"
-          onClick={splitMeal}
-        />
       </div>
     </Modal>
   );

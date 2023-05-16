@@ -25,7 +25,7 @@ export default function WorkoutOfDayList({ workouts }: Props) {
 
   return (
     <>
-      <span className='text-xs text-opacity-75 text-center py-2'>Newest</span>
+      <span className="text-xs text-opacity-75 text-center py-2">Newest</span>
       <div className="flex flex-col-reverse w-full items-stretch">
         {workouts.map((set, index) => (
           <SetEntry
@@ -36,7 +36,7 @@ export default function WorkoutOfDayList({ workouts }: Props) {
           />
         ))}
       </div>
-      <span className='text-xs text-opacity-75 text-center py-2'>Oldest</span>
+      <span className="text-xs text-opacity-75 text-center py-2">Oldest</span>
     </>
   );
 }
