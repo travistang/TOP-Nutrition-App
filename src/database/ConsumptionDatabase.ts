@@ -15,7 +15,6 @@ import StringUtils from "../utils/String";
 import { SynchronizableDatabase } from "./BaseDatabase";
 import { Nutrition } from "../types/Nutrition";
 import { Food } from "../types/Food";
-
 export type ConsumptionRecord = Consumption & {
   id: string;
 };
@@ -176,42 +175,6 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
       );
       return hasSimilarResults ? uniqueResults : [...uniqueResults, result];
     }, [] as ConsumptionRecord[]);
-  }
-
-  async splitMeal(
-    meal: ConsumptionRecord[],
-    newMealRatio: number,
-    nextMealDate: number
-  ) {
-    if (newMealRatio === 1) {
-      return Promise.all(
-        meal.map((consumption) =>
-          this.edit(consumption.id, { ...consumption, date: nextMealDate })
-        )
-      );
-    }
-
-    const newConsumptions: Consumption[] = meal.map(
-      ({ id: _, ...prevRecord }) => {
-        return {
-          ...prevRecord,
-          date: nextMealDate,
-          amount: newMealRatio * prevRecord.amount,
-        };
-      }
-    );
-
-    const updatedOldConsumptions = meal.map((prevRecord) => ({
-      ...prevRecord,
-      amount: (1 - newMealRatio) * prevRecord.amount,
-    }));
-
-    await Promise.all([
-      ...updatedOldConsumptions.map((updatedRecord) =>
-        this.edit(updatedRecord.id, updatedRecord)
-      ),
-      ...newConsumptions.map((newRecord) => this.add(newRecord)),
-    ]);
   }
 
   async remove(id: string) {
