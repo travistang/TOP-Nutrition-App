@@ -26,7 +26,6 @@ export default function DateTimePicker({
 }: Props) {
   return (
     <div
-      onClick={(e) => e.stopPropagation()}
       className={classNames(
         "flex flex-col items-stretch gap-2 w-full flex-1",
         className

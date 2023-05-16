@@ -34,7 +34,7 @@ export default function DateInput({
   ...inputProps
 }: Props) {
   const dateFormat = DateInputTypeFormatMapping[dateType];
-  const [showingDate, setShowingDate] = useState<Date | null>(null);
+  const [showingPicker, setShowingPicker] = useState(false);
 
   const onSelectDate = (date: Date, keepTime = false) => {
     if (keepTime) {
@@ -52,7 +52,7 @@ export default function DateInput({
     <>
       <InputBase
         {...inputProps}
-        onClick={() => setShowingDate(showingDate ? null : new Date())}
+        onClick={() => setShowingPicker(true)}
         className={classNames("relative", className)}
       >
         <div
@@ -64,11 +64,11 @@ export default function DateInput({
           {format(value, dateFormat)}
         </div>
       </InputBase>
-      {showingDate && (
+      {showingPicker && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center px-8 py-[20vh]">
           <div
-            onClick={() => setShowingDate(null)}
-            className="fixed inset-0 z-10 bg-gray-700 bg-opacity-50"
+            onClick={() => setShowingPicker(false)}
+            className="fixed inset-0 z-10 bg-gray-700 bg-opacity-80"
           />
           <div className="bg-gray-300 rounded-lg flex p-2 z-20">
             <DateTimePicker
