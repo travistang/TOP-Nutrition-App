@@ -78,7 +78,7 @@ export default function SplitMealModal() {
             dateType={DateInputType.DateTime}
             className="col-span-3"
             onChange={(mealDate) => {
-              setFormValue("splitMealMode")(mealDate.getTime());
+              setFormValue("nextMealDate")(mealDate.getTime());
             }}
             value={nextMealDate}
           />

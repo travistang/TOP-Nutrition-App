@@ -19,15 +19,12 @@ export default function Section({
     <div
       style={style}
       className={classNames(
-        "rounded-lg bg-gray-300 p-2 py-0 flex flex-col",
+        "rounded-lg bg-gray-300 p-2 flex flex-col",
         className
       )}
     >
       <span
-        className={classNames(
-          "text-xs font-bold sticky top-0 bg-gray-300 pt-2 pb-1",
-          labelClassName
-        )}
+        className={classNames("text-xs font-bold bg-gray-300", labelClassName)}
       >
         {label}
       </span>
