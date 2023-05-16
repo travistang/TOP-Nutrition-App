@@ -25,6 +25,7 @@ import SettingsPage from "./pages/SettingsPage";
 import FoodContainerPage from "./pages/FoodContainerPage";
 import FoodContainerDetailPage from "./pages/FoodContainerDetailPage";
 import FoodDetailPage from "./pages/FoodDetailPage";
+import ExerciseDetailPage from "./pages/ExerciseDetailPage";
 
 function App() {
   useDatabaseSynchronization();
@@ -42,6 +43,7 @@ function App() {
             />
             <Route path="/stats" element={<PreviousStatistics />} />
             <Route path="/stats/food" element={<FoodDetailPage />} />
+            <Route path="/stats/exercise" element={<ExerciseDetailPage />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
             <Route
               path="/stats/measurements"
