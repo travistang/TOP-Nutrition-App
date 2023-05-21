@@ -1,5 +1,6 @@
 import React from "react";
 import Section from "../Section";
+import TextWithUnit from "../TextWithUnit";
 
 type Props = {
   value: number | null;
@@ -22,10 +23,11 @@ export default function ScalarWidget({
       style={style}
       className={className}
       label={label}
-      labelClassName="font-bold">
+      labelClassName="font-bold"
+    >
       <div className="flex flex-col">
         <div className="capitalize font-bold text-xl">
-          {value === null ? "N/A" : `${value.toFixed(1)} ${unit ?? ''}`}
+          {value === null ? "N/A" : <TextWithUnit value={value} unit={unit} />}
         </div>
         {extraInfo && <span className="text-xs">{extraInfo}</span>}
       </div>

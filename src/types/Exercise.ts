@@ -20,11 +20,11 @@ export enum ExerciseSetType {
 }
 
 export enum ExerciseDayType {
-  Mixed = 'mixed',
-  Push = 'push',
-  Pull = 'pull',
-  Leg = 'leg',
-  Arm = 'arm',
+  Mixed = "mixed",
+  Push = "push",
+  Pull = "pull",
+  Leg = "leg",
+  Arm = "arm",
 }
 
 export enum Equipment {
@@ -38,8 +38,8 @@ export enum Equipment {
 export enum ExerciseMode {
   BothSides = "both_sides",
   AlternateSides = "alternate_sides",
-  Left = 'left',
-  Right = 'right'
+  Left = "left",
+  Right = "right",
 }
 
 export type Exercise = {
@@ -47,6 +47,11 @@ export type Exercise = {
   workingBodyParts: BodyPart[];
   equipment: Equipment;
   exerciseMode: ExerciseMode;
+};
+
+export type ExerciseDetail = Exercise & {
+  id: string;
+  image?: Blob;
 };
 
 export enum WorkoutTrendMode {
@@ -100,14 +105,14 @@ export const ExerciseModeIcon: Record<ExerciseMode, IconProp> = {
   [ExerciseMode.BothSides]: "arrows-up-to-line",
   [ExerciseMode.Left]: "arrow-left",
   [ExerciseMode.Right]: "arrow-right",
-}
+};
 
 export const ExerciseDayTypeColorMap: Record<ExerciseDayType, string> = {
-  [ExerciseDayType.Leg]: 'rgb(228, 177, 0)',
-  [ExerciseDayType.Push]: 'rgb(198, 95, 84)',
-  [ExerciseDayType.Pull]: 'rgb(76, 184, 154)',
-  [ExerciseDayType.Mixed]: 'rgb(150, 150, 150)',
-  [ExerciseDayType.Arm]: 'rgb(100, 100, 250)',
+  [ExerciseDayType.Leg]: "rgb(228, 177, 0)",
+  [ExerciseDayType.Push]: "rgb(198, 95, 84)",
+  [ExerciseDayType.Pull]: "rgb(76, 184, 154)",
+  [ExerciseDayType.Mixed]: "rgb(150, 150, 150)",
+  [ExerciseDayType.Arm]: "rgb(100, 100, 250)",
 };
 
 export const OneSidedExerciseMode = [ExerciseMode.Left, ExerciseMode.Right];

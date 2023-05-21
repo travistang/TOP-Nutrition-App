@@ -1,5 +1,6 @@
 import { v4 as uuid4 } from "uuid";
 import {
+  differenceInMonths,
   endOfDay,
   endOfMonth,
   startOfDay,
@@ -7,7 +8,12 @@ import {
   subMinutes,
 } from "date-fns";
 import Dexie, { Table } from "dexie";
-import { Exercise, ExerciseSet, Repetition } from "../types/Exercise";
+import {
+  Exercise,
+  ExerciseDetail,
+  ExerciseSet,
+  Repetition,
+} from "../types/Exercise";
 import { Duration } from "../types/Duration";
 import { CreateEditType } from "../types/utils";
 import DatabaseUtils from "../utils/Database";
@@ -21,11 +27,17 @@ export type ExerciseSetRecord = ExerciseSet & {
 
 class ExerciseDatabase extends Dexie {
   exerciseSetRecord!: Table<ExerciseSetRecord>;
+  exerciseDetails!: Table<ExerciseDetail>;
 
   constructor() {
     super("exerciseDatabase");
     this.version(1).stores({
       exerciseSetRecord: "++id,name,date",
+    });
+
+    this.version(2).stores({
+      exerciseSetRecord: "++id,name,date",
+      exerciseDetails: "++id,name,date",
     });
   }
 
@@ -97,6 +109,29 @@ class ExerciseDatabase extends Dexie {
     return this.exerciseSetRecord.delete(id);
   }
 
+  async findOrCreateExerciseDetails(record: Exercise): Promise<ExerciseDetail> {
+    const matchedDetail = await this.exerciseDetails
+      .where("name")
+      .equals(record.name)
+      .first();
+    if (matchedDetail) return matchedDetail;
+
+    const newDetails: ExerciseDetail = {
+      ...record,
+      id: uuid4(),
+    };
+    await this.exerciseDetails.add({
+      ...record,
+      id: uuid4(),
+    });
+
+    return newDetails;
+  }
+
+  async updateExerciseDetails(details: ExerciseDetail): Promise<void> {
+    await this.exerciseDetails.update(details.id, details);
+  }
+
   async recentExercises() {
     const timeConstraint = subMinutes(Date.now(), 10);
     const recentRecords = await this.exerciseSetRecord
@@ -105,6 +140,22 @@ class ExerciseDatabase extends Dexie {
       .toArray();
     const recentExercises = recentRecords.map((record) => record.exercise);
     return ArrayUtils.distinct(recentExercises, ExerciseUtils.isSameExercise);
+  }
+
+  async getRecentExercisesTrendData(
+    exerciseName: string
+  ): Promise<ExerciseSetRecord[]> {
+    const now = Date.now();
+    return this.exerciseSetRecord
+      .filter((record) => {
+        return (
+          StringUtils.caseInsensitiveEqual(
+            record.exercise.name,
+            exerciseName
+          ) && differenceInMonths(now, record.date) <= 6
+        );
+      })
+      .toArray();
   }
 }
 
