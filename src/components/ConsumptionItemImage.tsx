@@ -1,9 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 import { Food } from "../types/Food";
 import ConsumptionDatabase from "../database/ConsumptionDatabase";
-import FullScreenImageViewer from "./FullScreenImageViewer";
-import classNames from "classnames";
 import ImageViewer from "./ImageViewer";
 import { useLiveQuery } from "dexie-react-hooks";
 
