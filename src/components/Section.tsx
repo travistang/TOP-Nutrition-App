@@ -23,9 +23,7 @@ export default function Section({
         className
       )}
     >
-      <span
-        className={classNames("text-xs font-bold bg-gray-300", labelClassName)}
-      >
+      <span className={classNames("text-xs font-bold", labelClassName)}>
         {label}
       </span>
       {children}

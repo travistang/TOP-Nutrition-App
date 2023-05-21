@@ -59,7 +59,7 @@ export default function WorkoutTrendLineConfigGroup({
         placeholder="Search exercises..."
         className="col-span-3"
         inputClassName="bg-gray-300"
-        innerInputClassName="text-gray-700 text-sm placeholder:text-sm"
+        innerInputClassName="text-gray-700 text-sm placeholder:text-sm placeholder:text-gray-400"
         value={searchText}
         onChange={setField("searchText")}
         onSelectSearchResult={(exercise) => {

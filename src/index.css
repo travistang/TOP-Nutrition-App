@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap'); */
-
 @font-face {
   font-family: "Clan Pro";
   src: url(./fonts/clan-pro-cufonfonts/FFClanProRegular.TTF);
@@ -22,6 +20,10 @@
 
 input[type="range"]::-webkit-slider-runnable-track {
   @apply bg-gray-100 rounded-full;
+}
+
+input::placeholder {
+  @apply text-gray-100 opacity-70 text-sm;
 }
 
 @layer utilities {

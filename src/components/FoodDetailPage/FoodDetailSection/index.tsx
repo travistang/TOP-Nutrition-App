@@ -1,49 +1,35 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { toast } from "react-hot-toast";
 import FoodCaloriesSection from "./FoodCaloriesSection";
 import ConsumptionDatabase, {
   ConsumptionRecord,
-  FoodDetails,
 } from "../../../database/ConsumptionDatabase";
 import Section from "../../Section";
 import ImagePicker from "../../Input/ImagePicker";
-import Button, { ButtonStyle } from "../../Input/Button";
+import { useLiveQuery } from "dexie-react-hooks";
 
 type Props = {
   selectedRecord: ConsumptionRecord;
 };
 export default function FoodDetailSection({ selectedRecord }: Props) {
-  const [foodDetails, setFoodDetails] = useState<FoodDetails | undefined>();
-  const [modified, setModified] = useState(false);
-
-  useEffect(() => {
-    if (selectedRecord) {
-      ConsumptionDatabase.getOrCreateFoodDetailByRecord(selectedRecord).then(
-        setFoodDetails
-      );
-    }
+  const foodDetails = useLiveQuery(() => {
+    return ConsumptionDatabase.getOrCreateFoodDetailByRecord(selectedRecord);
   }, [selectedRecord]);
 
   const onChooseImage = useCallback(
     (image: Blob | null) => {
       if (!foodDetails) return;
-      setFoodDetails({ ...foodDetails, image: image ?? undefined });
-      setModified(true);
+      const newFoodDetails = { ...foodDetails, image: image ?? undefined };
+      ConsumptionDatabase.updateFoodDetails(newFoodDetails)
+        .then(() => {
+          toast.success("Food details updated");
+        })
+        .catch(() => {
+          toast.error("Failed to update food details");
+        });
     },
     [foodDetails]
   );
-
-  const onSaveDetails = () => {
-    if (!foodDetails) return;
-    ConsumptionDatabase.updateFoodDetails(foodDetails)
-      .then(() => {
-        setModified(false);
-        toast.success("Food details updated");
-      })
-      .catch(() => {
-        toast.error("Failed to update food details");
-      });
-  };
 
   return (
     <Section label="Food information" className="gap-2">
@@ -55,17 +41,6 @@ export default function FoodDetailSection({ selectedRecord }: Props) {
           onChange={onChooseImage}
         />
       </div>
-      {modified && (
-        <div className="flex justify-end">
-          <Button
-            buttonStyle={ButtonStyle.Block}
-            onClick={onSaveDetails}
-            icon="save"
-            text="Save"
-            className="w-16 text-xs h-8"
-          />
-        </div>
-      )}
       <FoodCaloriesSection nutrition={selectedRecord.nutritionPerHundred} />
     </Section>
   );

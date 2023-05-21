@@ -4,6 +4,7 @@ import {
   faCaretUp,
   faCaretDown,
   faArrowDown,
+  faArrowRight,
   faBezierCurve,
   faClock,
   faCogs,
@@ -55,6 +56,7 @@ export const loadIcons = () =>
   library.add(
     faCaretUp,
     faCaretDown,
+    faArrowRight,
     faCogs,
     faDumbbell,
     faPen,
