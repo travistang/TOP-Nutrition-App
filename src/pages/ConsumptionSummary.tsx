@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 
 import ConsumptionDatabase from "../database/ConsumptionDatabase";
@@ -13,15 +13,27 @@ import EmptyNotice from "../components/EmptyNotice";
 
 type Props = {
   embedded?: boolean;
-  date: Date;
+  date?: Date,
 };
 export default function ConsumptionSummary({
   embedded,
   date,
 }: Props) {
+  const [consumptionDate, setConsumptionDate] = useState(date ?? new Date());
+
+  useEffect(() => {
+    if (!date) {
+      const focuslistener = () => {
+        setConsumptionDate(new Date());
+      }
+      window.addEventListener('focus', focuslistener);
+      return () => window.removeEventListener('focus', focuslistener);
+    }
+  }, [date]);
+
   const consumptionsOfDay = useLiveQuery(() =>
-    ConsumptionDatabase.consumptionsOfDay(date.getTime()),
-    [date]
+    ConsumptionDatabase.consumptionsOfDay(consumptionDate.getTime()),
+    [consumptionDate]
   );
   const consumptionsByMeals = DateUtils.groupByTimeInterval(
     consumptionsOfDay ?? [],
@@ -34,7 +46,7 @@ export default function ConsumptionSummary({
   ).calories;
 
   return (
-    <TargetCaloriesContextProvider date={date}>
+    <TargetCaloriesContextProvider date={consumptionDate}>
       <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
         {embedded ? (
           <ShortSummary nutritionRecords={nutritionRecords} />
