@@ -16,7 +16,7 @@ import {
 } from "../types/Exercise";
 import { Duration } from "../types/Duration";
 import { CreateEditType } from "../types/utils";
-import { CardioExercise } from "../types/CardioExercise";
+import { CardioExercise, CardioExerciseType } from "../types/CardioExercise";
 
 import DatabaseUtils from "../utils/Database";
 import ArrayUtils from "../utils/Array";
@@ -185,6 +185,15 @@ class ExerciseDatabase extends Dexie {
 
   async removeCardioRecord(id: string) {
     return this.cardioExerciseRecord.delete(id);
+  }
+
+  async getRecentCardioExercises(fromDate: number, type?: CardioExerciseType) {
+    return this.cardioExerciseRecord
+      .filter((record) => {
+        const typeMatches = !type || type === record.type;
+        return record.date >= fromDate && typeMatches;
+      })
+      .toArray();
   }
 }
 

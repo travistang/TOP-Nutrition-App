@@ -3,11 +3,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { fabMenuAtom } from "../../atoms/FabMenuAtom";
-import { createEditRecordAtom, ModalOpenSource } from "../../atoms/CreateEditRecordAtom";
-import { createEditExerciseRecordAtom, DEFAULT_EXERCISE_RECORD } from "../../atoms/CreateEditExerciseRecordAtom";
+import {
+  createEditRecordAtom,
+  ModalOpenSource,
+} from "../../atoms/CreateEditRecordAtom";
+import {
+  createEditExerciseRecordAtom,
+  DEFAULT_EXERCISE_RECORD,
+} from "../../atoms/CreateEditExerciseRecordAtom";
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import { DEFAULT_MEASUREMENT } from "../../types/Measurement";
 import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
+import {
+  DEFAULT_CARDIO_EXERCISE_RECORD,
+  createEditCardioExerciseRecordAtom,
+} from "../../atoms/CreateEditCardioExerciseRecordAtom";
 
 type Props = {
   text: string;
@@ -37,6 +47,10 @@ export default function FabMenu() {
   const setCreateExerciseRecord = useSetRecoilState(
     createEditExerciseRecordAtom
   );
+
+  const setCreateCardioExerciseRecord = useSetRecoilState(
+    createEditCardioExerciseRecordAtom
+  );
   const [{ fabMenuOpened }, setFabMenuOpened] = useRecoilState(fabMenuAtom);
   if (!fabMenuOpened) return null;
 
@@ -55,6 +69,16 @@ export default function FabMenu() {
         }
         text="Add measurement"
         icon="ruler-horizontal"
+      />
+      <FabMenuItem
+        onClick={() =>
+          setCreateCardioExerciseRecord({
+            ...DEFAULT_CARDIO_EXERCISE_RECORD,
+            modalOpened: true,
+          })
+        }
+        text="Add cardio exercise"
+        icon="person-running"
       />
       <FabMenuItem
         onClick={() =>

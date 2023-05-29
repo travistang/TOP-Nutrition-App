@@ -26,6 +26,7 @@ import FoodContainerPage from "./pages/FoodContainerPage";
 import FoodContainerDetailPage from "./pages/FoodContainerDetailPage";
 import FoodDetailPage from "./pages/FoodDetailPage";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
+import CreateCardioExerciseRecordModal from "./components/CreateCardioExerciseRecordModal";
 
 function App() {
   useDatabaseSynchronization();
@@ -64,6 +65,7 @@ function App() {
           <DailyNutritionGoalModal />
           <CreateExerciseSetModal />
           <CreateMeasurementRecordModal />
+          <CreateCardioExerciseRecordModal />
           <SplitMealModal />
           <Footer />
         </div>

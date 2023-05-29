@@ -1,8 +1,17 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+
 export enum CardioExerciseType {
   Running = "running",
   Bouldering = "bouldering",
   Hiking = "hiking",
 }
+
+export const CardioExerciseTypeIcon: Record<CardioExerciseType, IconProp> = {
+  [CardioExerciseType.Bouldering]: "shoe-prints",
+  [CardioExerciseType.Running]: "person-running",
+  [CardioExerciseType.Hiking]: "person-hiking",
+};
+
 export type RunningExerciseRecord = {
   type: CardioExerciseType.Running;
   date: number;
@@ -24,6 +33,8 @@ export type HikingExerciseRecord = {
   durationMinutes: number;
   gtx?: Blob;
   remark: string;
+  elevation: number;
+  tripName: string;
 };
 
 export type CardioExercise =
