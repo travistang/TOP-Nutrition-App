@@ -16,6 +16,8 @@ import {
 } from "../types/Exercise";
 import { Duration } from "../types/Duration";
 import { CreateEditType } from "../types/utils";
+import { CardioExercise } from "../types/CardioExercise";
+
 import DatabaseUtils from "../utils/Database";
 import ArrayUtils from "../utils/Array";
 import ExerciseUtils from "../utils/Exercise";
@@ -25,9 +27,14 @@ export type ExerciseSetRecord = ExerciseSet & {
   id: string;
 };
 
+export type CardioExerciseRecord = CardioExercise & {
+  id: string;
+};
+
 class ExerciseDatabase extends Dexie {
   exerciseSetRecord!: Table<ExerciseSetRecord>;
   exerciseDetails!: Table<ExerciseDetail>;
+  cardioExerciseRecord!: Table<CardioExerciseRecord>;
 
   constructor() {
     super("exerciseDatabase");
@@ -38,6 +45,12 @@ class ExerciseDatabase extends Dexie {
     this.version(2).stores({
       exerciseSetRecord: "++id,name,date",
       exerciseDetails: "++id,name,date",
+    });
+
+    this.version(3).stores({
+      exerciseSetRecord: "++id,name,date",
+      exerciseDetails: "++id,name,date",
+      cardioExerciseRecord: "++id,type,date",
     });
   }
 
@@ -156,6 +169,22 @@ class ExerciseDatabase extends Dexie {
         );
       })
       .toArray();
+  }
+
+  async addCardioRecord(exercise: CardioExercise) {
+    const record: CardioExerciseRecord = {
+      id: uuid4(),
+      ...exercise,
+    };
+    return this.cardioExerciseRecord.add(record);
+  }
+
+  async updateCardioRecord(id: string, data: CardioExercise) {
+    return this.cardioExerciseRecord.update(id, data);
+  }
+
+  async removeCardioRecord(id: string) {
+    return this.cardioExerciseRecord.delete(id);
   }
 }
 

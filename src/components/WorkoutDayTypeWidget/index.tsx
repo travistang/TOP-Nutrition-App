@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { format, isSameMonth, startOfMonth } from "date-fns";
+import { useLiveQuery } from "dexie-react-hooks";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
 import Calendar from "../Calendar";
 import Section from "../Section";
@@ -7,9 +9,7 @@ import ExerciseUtils from "../../utils/Exercise";
 import { DayMarker, DayMarkerType } from "../../types/Calendar";
 import { ExerciseDayTypeColorMap } from "../../types/Exercise";
 import WorkoutOfDayList from "../WorkoutOfDayList";
-import { format, isSameMonth, startOfMonth } from "date-fns";
 import DateInput, { DateInputType } from "../Input/DateInput";
-import { useLiveQuery } from "dexie-react-hooks";
 
 export default function WorkoutDayTypeWidget() {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
