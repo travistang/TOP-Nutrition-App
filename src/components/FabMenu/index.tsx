@@ -14,10 +14,7 @@ import {
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import { DEFAULT_MEASUREMENT } from "../../types/Measurement";
 import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
-import {
-  DEFAULT_CARDIO_EXERCISE_RECORD,
-  createEditCardioExerciseRecordAtom,
-} from "../../atoms/CreateEditCardioExerciseRecordAtom";
+import useCardioExerciseMutation from "../../atoms/CreateEditCardioExerciseRecordAtom";
 
 type Props = {
   text: string;
@@ -48,9 +45,8 @@ export default function FabMenu() {
     createEditExerciseRecordAtom
   );
 
-  const setCreateCardioExerciseRecord = useSetRecoilState(
-    createEditCardioExerciseRecordAtom
-  );
+  const { onOpen: onOpenCardioExerciseModal } = useCardioExerciseMutation();
+
   const [{ fabMenuOpened }, setFabMenuOpened] = useRecoilState(fabMenuAtom);
   if (!fabMenuOpened) return null;
 
@@ -71,12 +67,7 @@ export default function FabMenu() {
         icon="ruler-horizontal"
       />
       <FabMenuItem
-        onClick={() =>
-          setCreateCardioExerciseRecord({
-            ...DEFAULT_CARDIO_EXERCISE_RECORD,
-            modalOpened: true,
-          })
-        }
+        onClick={onOpenCardioExerciseModal}
         text="Add cardio exercise"
         icon="person-running"
       />

@@ -18,6 +18,7 @@ export type RunningExerciseRecord = {
   durationMinutes: number;
   distanceKm: number;
   remark: string;
+  gpx?: Blob;
 };
 
 export type BoulderingExerciseRecord = {
@@ -31,7 +32,7 @@ export type HikingExerciseRecord = {
   type: CardioExerciseType.Hiking;
   date: number;
   durationMinutes: number;
-  gtx?: Blob;
+  gpx?: Blob;
   remark: string;
   elevation: number;
   tripName: string;

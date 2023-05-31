@@ -31,7 +31,8 @@ export default function TextWithUnit({
         className={classNames(
           "self-end mb-1",
           size === "lg" && "text-sm font-bold",
-          size === "sm" && "text-xs"
+          size === "sm" && "text-xs",
+          unitClassName
         )}
       >
         {unit ?? ""}

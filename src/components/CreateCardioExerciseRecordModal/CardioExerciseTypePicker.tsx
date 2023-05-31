@@ -19,16 +19,17 @@ export default function CardioExerciseTypePicker({
   return (
     <div
       className={classNames(
-        "grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] grid-flow-row gap-4",
+        "grid grid-cols-[repeat(3,minmax(6rem,1fr))] grid-flow-row gap-4",
         className
       )}
     >
+      <span className="col-span-full text-xs">Choose an exercise:</span>
       {Object.values(CardioExerciseType).map((type) => (
         <div
           key={type}
           onClick={() => onSelect(type)}
           className={classNames(
-            "cursor-pointer rounded-lg min-w-32 h-32 flex items-center justify-center flex-col gap-2 text-gray-200 text-sm",
+            "col-span-1 cursor-pointer rounded-lg h-24 flex items-center justify-center flex-col gap-2 text-gray-200 text-sm",
             selectedType === type ? "bg-carbohydrates" : "bg-gray-500"
           )}
         >

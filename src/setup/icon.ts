@@ -1,6 +1,7 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import {
+  faMap,
   faShoePrints,
   faPersonRunning,
   faPersonHiking,
@@ -57,6 +58,7 @@ import {
 
 export const loadIcons = () =>
   library.add(
+    faMap,
     faShoePrints,
     faPersonHiking,
     faPersonRunning,

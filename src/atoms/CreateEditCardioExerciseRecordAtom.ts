@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, useSetRecoilState } from "recoil";
 import { CreateEditType } from "../types/utils";
 import {
   BoulderingExerciseRecord,
@@ -7,6 +7,10 @@ import {
   HikingExerciseRecord,
   RunningExerciseRecord,
 } from "../types/CardioExercise";
+import ExerciseDatabase, {
+  CardioExerciseRecord,
+} from "../database/ExerciseDatabase";
+import toast from "react-hot-toast";
 
 export type CreateEditCardioExerciseRecordProps = {
   exercise: CreateEditType<CardioExercise>;
@@ -58,3 +62,77 @@ export const createEditCardioExerciseRecordAtom =
     key: "createEditCardioExerciseRecord",
     default: DEFAULT_CARDIO_EXERCISE_RECORD,
   });
+
+export default function useCardioExerciseMutation() {
+  const setCardioExerciseRecordAtom = useSetRecoilState(
+    createEditCardioExerciseRecordAtom
+  );
+  const onClose = () =>
+    setCardioExerciseRecordAtom((atom) => ({ ...atom, modalOpened: false }));
+
+  const onOpen = () => {
+    setCardioExerciseRecordAtom({
+      ...DEFAULT_CARDIO_EXERCISE_RECORD,
+      modalOpened: true,
+    });
+  };
+
+  const onAddRecord = async (exercise: CardioExercise) => {
+    try {
+      await ExerciseDatabase.addCardioRecord(exercise);
+      toast.success("Cardio record added");
+      onClose();
+      return true;
+    } catch {
+      toast.error("Failed to add cardio record");
+      return false;
+    }
+  };
+
+  const onUpdateRecord = async (exercise: CardioExerciseRecord) => {
+    try {
+      const { id, ...record } = exercise;
+      await ExerciseDatabase.updateCardioRecord(id, record);
+      toast.success("Cardio record updated");
+      onClose();
+      return true;
+    } catch {
+      toast.error("Failed to update cardio record");
+      return false;
+    }
+  };
+
+  const onEdit = (exercise: CardioExerciseRecord) => {
+    setCardioExerciseRecordAtom({
+      exercise,
+      id: exercise.id,
+      modalOpened: true,
+    });
+  };
+  const onChangeSelectedExerciseType = (type: CardioExerciseType) => {
+    const newDefaultExercise: CardioExercise = {
+      ...DEFAULT_CARDIO_EXERCISES[type],
+      date: Date.now(),
+    };
+    setCardioExerciseRecordAtom((atom) => ({
+      ...atom,
+      exercise: newDefaultExercise,
+    }));
+  };
+
+  const onUpdateExerciseDetails = (record: CardioExercise) => {
+    setCardioExerciseRecordAtom((atom) => ({
+      ...atom,
+      exercise: record,
+    }));
+  };
+  return {
+    onOpen,
+    onAddRecord,
+    onUpdateRecord,
+    onEdit,
+    onClose,
+    onChangeSelectedExerciseType,
+    onUpdateExerciseDetails,
+  };
+}

@@ -5,6 +5,11 @@ export type CreateEditType<T> = T extends { id: string }
   : T;
 
 export type AllKey<T> = T extends T ? keyof T : never;
+export type AllKeyWithType<O, T> = O extends O
+  ? keyof {
+      [K in keyof O as O[K] extends T ? K : never]: T;
+    }
+  : never;
 
 export type Modifier<T> = (field: keyof T) => (value: T[typeof field]) => void;
 export type Optional<T, Ks extends keyof T> = T extends object
@@ -36,4 +41,9 @@ export type DeepValue<T, Ks extends KeyPaths<T> = KeyPaths<T>> = Ks extends ""
   : Ks extends keyof T
   ? T[Ks]
   : Ks extends `${infer R}.${infer K}`
-  ? R extends keyof T ? K extends KeyPaths<T[R]> ? DeepValue<T[R], K> : never : never : never;
+  ? R extends keyof T
+    ? K extends KeyPaths<T[R]>
+      ? DeepValue<T[R], K>
+      : never
+    : never
+  : never;
