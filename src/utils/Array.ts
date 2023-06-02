@@ -21,33 +21,46 @@ const distinct = <T>(arr: T[], compareFn?: (a: T, b: T) => boolean): T[] => {
 };
 
 const hasSome = <T>(a: T[], b: T[], compareFn?: (a: T, b: T) => boolean) => {
-  if (!compareFn)
-    return a.some((el) => b.includes(el));
+  if (!compareFn) return a.some((el) => b.includes(el));
 
   return a.some((el) => b.some((bEl) => compareFn(el, bEl)));
-
 };
-const zipBy = <T, U>(ts: T[], us: U[], zipFn: (t: T, u: U) => boolean): [T, U[]][] => {
+const zip = <T, U>(ts: T[], us: U[]): [T, U][] => {
+  if (ts.length !== us.length) {
+    throw new Error("Cannot zip arrays with different length");
+  }
+  return range(ts.length).reduce(
+    (result, i) => [...result, [ts[i], us[i]]],
+    [] as [T, U][]
+  );
+};
+
+const zipBy = <T, U>(
+  ts: T[],
+  us: U[],
+  zipFn: (t: T, u: U) => boolean
+): [T, U[]][] => {
   return ts.reduce<[T, U[]][]>((result, t) => {
-    const matchingUs = us.filter(u => zipFn(t, u));
-    return [
-      ...result,
-      [t, matchingUs]
-    ]
+    const matchingUs = us.filter((u) => zipFn(t, u));
+    return [...result, [t, matchingUs]];
   }, []);
-}
-const groupBy = <T>(ts: T[], groupFn: (t: T) => string): Record<string, T[]> => {
+};
+const groupBy = <T>(
+  ts: T[],
+  groupFn: (t: T) => string
+): Record<string, T[]> => {
   return ts.reduce((groups, t) => {
     const key = groupFn(t);
     return {
       ...groups,
-      [key]: [...(groups[key] ?? []), t]
-    }
+      [key]: [...(groups[key] ?? []), t],
+    };
   }, {} as Record<string, T[]>);
-}
+};
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   range,
+  zip,
   toggleElement,
   isEqual,
   distinct,

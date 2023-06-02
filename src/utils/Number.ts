@@ -7,6 +7,29 @@ const nanToZero = (num: number) => {
 
 const average = (...numbers: number[]) =>
   safeDivide(sum(...numbers), numbers.length);
+
+const variance = (...numbers: number[]) => {
+  if (numbers.length <= 1) return NaN;
+
+  const mean = average(...numbers);
+  const sumSquare = numbers.map((n) => (n - mean) * (n - mean));
+  return sum(...sumSquare) / (numbers.length - 1);
+};
+
+const normalize = (
+  { min, max }: { min: number; max: number },
+  ...numbers: number[]
+) => {
+  const [currentMin, currentMax] = range(...numbers);
+  if (isCloseTo(currentMin, currentMax)) {
+    throw new Error("Range is too small to normalize");
+  }
+  return numbers.map((n) => {
+    const ratio = (n - currentMin) / (currentMax - currentMin);
+    return min + ratio * (max - min);
+  });
+};
+
 const min = (...numbers: (number | null)[]) => {
   const numOrInfinity = numbers.map((n) => (n === null ? Infinity : n));
   return Math.min(...numOrInfinity);
@@ -65,6 +88,8 @@ export default {
   max,
   range,
   sum,
+  variance,
+  normalize,
   inputAsNumber,
   isNumeric,
   isCloseTo,

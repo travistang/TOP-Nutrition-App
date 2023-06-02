@@ -24,7 +24,7 @@ export default function MonthListPicker({ value, onChange }: Props) {
           <button
             onClick={() => onChange(setMonth(value, n))}
             className={classNames(
-              "outline-none rounded-lg flex items-center justify-center cursor-pointer",
+              "outline-none rounded-lg flex items-center justify-center cursor-pointer w-16",
               isSameMonth(dateWithMonth, value) && "bg-gray-700 text-gray-200"
             )}
           >
