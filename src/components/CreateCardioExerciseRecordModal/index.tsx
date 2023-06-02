@@ -17,6 +17,7 @@ export default function CreateCardioExerciseRecordModal() {
   const {
     onUpdateRecord,
     onAddRecord,
+    onDeleteRecord,
     onClose,
     onChangeSelectedExerciseType,
     onUpdateExerciseDetails,
@@ -48,6 +49,11 @@ export default function CreateCardioExerciseRecordModal() {
     }
   };
 
+  const onDelete = async () => {
+    if (!id) return;
+    onDeleteRecord({ id, ...exercise });
+  };
+
   return (
     <Modal
       onClose={onCloseWithFlagReset}
@@ -55,7 +61,7 @@ export default function CreateCardioExerciseRecordModal() {
       label={modalLabel}
     >
       <div className="flex flex-col items-stretch gap-2">
-        {selectingExerciseType ? (
+        {selectingExerciseType && !isEditing ? (
           <CardioExerciseTypePicker
             selectedType={exercise.type}
             onSelect={onChangeSelectedExerciseType}
@@ -64,9 +70,11 @@ export default function CreateCardioExerciseRecordModal() {
           <CardioExerciseDetailForms
             record={exercise}
             onChange={onUpdateExerciseDetails}
+            onDelete={isEditing ? onDelete : undefined}
           />
         )}
         <ButtonGroup
+          isEditing={isEditing}
           selectingExerciseType={selectingExerciseType}
           onSelectExerciseType={setSelectingExerciseType}
           onSave={onSave}

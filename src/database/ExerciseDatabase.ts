@@ -187,11 +187,15 @@ class ExerciseDatabase extends Dexie {
     return this.cardioExerciseRecord.delete(id);
   }
 
-  async getRecentCardioExercises(fromDate: number, type?: CardioExerciseType) {
+  async getCardioExerciseRecords(
+    dateRange: [number, number],
+    type?: CardioExerciseType
+  ) {
+    const [start, end] = dateRange;
     return this.cardioExerciseRecord
       .filter((record) => {
         const typeMatches = !type || type === record.type;
-        return record.date >= fromDate && typeMatches;
+        return record.date >= start && record.date <= end && typeMatches;
       })
       .toArray();
   }

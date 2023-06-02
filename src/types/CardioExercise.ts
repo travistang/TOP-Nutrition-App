@@ -32,6 +32,7 @@ export type HikingExerciseRecord = {
   type: CardioExerciseType.Hiking;
   date: number;
   durationMinutes: number;
+  distanceKm: number;
   gpx?: Blob;
   remark: string;
   elevation: number;

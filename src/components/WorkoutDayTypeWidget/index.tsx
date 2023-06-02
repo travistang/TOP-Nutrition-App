@@ -1,40 +1,21 @@
 import React, { useState } from "react";
-import { format, isSameMonth, startOfMonth } from "date-fns";
-import { useLiveQuery } from "dexie-react-hooks";
-import ExerciseDatabase from "../../database/ExerciseDatabase";
+import { isSameMonth, startOfMonth } from "date-fns";
 import Calendar from "../Calendar";
 import Section from "../Section";
-import ObjectUtils from "../../utils/Object";
-import ExerciseUtils from "../../utils/Exercise";
-import { DayMarker, DayMarkerType } from "../../types/Calendar";
 import { ExerciseDayTypeColorMap } from "../../types/Exercise";
 import WorkoutOfDayList from "../WorkoutOfDayList";
 import DateInput, { DateInputType } from "../Input/DateInput";
+import useWorkoutCalendarData from "./useWorkoutCalendarData";
 
 export default function WorkoutDayTypeWidget() {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const workoutOfMonth = useLiveQuery(() => {
-    return ExerciseDatabase.exercisesOfMonth(selectedMonth.getTime());
-  }, [selectedMonth]);
+  const { getWorkoutsOnDate, calendarMarkers } = useWorkoutCalendarData({
+    selectedMonth,
+  });
 
-  const workoutsByDate = ExerciseUtils.groupWorkoutsByDate(
-    workoutOfMonth ?? []
-  );
+  const workoutOnSelectedDate = getWorkoutsOnDate(selectedDate);
 
-  const workoutDayTypeByDates = ObjectUtils.mapValues(
-    workoutsByDate,
-    ExerciseUtils.computeExerciseDayType
-  );
-  const calendarMarkers: Record<string, DayMarker> = ObjectUtils.mapValues(
-    workoutDayTypeByDates,
-    (type) => ({
-      type: DayMarkerType.Highlight,
-      color: ExerciseDayTypeColorMap[type],
-    })
-  );
-  const workoutOnSelectedDate =
-    workoutsByDate[format(selectedDate, "yyyy/MM/dd")] ?? [];
   const onSelectMonth = (newMonth: Date) => {
     setSelectedMonth(newMonth);
     const autoSelectedDate = isSameMonth(newMonth, Date.now())

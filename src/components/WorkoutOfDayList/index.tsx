@@ -1,15 +1,25 @@
 import React from "react";
-import { ExerciseSetRecord } from "../../database/ExerciseDatabase";
+import {
+  CardioExerciseRecord,
+  ExerciseSetRecord,
+} from "../../database/ExerciseDatabase";
 import SetEntry from "./SetEntry";
 import { ExerciseSetType } from "../../types/Exercise";
 import ExerciseDomain from "../../domain/Exercise";
+import CardioEntry from "./CardioEntry";
+import ExerciseSectionTitle from "./ExerciseSectionTitle";
 
 type Props = {
-  workouts: ExerciseSetRecord[];
+  workouts: {
+    strength: ExerciseSetRecord[];
+    cardio: CardioExerciseRecord[];
+  };
 };
 
 export default function WorkoutOfDayList({ workouts }: Props) {
-  if (workouts.length === 0) {
+  const { strength: strengthExercises = [], cardio = [] } = workouts;
+
+  if (strengthExercises.length + cardio.length === 0) {
     return (
       <div className="flex items-center justify-center text-xs flex-1 h-full">
         You didn't do any exercise on this day
@@ -17,19 +27,31 @@ export default function WorkoutOfDayList({ workouts }: Props) {
     );
   }
   const propertiesIndices = {
-    [ExerciseSetType.Dropset]: ExerciseDomain.detectDropSets(workouts),
-    [ExerciseSetType.Superset]: ExerciseDomain.detectSuperSets(workouts),
-    [ExerciseSetType.Warmup]: ExerciseDomain.detectWarmupSets(workouts),
-    [ExerciseSetType.SetEnd]: ExerciseDomain.detectWorkoutEnd(workouts),
+    [ExerciseSetType.Dropset]: ExerciseDomain.detectDropSets(strengthExercises),
+    [ExerciseSetType.Superset]:
+      ExerciseDomain.detectSuperSets(strengthExercises),
+    [ExerciseSetType.Warmup]:
+      ExerciseDomain.detectWarmupSets(strengthExercises),
+    [ExerciseSetType.SetEnd]:
+      ExerciseDomain.detectWorkoutEnd(strengthExercises),
   };
 
   return (
     <>
+      {cardio.length > 0 && (
+        <>
+          <ExerciseSectionTitle text="Cardio exercises" />
+          {cardio.map((cardioExercise) => (
+            <CardioEntry key={cardioExercise.id} cardio={cardioExercise} />
+          ))}
+          <ExerciseSectionTitle text="Strength exercises" />
+        </>
+      )}
       <span className="text-xs text-opacity-75 text-center py-2">Newest</span>
       <div className="flex flex-col-reverse w-full items-stretch">
-        {workouts.map((set, index) => (
+        {strengthExercises.map((set, index) => (
           <SetEntry
-            workouts={workouts}
+            workouts={strengthExercises}
             index={index}
             key={set.id}
             propertiesIndices={propertiesIndices}

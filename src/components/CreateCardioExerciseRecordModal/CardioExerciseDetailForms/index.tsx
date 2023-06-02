@@ -9,13 +9,19 @@ import CardioExercisePreview from "../CardioExercisePreview";
 import TextInput from "../../Input/TextInput";
 import GPXFilePicker from "../GPXFilePicker";
 import NumberFieldInputGroup from "../NumberFieldInputGroup";
+import Button, { ButtonStyle } from "../../Input/Button";
 
 type Props = {
   record: CardioExercise;
   onChange: (record: CardioExercise) => void;
+  onDelete?: () => void;
 };
 
-export default function CardioExerciseDetailForms({ record, onChange }: Props) {
+export default function CardioExerciseDetailForms({
+  onDelete,
+  record,
+  onChange,
+}: Props) {
   const onDateChange = (date: Date) => {
     onChange({ ...record, date: date.getTime() });
   };
@@ -26,7 +32,15 @@ export default function CardioExerciseDetailForms({ record, onChange }: Props) {
 
   return (
     <div className="grid grid-cols-6 gap-2">
-      <CardioExercisePreview className="col-span-4" record={record} />
+      {onDelete && (
+        <Button
+          buttonStyle={ButtonStyle.BlockDanger}
+          icon="trash"
+          className="h-10 self-center"
+          onClick={onDelete}
+        />
+      )}
+      <CardioExercisePreview className="col-span-3" record={record} />
       <div className="col-span-2 flex justify-end">
         <GPXFilePicker record={record} onChange={onChange} />
       </div>

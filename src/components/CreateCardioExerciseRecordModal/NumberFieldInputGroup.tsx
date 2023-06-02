@@ -19,7 +19,7 @@ const FormConfigMapping: Record<KeyWithNumber, FormConfig> = {
     integer: true,
   },
   elevation: {
-    unit: "m",
+    unit: "hm",
     label: "Elevation",
     integer: true,
   },

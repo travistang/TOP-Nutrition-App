@@ -30,6 +30,7 @@ const DEFAULT_HIKING_EXERCISE_RECORD: HikingExerciseRecord = {
   type: CardioExerciseType.Hiking,
   date: Date.now(),
   durationMinutes: 0,
+  distanceKm: 0,
   remark: "",
   elevation: 0,
   tripName: "",
@@ -102,6 +103,19 @@ export default function useCardioExerciseMutation() {
     }
   };
 
+  const onDeleteRecord = async (exercise: CardioExerciseRecord) => {
+    try {
+      const { id } = exercise;
+      await ExerciseDatabase.removeCardioRecord(id);
+      toast.success("Cardio record removed");
+      onClose();
+      return true;
+    } catch {
+      toast.error("Failed to remove cardio record");
+      return false;
+    }
+  };
+
   const onEdit = (exercise: CardioExerciseRecord) => {
     setCardioExerciseRecordAtom({
       exercise,
@@ -130,6 +144,7 @@ export default function useCardioExerciseMutation() {
     onOpen,
     onAddRecord,
     onUpdateRecord,
+    onDeleteRecord,
     onEdit,
     onClose,
     onChangeSelectedExerciseType,

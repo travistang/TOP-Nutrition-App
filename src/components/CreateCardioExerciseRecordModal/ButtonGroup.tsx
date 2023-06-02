@@ -2,12 +2,14 @@ import React from "react";
 import Button, { ButtonStyle } from "../Input/Button";
 
 type Props = {
+  isEditing: boolean;
   selectingExerciseType: boolean;
   onSelectExerciseType: (willSelectExercise: boolean) => void;
   onSave: () => void;
   canSave: boolean;
 };
 export default function ButtonGroup({
+  isEditing,
   selectingExerciseType,
   onSelectExerciseType,
   onSave,
@@ -41,13 +43,15 @@ export default function ButtonGroup({
             disabled={!canSave}
             onClick={onSave}
           />
-          <Button
-            buttonStyle={ButtonStyle.Clear}
-            text="Back"
-            className="h-10 px-2"
-            icon="arrow-left"
-            onClick={onBack}
-          />
+          {!isEditing && (
+            <Button
+              buttonStyle={ButtonStyle.Clear}
+              text="Back"
+              className="h-10 px-2"
+              icon="arrow-left"
+              onClick={onBack}
+            />
+          )}
         </>
       )}
     </div>

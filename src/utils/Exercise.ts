@@ -1,14 +1,25 @@
 import { differenceInSeconds, format } from "date-fns";
-import { ExerciseSetRecord } from "../database/ExerciseDatabase";
-import { BodyPart, Exercise, ExerciseDayType, ExerciseSet, OneSidedExerciseMode, WorkoutTrendMode } from "../types/Exercise";
+import {
+  CardioExerciseRecord,
+  ExerciseSetRecord,
+} from "../database/ExerciseDatabase";
+import {
+  BodyPart,
+  Exercise,
+  ExerciseDayType,
+  ExerciseSet,
+  OneSidedExerciseMode,
+  WorkoutTrendMode,
+} from "../types/Exercise";
 import NumberUtils from "./Number";
 import ArrayUtils from "./Array";
-import RepetitionUtils from './Repetition';
+import RepetitionUtils from "./Repetition";
 
 const isValid = (exercise: Exercise) =>
   !!exercise.name && exercise.workingBodyParts.length > 0;
 
-const isOneSided = (exercise: Exercise) => OneSidedExerciseMode.includes(exercise.exerciseMode);
+const isOneSided = (exercise: Exercise) =>
+  OneSidedExerciseMode.includes(exercise.exerciseMode);
 const isSameExercise = (a: Exercise, b: Exercise) =>
   a.name === b.name &&
   a.equipment === b.equipment &&
@@ -24,7 +35,10 @@ const groupWorkouts = (sets: ExerciseSet[]): ExerciseSet[][] => {
     }
 
     const previousSet = sets[i - 1];
-    const differentSeconds = differenceInSeconds(currentSet.date, previousSet.date);
+    const differentSeconds = differenceInSeconds(
+      currentSet.date,
+      previousSet.date
+    );
     const isPreviousSetSimilar =
       isSameExercise(previousSet.exercise, currentSet.exercise) ||
       differentSeconds <= 90;
@@ -40,10 +54,12 @@ const groupWorkouts = (sets: ExerciseSet[]): ExerciseSet[][] => {
   return setGroups;
 };
 
-const groupWorkoutsByDate = <T extends ExerciseSet>(sets: T[]): Record<string, T[]> => {
+const groupWorkoutsByDate = <T extends ExerciseSet | CardioExerciseRecord>(
+  sets: T[]
+): Record<string, T[]> => {
   const grouping: Record<string, T[]> = {};
   for (const set of sets) {
-    const dateString = format(new Date(set.date), 'yyyy/MM/dd');
+    const dateString = format(new Date(set.date), "yyyy/MM/dd");
     grouping[dateString] = [...(grouping[dateString] ?? []), set];
   }
 
@@ -52,13 +68,17 @@ const groupWorkoutsByDate = <T extends ExerciseSet>(sets: T[]): Record<string, T
 
 const bodyPartsWorked = <T extends ExerciseSet>(sets: T[]): BodyPart[] => {
   const bodyPartSet = new Set<BodyPart>();
-  sets.forEach(set => set.exercise.workingBodyParts.forEach(
-    bodyPart => bodyPartSet.add(bodyPart)
-  ));
+  sets.forEach((set) =>
+    set.exercise.workingBodyParts.forEach((bodyPart) =>
+      bodyPartSet.add(bodyPart)
+    )
+  );
   return Array.from(bodyPartSet);
 };
 
-const computeExerciseDayType = <T extends ExerciseSet>(sets: T[]): ExerciseDayType => {
+const computeExerciseDayType = <T extends ExerciseSet>(
+  sets: T[]
+): ExerciseDayType => {
   const bodyParts = bodyPartsWorked(sets);
   const auxillaryParts = [BodyPart.Abs, BodyPart.Traps];
 
@@ -67,7 +87,9 @@ const computeExerciseDayType = <T extends ExerciseSet>(sets: T[]): ExerciseDayTy
     return bodyParts.every((part) => allMatchingParts.includes(part));
   };
 
-  if (isEveryPartInList([BodyPart.Triceps, BodyPart.Shoulders, BodyPart.Chest])) {
+  if (
+    isEveryPartInList([BodyPart.Triceps, BodyPart.Shoulders, BodyPart.Chest])
+  ) {
     return ExerciseDayType.Push;
   }
 
@@ -79,40 +101,58 @@ const computeExerciseDayType = <T extends ExerciseSet>(sets: T[]): ExerciseDayTy
     return ExerciseDayType.Arm;
   }
 
-  if (bodyParts.find(part => part === BodyPart.Legs)) {
+  if (bodyParts.find((part) => part === BodyPart.Legs)) {
     return ExerciseDayType.Leg;
   }
 
   return ExerciseDayType.Mixed;
 };
 
-const filterWorkoutsWithExercise = (workouts: ExerciseSetRecord[], exercise: Exercise) => {
-  return workouts.filter(workout => isSameExercise(workout.exercise, exercise));
+const filterWorkoutsWithExercise = (
+  workouts: ExerciseSetRecord[],
+  exercise: Exercise
+) => {
+  return workouts.filter((workout) =>
+    isSameExercise(workout.exercise, exercise)
+  );
 };
 
 const totalVolume = (workouts: ExerciseSetRecord[]) => {
-  return workouts.map(workout => RepetitionUtils.volume(workout.repetitions)).reduce((totalVolume, volume) => totalVolume + volume, 0);
+  return workouts
+    .map((workout) => RepetitionUtils.volume(workout.repetitions))
+    .reduce((totalVolume, volume) => totalVolume + volume, 0);
 };
 
 const totalRepetitions = (workouts: ExerciseSetRecord[]) => {
-  return NumberUtils.sum(...workouts.map(workout => workout.repetitions.count));
-}
+  return NumberUtils.sum(
+    ...workouts.map((workout) => workout.repetitions.count)
+  );
+};
 const averageRepetitions = (workouts: ExerciseSetRecord[]) => {
   return NumberUtils.safeDivide(totalRepetitions(workouts), workouts.length);
-}
+};
 
 const averageVolume = (workouts: ExerciseSetRecord[]) => {
   return NumberUtils.safeDivide(totalVolume(workouts), workouts.length);
-}
+};
 
 const maxWeight = (workouts: ExerciseSetRecord[]) => {
-  return workouts.reduce((maxWeight, workouts) => Math.max(maxWeight, workouts.repetitions.weight), 0);
+  return workouts.reduce(
+    (maxWeight, workouts) => Math.max(maxWeight, workouts.repetitions.weight),
+    0
+  );
 };
 const averageWeight = (workouts: ExerciseSetRecord[]) => {
-  return NumberUtils.safeDivide(totalVolume(workouts), totalRepetitions(workouts));
+  return NumberUtils.safeDivide(
+    totalVolume(workouts),
+    totalRepetitions(workouts)
+  );
 };
 
-const computeWorkoutsStatistics = (workouts: ExerciseSetRecord[], workoutTrend: WorkoutTrendMode) => {
+const computeWorkoutsStatistics = (
+  workouts: ExerciseSetRecord[],
+  workoutTrend: WorkoutTrendMode
+) => {
   switch (workoutTrend) {
     case WorkoutTrendMode.AverageRepetition:
       return averageRepetitions(workouts);
@@ -125,7 +165,7 @@ const computeWorkoutsStatistics = (workouts: ExerciseSetRecord[], workoutTrend: 
     case WorkoutTrendMode.TotalVolume:
       return totalVolume(workouts);
   }
-}
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -145,5 +185,5 @@ export default {
   averageRepetitions,
 
   maxWeight,
-  averageWeight
+  averageWeight,
 };
