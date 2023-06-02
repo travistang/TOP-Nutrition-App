@@ -1,4 +1,3 @@
-import React from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import ExerciseDatabase, {
   CardioExerciseRecord,
@@ -36,11 +35,6 @@ export default function useWorkoutCalendarData({
 
   const workoutsByDate = ExerciseUtils.groupWorkoutsByDate(
     workoutOfMonth ?? []
-  );
-
-  const workoutDayTypeByDates = ObjectUtils.mapValues(
-    workoutsByDate,
-    ExerciseUtils.computeExerciseDayType
   );
 
   const cardioWorkoutsByDate = ExerciseUtils.groupWorkoutsByDate(
