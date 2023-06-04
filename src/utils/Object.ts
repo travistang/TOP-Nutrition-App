@@ -10,6 +10,13 @@ const mapValues = <K extends KeyType, T, R = T>(
   return Object.fromEntries(mappedEntries);
 };
 
+const fromArray = <T, K extends KeyType, V>(
+  array: T[],
+  mapFn: (t: T) => [K, V]
+): Record<K, V> => {
+  return Object.fromEntries(array.map(mapFn)) as Record<K, V>;
+};
+
 const filterValues = <K extends KeyType, T>(
   records: Record<K, T>,
   filterFn: (t: T) => boolean
@@ -100,6 +107,7 @@ export default {
   filterValues,
   findByKey,
   mergeByKey,
+  fromArray,
   valueBySortedKey,
   filterKeys,
   deepUpdate,

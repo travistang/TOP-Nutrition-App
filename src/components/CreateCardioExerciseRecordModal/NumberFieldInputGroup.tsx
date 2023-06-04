@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CardioExercise } from "../../types/CardioExercise";
 import { AllKeyWithType } from "../../types/utils";
-import AttributeValueInput from "./AttributeValueInput";
+import AttributeValueInput from "../Input/AttributeValueInput";
 import DigitInput from "../Input/DigitInput";
 import { InputMode } from "../Input/DigitInput/utils/digitLogic";
 
