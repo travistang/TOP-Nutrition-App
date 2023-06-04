@@ -12,9 +12,19 @@ import { personalInfoAtom } from "../../atoms/PersonalInfoAtom";
 import CurrentWeightInfo from "./CurrentWeightInfo";
 import SmallNotice from "../SmallNotice";
 
+const enumToOptions = (
+  enumObject: typeof Gender | typeof PhysicalActivityLevel
+) => {
+  return Object.values(enumObject).map((gender) => ({
+    label: gender,
+    value: gender,
+  }));
+};
+
 export default function PersonalInfoSection() {
   const [personalInfo, setPersonalInfo] =
     useRecoilState<PersonalInfo>(personalInfoAtom);
+  const { age, height, gender, pal } = personalInfo;
   const onChange =
     <K extends keyof PersonalInfo>(field: K) =>
     (value: PersonalInfo[K]) => {
@@ -25,35 +35,29 @@ export default function PersonalInfoSection() {
       <div className="grid grid-cols-6 gap-2 pt-2">
         <NumberInput
           label="Age"
-          value={personalInfo.age}
+          value={age}
           onChange={onChange("age")}
           className="col-span-3"
         />
         <NumberInput
           label="Height (cm)"
-          value={personalInfo.height}
+          value={height}
           onChange={onChange("height")}
           className="col-span-3"
         />
         <SelectInput
           label="Gender"
           className="col-span-2"
-          value={personalInfo.gender}
+          value={gender}
           onSelect={(v) => onChange("gender")(v as Gender)}
-          options={Object.values(Gender).map((gender) => ({
-            label: gender,
-            value: gender,
-          }))}
+          options={enumToOptions(Gender)}
         />
         <SelectInput
           label="Physical Activity Level"
           className="col-span-4"
-          value={personalInfo.pal}
+          value={pal}
           onSelect={(v) => onChange("pal")(v as PhysicalActivityLevel)}
-          options={Object.values(PhysicalActivityLevel).map((pal) => ({
-            label: pal,
-            value: pal,
-          }))}
+          options={enumToOptions(PhysicalActivityLevel)}
         />
         <SmallNotice className="col-span-full" icon="info-circle">
           Data will be stored locally for calculating your maintenance calories.
