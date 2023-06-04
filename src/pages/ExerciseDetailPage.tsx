@@ -10,7 +10,7 @@ export default function ExerciseDetailPage() {
   const clearRecord = () => setSelectedRecord(null);
 
   return (
-    <div className="flex flex-col overflow-y-auto overflow-x-hidden flex-1 items-stretch gap-2 pb-48 scroll-pb-12">
+    <div className="flex flex-col overflow-y-auto overflow-x-hidden flex-1 items-stretch gap-2 pb-12 scroll-pb-12">
       <StatisticsNavigateTab />
       <ExerciseSearchPanel
         onClear={clearRecord}
