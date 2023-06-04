@@ -9,6 +9,9 @@ import RecentExerciseStatistics from "./RecentExerciseStatistics";
 import RecentExerciseStatisticsChart from "./RecentExerciseStatisticsChart";
 import { WorkoutTrendMode } from "../../types/Exercise";
 import classNames from "classnames";
+import WorkoutFilter from "./WorkoutFilter";
+import useWorkoutFilter from "./WorkoutFilter/useWorkoutFilter";
+import EmptyNotice from "../EmptyNotice";
 
 type Props = {
   inline?: boolean;
@@ -24,7 +27,10 @@ export default function RecentExerciseRecord({
     return ExerciseDatabase.getRecentExercisesTrendData(exerciseName);
   }, [exerciseName]);
 
-  const recordsByDate = ArrayUtils.groupBy(exerciseRecords ?? [], (record) =>
+  const { availableFilters, appliedFilter, toggleFilter, filteredRecords } =
+    useWorkoutFilter(exerciseRecords ?? []);
+
+  const recordsByDate = ArrayUtils.groupBy(filteredRecords ?? [], (record) =>
     format(record.date, "yyyy/MM/dd")
   );
   const sortedWorkoutGroups = ObjectUtils.valueBySortedKey(
@@ -32,26 +38,38 @@ export default function RecentExerciseRecord({
     (a, b) => new Date(b).getTime() - new Date(a).getTime()
   );
 
+  const hasFilterWithNoResults =
+    exerciseRecords?.length && filteredRecords.length === 0;
+
   return (
     <div
       className={classNames(
-        !inline && "flex flex-col gap-2 overflow-y-auto pb-12",
+        !inline && "flex flex-col items-stretch gap-2 overflow-y-auto pb-12",
         inline && "contents",
         className
       )}
     >
       <RecentExerciseStatistics
         noHeader={inline}
-        recentExercises={exerciseRecords ?? []}
+        recentExercises={filteredRecords}
       />
       <RecentExerciseStatisticsChart
         trendMode={WorkoutTrendMode.MaxWeight}
-        workouts={exerciseRecords ?? []}
+        workouts={filteredRecords}
       />
       <RecentExerciseStatisticsChart
         trendMode={WorkoutTrendMode.TotalVolume}
-        workouts={exerciseRecords ?? []}
+        workouts={filteredRecords}
       />
+      <WorkoutFilter
+        availableFilters={availableFilters}
+        currentFilter={appliedFilter}
+        toggleFilter={toggleFilter}
+        exercises={filteredRecords}
+      />
+      {hasFilterWithNoResults && (
+        <EmptyNotice icon="filter" message="No results" />
+      )}
       <div className="flex flex-1 flex-col min-h-[30vh] overflow-y-auto items-stretch snap-y snap-proximity">
         {sortedWorkoutGroups.map((records) => (
           <PreviousWorkoutList key={records[0].id} workouts={records} />

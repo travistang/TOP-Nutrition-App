@@ -30,7 +30,7 @@ export default function CardioExerciseTypePicker({
           onClick={() => onSelect(type)}
           className={classNames(
             "col-span-1 cursor-pointer rounded-lg h-24 flex items-center justify-center flex-col gap-2 text-gray-200 text-sm",
-            selectedType === type ? "bg-carbohydrates" : "bg-gray-500"
+            selectedType === type ? "bg-gray-800" : "bg-gray-400"
           )}
         >
           <FontAwesomeIcon

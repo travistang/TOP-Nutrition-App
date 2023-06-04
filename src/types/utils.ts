@@ -12,6 +12,8 @@ export type AllKeyWithType<O, T> = O extends O
   : never;
 
 export type Modifier<T> = (field: keyof T) => (value: T[typeof field]) => void;
+export type ValueOf<T> = T[keyof T];
+export type ArrayEl<T> = T extends (infer R)[] ? R : T;
 export type Optional<T, Ks extends keyof T> = T extends object
   ? {
       [K in Exclude<keyof T, Ks>]: T[K];

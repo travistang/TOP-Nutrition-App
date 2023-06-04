@@ -20,6 +20,16 @@ const distinct = <T>(arr: T[], compareFn?: (a: T, b: T) => boolean): T[] => {
   return result;
 };
 
+const uniqueBy = <T, U>(a: T[], featureFn: (a: T) => U): U[] => {
+  const results = new Set<U>();
+  a.forEach((item) => {
+    results.add(featureFn(item));
+  });
+  return Array.from(results);
+};
+
+const unique = <T>(a: T[]): T[] => Array.from(new Set<T>(a));
+
 const hasSome = <T>(a: T[], b: T[], compareFn?: (a: T, b: T) => boolean) => {
   if (!compareFn) return a.some((el) => b.includes(el));
 
@@ -63,6 +73,8 @@ export default {
   zip,
   toggleElement,
   isEqual,
+  unique,
+  uniqueBy,
   distinct,
   hasSome,
   zipBy,
