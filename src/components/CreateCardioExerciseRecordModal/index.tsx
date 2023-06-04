@@ -37,13 +37,9 @@ export default function CreateCardioExerciseRecordModal() {
   };
   const onSave = async () => {
     if (!isFormValid) return;
-    const updated = await new Promise<boolean>(async (resolve) => {
-      if (isEditing) {
-        resolve(await onUpdateRecord({ id, ...exercise }));
-      } else {
-        resolve(await onAddRecord(exercise));
-      }
-    });
+    const updateFunc = () =>
+      isEditing ? onUpdateRecord({ id, ...exercise }) : onAddRecord(exercise);
+    const updated = await updateFunc();
     if (updated) {
       setSelectingExerciseType(true);
     }
