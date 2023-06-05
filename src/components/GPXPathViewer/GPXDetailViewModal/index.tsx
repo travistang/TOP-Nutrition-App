@@ -1,7 +1,7 @@
-import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useMemo } from "react";
+import { MapContainer, TileLayer, Polyline } from "react-leaflet";
 import Modal from "../../Modal";
-import { GPX } from "../../../domain/GPX";
+import { GPX, computeGpxViewport } from "../../../domain/GPX";
 
 type Props = {
   opened: boolean;
@@ -9,18 +9,27 @@ type Props = {
   gpx: GPX;
 };
 export default function GPXDetailViewModal({ opened, onClose, gpx }: Props) {
+  const viewport = useMemo(() => computeGpxViewport(gpx), [gpx]);
+  const positions = useMemo(() => {
+    return gpx.points.map((pt) => [pt.lat, pt.lon] as [number, number]);
+  }, [gpx]);
   return (
     <Modal opened={opened} onClose={onClose} label="GPX Details">
-      <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+      <MapContainer
+        zoomControl={false}
+        center={viewport.center}
+        bounds={[
+          [viewport.bounds.x[0], viewport.bounds.y[0]],
+          [viewport.bounds.x[1], viewport.bounds.y[1]],
+        ]}
+        className="rounded-lg w-full"
+        style={{ height: "50vh" }}
+      >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[51.505, -0.09]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
+        <Polyline color="red" positions={positions} />
       </MapContainer>
     </Modal>
   );

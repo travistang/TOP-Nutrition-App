@@ -37,6 +37,14 @@ export type GPXStatistics = {
   elevationLoss: number;
 };
 
+export type GPXViewport = {
+  center: [number, number];
+  bounds: {
+    x: [number, number];
+    y: [number, number];
+  };
+};
+
 export const gpxToPath = (rawGpx: RawGPXFile): GPX => {
   return {
     name: rawGpx.gpx.trk.name,
@@ -120,6 +128,32 @@ export const computeGpxStatistics = (gpx: GPX): GPXStatistics => {
     }
   });
   return statistics;
+};
+
+export const computeGpxViewport = (gpx: GPX): GPXViewport => {
+  const { points } = gpx;
+  const BOUND_MARGIN = 0;
+  if (points.length <= 1) {
+    throw new Error("Insufficient points for computing GPX Viewport");
+  }
+
+  const xs = points.map((p) => p.lat);
+  const ys = points.map((p) => p.lon);
+
+  const centerX = NumberUtils.average(...xs);
+  const centerY = NumberUtils.average(...ys);
+
+  const minX = NumberUtils.min(...xs);
+  const maxX = NumberUtils.max(...xs);
+  const minY = NumberUtils.min(...ys);
+  const maxY = NumberUtils.max(...ys);
+  return {
+    center: [centerX, centerY],
+    bounds: {
+      x: [minX - BOUND_MARGIN, maxX + BOUND_MARGIN],
+      y: [minY - BOUND_MARGIN, maxY + BOUND_MARGIN],
+    },
+  };
 };
 
 export const computeSVGPathForGPX = (gpx: GPX) => {
