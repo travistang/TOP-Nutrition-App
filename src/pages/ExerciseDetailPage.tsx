@@ -4,8 +4,9 @@ import { Exercise } from "../types/Exercise";
 import ExerciseSearchPanel from "../components/ExerciseDetailPage/ExerciseSearchPanel";
 import ExerciseSearchResult from "../components/ExerciseDetailPage/ExerciseSearchResult";
 import RecentExerciseRecord from "../components/CreateExerciseSetModal/RecentExerciseRecord";
+import { withErrorBoundary } from "@sentry/react";
 
-export default function ExerciseDetailPage() {
+function ExerciseDetailPage() {
   const [selectedRecord, setSelectedRecord] = useState<Exercise | null>(null);
   const clearRecord = () => setSelectedRecord(null);
 
@@ -23,3 +24,9 @@ export default function ExerciseDetailPage() {
     </div>
   );
 }
+
+export default withErrorBoundary(ExerciseDetailPage, {
+  beforeCapture: (scope) => {
+    scope.setTag("component", "ExerciseDetailPage");
+  },
+});

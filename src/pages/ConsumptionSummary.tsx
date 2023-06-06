@@ -10,29 +10,27 @@ import MealSummary from "../components/MealSummary";
 import ShortSummary from "../components/SummaryWidgets/ShortSummary";
 import TargetCaloriesContextProvider from "../components/MealSummary/TargetCaloriesContext";
 import EmptyNotice from "../components/EmptyNotice";
+import { withErrorBoundary } from "@sentry/react";
 
 type Props = {
   embedded?: boolean;
-  date?: Date,
+  date?: Date;
 };
-export default function ConsumptionSummary({
-  embedded,
-  date,
-}: Props) {
+function ConsumptionSummary({ embedded, date }: Props) {
   const [consumptionDate, setConsumptionDate] = useState(date ?? new Date());
 
   useEffect(() => {
     if (!date) {
       const focuslistener = () => {
         setConsumptionDate(new Date());
-      }
-      window.addEventListener('focus', focuslistener);
-      return () => window.removeEventListener('focus', focuslistener);
+      };
+      window.addEventListener("focus", focuslistener);
+      return () => window.removeEventListener("focus", focuslistener);
     }
   }, [date]);
 
-  const consumptionsOfDay = useLiveQuery(() =>
-    ConsumptionDatabase.consumptionsOfDay(consumptionDate.getTime()),
+  const consumptionsOfDay = useLiveQuery(
+    () => ConsumptionDatabase.consumptionsOfDay(consumptionDate.getTime()),
     [consumptionDate]
   );
   const consumptionsByMeals = DateUtils.groupByTimeInterval(
@@ -78,3 +76,9 @@ export default function ConsumptionSummary({
     </TargetCaloriesContextProvider>
   );
 }
+
+export default withErrorBoundary(ConsumptionSummary, {
+  beforeCapture: (scope) => {
+    scope.setTag("component", "ConsumptionSummary");
+  },
+});
