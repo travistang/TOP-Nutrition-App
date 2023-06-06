@@ -42,7 +42,7 @@ ChartJS.register(
 );
 
 Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN,
+  dsn: "https://fa8fcf1cdbac418a9132f639c47dc5fe@o541235.ingest.sentry.io/6587922",
   integrations: [new BrowserTracing()],
 
   // Set tracesSampleRate to 1.0 to capture 100%

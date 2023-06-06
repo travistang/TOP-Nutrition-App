@@ -1,3 +1,4 @@
+import { endOfMonth, format, startOfMonth } from "date-fns";
 import { useLiveQuery } from "dexie-react-hooks";
 import ExerciseDatabase, {
   CardioExerciseRecord,
@@ -7,7 +8,6 @@ import ObjectUtils from "../../utils/Object";
 import ExerciseUtils from "../../utils/Exercise";
 import { DayMarker, DayMarkerType } from "../../types/Calendar";
 import { ExerciseDayTypeColorMap } from "../../types/Exercise";
-import { endOfMonth, format, startOfMonth } from "date-fns";
 
 type Props = {
   selectedMonth: Date;
