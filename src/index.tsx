@@ -43,10 +43,6 @@ ChartJS.register(
 Sentry.init({
   dsn: "https://fa8fcf1cdbac418a9132f639c47dc5fe@o541235.ingest.sentry.io/6587922",
   integrations: [new Sentry.BrowserTracing(), new Sentry.Replay()],
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,

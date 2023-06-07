@@ -29,6 +29,10 @@ function ConsumptionSummary({ embedded, date }: Props) {
     }
   }, [date]);
 
+  useEffect(() => {
+    setConsumptionDate(date ?? new Date());
+  }, [date]);
+
   const consumptionsOfDay = useLiveQuery(
     () => ConsumptionDatabase.consumptionsOfDay(consumptionDate.getTime()),
     [consumptionDate]
