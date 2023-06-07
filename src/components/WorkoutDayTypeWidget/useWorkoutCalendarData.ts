@@ -23,15 +23,14 @@ type UseWorkoutCalendarDataResponse = {
 export default function useWorkoutCalendarData({
   selectedMonth,
 }: Props): UseWorkoutCalendarDataResponse {
-  const workoutOfMonth = useLiveQuery(() => {
-    return ExerciseDatabase.exercisesOfMonth(selectedMonth.getTime());
-  }, [selectedMonth]);
-
-  const cardiosOfMonth = useLiveQuery(() => {
+  const [workoutOfMonth, cardiosOfMonth] = useLiveQuery(() => {
     const monthStart = startOfMonth(selectedMonth).getTime();
     const monthEnd = endOfMonth(selectedMonth).getTime();
-    return ExerciseDatabase.getCardioExerciseRecords([monthStart, monthEnd]);
-  }, [selectedMonth]);
+    return Promise.all([
+      ExerciseDatabase.exercisesOfMonth(selectedMonth.getTime()),
+      ExerciseDatabase.getCardioExerciseRecords([monthStart, monthEnd]),
+    ]) as Promise<[ExerciseSetRecord[], CardioExerciseRecord[]]>;
+  }, [selectedMonth]) ?? [[], []];
 
   const workoutsByDate = ExerciseUtils.groupWorkoutsByDate(
     workoutOfMonth ?? []
