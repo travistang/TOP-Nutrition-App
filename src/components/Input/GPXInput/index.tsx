@@ -6,7 +6,7 @@ import GPXPathViewer from "../../GPXPathViewer";
 
 type Props = {
   gpx?: GPX;
-  onSelectGpx: (file: Blob) => void;
+  onSelectGpx: (file?: Blob) => void;
   className?: string;
 };
 export default function GPXInput({ gpx, className, onSelectGpx }: Props) {
@@ -20,6 +20,8 @@ export default function GPXInput({ gpx, className, onSelectGpx }: Props) {
     if (!fileSelected) return;
     onSelectGpx(fileSelected);
   };
+
+  const onClear = () => onSelectGpx(undefined);
 
   return (
     <div
@@ -38,7 +40,7 @@ export default function GPXInput({ gpx, className, onSelectGpx }: Props) {
       />
       <div className="rounded-lg w-16 h-16 flex items-center justify-center">
         {gpx ? (
-          <GPXPathViewer gpx={gpx} />
+          <GPXPathViewer onDelete={onClear} gpx={gpx} />
         ) : (
           <FontAwesomeIcon icon="map" className="child:fill-gray-100 w-4 h-4" />
         )}

@@ -1,14 +1,14 @@
 import React, { useMemo, useState } from "react";
-import classNames from "classnames";
 import { GPX, computeSVGPathForGPX } from "../../domain/GPX";
 import GPXDetailViewModal from "./GPXDetailViewModal";
 
 type Props = {
   gpx: GPX;
   className?: string;
+  onDelete: () => void;
 };
 
-export default function GPXPathViewer({ gpx, className }: Props) {
+export default function GPXPathViewer({ gpx, onDelete, className }: Props) {
   const [zoomed, setZoomed] = useState(false);
   const svgPath = useMemo(() => {
     return computeSVGPathForGPX(gpx);
@@ -24,6 +24,7 @@ export default function GPXPathViewer({ gpx, className }: Props) {
         <GPXDetailViewModal
           gpx={gpx}
           opened={zoomed}
+          onDelete={onDelete}
           onClose={() => setZoomed(false)}
         />
       </div>

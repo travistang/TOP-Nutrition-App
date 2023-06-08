@@ -16,6 +16,25 @@ const variance = (...numbers: number[]) => {
   return sum(...sumSquare) / (numbers.length - 1);
 };
 
+const clip = (min: number, value: number, max: number) => {
+  return Math.min(Math.max(min, value), max);
+};
+
+const ratioIn = (min: number, value: number, max: number) => {
+  return (value - min) / (max - min);
+};
+
+const interpolateVector = (from: number[], to: number[], ratio: number) => {
+  if (from.length !== to.length) {
+    throw new Error("Cannot interpolate vector of different size");
+  }
+
+  const result: number[] = [];
+  for (const i in from) {
+    result.push(from[i] + (to[i] - from[i]) * ratio);
+  }
+  return result;
+};
 const normalize = (
   { min, max }: { min: number; max: number },
   ...numbers: number[]
@@ -64,6 +83,21 @@ const isNumeric = (str: string) => {
   return /^\d*((\.|,)\d*)?$/.test(str);
 };
 
+const degToRad = (deg: number) => {
+  return (deg * Math.PI) / 180;
+};
+
+const normalizeDegree = (deg: number) => {
+  if (deg >= 360) {
+    return deg % 360;
+  }
+  if (deg < 0) {
+    return 360 - Math.abs(deg % 360);
+  }
+
+  return deg;
+};
+
 const isCloseTo = (valueToTest: number, target: number, tolerance = 0.0001) => {
   return Math.abs(valueToTest - target) <= tolerance;
 };
@@ -88,6 +122,11 @@ export default {
   max,
   range,
   sum,
+  clip,
+  ratioIn,
+  degToRad,
+  normalizeDegree,
+  interpolateVector,
   variance,
   normalize,
   inputAsNumber,
