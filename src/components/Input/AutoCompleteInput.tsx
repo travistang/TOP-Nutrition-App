@@ -49,12 +49,11 @@ export default function AutoCompleteInput<T>({
   const shouldShowDefaultSuggestions =
     inputProps.value.length === 0 && !!defaultResults?.length;
   const showSuggestions =
-    !searching &&
-    focused &&
-    (searchResults.length > 0 || shouldShowDefaultSuggestions);
+    focused && (searchResults.length > 0 || shouldShowDefaultSuggestions);
   const resultsToShow = shouldShowDefaultSuggestions
     ? defaultResults
     : searchResults;
+
   return (
     <>
       <TextInput
@@ -64,6 +63,7 @@ export default function AutoCompleteInput<T>({
       >
         {!inline && showSuggestions && (
           <AutoCompleteResultPanel
+            loading={searching}
             results={resultsToShow}
             renderResult={renderResult}
             onSelectResult={onSelectResult}
@@ -73,6 +73,7 @@ export default function AutoCompleteInput<T>({
       {inline && showSuggestions && (
         <AutoCompleteResultPanel
           inline
+          loading={searching}
           className={resultPanelClassName}
           results={resultsToShow}
           renderResult={renderResult}

@@ -3,7 +3,6 @@ import classNames from "classnames";
 import React, {
   ChangeEventHandler,
   useCallback,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -18,14 +17,12 @@ type Props = {
 export default function ImagePicker({ className, image, onChange }: Props) {
   const [viewingImage, setViewingImage] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const imageSrc = useMemo(
-    () => (image ? `url(${URL.createObjectURL(image)})` : ""),
-    [image]
-  );
+  const imageSrc = image ? `url(${URL.createObjectURL(image)})` : "";
 
-  const onChooseImage = useCallback(() => {
+  const onChooseImage = () => {
     inputRef.current?.click();
-  }, []);
+  };
+
   const onSelectImage: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
       const imageSelected = e.target.files?.[0];
@@ -90,7 +87,6 @@ export default function ImagePicker({ className, image, onChange }: Props) {
           <Button
             icon="expand"
             className="z-30 w-4 h-4 rounded-full bg-gray-100 absolute bottom-0 right-0 text-xs translate-y-2 translate-x-2"
-            textClassName="child:fill-gray-800"
             onClick={togglePreview(true)}
           />
         </>

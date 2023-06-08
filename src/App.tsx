@@ -38,10 +38,7 @@ function App() {
           <Toaster />
           <Header />
           <Routes>
-            <Route
-              path="/"
-              element={<ConsumptionSummary date={new Date()} />}
-            />
+            <Route path="/" element={<ConsumptionSummary />} />
             <Route path="/stats" element={<PreviousStatistics />} />
             <Route path="/stats/food" element={<FoodDetailPage />} />
             <Route path="/stats/exercise" element={<ExerciseDetailPage />} />
