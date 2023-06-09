@@ -22,7 +22,10 @@ const buttonStyles: Record<
     disabled: {
       button: "bg-gray-400 cursor-not-allowed",
     },
-    active: { button: "bg-gray-900", text: "text-gray-200 child:fill-gray-200" },
+    active: {
+      button: "bg-gray-900",
+      text: "text-gray-200 child:fill-gray-200",
+    },
   },
   [ButtonStyle.BlockDanger]: {
     disabled: {
@@ -68,7 +71,7 @@ export default function Button({
     <button
       type={type}
       className={classNames(
-        "flex items-center justify-center outline-none border-none gap-2",
+        "flex items-center justify-center outline-none border-none gap-2 p-2",
         circle ? "rounded-full" : "rounded-lg",
         styles?.button,
         className

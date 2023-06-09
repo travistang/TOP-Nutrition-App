@@ -37,6 +37,11 @@ export type GPXStatistics = {
   elevationLoss: number;
 };
 
+export type GPXViewport = {
+  center: [number, number];
+  bounds: [[number, number], [number, number]];
+};
+
 export const gpxToPath = (rawGpx: RawGPXFile): GPX => {
   return {
     name: rawGpx.gpx.trk.name,
@@ -61,6 +66,13 @@ const distance = (from: GPXPoint, to: GPXPoint) => {
     (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
 
   return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+};
+
+export const slope = (from: GPXPoint, to: GPXPoint) => {
+  const dist = Math.abs(distance(from, to));
+  if (to.elevation === null || from.elevation === null) return null;
+  const elevationDiffKm = (to.elevation - from.elevation) / 1000;
+  return Math.atan(elevationDiffKm / dist);
 };
 
 export const parseGPXFile = async (blob: Blob) => {
@@ -121,6 +133,46 @@ export const computeGpxStatistics = (gpx: GPX): GPXStatistics => {
   });
   return statistics;
 };
+
+export const computeGpxViewport = (gpx: GPX): GPXViewport => {
+  const { points } = gpx;
+  if (points.length <= 1) {
+    throw new Error("Insufficient points for computing GPX Viewport");
+  }
+
+  const xs = points.map((p) => p.lat);
+  const ys = points.map((p) => p.lon);
+
+  const centerX = NumberUtils.average(...xs);
+  const centerY = NumberUtils.average(...ys);
+
+  const minX = NumberUtils.min(...xs);
+  const maxX = NumberUtils.max(...xs);
+  const minY = NumberUtils.min(...ys);
+  const maxY = NumberUtils.max(...ys);
+  return {
+    center: [centerX, centerY],
+    bounds: [
+      [minX, minY],
+      [maxX, maxY],
+    ],
+  };
+};
+
+export const computeAccumulativeDistance = (gpx: GPX): number[] => {
+  if (gpx.points.length === 0) return [];
+
+  const accumulatedDistances = [0];
+  let totalDistance = 0;
+  for (const i in gpx.points) {
+    const point = gpx.points[i];
+    const nextPoint = gpx.points[+i + 1];
+    if (!nextPoint) break;
+    totalDistance += distance(point, nextPoint);
+    accumulatedDistances.push(totalDistance);
+  }
+  return accumulatedDistances;
+}
 
 export const computeSVGPathForGPX = (gpx: GPX) => {
   if (gpx.points.length <= 1) return "";
