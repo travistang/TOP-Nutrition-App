@@ -3,7 +3,6 @@ import { Circle, MapContainer, TileLayer } from "react-leaflet";
 
 import { GPX, computeGpxViewport } from "../../../domain/GPX";
 import GPXMapLine from "./GPXMapLine";
-import { MarcoNutritionColor } from "../../../types/Nutrition";
 import GPXMapUserLocationPin from "./GPXMapUserLocationPin";
 
 type Props = {
