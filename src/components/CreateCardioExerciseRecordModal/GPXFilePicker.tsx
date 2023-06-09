@@ -22,6 +22,7 @@ export default function GPXFilePicker({ record, className, onChange }: Props) {
   useEffect(() => {
     const gpxFile = (record as CardioExerciseWithGpx).gpx;
     if (!gpxFile) {
+      setGpx(null);
       return;
     }
     parseGPXFile(gpxFile)

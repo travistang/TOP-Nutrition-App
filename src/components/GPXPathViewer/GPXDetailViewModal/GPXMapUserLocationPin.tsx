@@ -44,7 +44,7 @@ export default function GPXMapUserLocationPin() {
   const [userLocation, setUserLocation] = useState<GeolocationPosition | null>(
     null
   );
-  console.log({ userLocation });
+
   useEffect(() => {
     const locationWatcher = window.navigator.geolocation.watchPosition(
       setUserLocation,

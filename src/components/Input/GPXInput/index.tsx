@@ -37,7 +37,7 @@ export default function GPXInput({ gpx, className, onSelectGpx }: Props) {
         type="file"
         ref={inputRef}
         accept=".gpx"
-        onChange={onFileChosen}
+        onInput={onFileChosen}
       />
       <div className="rounded-lg w-16 h-16 flex items-center justify-center">
         {gpx ? (
