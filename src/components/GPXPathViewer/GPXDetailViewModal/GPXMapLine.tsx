@@ -1,14 +1,37 @@
 import React, { useMemo } from "react";
-import { Polyline } from "react-leaflet";
-import { GPX } from "../../../domain/GPX";
+import { LatLng } from "leaflet";
+import { Polyline, useMapEvent } from "react-leaflet";
+import { GPX, GPXPoint } from "../../../domain/GPX";
 import { getColorBySegment, rgbVecToString } from "../../../domain/GPX/colors";
 
 type Props = {
   gpx: GPX;
+  onInspectPointIndex: (index: number) => void;
 };
 
-export default function GPXMapLine({ gpx }: Props) {
+const getClosestPointTo = (latlng: LatLng, positions: GPXPoint[], thresholdMeter = 50) => {
+  let minDist = Infinity;
+  let index = -1;
+  for (let i = 0; i < positions.length; i++) {
+    const position = positions[i];
+    const dist = latlng.distanceTo([position.lat, position.lon]);
+    if (dist < minDist) {
+      index = i;
+      minDist = dist;
+    }
+  }
+  if (minDist > thresholdMeter) return null;
+  return index;
+}
+export default function GPXMapLine({ gpx, onInspectPointIndex }: Props) {
   const positions = useMemo(() => gpx.points, [gpx]);
+  useMapEvent('click', (event) => {
+    const clickedAt = event.latlng;
+    const closestPositionIndex = getClosestPointTo(clickedAt, positions);
+    if (closestPositionIndex !== null) {
+      onInspectPointIndex(closestPositionIndex);
+    }
+  });
 
   return (
     <>

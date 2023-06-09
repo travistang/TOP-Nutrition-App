@@ -20,6 +20,7 @@ export default function GPXDetailViewModal({
     <Modal opened={opened} onClose={onClose} label="GPX Details">
       <GPXMapView
         inspectingPointIndex={inspectingPointIndex}
+        onInspectPointIndex={setInspectingPointIndex}
         gpx={gpx}
         className="rounded-lg w-full"
       />

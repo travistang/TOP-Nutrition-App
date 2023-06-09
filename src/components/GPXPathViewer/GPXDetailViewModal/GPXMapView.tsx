@@ -9,11 +9,14 @@ type Props = {
   className?: string;
   gpx: GPX;
   inspectingPointIndex: number;
+  onInspectPointIndex: (index: number) => void;
+
 };
 export default function GPXMapView({
   className,
   gpx,
   inspectingPointIndex,
+  onInspectPointIndex,
 }: Props) {
   const viewport = computeGpxViewport(gpx);
   const inspectingPoint = gpx.points[inspectingPointIndex ?? -1] ?? null;
@@ -29,7 +32,10 @@ export default function GPXMapView({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <GPXMapLine gpx={gpx} />
+      <GPXMapLine
+        gpx={gpx}
+        onInspectPointIndex={onInspectPointIndex}
+      />
       <GPXMapUserLocationPin />
       {inspectingPoint && (
         <Circle

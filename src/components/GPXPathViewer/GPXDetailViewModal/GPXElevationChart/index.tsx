@@ -56,7 +56,7 @@ export default function GPXElevationChart({
       ref={chartRef}
       type="line"
       onClick={onChartClick}
-      height={72}
+      height={96}
       data={lineData}
       options={options}
     />
