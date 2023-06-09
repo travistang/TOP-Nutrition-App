@@ -1,6 +1,6 @@
-import React, { useMemo, useState, lazy, Suspense } from "react";
+import React, { useMemo, useState } from "react";
 import { GPX, computeSVGPathForGPX } from "../../domain/GPX";
-const GPXDetailViewModal = lazy(() => import("./GPXDetailViewModal")) ;
+import GPXDetailViewModal from "./GPXDetailViewModal";
 
 type Props = {
   gpx: GPX;
@@ -20,13 +20,11 @@ export default function GPXPathViewer({ gpx, className }: Props) {
   return (
     <>
       <div onClick={(e) => e.stopPropagation()}>
-        <Suspense>
-          <GPXDetailViewModal
-            gpx={gpx}
-            opened={zoomed}
-            onClose={() => setZoomed(false)}
-          />
-        </Suspense>
+        <GPXDetailViewModal
+          gpx={gpx}
+          opened={zoomed}
+          onClose={() => setZoomed(false)}
+        />
       </div>
       <div onClick={toggleZoom} className="relative">
         <svg
