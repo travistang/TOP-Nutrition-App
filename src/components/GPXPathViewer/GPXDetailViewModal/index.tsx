@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import Modal from "../../Modal";
 import { GPX } from "../../../domain/GPX";
-import Button, { ButtonStyle } from "../../Input/Button";
 import GPXMapView from "./GPXMapView";
 import GPXElevationChart from "./GPXElevationChart";
+import GPXStatistics from "./GPXStatistics";
 
 type Props = {
   opened: boolean;
   onClose: () => void;
-  onDelete: () => void;
   gpx: GPX;
 };
 export default function GPXDetailViewModal({
   opened,
   onClose,
-  onDelete,
   gpx,
 }: Props) {
   const [inspectingPointIndex, setInspectingPointIndex] = useState<number>(-1);
@@ -30,14 +28,7 @@ export default function GPXDetailViewModal({
         onInspectPointAtIndex={setInspectingPointIndex}
         gpx={gpx}
       />
-      <div className="flex flex-nowrap justify-between py-2">
-        <Button
-          buttonStyle={ButtonStyle.BlockDanger}
-          text="Delete"
-          icon="trash"
-          onClick={onDelete}
-        />
-      </div>
+      <GPXStatistics gpx={gpx} className="w-full" />
     </Modal>
   );
 }

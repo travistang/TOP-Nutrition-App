@@ -1,37 +1,15 @@
 import React, { useMemo, useRef } from "react";
 import { Chart as ChartJS } from "chart.js";
 import { Chart, getElementAtEvent } from "react-chartjs-2";
-import { GPX, computeAccumulativeDistance } from "../../../domain/GPX";
-import { MarcoNutritionColor } from "../../../types/Nutrition";
+import { GPX, computeAccumulativeDistance } from "../../../../domain/GPX";
+import { MarcoNutritionColor } from "../../../../types/Nutrition";
+import useElevationChartOption from "./useElevationChartOption";
 
 type Props = {
   gpx: GPX;
   inspectPointAtIndex: number;
   onInspectPointAtIndex: (index: number) => void;
 };
-const LineOptions = {
-  responsive: true,
-  borderJoinStyle: "miter",
-  borderCapStyle: "butt",
-  animation: { duration: 0 },
-  plugins: { tooltip: { enabled: false }, legend: { display: false } },
-};
-
-const createDatasetForHighlightPoint = (
-  elevations: (number | null)[],
-  index: number,
-  color: string,
-  label: string
-) => {
-  const data = Array(elevations.length).fill(null);
-  data[index] = elevations[index];
-  return {
-    label,
-    borderColor: color,
-    data,
-  };
-};
-
 export default function GPXElevationChart({
   gpx,
   inspectPointAtIndex,
@@ -46,7 +24,10 @@ export default function GPXElevationChart({
       ),
     [gpx]
   );
-
+  const options = useElevationChartOption({
+    elevations,
+    inspectPointIndex: inspectPointAtIndex,
+  });
   if (elevations.length === 0) return null;
   const lineData = {
     labels: accumulatedDistances,
@@ -55,19 +36,10 @@ export default function GPXElevationChart({
         label: "Elevation",
         data: elevations,
         pointRadius: 1,
+        lineTension: 0.8,
         borderColor: MarcoNutritionColor.fat,
-      },
-      ...(inspectPointAtIndex !== null
-        ? [
-            createDatasetForHighlightPoint(
-              elevations,
-              inspectPointAtIndex,
-              "blue",
-              "Inspect"
-            ),
-          ]
-        : []),
-    ],
+      }
+    ]
   };
 
   const onChartClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -78,6 +50,7 @@ export default function GPXElevationChart({
       onInspectPointAtIndex(element[0]?.index ?? -1);
     }
   };
+
   return (
     <Chart
       ref={chartRef}
@@ -85,7 +58,7 @@ export default function GPXElevationChart({
       onClick={onChartClick}
       height={72}
       data={lineData}
-      options={LineOptions}
+      options={options}
     />
   );
 }

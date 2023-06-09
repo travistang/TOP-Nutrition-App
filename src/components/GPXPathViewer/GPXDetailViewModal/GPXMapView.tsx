@@ -22,7 +22,7 @@ export default function GPXMapView({
     <MapContainer
       zoomControl={false}
       center={viewport.center}
-      zoom={10}
+      zoom={12}
       className={className}
       style={{ height: "35vh" }}
     >
@@ -35,7 +35,7 @@ export default function GPXMapView({
       {inspectingPoint && (
         <Circle
           center={[inspectingPoint.lat, inspectingPoint.lon]}
-          pathOptions={{ fillColor: MarcoNutritionColor.fat }}
+          pathOptions={{ color: 'orange', fillColor: 'orange' }}
           radius={60}
         />
       )}

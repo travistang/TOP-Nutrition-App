@@ -5,10 +5,9 @@ import GPXDetailViewModal from "./GPXDetailViewModal";
 type Props = {
   gpx: GPX;
   className?: string;
-  onDelete: () => void;
 };
 
-export default function GPXPathViewer({ gpx, onDelete, className }: Props) {
+export default function GPXPathViewer({ gpx, className }: Props) {
   const [zoomed, setZoomed] = useState(false);
   const svgPath = useMemo(() => {
     return computeSVGPathForGPX(gpx);
@@ -24,11 +23,10 @@ export default function GPXPathViewer({ gpx, onDelete, className }: Props) {
         <GPXDetailViewModal
           gpx={gpx}
           opened={zoomed}
-          onDelete={onDelete}
           onClose={() => setZoomed(false)}
         />
       </div>
-      <div onClick={toggleZoom}>
+      <div onClick={toggleZoom} className="relative">
         <svg
           viewBox="-10 -10 120 120"
           width="100%"

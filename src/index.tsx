@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import "dexie-export-import";
-
 import { RecoilRoot } from "recoil";
+import annotationPlugin from 'chartjs-plugin-annotation';
 import {
   Chart as ChartJS,
   LineController,
@@ -37,7 +37,9 @@ ChartJS.register(
   Tooltip,
   Legend,
   CategoryScale,
-  BarElement
+  BarElement,
+
+  annotationPlugin,
 );
 
 Sentry.init({

@@ -41,7 +41,7 @@ export default function CardioExerciseDetailForms({
         />
       )}
       <CardioExercisePreview className="col-span-3" record={record} />
-      <div className="col-span-2 flex justify-end">
+      <div className="col-span-2 col-end-7 pr-1 flex justify-end">
         <GPXFilePicker record={record} onChange={onChange} />
       </div>
       {record.type === CardioExerciseType.Hiking && (
