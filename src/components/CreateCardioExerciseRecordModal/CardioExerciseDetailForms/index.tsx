@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import {
   CardioExercise,
   CardioExerciseType,
@@ -7,9 +7,9 @@ import { Modifier } from "../../../types/utils";
 import DateInput, { DateInputType } from "../../Input/DateInput";
 import CardioExercisePreview from "../CardioExercisePreview";
 import TextInput from "../../Input/TextInput";
-import GPXFilePicker from "../GPXFilePicker";
 import NumberFieldInputGroup from "../NumberFieldInputGroup";
 import Button, { ButtonStyle } from "../../Input/Button";
+const GPXFilePicker = lazy(() => import("../GPXFilePicker"));
 
 type Props = {
   record: CardioExercise;
@@ -42,7 +42,9 @@ export default function CardioExerciseDetailForms({
       )}
       <CardioExercisePreview className="col-span-3" record={record} />
       <div className="col-span-2 col-end-7 pr-1 flex justify-end">
-        <GPXFilePicker record={record} onChange={onChange} />
+        <Suspense>
+          <GPXFilePicker record={record} onChange={onChange} />
+        </Suspense>
       </div>
       {record.type === CardioExerciseType.Hiking && (
         <TextInput
