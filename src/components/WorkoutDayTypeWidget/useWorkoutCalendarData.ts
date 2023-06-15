@@ -1,14 +1,14 @@
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import { useLiveQuery } from "dexie-react-hooks";
+
 import ExerciseDatabase, {
   CardioExerciseRecord,
   ExerciseSetRecord,
 } from "../../database/ExerciseDatabase";
-import ObjectUtils from "../../utils/Object";
-import ExerciseUtils from "../../utils/Exercise";
 import { DayMarker, DayMarkerType } from "../../types/Calendar";
 import { ExerciseDayTypeColorMap } from "../../types/Exercise";
-import { toast } from "react-hot-toast";
+import ExerciseUtils from "../../utils/Exercise";
+import ObjectUtils from "../../utils/Object";
 
 type Props = {
   selectedMonth: Date;
@@ -40,7 +40,6 @@ export default function useWorkoutCalendarData({
         ]) as Promise<[ExerciseSetRecord[], CardioExerciseRecord[]]>;
       }
     ).catch(() => {
-      toast.error("Failed to load data for workout");
       return [[], []];
     });
   }, [selectedMonth]) ?? [[], []];

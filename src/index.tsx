@@ -1,27 +1,27 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
-import "dexie-export-import";
-import { RecoilRoot } from "recoil";
-import annotationPlugin from 'chartjs-plugin-annotation';
 import {
+  ArcElement,
+  BarController,
+  BarElement,
+  CategoryScale,
   Chart as ChartJS,
+  Legend,
   LineController,
   LineElement,
-  PointElement,
   LinearScale,
+  PointElement,
   Title,
-  ArcElement,
   Tooltip,
-  Legend,
-  CategoryScale,
-  BarElement,
-  BarController,
 } from "chart.js";
+import annotationPlugin from 'chartjs-plugin-annotation';
+import "dexie-export-import";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RecoilRoot } from "recoil";
 import App from "./App";
 import "./index.css";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { loadIcons } from "./setup/icon";
 
 loadIcons();
@@ -44,10 +44,8 @@ ChartJS.register(
 
 Sentry.init({
   dsn: "https://fa8fcf1cdbac418a9132f639c47dc5fe@o541235.ingest.sentry.io/6587922",
-  integrations: [new Sentry.BrowserTracing(), new Sentry.Replay()],
+  integrations: [new Sentry.BrowserTracing()],
   tracesSampleRate: 1.0,
-  replaysSessionSampleRate: 0.1,
-  replaysOnErrorSampleRate: 1.0,
   denyUrls: [/localhost/i, /127\.0\.0\.1/i],
 });
 
