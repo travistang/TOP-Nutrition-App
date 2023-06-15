@@ -8,6 +8,7 @@ import ObjectUtils from "../../utils/Object";
 import ExerciseUtils from "../../utils/Exercise";
 import { DayMarker, DayMarkerType } from "../../types/Calendar";
 import { ExerciseDayTypeColorMap } from "../../types/Exercise";
+import { toast } from "react-hot-toast";
 
 type Props = {
   selectedMonth: Date;
@@ -26,10 +27,22 @@ export default function useWorkoutCalendarData({
   const [workoutOfMonth, cardiosOfMonth] = useLiveQuery(() => {
     const monthStart = startOfMonth(selectedMonth).getTime();
     const monthEnd = endOfMonth(selectedMonth).getTime();
-    return Promise.all([
-      ExerciseDatabase.exercisesOfMonth(selectedMonth.getTime()),
-      ExerciseDatabase.getCardioExerciseRecords([monthStart, monthEnd]),
-    ]) as Promise<[ExerciseSetRecord[], CardioExerciseRecord[]]>;
+    return ExerciseDatabase.transaction(
+      "r",
+      [
+        ExerciseDatabase.exerciseSetRecord,
+        ExerciseDatabase.cardioExerciseRecord,
+      ],
+      (transaction) => {
+        return Promise.all([
+          ExerciseDatabase.exercisesOfMonth(selectedMonth.getTime()),
+          ExerciseDatabase.getCardioExerciseRecords([monthStart, monthEnd]),
+        ]) as Promise<[ExerciseSetRecord[], CardioExerciseRecord[]]>;
+      }
+    ).catch(() => {
+      toast.error("Failed to load data for workout");
+      return [[], []];
+    });
   }, [selectedMonth]) ?? [[], []];
 
   const workoutsByDate = ExerciseUtils.groupWorkoutsByDate(
