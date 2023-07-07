@@ -15,6 +15,8 @@ import StringUtils from "../utils/String";
 import { SynchronizableDatabase } from "./BaseDatabase";
 import { Nutrition } from "../types/Nutrition";
 import { Food } from "../types/Food";
+import { FoodAmountTracking } from "../types/FoodAmountTracking";
+import { subtractAmount } from "../domain/FoodAmountTracking";
 export type ConsumptionRecord = Consumption & {
   id: string;
 };
@@ -24,6 +26,7 @@ export type FoodDetails = {
   nutritionPerHundred: Nutrition;
   name: string;
   image?: Blob;
+  amountTracking?: FoodAmountTracking;
 };
 
 class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
@@ -148,6 +151,18 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     }
     const newRecord: ConsumptionRecord = { ...consumption, id: uuid() };
     await this.registerChange("created", newRecord);
+    const foodDetails = await this.getOrCreateFoodDetailByRecord(consumption);
+    if (foodDetails?.amountTracking) {
+      const newTrackingData = subtractAmount(
+        foodDetails.amountTracking,
+        consumption.amount,
+        consumption.date
+      );
+      await this.updateFoodDetails({
+        ...foodDetails,
+        amountTracking: newTrackingData,
+      });
+    }
     return this.consumptions.add(newRecord);
   }
 
