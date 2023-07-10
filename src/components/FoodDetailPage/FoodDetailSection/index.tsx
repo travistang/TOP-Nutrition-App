@@ -42,6 +42,7 @@ export default function FoodDetailSection({ selectedRecord }: Props) {
         />
       </div>
       <FoodCaloriesSection nutrition={selectedRecord.nutritionPerHundred} />
+      
     </Section>
   );
 }
