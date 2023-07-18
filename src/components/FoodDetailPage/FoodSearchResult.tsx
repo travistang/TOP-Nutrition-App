@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
-import FoodDetailSection from "./FoodDetailSection";
+import { useEffect, useState } from "react";
+import ConsumptionDatabase, {
+  ConsumptionRecord,
+} from "../../database/ConsumptionDatabase";
 import FoodConsumptionHistory from "./FoodConsumptionHistory";
-import ConsumptionDatabase from "../../database/ConsumptionDatabase";
+import FoodDetailSection from "./FoodDetailSection";
 import RecentConsumptionList from "./RecentConsumptionList";
 
 type Props = {

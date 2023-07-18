@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from "react";
-import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
+import { useCallback, useState } from "react";
 import FoodSearchPanel from "../components/FoodDetailPage/FoodSearchPanel";
-import { ConsumptionRecord } from "../database/ConsumptionDatabase";
 import FoodSearchResult from "../components/FoodDetailPage/FoodSearchResult";
+import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
+import { ConsumptionRecord } from "../database/ConsumptionDatabase";
 
 export default function FoodDetailPage() {
   const [selectedRecord, setSelectedRecord] =

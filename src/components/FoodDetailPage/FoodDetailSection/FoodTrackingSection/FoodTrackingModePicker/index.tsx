@@ -1,5 +1,6 @@
-import { FoodAmountTrackingType } from "../../../../types/FoodAmountTracking";
-import TabSelectInput, { Option } from "../../../Input/TabSelectInput";
+import { FoodAmountTrackingType } from "../../../../../types/FoodAmountTracking";
+import { Option } from "../../../../Input/TabSelectInput";
+import FoodTrackingModePickerOption from "./FoodTrackingModePickerOption";
 
 type PickerType = FoodAmountTrackingType | null;
 type Props = {
@@ -10,22 +11,27 @@ type Props = {
 const PICKER_OPTIONS: Option<PickerType>[] = [
   {
     text: "None",
+    icon: "times",
     value: null,
   },
   {
     text: "Individual",
+    icon: "box",
     value: FoodAmountTrackingType.Individual,
   },
   {
     text: "Simple",
+    icon: "egg",
     value: FoodAmountTrackingType.Simple,
   },
   {
     text: "Individual and identical container",
+    icon: "cubes-stacked",
     value: FoodAmountTrackingType.IdenticalIndividual,
   },
   {
     text: "In containers",
+    icon: "boxes-stacked",
     value: FoodAmountTrackingType.Container,
   },
 ];
@@ -36,12 +42,16 @@ export default function FoodTrackingModePicker({
   className,
 }: Props) {
   return (
-    <TabSelectInput
-      options={PICKER_OPTIONS}
-      selected={value}
-      onSelect={onChange}
-      className={className}
-      label="Tracking mode"
-    />
+    <div className="grid grid-cols-2 gap-2">
+      <span className="col-span-full text-xs">Tracking type</span>
+      {PICKER_OPTIONS.map((option) => (
+        <FoodTrackingModePickerOption
+          onSelect={() => onChange(option.value)}
+          key={option.value}
+          option={option}
+          selected={option.value === value}
+        />
+      ))}
+    </div>
   );
 }

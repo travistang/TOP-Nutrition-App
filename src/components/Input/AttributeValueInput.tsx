@@ -1,11 +1,10 @@
-import React from "react";
 import classNames from "classnames";
 import TextWithUnit from "../TextWithUnit";
 import AttributeValue from "./AttributeValue";
 
 type Props = {
   className?: string;
-  unit: string;
+  unit?: string;
   label: string;
   value: number;
   integer?: boolean;

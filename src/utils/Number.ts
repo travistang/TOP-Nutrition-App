@@ -16,8 +16,13 @@ const variance = (...numbers: number[]) => {
   return sum(...sumSquare) / (numbers.length - 1);
 };
 
-const clip = (min: number, value: number, max: number) => {
-  return Math.min(Math.max(min, value), max);
+const clip = (
+  min: number | undefined,
+  value: number,
+  max: number | undefined
+) => {
+  const clippedMin = min === undefined ? value : Math.max(min, value);
+  return max === undefined ? value : Math.min(max, clippedMin);
 };
 
 const ratioIn = (min: number, value: number, max: number) => {

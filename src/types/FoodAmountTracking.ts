@@ -7,7 +7,11 @@ export enum FoodAmountTrackingType {
 
 export type FoodAmountTracking =
   | {
-      type: FoodAmountTrackingType.Simple | FoodAmountTrackingType.Individual;
+      type: FoodAmountTrackingType.Simple;
+      amount: number;
+    }
+  | {
+      type: FoodAmountTrackingType.Individual;
       amount: number;
     }
   | {
