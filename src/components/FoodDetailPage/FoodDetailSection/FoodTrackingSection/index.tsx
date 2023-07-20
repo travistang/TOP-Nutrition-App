@@ -9,7 +9,6 @@ type Props = {
 export default function FoodTrackingSection({ foodDetails }: Props) {
   return (
     <Section label="Amount tracking">
-      WIP
       {!foodDetails.amountTracking && <SetupFoodTrackingEntry />}
     </Section>
   );

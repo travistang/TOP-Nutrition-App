@@ -2,10 +2,7 @@ import classNames from "classnames";
 import { useState } from "react";
 import { FoodAmountTracking } from "../../../../types/FoodAmountTracking";
 import EmptyNotice from "../../../EmptyNotice";
-import Modal from "../../../Modal";
-import FoodTrackingForm from "./FoodTrackingForm";
-import FoodTrackingModePicker from "./FoodTrackingModePicker";
-import useFoodTrackingPlaceholder from "./useFoodTrackingPlaceholder";
+import FoodTrackingSetupModal from "./FoodTrackingSetupModal";
 
 type Props = {
   className?: string;
@@ -18,9 +15,6 @@ export default function SetupFoodTrackingEntry({
 }: Props) {
   const [showFoodTrackingSetupModal, setShowFoodTrackingSetupModal] =
     useState(false);
-  const [foodTrackingPlaceholder, { changeType, updatePlaceholder }] =
-    useFoodTrackingPlaceholder(foodTracking ?? null);
-
   return (
     <>
       <EmptyNotice
@@ -28,24 +22,11 @@ export default function SetupFoodTrackingEntry({
         message="No amount tracking set for this food. Click to setup"
         onClick={() => setShowFoodTrackingSetupModal(true)}
       />
-      <Modal
-        label="Setup food tracking"
+      <FoodTrackingSetupModal
+        tracking={foodTracking}
         opened={showFoodTrackingSetupModal}
         onClose={() => setShowFoodTrackingSetupModal(false)}
-      >
-        <div className="flex flex-col items-stretch gap-2">
-          <FoodTrackingModePicker
-            value={foodTrackingPlaceholder?.type ?? null}
-            onChange={changeType}
-          />
-          {foodTrackingPlaceholder && (
-            <FoodTrackingForm
-              tracking={foodTrackingPlaceholder}
-              onChange={updatePlaceholder}
-            />
-          )}
-        </div>
-      </Modal>
+      />
     </>
   );
 }
