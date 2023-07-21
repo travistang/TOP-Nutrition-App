@@ -31,6 +31,7 @@ import {
   faHamburger,
   faImage,
   faInfoCircle,
+  faJar,
   faLightbulb,
   faLineChart,
   faList,
@@ -119,5 +120,6 @@ export const loadIcons = () =>
     faExpand,
     faBoxesStacked,
     faEgg,
-    faCubesStacked
+    faCubesStacked,
+    faJar
   );

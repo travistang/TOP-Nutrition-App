@@ -2,6 +2,7 @@ import {
   FoodAmountTracking,
   FoodAmountTrackingType,
 } from "../../../../../types/FoodAmountTracking";
+import ContainerTrackingForm from "./ContainerTrackingForm";
 import IdenticalIndividualTrackingForm from "./IdenticalIndividualTrackingForm";
 import SimpleTrackingForm from "./SimpleTrackingForm";
 
@@ -20,6 +21,14 @@ export default function FoodTrackingForm({
     case FoodAmountTrackingType.Simple:
       return (
         <SimpleTrackingForm
+          tracking={tracking}
+          onChange={onChange}
+          className={className}
+        />
+      );
+    case FoodAmountTrackingType.Container:
+      return (
+        <ContainerTrackingForm
           tracking={tracking}
           onChange={onChange}
           className={className}

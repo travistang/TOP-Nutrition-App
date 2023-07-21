@@ -1,14 +1,26 @@
 import React, { useContext } from "react";
-import classNames from "classnames";
 import { drawerContext } from "./DrawerContext";
 import Button, { ButtonStyle } from "../Input/Button";
+import classNames from "classnames";
 
-export default function DrawerHeader() {
+type Props = {
+  backButtonText?: string;
+};
+export default function DrawerHeader({ backButtonText = "Back" }: Props) {
   const { drawerOpened, closeDrawer } = useContext(drawerContext);
-  if (!drawerOpened) return null;
   return (
-    <div className="flex items-center p-4">
-      <Button buttonStyle={ButtonStyle.Clear} onClick={closeDrawer} />
+    <div
+      className={classNames(
+        "flex items-center transition-transform duration-300",
+        !drawerOpened && "-translate-x-[200vw]"
+      )}
+    >
+      <Button
+        buttonStyle={ButtonStyle.Clear}
+        onClick={closeDrawer}
+        icon="arrow-left"
+        text={backButtonText}
+      />
     </div>
   );
 }

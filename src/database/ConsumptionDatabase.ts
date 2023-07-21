@@ -99,8 +99,9 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     return filter.first();
   }
 
-  async updateFoodDetails(foodDetails: FoodDetails) {
-    return this.foodDetails.update(foodDetails.id, foodDetails);
+  async updateFoodDetails(foodDetails: Partial<FoodDetails> & { id: string }) {
+    const { id, ...data } = foodDetails;
+    return this.foodDetails.update(id, data);
   }
 
   async getOrCreateFoodDetailByRecord(

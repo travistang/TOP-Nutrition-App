@@ -9,6 +9,7 @@ const DEFAULT_TRACKING_VALUES: {
 } = {
   [FoodAmountTrackingType.Container]: {
     containers: [],
+    containerCapacity: 0,
     type: FoodAmountTrackingType.Container,
   },
   [FoodAmountTrackingType.Simple]: {

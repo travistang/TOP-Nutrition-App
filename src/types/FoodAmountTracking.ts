@@ -16,6 +16,7 @@ export type FoodAmountTracking =
     }
   | {
       type: FoodAmountTrackingType.Container;
+      containerCapacity: number;
       containers: {
         id: string;
         capacity: number;

@@ -36,6 +36,8 @@ export default function AttributeValueInputWidget({
         className={className}
         unit={config.unit}
         integer={config.integer}
+        min={config.min}
+        max={config.max}
       />
     );
   }

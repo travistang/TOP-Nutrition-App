@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react";
 import Drawer from ".";
 import { useContext } from "react";
 import { drawerContext } from "./DrawerContext";
+import { MainContent, DrawerContent } from "./DrawerContainer";
 
 const meta: Meta<typeof Drawer> = {
   title: "Component/Drawer",
@@ -12,9 +13,6 @@ const meta: Meta<typeof Drawer> = {
   },
   args: {
     children: <div className="text items-center justify-center">Children</div>,
-    drawerContent: (
-      <div className="text items-center justify-center">Content</div>
-    ),
   },
 };
 
@@ -26,11 +24,13 @@ const DrawerMain = () => {
 
 export const Main = (args: Meta<typeof Drawer>["args"]) => {
   return (
-    <Drawer
-      {...(args as any)}
-      drawerContent={args?.drawerContent ?? <div></div>}
-    >
-      <DrawerMain />
+    <Drawer {...(args as any)}>
+      <MainContent>
+        <DrawerMain />
+      </MainContent>
+      <DrawerContent>
+        <span>Inside the drawer, click arrow to close</span>
+      </DrawerContent>
     </Drawer>
   );
 };
