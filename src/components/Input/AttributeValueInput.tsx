@@ -9,7 +9,7 @@ type Props = {
   value: number;
   integer?: boolean;
   selected?: boolean;
-  onSelect: () => void;
+  onSelect?: () => void;
 };
 export default function AttributeValueInput({
   className,

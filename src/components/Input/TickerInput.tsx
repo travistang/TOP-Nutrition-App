@@ -35,7 +35,6 @@ export default function TickerInput({
   min,
   max,
   integer,
-  label,
   unit,
   className,
 }: Props) {
@@ -56,12 +55,7 @@ export default function TickerInput({
         icon="caret-left"
         onClick={tick("left")}
       />
-      <TextWithUnit
-        size="xl"
-        unit={unit}
-        value={value}
-        integer={integer}
-      />
+      <TextWithUnit size="xl" unit={unit} value={value} integer={integer} />
       <Button
         type="button"
         buttonStyle={ButtonStyle.Clear}

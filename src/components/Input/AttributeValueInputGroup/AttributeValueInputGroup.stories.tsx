@@ -1,6 +1,7 @@
 import { useArgs } from "@storybook/client-api";
 import type { Meta } from "@storybook/react";
-import AttributeValueInputGroup, { InputWidget } from ".";
+import AttributeValueInputGroup from ".";
+import { InputWidget } from "./types";
 
 const meta: Meta<typeof AttributeValueInputGroup> = {
   title: "Input/AttributeValueInputGroup",
@@ -9,6 +10,7 @@ const meta: Meta<typeof AttributeValueInputGroup> = {
     layout: "fullscreen",
   },
   args: {
+    selectedField: "config",
     config: {
       weight: {
         widget: InputWidget.DigitPad,
@@ -22,10 +24,21 @@ const meta: Meta<typeof AttributeValueInputGroup> = {
         max: 100,
         integer: true,
       },
+      date: {
+        widget: InputWidget.Datetime,
+        label: "Date",
+        nullable: true,
+      },
+      updatedAt: {
+        widget: InputWidget.Datetime,
+        label: "Date",
+        nullable: true,
+      },
     },
     value: {
       weight: 40,
       repetitions: 0,
+      date: new Date("2023-05-08").getTime(),
     },
   },
 };
@@ -38,6 +51,9 @@ export const Main = (args: Meta<typeof AttributeValueInputGroup>["args"]) => {
   return (
     <AttributeValueInputGroup
       {...(args as any)}
+      onSelectField={(newField) =>
+        updateArgs({ ...args, selectedField: newField })
+      }
       onChange={(value) => updateArgs({ value })}
     />
   );

@@ -1,11 +1,14 @@
+import { useState } from "react";
 import {
   FoodAmountTrackingType,
   FoodTrackingWithType,
 } from "../../../../../types/FoodAmountTracking";
-import AttributeValueInputGroup, {
+import AttributeValueInputGroup from "../../../../Input/AttributeValueInputGroup";
+import {
+  AcceptableAttributes,
   InputConfig,
   InputWidget,
-} from "../../../../Input/AttributeValueInputGroup";
+} from "../../../../Input/AttributeValueInputGroup/types";
 
 type IndividualIdenticalTracking =
   FoodTrackingWithType<FoodAmountTrackingType.IdenticalIndividual>;
@@ -34,15 +37,20 @@ export default function IdenticalIndividualTrackingForm({
   onChange,
 }: Props) {
   const { type, ...value } = tracking;
-  const updateValue = (newValue: Omit<IndividualIdenticalTracking, "type">) => {
+  const [selectedField, setSelectedField] =
+    useState<keyof typeof FormConfigMapping>("amount");
+
+  const updateValue = (newValue: AcceptableAttributes) => {
     onChange({
-      ...newValue,
-      type,
+      ...tracking,
+      [selectedField]: newValue as number,
     });
   };
   return (
     <AttributeValueInputGroup
       value={value}
+      selectedField={selectedField}
+      onSelectField={setSelectedField}
       onChange={updateValue}
       config={FormConfigMapping}
       className={className}

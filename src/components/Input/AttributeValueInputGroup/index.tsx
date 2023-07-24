@@ -1,61 +1,40 @@
 import classNames from "classnames";
-import { useState } from "react";
 import AttributeValueDisplay from "./AttributeValueDisplay";
 import AttributeValueInputWidget from "./AttributeValueInputWidget";
-
-export enum InputWidget {
-  DigitPad = "digit-pad",
-  Ticker = "ticker",
-}
-
-export type InputConfig =
-  | {
-      widget: InputWidget.Ticker;
-      min?: number;
-      max?: number;
-      unit?: string;
-      integer?: boolean;
-      step?: number;
-      label: string;
-    }
-  | {
-      widget: InputWidget.DigitPad;
-      integer?: boolean;
-      unit?: string;
-      label: string;
-    };
-
-export type AttributeValueInputGroupConfig<T> = Record<keyof T, InputConfig>;
+import {
+  AcceptableAttributes,
+  AllConfig,
+  AttributeValueInputGroupConfig,
+} from "./types";
 
 type Props<T> = {
   config: AttributeValueInputGroupConfig<T>;
+  selectedField: keyof T;
+  onSelectField?: (field: keyof T) => void;
   className?: string;
   value: T;
-  onChange: (t: T) => void;
+  onChange: (value: AcceptableAttributes) => void;
 };
 export default function AttributeValueInputGroup<
-  T extends Record<string, number>
->({ config, className, value, onChange }: Props<T>) {
-  const [selectedField, setSelectedField] = useState<keyof T>(
-    Object.keys(config)[0] as keyof T
-  );
-
-  const onFieldChange = (field: keyof T) => (newValue: number) => {
-    onChange({ ...value, [field]: newValue });
-  };
+  T extends Record<string, AcceptableAttributes>
+>({
+  config,
+  className,
+  value,
+  onChange,
+  selectedField,
+  onSelectField,
+}: Props<T>) {
   return (
     <div className={classNames("grid grid-cols-6 gap-2", className)}>
-      {(Object.entries(config) as [keyof T, InputConfig][]).map(
+      {(Object.entries(config) as [keyof T, AllConfig][]).map(
         ([field, config]) => (
           <AttributeValueDisplay
+            value={value[field]}
             key={field.toString()}
+            config={config}
             selected={selectedField === field}
-            value={value[field as keyof T]}
-            onSelect={() => setSelectedField(field as keyof T)}
-            label={config.label}
-            unit={config.unit ?? ""}
-            integer={config.integer}
-            className="col-span-3"
+            onSelect={() => onSelectField?.(field)}
           />
         )
       )}
@@ -64,7 +43,7 @@ export default function AttributeValueInputGroup<
         config={config[selectedField]}
         className="col-span-full"
         value={value[selectedField]}
-        onChange={onFieldChange(selectedField)}
+        onChange={onChange}
       />
     </div>
   );

@@ -67,7 +67,7 @@ export const subtractAmount = (
     case FoodAmountTrackingType.Individual:
     case FoodAmountTrackingType.Simple:
       const newTracking = { ...tracking };
-      newTracking.amount -= amount;
+      newTracking.amount = Math.max(amount, 0);
       return newTracking;
     case FoodAmountTrackingType.Container:
       return subtractAmountFromContainerTracking(

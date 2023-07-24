@@ -14,7 +14,6 @@ const meta: Meta<typeof TickerInput> = {
     integer: true,
     min: 30,
     max: 50,
-    label: "A ticker",
   },
 };
 

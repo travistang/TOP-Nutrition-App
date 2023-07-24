@@ -5,6 +5,21 @@ export enum FoodAmountTrackingType {
   Simple = "simple", // gross sum (in grams) of kind of food, e.g. sugar, oil
 }
 
+export enum StorageCondition {
+  Fridge = "fridge",
+  Freezer = "freezer",
+  RoomTemperature = "room-temperature",
+}
+
+export type Container = {
+  id: string;
+  capacity: number;
+  amount: number;
+  expiryDate?: number;
+  openedAt?: number;
+  storageCondition?: StorageCondition;
+};
+
 export type FoodAmountTracking =
   | {
       type: FoodAmountTrackingType.Simple;
@@ -17,13 +32,7 @@ export type FoodAmountTracking =
   | {
       type: FoodAmountTrackingType.Container;
       containerCapacity: number;
-      containers: {
-        id: string;
-        capacity: number;
-        amount: number;
-        expiryDate?: number;
-        openedAt?: number;
-      }[];
+      containers: Container[];
     }
   | {
       type: FoodAmountTrackingType.IdenticalIndividual;
@@ -35,3 +44,6 @@ export type FoodTrackingWithType<T extends FoodAmountTrackingType> = Extract<
   FoodAmountTracking,
   { type: T }
 >;
+
+export type FoodContainerTracking =
+  FoodTrackingWithType<FoodAmountTrackingType.Container>;

@@ -55,17 +55,17 @@ const zipBy = <T, U>(
     return [...result, [t, matchingUs]];
   }, []);
 };
-const groupBy = <T>(
+const groupBy = <T, K extends string = string>(
   ts: T[],
-  groupFn: (t: T) => string
-): Record<string, T[]> => {
+  groupFn: (t: T) => K
+): Record<K, T[]> => {
   return ts.reduce((groups, t) => {
     const key = groupFn(t);
     return {
       ...groups,
       [key]: [...(groups[key] ?? []), t],
     };
-  }, {} as Record<string, T[]>);
+  }, {} as Record<K, T[]>);
 };
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {

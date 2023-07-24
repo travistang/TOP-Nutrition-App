@@ -2,9 +2,11 @@ import {
   FoodAmountTrackingType,
   FoodTrackingWithType,
 } from "../../../../../types/FoodAmountTracking";
-import AttributeValueInputGroup, {
+import AttributeValueInputGroup from "../../../../Input/AttributeValueInputGroup";
+import {
+  AcceptableAttributes,
   InputWidget,
-} from "../../../../Input/AttributeValueInputGroup";
+} from "../../../../Input/AttributeValueInputGroup/types";
 
 type SimpleTracking =
   | FoodTrackingWithType<FoodAmountTrackingType.Simple>
@@ -20,10 +22,10 @@ export default function SimpleTrackingForm({
   tracking,
 }: Props) {
   const { type, ...value } = tracking;
-  const updateValue = (newValue: Omit<SimpleTracking, "type">) => {
+  const updateValue = (newValue: AcceptableAttributes) => {
     onChange({
-      ...newValue,
-      type,
+      ...tracking,
+      amount: newValue as number,
     });
   };
   const config =
@@ -48,6 +50,7 @@ export default function SimpleTrackingForm({
       config={config}
       className={className}
       value={value}
+      selectedField="amount"
       onChange={updateValue}
     />
   );

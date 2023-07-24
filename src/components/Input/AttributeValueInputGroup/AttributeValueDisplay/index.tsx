@@ -1,34 +1,51 @@
-import AttributeValue from "../../AttributeValue";
 import AttributeValueInput from "../../AttributeValueInput";
+import { AcceptableAttributes, InputConfig, InputWidget } from "../types";
+import AttributeDatetimeValueDisplay from "./AttributeDatetimeValueDisplay";
 
-type Props<T extends number | string> = {
-  className?: string;
+type Props = {
+  config: InputConfig;
+  value: AcceptableAttributes;
+  onSelect?: () => void;
   selected?: boolean;
-  label: string;
-  value: T;
-  onSelect: () => void;
-} & (T extends number
-  ? {
-      unit?: string;
-      integer?: boolean;
-    }
-  : {});
+};
 
-export default function AttributeValueDisplay<T extends string | number>(
-  props: Props<T>
-) {
-  if (typeof props.value === "number") {
-    return <AttributeValueInput {...(props as Props<number>)} />;
+export default function AttributeValueDisplay({
+  config,
+  value,
+  selected,
+  onSelect,
+}: Props) {
+  if (
+    config.widget === InputWidget.Ticker ||
+    config.widget === InputWidget.DigitPad
+  ) {
+    const { integer, unit, label, className = "col-span-3" } = config;
+    return (
+      <AttributeValueInput
+        value={value as number}
+        label={label}
+        selected={selected}
+        className={className}
+        integer={integer}
+        unit={unit}
+        onSelect={onSelect}
+      />
+    );
   }
-  const { className, selected, label, value, onSelect } = props;
-  return (
-    <AttributeValue
-      label={label}
-      selected={selected}
-      onClick={onSelect}
-      className={className}
-    >
-      {value}
-    </AttributeValue>
-  );
+
+  if (config.widget === InputWidget.Datetime) {
+    const { className = "col-span-3", nullable, label } = config;
+    return (
+      <AttributeDatetimeValueDisplay
+        className={className}
+        label={label}
+        onSelect={onSelect}
+        nullable={nullable}
+        selected={selected}
+        value={value as number | null}
+      />
+    );
+  }
+
+  return null;
 }
