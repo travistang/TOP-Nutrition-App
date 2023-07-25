@@ -4,7 +4,8 @@ import {
   CardioExerciseType,
 } from "../../../types/CardioExercise";
 import { Modifier } from "../../../types/utils";
-import DateInput, { DateInputType } from "../../Input/DateInput";
+import DateInput from "../../Input/DateInput";
+import { DateInputType } from "../../Input/DateInput/types";
 import CardioExercisePreview from "../CardioExercisePreview";
 import TextInput from "../../Input/TextInput";
 import NumberFieldInputGroup from "../NumberFieldInputGroup";

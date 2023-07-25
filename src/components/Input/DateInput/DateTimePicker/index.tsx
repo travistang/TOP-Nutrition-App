@@ -1,11 +1,11 @@
 import classNames from "classnames";
-import { DateInputType } from "..";
 import Calendar from "../../../Calendar";
 import Button, { ButtonStyle } from "../../Button";
 import MonthListPicker from "../MonthListPicker";
 import ShortMonthPicker from "../ShortMonthPicker";
 import TimeInputWidget from "../TimeInputWidget";
 import YearPicker from "../YearPicker";
+import { DateInputType } from "../types";
 
 enum DateInputDisplay {
   Year = 1,

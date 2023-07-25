@@ -2,7 +2,8 @@ import { isSameMonth, startOfMonth } from "date-fns";
 import React, { useState } from "react";
 import ConsumptionSummary from "../../pages/ConsumptionSummary";
 import Calendar from "../Calendar";
-import DateInput, { DateInputType } from "../Input/DateInput";
+import DateInput from "../Input/DateInput";
+import { DateInputType } from "../Input/DateInput/types";
 import useRingConfig from "./useRingConfig";
 
 export default function PreviousConsumptions() {

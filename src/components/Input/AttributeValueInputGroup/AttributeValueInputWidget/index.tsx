@@ -1,4 +1,4 @@
-import { DateInputType } from "../../DateInput";
+import { DateInputType } from "../../DateInput/types";
 import DateTimePicker from "../../DateInput/DateTimePicker";
 import DigitInput from "../../DigitInput";
 import { InputMode } from "../../DigitInput/utils/digitLogic";

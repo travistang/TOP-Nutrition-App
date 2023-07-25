@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Section from "../../Section";
 import SelectInput from "../../Input/SelectInput";
 import { Duration } from "../../../types/Duration";
-import DateInput, { DateInputType } from "../../Input/DateInput";
+import DateInput from "../../Input/DateInput";
+import { DateInputType } from "../../Input/DateInput/types";
 
 type Props = {
   label: string;

@@ -1,16 +1,11 @@
 import classNames from "classnames";
-import { format, getHours, getMinutes } from "date-fns";
-import { setHours, setMinutes } from "date-fns/esm";
+import { format, getHours, getMinutes, setHours, setMinutes } from "date-fns";
 import { useState } from "react";
+
 import InputBase from "../InputBase";
 import { TextInputProps } from "../TextInput";
 import DateTimePicker from "./DateTimePicker";
-
-export enum DateInputType {
-  DateTime,
-  Month,
-  Date,
-}
+import { DateInputType } from "./types";
 
 type Props = Omit<
   TextInputProps,

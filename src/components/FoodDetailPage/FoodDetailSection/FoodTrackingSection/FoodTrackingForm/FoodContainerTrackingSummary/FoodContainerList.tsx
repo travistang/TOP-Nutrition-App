@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   containerPrecedence,
   containersByUsage,
@@ -8,8 +8,6 @@ import {
   FoodAmountTrackingType,
   FoodTrackingWithType,
 } from "../../../../../../types/FoodAmountTracking";
-import { drawerContext } from "../../../../../Drawer/DrawerContext";
-import EmptyNotice from "../../../../../EmptyNotice";
 import Button, { ButtonStyle } from "../../../../../Input/Button";
 import FoodContainerItem from "./FoodContainerItem";
 
@@ -19,7 +17,7 @@ type Props = {
 };
 export default function FoodContainerList({ className, tracking }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const { openDrawer } = useContext(drawerContext);
+
   const { containers } = tracking;
   const { used, ...otherContainersByUsage } = containersByUsage(containers);
   const otherContainers = Object.values(otherContainersByUsage)
@@ -28,27 +26,13 @@ export default function FoodContainerList({ className, tracking }: Props) {
 
   return (
     <div className={classNames("flex flex-col items-stretch gap-2", className)}>
-      {!containers.length ? (
-        <EmptyNotice
-          onClick={openDrawer}
-          message="No containers recorded. Click to setup"
+      {containers.length > 0 && (
+        <Button
+          buttonStyle={ButtonStyle.Clear}
+          icon={expanded ? "caret-up" : "caret-down"}
+          text={expanded ? "Hide container details" : "Show all containers"}
+          onClick={() => setExpanded(!expanded)}
         />
-      ) : (
-        <>
-          <Button
-            buttonStyle={ButtonStyle.Block}
-            text="Add container"
-            icon="plus"
-            className="w-max justify-self-end"
-            onClick={openDrawer}
-          />
-          <Button
-            buttonStyle={ButtonStyle.Clear}
-            icon={expanded ? "caret-up" : "caret-down"}
-            text={expanded ? "Hide container details" : "Show all containers"}
-            onClick={() => setExpanded(!expanded)}
-          />
-        </>
       )}
       {expanded &&
         otherContainers.map((container) => (

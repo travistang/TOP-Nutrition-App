@@ -7,7 +7,10 @@ import {
   InputWidget,
 } from "../../../../Input/AttributeValueInputGroup/types";
 import Tab from "../../../../Tab";
-import FoodContainerTrackingSummary from "./FoodContainerTrackingSummary";
+import classNames from "classnames";
+import FoodContainerCompositionBar from "./FoodContainerTrackingSummary/FoodContainerCompositionBar";
+import FoodContainerList from "./FoodContainerTrackingSummary/FoodContainerList";
+import CreateContainerEntry from "./FoodContainerTrackingSummary/CreateContainerEntry";
 
 type Props = {
   className?: string;
@@ -44,6 +47,7 @@ export default function ContainerTrackingForm({
 }: Props) {
   const [page, setPage] = useState<ContainerTrackingPage>("configs");
   const { containerCapacity } = tracking;
+
   const updateValue = (newValue: AcceptableAttributes) => {
     onChange({ ...tracking, containerCapacity: newValue as number });
   };
@@ -55,7 +59,15 @@ export default function ContainerTrackingForm({
         options={getContainerTrackingTabsOptions(setPage)}
       />
       {page === "containers" && (
-        <FoodContainerTrackingSummary tracking={tracking} />
+        <div
+          className={classNames("flex flex-col items-stretch gap-2", className)}
+        >
+          {!!tracking.containers.length && (
+            <FoodContainerCompositionBar tracking={tracking} />
+          )}
+          <FoodContainerList tracking={tracking} />
+          <CreateContainerEntry tracking={tracking} />
+        </div>
       )}
       {page === "configs" && (
         <AttributeValueInputGroup

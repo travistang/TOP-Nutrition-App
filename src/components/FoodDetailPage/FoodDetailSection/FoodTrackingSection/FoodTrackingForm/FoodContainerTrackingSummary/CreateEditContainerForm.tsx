@@ -13,7 +13,10 @@ type Props = {
   onCreate: (container: Container) => void;
   className?: string;
 };
-export default function AddContainerForm({ tracking, className }: Props) {
+export default function CreateEditContainerForm({
+  tracking,
+  className,
+}: Props) {
   const [containerPlaceholder, setContainerPlaceholder] = useState<Container>(
     defaultContainerFromTracking(tracking)
   );
@@ -39,7 +42,7 @@ export default function AddContainerForm({ tracking, className }: Props) {
             type="range"
             min={0}
             max={tracking.containerCapacity}
-            className=""
+            className="h-2 w-full"
             step={10}
           />
         </div>

@@ -1,7 +1,8 @@
 import React from "react";
 import FoodConsumptionCalendar from "./FoodConsumptionCalendar";
 import Section from "../../Section";
-import DateInput, { DateInputType } from "../../Input/DateInput";
+import DateInput from "../../Input/DateInput";
+import { DateInputType } from "../../Input/DateInput/types";
 import { ConsumptionRecord } from "../../../database/ConsumptionDatabase";
 
 type Props = {

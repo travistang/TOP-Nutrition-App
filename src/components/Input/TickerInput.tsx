@@ -12,6 +12,7 @@ type TickerConfig = {
 type Props = TickerConfig & {
   value: number;
   onChange: (value: number) => void;
+  formatter?: React.FC<{ value: number; unit?: string; integer?: boolean }>;
   label?: string;
   unit?: string;
   className?: string;
@@ -34,6 +35,7 @@ export default function TickerInput({
   step,
   min,
   max,
+  formatter,
   integer,
   unit,
   className,
@@ -55,7 +57,9 @@ export default function TickerInput({
         icon="caret-left"
         onClick={tick("left")}
       />
-      <TextWithUnit size="xl" unit={unit} value={value} integer={integer} />
+      {formatter?.({ value, unit, integer }) ?? (
+        <TextWithUnit size="xl" unit={unit} value={value} integer={integer} />
+      )}
       <Button
         type="button"
         buttonStyle={ButtonStyle.Clear}
