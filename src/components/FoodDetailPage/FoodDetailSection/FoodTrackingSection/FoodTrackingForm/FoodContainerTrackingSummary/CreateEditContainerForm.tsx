@@ -21,17 +21,18 @@ export default function CreateEditContainerForm({
     defaultContainerFromTracking(tracking)
   );
 
-  const onAmountChange = (amount: number) =>
+  const onAmountChange = (amount: number) => {
     setContainerPlaceholder({
       ...containerPlaceholder,
       amount,
     });
+  };
 
   const isEditing = !!containerPlaceholder;
   return (
     <FoodContainerItemRow className={className}>
-      <div className="flex items-center">
-        <div className="flex flex-col flex-1 gap-2">
+      <div className="flex items-center flex-1">
+        <div className="flex flex-col items-stretch flex-1 gap-2">
           <TextWithUnit
             value={containerPlaceholder.amount}
             unit="g"
@@ -39,6 +40,7 @@ export default function CreateEditContainerForm({
           />
           <input
             onChange={(e) => onAmountChange(e.target.valueAsNumber)}
+            value={containerPlaceholder.amount}
             type="range"
             min={0}
             max={tracking.containerCapacity}
