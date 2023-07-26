@@ -25,7 +25,7 @@ export const UsageColorMap: Record<ContainerUsage, string> = {
 
 export const StorageConditionIcon: Record<StorageCondition, IconProp> = {
   [StorageCondition.Freezer]: "snowflake",
-  [StorageCondition.Fridge]: "refrigerator",
+  [StorageCondition.Fridge]: "temperature-low",
   [StorageCondition.RoomTemperature]: "sun",
 };
 export const isContainerFull = (container: Container) => {

@@ -8,7 +8,7 @@ export enum FoodAmountTrackingType {
 export enum StorageCondition {
   Fridge = "fridge",
   Freezer = "freezer",
-  RoomTemperature = "room-temperature",
+  RoomTemperature = "room temperature",
 }
 
 export type Container = {
@@ -18,6 +18,7 @@ export type Container = {
   expiryDate?: number;
   openedAt?: number;
   storageCondition?: StorageCondition;
+  cooked?: boolean;
 };
 
 export type FoodAmountTracking =

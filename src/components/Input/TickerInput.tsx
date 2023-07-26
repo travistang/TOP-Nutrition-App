@@ -16,6 +16,7 @@ type Props = TickerConfig & {
   label?: string;
   unit?: string;
   className?: string;
+  buttonClassName?: string;
 };
 const onTick = (
   currentValue: number,
@@ -39,6 +40,7 @@ export default function TickerInput({
   integer,
   unit,
   className,
+  buttonClassName,
 }: Props) {
   const tick = (direction: "left" | "right") => () => {
     onChange(onTick(value, direction, { step, min, max, integer }));
@@ -54,6 +56,7 @@ export default function TickerInput({
       <Button
         type="button"
         buttonStyle={ButtonStyle.Clear}
+        className={buttonClassName}
         icon="caret-left"
         onClick={tick("left")}
       />
@@ -63,6 +66,7 @@ export default function TickerInput({
       <Button
         type="button"
         buttonStyle={ButtonStyle.Clear}
+        className={buttonClassName}
         icon="caret-right"
         onClick={tick("right")}
       />

@@ -22,7 +22,7 @@ const clip = (
   max: number | undefined
 ) => {
   const clippedMin = min === undefined ? value : Math.max(min, value);
-  return max === undefined ? value : Math.min(max, clippedMin);
+  return max === undefined ? clippedMin : Math.min(max, clippedMin);
 };
 
 const ratioIn = (min: number, value: number, max: number) => {

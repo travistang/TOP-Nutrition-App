@@ -45,6 +45,7 @@ import {
   faPlus,
   faPuzzlePiece,
   faQrcode,
+  faQuestion,
   faRefresh,
   faRobot,
   faRuler,
@@ -52,7 +53,10 @@ import {
   faSave,
   faSearch,
   faShoePrints,
+  faSnowflake,
+  faSun,
   faTag,
+  faTemperatureLow,
   faTimes,
   faTimesCircle,
   faTrash,
@@ -121,5 +125,9 @@ export const loadIcons = () =>
     faBoxesStacked,
     faEgg,
     faCubesStacked,
-    faJar
+    faJar,
+    faSnowflake,
+    faTemperatureLow,
+    faSun,
+    faQuestion
   );
