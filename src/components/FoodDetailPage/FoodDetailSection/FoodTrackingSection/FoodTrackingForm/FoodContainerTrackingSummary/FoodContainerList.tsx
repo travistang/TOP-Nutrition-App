@@ -15,6 +15,8 @@ type Props = {
   className?: string;
   tracking: FoodTrackingWithType<FoodAmountTrackingType.Container>;
 };
+
+const NUM_DISPLAY_CONTAINERS = 5;
 export default function FoodContainerList({ className, tracking }: Props) {
   const [expanded, setExpanded] = useState(false);
 
@@ -23,10 +25,20 @@ export default function FoodContainerList({ className, tracking }: Props) {
   const sortedContainers = Object.values(containersGroupedByUsage)
     .flat()
     .sort(containerPrecedence);
-
+  const displayingContainers = sortedContainers.slice(
+    0,
+    NUM_DISPLAY_CONTAINERS
+  );
   return (
     <div className={classNames("flex flex-col items-stretch gap-2", className)}>
-      {containers.length > 0 && (
+      {displayingContainers.slice(NUM_DISPLAY_CONTAINERS).map((container) => (
+        <FoodContainerItem
+          key={container.id}
+          container={container}
+          onEdit={console.log}
+        />
+      ))}
+      {sortedContainers.length > NUM_DISPLAY_CONTAINERS && (
         <Button
           buttonStyle={ButtonStyle.Clear}
           icon={expanded ? "caret-up" : "caret-down"}
@@ -35,13 +47,15 @@ export default function FoodContainerList({ className, tracking }: Props) {
         />
       )}
       {expanded &&
-        sortedContainers.map((container) => (
-          <FoodContainerItem
-            key={container.id}
-            container={container}
-            onEdit={console.log}
-          />
-        ))}
+        sortedContainers
+          .slice(NUM_DISPLAY_CONTAINERS)
+          .map((container) => (
+            <FoodContainerItem
+              key={container.id}
+              container={container}
+              onEdit={console.log}
+            />
+          ))}
     </div>
   );
 }
