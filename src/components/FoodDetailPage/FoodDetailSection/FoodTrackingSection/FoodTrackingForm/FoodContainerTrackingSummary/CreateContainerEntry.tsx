@@ -1,22 +1,40 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import {
+  Container,
+  FoodContainerTracking,
+} from "../../../../../../types/FoodAmountTracking";
 import AddContainerEntryButton from "./AddContainerEntryButton";
 import CreateEditContainerForm from "./CreateEditContainerForm";
-import { FoodContainerTracking } from "../../../../../../types/FoodAmountTracking";
 
 type Props = {
+  onAdd: (containers: Container[]) => void;
   tracking: FoodContainerTracking;
 };
 
-export default function CreateContainerEntry({ tracking }: Props) {
+export default function CreateContainerEntry({ onAdd, tracking }: Props) {
   const [addingContainer, setAddingContainer] = useState(false);
   if (!addingContainer) {
     return <AddContainerEntryButton onClick={() => setAddingContainer(true)} />;
   }
 
+  const createContainers = async (
+    container: Container,
+    numContainers: number
+  ) => {
+    const newContainers: Container[] = Array(numContainers)
+      .fill(0)
+      .map(() => ({
+        ...container,
+        id: window.crypto.randomUUID(),
+      }));
+    onAdd(newContainers);
+    setAddingContainer(false);
+  };
+
   return (
     <CreateEditContainerForm
       tracking={tracking}
-      onCreate={console.log}
+      onCreate={createContainers}
       onCancel={() => setAddingContainer(false)}
     />
   );

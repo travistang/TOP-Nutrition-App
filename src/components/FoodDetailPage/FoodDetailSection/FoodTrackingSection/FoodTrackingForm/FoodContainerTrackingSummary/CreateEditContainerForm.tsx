@@ -5,17 +5,18 @@ import {
   FoodContainerTracking,
   StorageCondition,
 } from "../../../../../../types/FoodAmountTracking";
-import TextWithUnit from "../../../../../TextWithUnit";
-import FoodContainerItemRow from "./FoodContainerItemRow";
-import TickerInput from "../../../../../Input/TickerInput";
 import Button, { ButtonStyle } from "../../../../../Input/Button";
-import StorageConditionToggle from "./StorageConditionToggle";
+import CheckboxInput from "../../../../../Input/CheckboxInput";
+import TickerInput from "../../../../../Input/TickerInput";
+import TextWithUnit from "../../../../../TextWithUnit";
 import FoodContainerExpiryDateInput from "./FoodContainerExpiryDateInput";
+import FoodContainerItemRow from "./FoodContainerItemRow";
+import StorageConditionToggle from "./StorageConditionToggle";
 
 type Props = {
   tracking: FoodContainerTracking;
   onCancel: () => void;
-  onCreate: (container: Container) => void;
+  onCreate: (container: Container, numContainers: number) => Promise<void>;
   className?: string;
 };
 export default function CreateEditContainerForm({
@@ -24,10 +25,10 @@ export default function CreateEditContainerForm({
   onCancel,
   onCreate,
 }: Props) {
+  const [numContainers, setNumContainers] = useState(1);
   const [containerPlaceholder, setContainerPlaceholder] = useState<Container>(
     defaultContainerFromTracking(tracking)
   );
-  const [numContainers, setNumContainers] = useState(1);
 
   const { id, amount, expiryDate, storageCondition, cooked } =
     containerPlaceholder;
@@ -42,7 +43,7 @@ export default function CreateEditContainerForm({
   const isEditing = !!id;
 
   const saveContainerInfo = () => {
-    onCreate(containerPlaceholder);
+    onCreate(containerPlaceholder, numContainers);
   };
 
   const setExpiryDate = (expiryDate?: number) => {
@@ -94,7 +95,26 @@ export default function CreateEditContainerForm({
           className="h-2 w-full row-start-2 col-start-2 col-span-5"
           step={5}
         />
-        <div className="col-start-6 row-span-2 row-start-4 flex items-center gap-2">
+        <FoodContainerExpiryDateInput
+          onChange={setExpiryDate}
+          expiryDate={expiryDate}
+        />
+        <StorageConditionToggle
+          className="col-start-1 col-span-3 row-start-4"
+          storageCondition={storageCondition}
+          onToggle={onStorageToggleChange}
+        />
+        <CheckboxInput
+          selected={!!cooked}
+          label="Food cooked"
+          onCheck={() =>
+            setContainerPlaceholder({
+              ...containerPlaceholder,
+              cooked: !cooked,
+            })
+          }
+        />
+        <div className="col-start-6 row-start-4 flex items-center gap-2">
           <Button
             onClick={onCancel}
             buttonStyle={ButtonStyle.Clear}
@@ -107,15 +127,6 @@ export default function CreateEditContainerForm({
             className="flex-1 h-8"
           />
         </div>
-        <StorageConditionToggle
-          className="col-start-1 col-span-3 row-start-4"
-          storageCondition={storageCondition}
-          onToggle={onStorageToggleChange}
-        />
-        <FoodContainerExpiryDateInput
-          onChange={setExpiryDate}
-          expiryDate={expiryDate}
-        />
       </div>
     </FoodContainerItemRow>
   );

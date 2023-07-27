@@ -1,40 +1,40 @@
-import React from "react";
-import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 
 type Option<T> = { value: T; label?: string; icon?: IconProp };
 type BaseProps<T extends string | number> = {
   className?: string;
   label?: string;
-  value: T;
   availableValues: Option<T>[];
 };
 type Props<T extends string | number> = BaseProps<T> &
   (
     | {
+        value: T;
         emptyValue: undefined;
         onChange: (value: T) => void;
       }
     | {
+        value?: T;
         emptyValue: Omit<Option<T>, "value">;
         onChange: (value?: T) => void;
       }
   );
 
 const getNextValue = <T extends string | number>(
-  value: T,
+  value: T | undefined,
   options: Option<T>[],
   emptyValue?: Omit<Option<T>, "value">
-): Option<T> | Omit<Option<T>, "value"> => {
+): T | undefined => {
   const nullable = !!emptyValue;
   const currentIndex = options.findIndex((opt) => opt.value === value);
-  if (currentIndex === -1) return options[0];
+  if (currentIndex === -1) return options[0].value;
   const nextIndex = currentIndex + 1;
   if (nextIndex >= options.length) {
-    return nullable ? emptyValue : options[0];
+    return nullable ? undefined : options[0].value;
   }
-  return options[nextIndex];
+  return options[nextIndex].value;
 };
 export default function RotateToggleInput<T extends string | number>({
   className,

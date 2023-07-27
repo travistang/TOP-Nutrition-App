@@ -7,16 +7,16 @@ import {
 } from "date-fns";
 import { Table } from "dexie";
 import { v4 as uuid } from "uuid";
+import { subtractAmount } from "../domain/FoodAmountTracking";
 import { Consumption } from "../types/Consumption";
 import { Duration } from "../types/Duration";
-import NutritionUtils from "../utils/Nutrition";
-import DatabaseUtils from "../utils/Database";
-import StringUtils from "../utils/String";
-import { SynchronizableDatabase } from "./BaseDatabase";
-import { Nutrition } from "../types/Nutrition";
 import { Food } from "../types/Food";
 import { FoodAmountTracking } from "../types/FoodAmountTracking";
-import { subtractAmount } from "../domain/FoodAmountTracking";
+import { Nutrition } from "../types/Nutrition";
+import DatabaseUtils from "../utils/Database";
+import NutritionUtils from "../utils/Nutrition";
+import StringUtils from "../utils/String";
+import { SynchronizableDatabase } from "./BaseDatabase";
 export type ConsumptionRecord = Consumption & {
   id: string;
 };

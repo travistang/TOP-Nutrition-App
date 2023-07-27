@@ -19,8 +19,8 @@ export default function FoodContainerList({ className, tracking }: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const { containers } = tracking;
-  const { used, ...otherContainersByUsage } = containersByUsage(containers);
-  const otherContainers = Object.values(otherContainersByUsage)
+  const containersGroupedByUsage = containersByUsage(containers);
+  const sortedContainers = Object.values(containersGroupedByUsage)
     .flat()
     .sort(containerPrecedence);
 
@@ -35,7 +35,7 @@ export default function FoodContainerList({ className, tracking }: Props) {
         />
       )}
       {expanded &&
-        otherContainers.map((container) => (
+        sortedContainers.map((container) => (
           <FoodContainerItem
             key={container.id}
             container={container}

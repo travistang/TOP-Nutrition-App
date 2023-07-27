@@ -1,7 +1,6 @@
-import React from "react";
-import { StorageCondition } from "../../../../../../types/FoodAmountTracking";
-import { StorageConditionIcon } from "../../../../../../domain/FoodAmountTracking/containers";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { StorageConditionIcon } from "../../../../../../domain/FoodAmountTracking/containers";
+import { StorageCondition } from "../../../../../../types/FoodAmountTracking";
 import RotateToggleInput from "../../../../../Input/RotateToggleInput";
 
 const STORAGE_CONDITION_OPTIONS = Object.values(StorageCondition).map(
@@ -29,8 +28,9 @@ export default function StorageConditionToggle({
   return (
     <RotateToggleInput
       className={className}
-      value={storageCondition?.toString() ?? ""}
+      value={storageCondition}
       onChange={onToggle}
+      label="Storage condition"
       availableValues={STORAGE_CONDITION_OPTIONS}
       emptyValue={EMPTY_VALUE}
     />

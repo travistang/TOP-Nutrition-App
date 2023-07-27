@@ -1,6 +1,5 @@
-import React from "react";
-import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 
 type Props = {
   className?: string;
@@ -14,7 +13,7 @@ export default function AddContainerEntryButton({ onClick, className }: Props) {
       onClick={onClick}
       className={classNames(
         "outline-none flex items-center justify-center gap-2",
-        "rounded-lg border-2 border-dotted border-gray-800",
+        "rounded-lg border-2 border-dotted border-gray-800 h-10",
         className
       )}
     >

@@ -1,16 +1,19 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import classNames from "classnames";
 import { useState } from "react";
-import { FoodContainerTracking } from "../../../../../types/FoodAmountTracking";
+import {
+  Container,
+  FoodContainerTracking,
+} from "../../../../../types/FoodAmountTracking";
 import AttributeValueInputGroup from "../../../../Input/AttributeValueInputGroup";
 import {
   AcceptableAttributes,
   InputWidget,
 } from "../../../../Input/AttributeValueInputGroup/types";
 import Tab from "../../../../Tab";
-import classNames from "classnames";
+import CreateContainerEntry from "./FoodContainerTrackingSummary/CreateContainerEntry";
 import FoodContainerCompositionBar from "./FoodContainerTrackingSummary/FoodContainerCompositionBar";
 import FoodContainerList from "./FoodContainerTrackingSummary/FoodContainerList";
-import CreateContainerEntry from "./FoodContainerTrackingSummary/CreateContainerEntry";
 
 type Props = {
   className?: string;
@@ -52,6 +55,13 @@ export default function ContainerTrackingForm({
     onChange({ ...tracking, containerCapacity: newValue as number });
   };
 
+  const onAddContainers = (newContainers: Container[]) => {
+    onChange({
+      ...tracking,
+      containers: [...tracking.containers, ...newContainers],
+    });
+  };
+
   return (
     <>
       <Tab
@@ -66,7 +76,7 @@ export default function ContainerTrackingForm({
             <FoodContainerCompositionBar tracking={tracking} />
           )}
           <FoodContainerList tracking={tracking} />
-          <CreateContainerEntry tracking={tracking} />
+          <CreateContainerEntry onAdd={onAddContainers} tracking={tracking} />
         </div>
       )}
       {page === "configs" && (
