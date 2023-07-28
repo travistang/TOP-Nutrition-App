@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { FoodDetails } from "../../../database/ConsumptionDatabase";
+import { FoodDetails } from "../../database/ConsumptionDatabase";
 
 export const foodDetailContext = createContext<FoodDetails>({
   id: "",

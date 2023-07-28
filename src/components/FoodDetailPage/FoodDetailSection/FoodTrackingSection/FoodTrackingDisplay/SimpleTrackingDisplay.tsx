@@ -2,7 +2,6 @@ import {
   FoodAmountTrackingType,
   FoodTrackingWithType,
 } from "../../../../../types/FoodAmountTracking";
-import AttributeValue from "../../../../Input/AttributeValue";
 import TextWithUnit from "../../../../TextWithUnit";
 
 type SimpleTracking =

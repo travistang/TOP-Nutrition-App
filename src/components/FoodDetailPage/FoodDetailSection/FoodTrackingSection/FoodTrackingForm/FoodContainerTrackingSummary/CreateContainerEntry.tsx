@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { defaultContainerFromTracking } from "../../../../../../domain/FoodAmountTracking/containers";
 import {
   Container,
   FoodContainerTracking,
@@ -33,7 +34,7 @@ export default function CreateContainerEntry({ onAdd, tracking }: Props) {
 
   return (
     <CreateEditContainerForm
-      tracking={tracking}
+      container={defaultContainerFromTracking(tracking)}
       onCreate={createContainers}
       onCancel={() => setAddingContainer(false)}
     />

@@ -1,40 +1,36 @@
-import React, { useContext, useEffect, useRef } from "react";
 import classNames from "classnames";
-import NutritionUtils from "../../utils/Nutrition";
-import { targetCaloriesContext } from "../MealSummary/TargetCaloriesContext";
-import ConsumptionProgressBar from "../ConsumptionProgressBar";
+import { useContext, useEffect, useState } from "react";
+import ConsumptionDatabase from "../../database/ConsumptionDatabase";
 import { Food } from "../../types/Food";
 import NumberUtils from "../../utils/Number";
+import NutritionUtils from "../../utils/Nutrition";
+import ConsumptionProgressBar from "../ConsumptionProgressBar";
+import ImageViewer from "../ImageViewer";
 import Button, { ButtonStyle } from "../Input/Button";
-import ConsumptionDatabase from "../../database/ConsumptionDatabase";
-import ConsumptionItemImage from "../ConsumptionItemImage";
+import { targetCaloriesContext } from "../MealSummary/TargetCaloriesContext";
 
 type Props = {
   mealCalories?: number;
   consumption: Food;
   onClick?: () => void;
   onRemove?: () => void;
-  withImagePreview?: boolean;
 };
 export default function ConsumptionItem({
   mealCalories = 0,
   consumption,
   onClick,
   onRemove,
-  withImagePreview,
 }: Props) {
   const targetCalories = useContext(targetCaloriesContext);
-  const imageRef = useRef<Blob | null>(null);
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
 
   useEffect(() => {
-    if (!withImagePreview) return;
-
     ConsumptionDatabase.getOrCreateFoodDetailByRecord(consumption).then(
       (foodDetail) => {
-        imageRef.current = foodDetail?.image ?? null;
+        setImageBlob(foodDetail?.image ?? null);
       }
     );
-  }, [consumption, withImagePreview]);
+  }, [consumption]);
   const itemCalories = NutritionUtils.caloriesByAmount(
     consumption.nutritionPerHundred,
     consumption.amount
@@ -58,9 +54,7 @@ export default function ConsumptionItem({
           textClassName="text-red-500"
         />
       )}
-      {withImagePreview && (
-        <ConsumptionItemImage className="h-full" consumption={consumption} />
-      )}
+      <ImageViewer className="h-full" image={imageBlob} />
       <div className="flex-1 flex flex-col items-stretch gap-1 overflow-hidden">
         <span
           className={classNames(

@@ -1,5 +1,6 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { isPast } from "date-fns";
+import consumptionDatabase from "../../database/ConsumptionDatabase";
 import {
   Container,
   FoodAmountTrackingType,
@@ -19,7 +20,7 @@ export enum ContainerUsage {
 export const UsageColorMap: Record<ContainerUsage, string> = {
   [ContainerUsage.Full]: "#1e293b",
   [ContainerUsage.Empty]: MarcoNutritionColor.carbohydrates,
-  [ContainerUsage.Used]: "#9ca3af",
+  [ContainerUsage.Used]: MarcoNutritionColor.protein,
   [ContainerUsage.Expired]: MarcoNutritionColor.fat,
 };
 
@@ -71,4 +72,28 @@ export const defaultContainerFromTracking = (
     capacity: tracking.containerCapacity,
     amount: tracking.containerCapacity,
   };
+};
+
+export const updateContainerDetails = async (
+  foodDetailId: string,
+  newContainer: Container
+) => {
+  const foodDetails = await consumptionDatabase.foodDetails.get(foodDetailId);
+  if (!foodDetails) {
+    throw new Error("No food details found when updating container details");
+  }
+
+  if (foodDetails.amountTracking?.type !== FoodAmountTrackingType.Container) {
+    throw new Error("Incorrect food container tracking type");
+  }
+
+  return consumptionDatabase.updateFoodDetails({
+    ...foodDetails,
+    amountTracking: {
+      ...foodDetails.amountTracking,
+      containers: foodDetails.amountTracking.containers.map((container) =>
+        container.id === newContainer.id ? newContainer : container
+      ),
+    },
+  });
 };

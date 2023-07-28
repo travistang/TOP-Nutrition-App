@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { defaultContainerFromTracking } from "../../../../../../domain/FoodAmountTracking/containers";
 import {
   Container,
-  FoodContainerTracking,
   StorageCondition,
 } from "../../../../../../types/FoodAmountTracking";
 import Button, { ButtonStyle } from "../../../../../Input/Button";
@@ -14,21 +12,20 @@ import FoodContainerItemRow from "./FoodContainerItemRow";
 import StorageConditionToggle from "./StorageConditionToggle";
 
 type Props = {
-  tracking: FoodContainerTracking;
+  container: Container;
   onCancel: () => void;
   onCreate: (container: Container, numContainers: number) => Promise<void>;
   className?: string;
 };
 export default function CreateEditContainerForm({
-  tracking,
   className,
+  container,
   onCancel,
   onCreate,
 }: Props) {
   const [numContainers, setNumContainers] = useState(1);
-  const [containerPlaceholder, setContainerPlaceholder] = useState<Container>(
-    defaultContainerFromTracking(tracking)
-  );
+  const [containerPlaceholder, setContainerPlaceholder] =
+    useState<Container>(container);
 
   const { id, amount, expiryDate, storageCondition, cooked } =
     containerPlaceholder;
@@ -91,7 +88,7 @@ export default function CreateEditContainerForm({
           value={amount}
           type="range"
           min={0}
-          max={tracking.containerCapacity}
+          max={container.capacity}
           className="h-2 w-full row-start-2 col-start-2 col-span-5"
           step={5}
         />

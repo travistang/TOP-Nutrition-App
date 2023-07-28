@@ -1,16 +1,15 @@
-import React from "react";
-import AttributeValue from "../../../../../Input/AttributeValue";
-import ProgressBar from "../../../../../ProgressBar";
-import {
-  Container,
-  FoodContainerTracking,
-} from "../../../../../../types/FoodAmountTracking";
+import classNames from "classnames";
 import {
   ContainerUsage,
   UsageColorMap,
   containersByUsage,
 } from "../../../../../../domain/FoodAmountTracking/containers";
+import {
+  Container,
+  FoodContainerTracking,
+} from "../../../../../../types/FoodAmountTracking";
 import Legend from "../../../../../Legend";
+import ProgressBar from "../../../../../ProgressBar";
 
 const CONTAINER_USAGE_ORDER = [
   ContainerUsage.Full,
@@ -44,7 +43,7 @@ export default function FoodContainerCompositionBar({
   const data = containersUsageToBarData(containerUsages);
 
   return (
-    <AttributeValue label="Containers" className={className}>
+    <div className={classNames("flex flex-col items-stretch gap-2", className)}>
       <ProgressBar
         data={data}
         className="w-full h-4"
@@ -55,6 +54,6 @@ export default function FoodContainerCompositionBar({
           <Legend key={usage} color={UsageColorMap[usage]} label={usage} />
         ))}
       </div>
-    </AttributeValue>
+    </div>
   );
 }

@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
-import { Consumption } from '../../../../../types/Consumption';
-import { Food } from '../../../../../types/Food';
-import { Modifier } from '../../../../../types/utils';
-import FoodNameForm from '../../../../ProgressiveForm/FoodNameForm';
-import { stepAddFoodContentFormContext } from './stepAddFoodContentFormContext';
+import { useContext } from "react";
+import { FoodDetails } from "../../../../../database/ConsumptionDatabase";
+import { Food } from "../../../../../types/Food";
+import { Modifier } from "../../../../../types/utils";
+import FoodNameForm from "../../../../ProgressiveForm/FoodNameForm";
+import { stepAddFoodContentFormContext } from "./stepAddFoodContentFormContext";
 
 export default function FoodForm() {
   const { food, setFood } = useContext(stepAddFoodContentFormContext);
-  const updateFood: Modifier<Food> = (field) => (value) => food && setFood({ ...food, [field]: value });
-  const onSelectRecord = (record: Consumption) => {
+  const updateFood: Modifier<Food> = (field) => (value) =>
+    food && setFood({ ...food, [field]: value });
+  const onSelectRecord = (record: FoodDetails) => {
     if (!food) return;
     setFood({
       ...food,
@@ -19,8 +20,8 @@ export default function FoodForm() {
 
   return (
     <FoodNameForm
-      name={food?.name ?? ''}
-      onInputChange={updateFood('name')}
+      name={food?.name ?? ""}
+      onInputChange={updateFood("name")}
       onSelectRecord={onSelectRecord}
     />
   );

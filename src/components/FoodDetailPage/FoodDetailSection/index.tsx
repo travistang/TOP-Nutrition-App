@@ -1,8 +1,7 @@
-import { useLiveQuery } from "dexie-react-hooks";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
 import ConsumptionDatabase, {
-  ConsumptionRecord,
+  FoodDetails,
 } from "../../../database/ConsumptionDatabase";
 import ImagePicker from "../../Input/ImagePicker";
 import Section from "../../Section";
@@ -10,17 +9,12 @@ import FoodCaloriesSection from "./FoodCaloriesSection";
 import FoodTrackingSection from "./FoodTrackingSection";
 
 type Props = {
-  selectedRecord: ConsumptionRecord;
+  details: FoodDetails;
 };
-export default function FoodDetailSection({ selectedRecord }: Props) {
-  const foodDetails = useLiveQuery(() => {
-    return ConsumptionDatabase.getOrCreateFoodDetailByRecord(selectedRecord);
-  }, [selectedRecord]);
-
+export default function FoodDetailSection({ details }: Props) {
   const onChooseImage = useCallback(
     (image: Blob | null) => {
-      if (!foodDetails) return;
-      const newFoodDetails = { ...foodDetails, image: image ?? undefined };
+      const newFoodDetails = { ...details, image: image ?? undefined };
       ConsumptionDatabase.updateFoodDetails(newFoodDetails)
         .then(() => {
           toast.success("Food details updated");
@@ -29,23 +23,23 @@ export default function FoodDetailSection({ selectedRecord }: Props) {
           toast.error("Failed to update food details");
         });
     },
-    [foodDetails]
+    [details]
   );
 
   return (
     <>
       <Section label="Food information" className="gap-2">
         <div className="flex justify-between items-center">
-          <h3 className="font-bold flex-1">{selectedRecord.name}</h3>
+          <h3 className="font-bold flex-1">{details.name}</h3>
           <ImagePicker
             className="w-16 h-16"
-            image={foodDetails?.image ?? null}
+            image={details?.image ?? null}
             onChange={onChooseImage}
           />
         </div>
-        <FoodCaloriesSection nutrition={selectedRecord.nutritionPerHundred} />
+        <FoodCaloriesSection nutrition={details.nutritionPerHundred} />
       </Section>
-      {foodDetails && <FoodTrackingSection foodDetails={foodDetails} />}
+      {details && <FoodTrackingSection foodDetails={details} />}
     </>
   );
 }

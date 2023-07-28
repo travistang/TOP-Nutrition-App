@@ -12,7 +12,6 @@ import {
 } from "../../../../Input/AttributeValueInputGroup/types";
 import Tab from "../../../../Tab";
 import CreateContainerEntry from "./FoodContainerTrackingSummary/CreateContainerEntry";
-import FoodContainerCompositionBar from "./FoodContainerTrackingSummary/FoodContainerCompositionBar";
 import FoodContainerList from "./FoodContainerTrackingSummary/FoodContainerList";
 
 type Props = {
@@ -62,6 +61,15 @@ export default function ContainerTrackingForm({
     });
   };
 
+  const onUpdateContainer = (newData: Container) => {
+    onChange({
+      ...tracking,
+      containers: tracking.containers.map((container) =>
+        container.id === newData.id ? newData : container
+      ),
+    });
+  };
+
   return (
     <>
       <Tab
@@ -72,10 +80,10 @@ export default function ContainerTrackingForm({
         <div
           className={classNames("flex flex-col items-stretch gap-2", className)}
         >
-          {!!tracking.containers.length && (
-            <FoodContainerCompositionBar tracking={tracking} />
-          )}
-          <FoodContainerList tracking={tracking} />
+          <FoodContainerList
+            containers={tracking.containers}
+            onUpdateContainer={onUpdateContainer}
+          />
           <CreateContainerEntry onAdd={onAddContainers} tracking={tracking} />
         </div>
       )}

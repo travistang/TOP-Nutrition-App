@@ -3,6 +3,7 @@ import {
   FoodAmountTrackingType,
 } from "../../../../../types/FoodAmountTracking";
 import Button, { ButtonStyle } from "../../../../Input/Button";
+import FoodContainerTrackingDisplay from "./FoodContainerTrackingDisplay";
 import SimpleTrackingDisplay from "./SimpleTrackingDisplay";
 
 function FoodTrackingDisplayContent({
@@ -14,6 +15,8 @@ function FoodTrackingDisplayContent({
     case FoodAmountTrackingType.Individual:
     case FoodAmountTrackingType.Simple:
       return <SimpleTrackingDisplay tracking={tracking} />;
+    case FoodAmountTrackingType.Container:
+      return <FoodContainerTrackingDisplay tracking={tracking} />;
     default:
       return null;
   }

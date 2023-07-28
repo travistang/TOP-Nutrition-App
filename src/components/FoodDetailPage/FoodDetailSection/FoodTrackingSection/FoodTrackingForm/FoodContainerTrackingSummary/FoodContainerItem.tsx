@@ -15,7 +15,7 @@ type Props = {
   className?: string;
   container: Container;
   multiple?: number;
-  onEdit: () => void;
+  onEdit?: () => void;
 };
 
 const progressBarOptions = (container: Container) => {
@@ -35,6 +35,7 @@ export default function FoodContainerItem({
   multiple,
 }: Props) {
   const { amount, capacity, expiryDate, storageCondition } = container;
+
   return (
     <FoodContainerItemRow className={className}>
       <div className="w-8">
@@ -60,12 +61,14 @@ export default function FoodContainerItem({
         <FontAwesomeIcon icon="calendar" />
         {expiryDate ? format(expiryDate, "dd/MM") : "--"}
       </span>
-      <Button
-        className="w-20"
-        buttonStyle={ButtonStyle.Clear}
-        icon="pen"
-        onClick={onEdit}
-      />
+      {onEdit && (
+        <Button
+          className="w-20"
+          buttonStyle={ButtonStyle.Clear}
+          icon="pen"
+          onClick={onEdit}
+        />
+      )}
     </FoodContainerItemRow>
   );
 }

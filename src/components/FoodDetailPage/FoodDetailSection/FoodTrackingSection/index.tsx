@@ -6,7 +6,6 @@ import consumptionDatabase, {
 import { FoodAmountTracking } from "../../../../types/FoodAmountTracking";
 import EmptyNotice from "../../../EmptyNotice";
 import Section from "../../../Section";
-import FoodDetailContextProvider from "../FoodDetailContext";
 import FoodTrackingDisplay from "./FoodTrackingDisplay";
 import FoodTrackingSetupModal from "./FoodTrackingSetupModal";
 
@@ -20,7 +19,7 @@ export default function FoodTrackingSection({ foodDetails }: Props) {
   const updateTracking = async (newTracking: FoodAmountTracking) => {
     try {
       await consumptionDatabase.updateFoodDetails({
-        id: foodDetails.id,
+        ...foodDetails,
         amountTracking: newTracking,
       });
       toast.success("Tracking settings updated");
@@ -33,26 +32,24 @@ export default function FoodTrackingSection({ foodDetails }: Props) {
 
   const showModal = () => setShowFoodTrackingSetupModal(true);
   return (
-    <FoodDetailContextProvider foodDetails={foodDetails}>
-      <Section label="Amount tracking">
-        {!foodDetails.amountTracking ? (
-          <EmptyNotice
-            onClick={showModal}
-            message="No amount tracking set for this food. Click to setup"
-          />
-        ) : (
-          <FoodTrackingDisplay
-            onEdit={showModal}
-            tracking={foodDetails.amountTracking}
-          />
-        )}
-        <FoodTrackingSetupModal
-          tracking={foodDetails.amountTracking}
-          opened={showFoodTrackingSetupModal}
-          onClose={() => setShowFoodTrackingSetupModal(false)}
-          onUpdate={updateTracking}
+    <Section label="Amount tracking">
+      {!foodDetails.amountTracking ? (
+        <EmptyNotice
+          onClick={showModal}
+          message="No amount tracking set for this food. Click to setup"
         />
-      </Section>
-    </FoodDetailContextProvider>
+      ) : (
+        <FoodTrackingDisplay
+          onEdit={showModal}
+          tracking={foodDetails.amountTracking}
+        />
+      )}
+      <FoodTrackingSetupModal
+        tracking={foodDetails.amountTracking}
+        opened={showFoodTrackingSetupModal}
+        onClose={() => setShowFoodTrackingSetupModal(false)}
+        onUpdate={updateTracking}
+      />
+    </Section>
   );
 }

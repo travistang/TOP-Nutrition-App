@@ -66,13 +66,13 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
       .sortBy("date");
   }
 
-  findRecordsWithSameFood(record: ConsumptionRecord, month?: number) {
+  findRecordsByDetails(details: FoodDetails, month?: number) {
     const sameFoodFilter = this.consumptions.filter(
       (other) =>
         NutritionUtils.isEqual(
-          record.nutritionPerHundred,
+          details.nutritionPerHundred,
           other.nutritionPerHundred
-        ) && record.name === other.name
+        ) && details.name === other.name
     );
     if (!month) {
       return sameFoodFilter.sortBy("date");
@@ -99,9 +99,8 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     return filter.first();
   }
 
-  async updateFoodDetails(foodDetails: Partial<FoodDetails> & { id: string }) {
-    const { id, ...data } = foodDetails;
-    return this.foodDetails.update(id, data);
+  async updateFoodDetails(foodDetails: FoodDetails) {
+    return this.foodDetails.put(foodDetails);
   }
 
   async getOrCreateFoodDetailByRecord(
@@ -191,6 +190,14 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
       );
       return hasSimilarResults ? uniqueResults : [...uniqueResults, result];
     }, [] as ConsumptionRecord[]);
+  }
+
+  async searchFoodDetails(searchString: string) {
+    return this.foodDetails
+      .filter((details) =>
+        StringUtils.searchCaseInsensitive(details.name, searchString)
+      )
+      .toArray();
   }
 
   async remove(id: string) {

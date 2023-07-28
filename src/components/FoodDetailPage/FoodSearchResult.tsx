@@ -1,37 +1,39 @@
 import { useEffect, useState } from "react";
 import ConsumptionDatabase, {
   ConsumptionRecord,
+  FoodDetails,
 } from "../../database/ConsumptionDatabase";
 import FoodConsumptionHistory from "./FoodConsumptionHistory";
+import FoodDetailContextProvider from "./FoodDetailContext";
 import FoodDetailSection from "./FoodDetailSection";
 import RecentConsumptionList from "./RecentConsumptionList";
 
 type Props = {
-  selectedRecord: ConsumptionRecord;
+  selectedDetails: FoodDetails;
 };
-export default function FoodSearchResult({ selectedRecord }: Props) {
+export default function FoodSearchResult({ selectedDetails }: Props) {
   const [lookupDate, setLookupDate] = useState(new Date());
   const [recentRecords, setRecentRecords] = useState<ConsumptionRecord[]>([]);
   useEffect(() => {
-    if (!selectedRecord) {
+    if (!selectedDetails) {
       setRecentRecords([]);
       return;
     }
-    ConsumptionDatabase.findRecordsWithSameFood(
-      selectedRecord,
+    ConsumptionDatabase.findRecordsByDetails(
+      selectedDetails,
       lookupDate.getTime()
     ).then((similarRecords) => setRecentRecords(similarRecords ?? []));
-  }, [selectedRecord, lookupDate]);
+  }, [selectedDetails, lookupDate]);
 
   return (
-    <>
-      <FoodDetailSection selectedRecord={selectedRecord} />
+    <FoodDetailContextProvider foodDetails={selectedDetails}>
+      <FoodDetailSection details={selectedDetails} />
       <FoodConsumptionHistory
         records={recentRecords}
         date={lookupDate}
         onChangeDate={setLookupDate}
       />
       <RecentConsumptionList records={recentRecords} />
-    </>
+    </FoodDetailContextProvider>
   );
 }
