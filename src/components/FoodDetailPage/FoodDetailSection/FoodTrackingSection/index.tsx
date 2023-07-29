@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import consumptionDatabase, {
@@ -25,6 +26,11 @@ export default function FoodTrackingSection({ foodDetails }: Props) {
       toast.success("Tracking settings updated");
       return true;
     } catch (e) {
+      Sentry.captureException(e, {
+        tags: {
+          location: "FoodTrackingSection",
+        },
+      });
       toast.error("Failed to update tracking settings");
       return false;
     }
