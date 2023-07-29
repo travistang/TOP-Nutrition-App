@@ -8,6 +8,7 @@ import {
 import { Table } from "dexie";
 import { v4 as uuid } from "uuid";
 import { subtractAmount } from "../domain/FoodAmountTracking";
+import { shouldRestock } from "../domain/FoodAmountTracking/containers";
 import { Consumption } from "../types/Consumption";
 import { Duration } from "../types/Duration";
 import { Food } from "../types/Food";
@@ -80,6 +81,15 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     return sameFoodFilter
       .filter((other) => isSameMonth(month, other.date))
       .sortBy("date");
+  }
+
+  foodsRequiringRestock() {
+    return this.foodDetails
+      .filter((detail) => {
+        if (!detail.amountTracking) return false;
+        return shouldRestock(detail.amountTracking);
+      })
+      .toArray();
   }
 
   private findSimilar(

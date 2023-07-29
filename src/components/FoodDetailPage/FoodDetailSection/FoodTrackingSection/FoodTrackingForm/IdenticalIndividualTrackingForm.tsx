@@ -17,20 +17,34 @@ type Props = {
   onChange: (newTrackingConfig: IndividualIdenticalTracking) => void;
   className?: string;
 };
-const FormConfigMapping: Record<"amount" | "amountPerContainer", InputConfig> =
-  {
-    amount: {
-      unit: "",
-      label: "Number of units",
-      integer: true,
-      widget: InputWidget.Ticker,
-    },
-    amountPerContainer: {
-      unit: "g",
-      label: "Amount in each unit",
-      widget: InputWidget.DigitPad,
-    },
-  };
+const FormConfigMapping: Record<
+  "amount" | "amountPerContainer" | "desiredAmount" | "minAmount",
+  InputConfig
+> = {
+  amount: {
+    unit: "",
+    label: "Number of units",
+    integer: true,
+    widget: InputWidget.Ticker,
+  },
+  minAmount: {
+    unit: "",
+    label: "Minimum amount of units",
+    integer: true,
+    widget: InputWidget.Ticker,
+  },
+  desiredAmount: {
+    unit: "",
+    label: "Ideal number of units",
+    integer: true,
+    widget: InputWidget.Ticker,
+  },
+  amountPerContainer: {
+    unit: "g",
+    label: "Amount in each unit",
+    widget: InputWidget.DigitPad,
+  },
+};
 export default function IdenticalIndividualTrackingForm({
   className,
   tracking,

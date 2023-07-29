@@ -27,13 +27,17 @@ export default function AttributeValueInput({
       label={label}
       onClick={onSelect}
     >
-      <TextWithUnit
-        value={value}
-        unit={unit}
-        integer={integer}
-        className={classNames("text-3xl", selected && "text-gray-100")}
-        unitClassName={classNames(selected && "text-gray-100")}
-      />
+      {value ? (
+        <TextWithUnit
+          value={value}
+          unit={unit}
+          integer={integer}
+          className={classNames("text-3xl", selected && "text-gray-100")}
+          unitClassName={classNames(selected && "text-gray-100")}
+        />
+      ) : (
+        "--"
+      )}
     </AttributeValue>
   );
 }

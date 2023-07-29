@@ -21,6 +21,12 @@ type Props = {
 };
 
 const config = {
+  minContainerInStock: {
+    label: "Desired number of containers",
+    min: 0,
+    integer: true,
+    widget: InputWidget.Ticker,
+  },
   containerCapacity: {
     unit: "g",
     label: "Capacity per container",
@@ -48,10 +54,12 @@ export default function ContainerTrackingForm({
   onChange,
 }: Props) {
   const [page, setPage] = useState<ContainerTrackingPage>("configs");
-  const { containerCapacity } = tracking;
+  const [selectedField, setSelectedField] =
+    useState<keyof typeof config>("containerCapacity");
+  const { containerCapacity, minContainerInStock } = tracking;
 
   const updateValue = (newValue: AcceptableAttributes) => {
-    onChange({ ...tracking, containerCapacity: newValue as number });
+    onChange({ ...tracking, [selectedField]: newValue as number });
   };
 
   const onAddContainers = (newContainers: Container[]) => {
@@ -100,9 +108,13 @@ export default function ContainerTrackingForm({
       {page === "configs" && (
         <AttributeValueInputGroup
           config={config}
-          selectedField="containerCapacity"
+          selectedField={selectedField}
+          onSelectField={setSelectedField}
           className={className}
-          value={{ containerCapacity }}
+          value={{
+            containerCapacity,
+            minContainerInStock: minContainerInStock ?? null,
+          }}
           onChange={updateValue}
         />
       )}

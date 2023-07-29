@@ -3,6 +3,7 @@ import { isPast } from "date-fns";
 import consumptionDatabase from "../../database/ConsumptionDatabase";
 import {
   Container,
+  FoodAmountTracking,
   FoodAmountTrackingType,
   FoodTrackingWithType,
   StorageCondition,
@@ -96,4 +97,15 @@ export const updateContainerDetails = async (
       ),
     },
   });
+};
+
+export const shouldRestock = (tracking: FoodAmountTracking) => {
+  if (tracking.type === FoodAmountTrackingType.Container) {
+    return (
+      !!tracking.minContainerInStock &&
+      tracking.minContainerInStock >= tracking.containers.length
+    );
+  }
+
+  return !!tracking.minAmount && tracking.minAmount >= tracking.amount;
 };

@@ -12,6 +12,7 @@ function FoodTrackingDisplayContent({
   tracking: FoodAmountTracking;
 }) {
   switch (tracking.type) {
+    case FoodAmountTrackingType.IdenticalIndividual:
     case FoodAmountTrackingType.Individual:
     case FoodAmountTrackingType.Simple:
       return <SimpleTrackingDisplay tracking={tracking} />;

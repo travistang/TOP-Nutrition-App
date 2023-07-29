@@ -24,19 +24,26 @@ export type Container = {
 export type FoodAmountTracking =
   | {
       type: FoodAmountTrackingType.Simple;
+      desiredAmount?: number;
+      minAmount?: number;
       amount: number;
     }
   | {
       type: FoodAmountTrackingType.Individual;
+      desiredAmount?: number;
+      minAmount?: number;
       amount: number;
     }
   | {
       type: FoodAmountTrackingType.Container;
+      minContainerInStock?: number;
       containerCapacity: number;
       containers: Container[];
     }
   | {
       type: FoodAmountTrackingType.IdenticalIndividual;
+      desiredAmount?: number;
+      minAmount?: number;
       amountPerContainer: number;
       amount: number;
     };

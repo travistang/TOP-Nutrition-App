@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FoodAmountTrackingType,
   FoodTrackingWithType,
@@ -10,6 +11,7 @@ import {
 
 type SimpleTracking =
   | FoodTrackingWithType<FoodAmountTrackingType.Simple>
+  | FoodTrackingWithType<FoodAmountTrackingType.IdenticalIndividual>
   | FoodTrackingWithType<FoodAmountTrackingType.Individual>;
 type Props = {
   className?: string;
@@ -22,10 +24,12 @@ export default function SimpleTrackingForm({
   tracking,
 }: Props) {
   const { type, ...value } = tracking;
+  const [selectedField, setSelectedField] =
+    useState<Exclude<keyof SimpleTracking, "type">>("amount");
   const updateValue = (newValue: AcceptableAttributes) => {
     onChange({
       ...tracking,
-      amount: newValue as number,
+      [selectedField]: newValue as number,
     });
   };
   const config =
@@ -36,10 +40,32 @@ export default function SimpleTrackingForm({
             label: "Total amount of food in stock",
             widget: InputWidget.DigitPad,
           },
+          minAmount: {
+            unit: "g",
+            label: "Minimum amount",
+            widget: InputWidget.DigitPad,
+          },
+          desiredAmount: {
+            unit: "g",
+            label: "Ideal amount",
+            widget: InputWidget.DigitPad,
+          },
         }
       : {
           amount: {
             label: "Number of units",
+            integer: true,
+            widget: InputWidget.Ticker,
+            min: 0,
+          },
+          minAmount: {
+            unit: "",
+            label: "Minimum number of units",
+            min: 0,
+            widget: InputWidget.Ticker,
+          },
+          desiredAmount: {
+            label: "Ideal amount",
             integer: true,
             widget: InputWidget.Ticker,
             min: 0,
@@ -50,7 +76,8 @@ export default function SimpleTrackingForm({
       config={config}
       className={className}
       value={value}
-      selectedField="amount"
+      selectedField={selectedField}
+      onSelectField={setSelectedField}
       onChange={updateValue}
     />
   );

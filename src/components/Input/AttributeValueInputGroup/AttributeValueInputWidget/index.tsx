@@ -1,5 +1,5 @@
-import { DateInputType } from "../../DateInput/types";
 import DateTimePicker from "../../DateInput/DateTimePicker";
+import { DateInputType } from "../../DateInput/types";
 import DigitInput from "../../DigitInput";
 import { InputMode } from "../../DigitInput/utils/digitLogic";
 import TickerInput from "../../TickerInput";
@@ -24,7 +24,7 @@ export default function AttributeValueInputWidget({
         className={className}
         inputMode={config.integer ? InputMode.Integer : undefined}
         unit={config.unit}
-        defaultValue={value as number}
+        defaultValue={(value as number) ?? 0}
         onChange={onChange}
       />
     );
@@ -33,7 +33,7 @@ export default function AttributeValueInputWidget({
   if (widget === InputWidget.Ticker) {
     return (
       <TickerInput
-        value={value as number}
+        value={(value as number) ?? 0}
         onChange={onChange}
         className={className}
         unit={config.unit}
