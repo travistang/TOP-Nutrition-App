@@ -10,10 +10,12 @@ import FoodContainerItem from "./FoodContainerItem";
 type Props = {
   container: Container;
   onUpdate?: (newData: Container) => void;
+  onDelete?: (id: string) => void;
 };
 export default function FoodContainerItemWithEditForm({
   container,
   onUpdate,
+  onDelete,
 }: Props) {
   const foodDetails = useContext(foodDetailContext);
   const [editing, setEditing] = useState(false);
@@ -38,6 +40,7 @@ export default function FoodContainerItemWithEditForm({
     <CreateEditContainerForm
       onCancel={() => setEditing(false)}
       onCreate={onUpdateContainerInfo}
+      onDelete={onDelete ? () => onDelete?.(container.id) : undefined}
       container={container}
     />
   );

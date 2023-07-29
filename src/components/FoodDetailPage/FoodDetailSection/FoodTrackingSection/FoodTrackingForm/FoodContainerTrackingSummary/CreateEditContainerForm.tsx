@@ -14,6 +14,7 @@ import StorageConditionToggle from "./StorageConditionToggle";
 type Props = {
   container: Container;
   onCancel: () => void;
+  onDelete?: () => void;
   onCreate: (container: Container, numContainers: number) => Promise<void>;
   className?: string;
 };
@@ -21,6 +22,7 @@ export default function CreateEditContainerForm({
   className,
   container,
   onCancel,
+  onDelete,
   onCreate,
 }: Props) {
   const [numContainers, setNumContainers] = useState(1);
@@ -65,7 +67,7 @@ export default function CreateEditContainerForm({
             min={1}
             value={numContainers}
             onChange={setNumContainers}
-            className="row-span-2 col-start-1 w-22"
+            className="row-start-1 row-span-2 col-start-1 w-22"
             buttonClassName="w-6"
             formatter={({ value }) => (
               <span className="font-bold text-xs flex items-center overflow-hidden whitespace-nowrap">
@@ -92,18 +94,10 @@ export default function CreateEditContainerForm({
           className="h-2 w-full row-start-2 col-start-2 col-span-5"
           step={5}
         />
-        <FoodContainerExpiryDateInput
-          onChange={setExpiryDate}
-          expiryDate={expiryDate}
-        />
-        <StorageConditionToggle
-          className="col-start-1 col-span-3 row-start-4"
-          storageCondition={storageCondition}
-          onToggle={onStorageToggleChange}
-        />
         <CheckboxInput
           selected={!!cooked}
-          label="Food cooked"
+          label="Cooked"
+          className="row-start-3 col-start-1 col-span-3"
           onCheck={() =>
             setContainerPlaceholder({
               ...containerPlaceholder,
@@ -111,7 +105,26 @@ export default function CreateEditContainerForm({
             })
           }
         />
+        <FoodContainerExpiryDateInput
+          className="row-start-3 col-start-4 col-span-3"
+          onChange={setExpiryDate}
+          expiryDate={expiryDate}
+        />
+        <StorageConditionToggle
+          className="col-start-1 col-span-4 row-start-4"
+          storageCondition={storageCondition}
+          onToggle={onStorageToggleChange}
+        />
         <div className="col-start-6 row-start-4 flex items-center gap-2">
+          {onDelete && (
+            <Button
+              onClick={onDelete}
+              buttonStyle={ButtonStyle.Clear}
+              icon="trash"
+              textClassName="text-red child:fill-red-500"
+              className="flex-1 h-8"
+            />
+          )}
           <Button
             onClick={onCancel}
             buttonStyle={ButtonStyle.Clear}

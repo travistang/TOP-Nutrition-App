@@ -13,6 +13,7 @@ type Props = {
   className?: string;
   containers: Container[];
   onUpdateContainer?: (newData: Container) => void;
+  onRemoveContainer?: (id: string) => void;
 };
 
 const NUM_DISPLAY_CONTAINERS = 5;
@@ -20,6 +21,7 @@ export default function FoodContainerList({
   className,
   containers,
   onUpdateContainer,
+  onRemoveContainer,
 }: Props) {
   const [expanded, setExpanded] = useState(false);
 
@@ -32,18 +34,14 @@ export default function FoodContainerList({
     NUM_DISPLAY_CONTAINERS
   );
   return (
-    <div
-      className={classNames(
-        "flex flex-col items-stretch gap-2 max-h-48 overflow-y-auto",
-        className
-      )}
-    >
+    <div className={classNames("flex flex-col items-stretch gap-2", className)}>
       {!displayingContainers.length && (
         <EmptyNotice message="No containers registered" />
       )}
       {displayingContainers.map((container) => (
         <FoodContainerItemWithEditForm
           onUpdate={onUpdateContainer}
+          onDelete={onRemoveContainer}
           container={container}
           key={container.id}
         />
@@ -54,6 +52,7 @@ export default function FoodContainerList({
           .map((container) => (
             <FoodContainerItemWithEditForm
               onUpdate={onUpdateContainer}
+              onDelete={onRemoveContainer}
               container={container}
               key={container.id}
             />

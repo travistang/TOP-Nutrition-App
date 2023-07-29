@@ -70,6 +70,15 @@ export default function ContainerTrackingForm({
     });
   };
 
+  const onRemoveContainer = (id: string) => {
+    onChange({
+      ...tracking,
+      containers: tracking.containers.filter(
+        (container) => container.id !== id
+      ),
+    });
+  };
+
   return (
     <>
       <Tab
@@ -83,6 +92,7 @@ export default function ContainerTrackingForm({
           <FoodContainerList
             containers={tracking.containers}
             onUpdateContainer={onUpdateContainer}
+            onRemoveContainer={onRemoveContainer}
           />
           <CreateContainerEntry onAdd={onAddContainers} tracking={tracking} />
         </div>

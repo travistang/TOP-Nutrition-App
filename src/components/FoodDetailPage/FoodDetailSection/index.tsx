@@ -39,7 +39,7 @@ export default function FoodDetailSection({ details }: Props) {
         </div>
         <FoodCaloriesSection nutrition={details.nutritionPerHundred} />
       </Section>
-      {details && <FoodTrackingSection foodDetails={details} />}
+      <FoodTrackingSection foodDetails={details} />
     </>
   );
 }
