@@ -63,7 +63,7 @@ export default function FoodContainerList({
           icon={expanded ? "caret-up" : "caret-down"}
           text={expanded ? "Hide container details" : "Show all containers"}
           onClick={() => setExpanded(!expanded)}
-          className="sticky bottom-0 bg-gray-200"
+          className="bg-gray-300"
         />
       )}
     </div>
