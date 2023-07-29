@@ -6,7 +6,8 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { splitMealModalAtom } from "../../atoms/SplitMealModalAtom";
 
 import Button, { ButtonStyle } from "../Input/Button";
-import DateInput, { DateInputType } from "../Input/DateInput";
+import DateInput from "../Input/DateInput";
+import { DateInputType } from "../Input/DateInput/types";
 import TabSelectInput from "../Input/TabSelectInput";
 
 import MealSplitView from "./MealSplitView";

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
-import { DateInputType } from "../Input/DateInput";
+import { DateInputType } from "../Input/DateInput/types";
 import DateTimePicker from "../Input/DateInput/DateTimePicker";
 import TabSelectInput, { Option } from "../Input/TabSelectInput";
 

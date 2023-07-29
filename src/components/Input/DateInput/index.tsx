@@ -1,15 +1,11 @@
 import classNames from "classnames";
-import { format, getHours, getMinutes } from "date-fns";
-import { setHours, setMinutes } from "date-fns/esm";
-import React, { useState } from "react";
+import { format, getHours, getMinutes, setHours, setMinutes } from "date-fns";
+import { useState } from "react";
+
 import InputBase from "../InputBase";
 import { TextInputProps } from "../TextInput";
 import DateTimePicker from "./DateTimePicker";
-
-export enum DateInputType {
-  DateTime,
-  Month,
-}
+import { DateInputType } from "./types";
 
 type Props = Omit<
   TextInputProps,
@@ -23,6 +19,7 @@ type Props = Omit<
 const DateInputTypeFormatMapping: Record<DateInputType, string> = {
   [DateInputType.DateTime]: "dd/MM/yyyy HH:mm",
   [DateInputType.Month]: "yyyy-MM",
+  [DateInputType.Date]: "dd/MM/yyyy",
 };
 
 export default function DateInput({

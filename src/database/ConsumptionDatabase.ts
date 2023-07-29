@@ -7,14 +7,17 @@ import {
 } from "date-fns";
 import { Table } from "dexie";
 import { v4 as uuid } from "uuid";
+import { subtractAmount } from "../domain/FoodAmountTracking";
+import { shouldRestock } from "../domain/FoodAmountTracking/containers";
 import { Consumption } from "../types/Consumption";
 import { Duration } from "../types/Duration";
-import NutritionUtils from "../utils/Nutrition";
+import { Food } from "../types/Food";
+import { FoodAmountTracking } from "../types/FoodAmountTracking";
+import { Nutrition } from "../types/Nutrition";
 import DatabaseUtils from "../utils/Database";
+import NutritionUtils from "../utils/Nutrition";
 import StringUtils from "../utils/String";
 import { SynchronizableDatabase } from "./BaseDatabase";
-import { Nutrition } from "../types/Nutrition";
-import { Food } from "../types/Food";
 export type ConsumptionRecord = Consumption & {
   id: string;
 };
@@ -24,6 +27,7 @@ export type FoodDetails = {
   nutritionPerHundred: Nutrition;
   name: string;
   image?: Blob;
+  amountTracking?: FoodAmountTracking;
 };
 
 class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
@@ -63,13 +67,13 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
       .sortBy("date");
   }
 
-  findRecordsWithSameFood(record: ConsumptionRecord, month?: number) {
+  findRecordsByDetails(details: FoodDetails, month?: number) {
     const sameFoodFilter = this.consumptions.filter(
       (other) =>
         NutritionUtils.isEqual(
-          record.nutritionPerHundred,
+          details.nutritionPerHundred,
           other.nutritionPerHundred
-        ) && record.name === other.name
+        ) && details.name === other.name
     );
     if (!month) {
       return sameFoodFilter.sortBy("date");
@@ -77,6 +81,15 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     return sameFoodFilter
       .filter((other) => isSameMonth(month, other.date))
       .sortBy("date");
+  }
+
+  foodsRequiringRestock() {
+    return this.foodDetails
+      .filter((detail) => {
+        if (!detail.amountTracking) return false;
+        return shouldRestock(detail.amountTracking);
+      })
+      .toArray();
   }
 
   private findSimilar(
@@ -97,7 +110,7 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
   }
 
   async updateFoodDetails(foodDetails: FoodDetails) {
-    return this.foodDetails.update(foodDetails.id, foodDetails);
+    return this.foodDetails.put(foodDetails);
   }
 
   async getOrCreateFoodDetailByRecord(
@@ -148,6 +161,18 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     }
     const newRecord: ConsumptionRecord = { ...consumption, id: uuid() };
     await this.registerChange("created", newRecord);
+    const foodDetails = await this.getOrCreateFoodDetailByRecord(consumption);
+    if (foodDetails?.amountTracking) {
+      const newTrackingData = subtractAmount(
+        foodDetails.amountTracking,
+        consumption.amount,
+        consumption.date
+      );
+      await this.updateFoodDetails({
+        ...foodDetails,
+        amountTracking: newTrackingData,
+      });
+    }
     return this.consumptions.add(newRecord);
   }
 
@@ -175,6 +200,14 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
       );
       return hasSimilarResults ? uniqueResults : [...uniqueResults, result];
     }, [] as ConsumptionRecord[]);
+  }
+
+  async searchFoodDetails(searchString: string) {
+    return this.foodDetails
+      .filter((details) =>
+        StringUtils.searchCaseInsensitive(details.name, searchString)
+      )
+      .toArray();
   }
 
   async remove(id: string) {

@@ -1,20 +1,20 @@
-import React, { useCallback, useState } from "react";
-import AutoCompleteInput from "../Input/AutoCompleteInput";
+import { useCallback, useState } from "react";
 import ConsumptionDatabase, {
-  ConsumptionRecord,
+  FoodDetails,
 } from "../../database/ConsumptionDatabase";
+import AutoCompleteInput from "../Input/AutoCompleteInput";
 import ConsumptionAutocompleteResult from "../Input/ConsumptionAutocompleteResult";
 
 type Props = {
   onClear: () => void;
-  onRecordSelected: (record: ConsumptionRecord) => void;
+  onRecordSelected: (record: FoodDetails) => void;
 };
 export default function FoodSearchPanel({ onClear, onRecordSelected }: Props) {
   const [searchString, setSearchString] = useState("");
   const selectRecordWithSetString = useCallback(
-    (record: ConsumptionRecord) => {
-      setSearchString(record.name);
-      onRecordSelected(record);
+    (details: FoodDetails) => {
+      setSearchString(details.name);
+      onRecordSelected(details);
     },
     [onRecordSelected]
   );
@@ -37,9 +37,11 @@ export default function FoodSearchPanel({ onClear, onRecordSelected }: Props) {
         icon="search"
         value={searchString}
         onChange={onChange}
-        onSearch={ConsumptionDatabase.search.bind(ConsumptionDatabase)}
+        onSearch={ConsumptionDatabase.searchFoodDetails.bind(
+          ConsumptionDatabase
+        )}
         onSelectSearchResult={selectRecordWithSetString}
-        renderResult={(record) => (
+        renderResult={(record: FoodDetails) => (
           <ConsumptionAutocompleteResult record={record} key={record.id} />
         )}
       />

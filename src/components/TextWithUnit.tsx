@@ -1,8 +1,7 @@
 import classNames from "classnames";
-import React from "react";
 
 type Props = {
-  size?: "lg" | "sm";
+  size?: "xl" | "lg" | "sm";
   className?: string;
   unitClassName?: string;
   integer?: boolean;
@@ -22,7 +21,11 @@ export default function TextWithUnit({
     <div
       className={classNames(
         "flex gap-1",
-        { "text-lg font-bold": size === "lg", "text-xs": size === "sm" },
+        {
+          "text-6xl font-bold": size === "xl",
+          "text-lg font-bold": size === "lg",
+          "text-xs": size === "sm",
+        },
         className
       )}
     >

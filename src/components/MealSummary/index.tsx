@@ -1,4 +1,3 @@
-import React from "react";
 import { useSetRecoilState } from "recoil";
 import {
   createEditRecordAtom,
@@ -6,8 +5,8 @@ import {
 } from "../../atoms/CreateEditRecordAtom";
 import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
 import { Consumption } from "../../types/Consumption";
-import ConsumptionItem from "../ConsumptionItem";
 import MealUtils from "../../utils/Meal";
+import ConsumptionItem from "../ConsumptionItem";
 
 import MealSummaryHeader from "./MealSummaryHeader";
 
@@ -43,7 +42,6 @@ export default function MealSummary({
       />
       {meal.map((consumption) => (
         <ConsumptionItem
-          withImagePreview
           key={consumption.id}
           mealCalories={mealCalories}
           consumption={consumption}

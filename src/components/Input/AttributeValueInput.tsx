@@ -1,16 +1,15 @@
-import React from "react";
 import classNames from "classnames";
 import TextWithUnit from "../TextWithUnit";
 import AttributeValue from "./AttributeValue";
 
 type Props = {
   className?: string;
-  unit: string;
+  unit?: string;
   label: string;
   value: number;
   integer?: boolean;
   selected?: boolean;
-  onSelect: () => void;
+  onSelect?: () => void;
 };
 export default function AttributeValueInput({
   className,
@@ -28,13 +27,17 @@ export default function AttributeValueInput({
       label={label}
       onClick={onSelect}
     >
-      <TextWithUnit
-        value={value}
-        unit={unit}
-        integer={integer}
-        className={classNames("text-3xl", selected && "text-gray-100")}
-        unitClassName={classNames(selected && "text-gray-100")}
-      />
+      {value ? (
+        <TextWithUnit
+          value={value}
+          unit={unit}
+          integer={integer}
+          className={classNames("text-3xl", selected && "text-gray-100")}
+          unitClassName={classNames(selected && "text-gray-100")}
+        />
+      ) : (
+        "--"
+      )}
     </AttributeValue>
   );
 }

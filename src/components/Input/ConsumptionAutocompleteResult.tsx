@@ -1,35 +1,15 @@
-import React, { useEffect, useRef } from "react";
-import consumptionDatabase, {
-  ConsumptionRecord,
-} from "../../database/ConsumptionDatabase";
+import { FoodDetails } from "../../database/ConsumptionDatabase";
 import { MarcoNutrition, MarcoNutritionColor } from "../../types/Nutrition";
 import Chip from "../Chip";
-import ConsumptionItemImage from "../ConsumptionItemImage";
+import ImageViewer from "../ImageViewer";
 
 type Props = {
-  record: ConsumptionRecord;
-  withImagePreview?: boolean;
+  record: FoodDetails;
 };
-export default function ConsumptionAutocompleteResult({
-  record,
-  withImagePreview,
-}: Props) {
-  const ref = useRef<Blob | null>(null);
-  useEffect(() => {
-    if (withImagePreview) {
-      consumptionDatabase
-        .getOrCreateFoodDetailByRecord(record)
-        .then((details) => {
-          if (details?.image) {
-            ref.current = details.image;
-          }
-        });
-    }
-  }, [withImagePreview, record]);
-
+export default function ConsumptionAutocompleteResult({ record }: Props) {
   return (
     <div className="flex gap-2 self-center">
-      <ConsumptionItemImage className="h-10" consumption={record} />
+      <ImageViewer className="h-10" image={record.image ?? null} />
       <div className="flex flex-col self-center flex-1">
         <div className="flex w-full items-center justify-between">
           <div className="font-bold text-gray200 text-sm">{record.name}</div>

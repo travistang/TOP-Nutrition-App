@@ -2,7 +2,8 @@ import { useLiveQuery } from "dexie-react-hooks";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { createMeasurementRecordAtom } from "../atoms/CreateMeasurementAtom";
-import DateInput, { DateInputType } from "../components/Input/DateInput";
+import DateInput from "../components/Input/DateInput";
+import { DateInputType } from "../components/Input/DateInput/types";
 import MeasurementRecordItem from "../components/MeasurementRecord";
 import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
 import MeasurementDatabase, {

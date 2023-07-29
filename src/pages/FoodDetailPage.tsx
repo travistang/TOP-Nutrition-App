@@ -1,23 +1,31 @@
-import React, { useCallback, useState } from "react";
-import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useState } from "react";
 import FoodSearchPanel from "../components/FoodDetailPage/FoodSearchPanel";
-import { ConsumptionRecord } from "../database/ConsumptionDatabase";
 import FoodSearchResult from "../components/FoodDetailPage/FoodSearchResult";
+import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
+import consumptionDatabase, {
+  FoodDetails,
+} from "../database/ConsumptionDatabase";
 
 export default function FoodDetailPage() {
-  const [selectedRecord, setSelectedRecord] =
-    useState<ConsumptionRecord | null>(null);
+  const [selectedFoodDetails, setSelectedFoodDetails] =
+    useState<FoodDetails | null>(null);
 
-  const clearRecord = useCallback(() => setSelectedRecord(null), []);
+  const realtimeFoodDetails = useLiveQuery(() => {
+    if (!selectedFoodDetails) return undefined;
+    return consumptionDatabase.foodDetails.get(selectedFoodDetails.id);
+  }, [selectedFoodDetails]);
 
   return (
     <div className="flex flex-col overflow-y-auto overflow-x-hidden flex-1 items-stretch gap-2 pb-48 scroll-pb-12">
       <StatisticsNavigateTab />
       <FoodSearchPanel
-        onRecordSelected={setSelectedRecord}
-        onClear={clearRecord}
+        onRecordSelected={setSelectedFoodDetails}
+        onClear={() => setSelectedFoodDetails(null)}
       />
-      {selectedRecord && <FoodSearchResult selectedRecord={selectedRecord} />}
+      {realtimeFoodDetails && (
+        <FoodSearchResult selectedDetails={realtimeFoodDetails} />
+      )}
     </div>
   );
 }

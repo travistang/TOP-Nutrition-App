@@ -1,15 +1,20 @@
-import React, { useEffect, useRef } from 'react';
-import ConsumptionDatabase, { ConsumptionRecord } from '../../../database/ConsumptionDatabase';
-import AutoCompleteInput from '../../Input/AutoCompleteInput';
-import ConsumptionAutocompleteResult from '../../Input/ConsumptionAutocompleteResult';
-
+import { useEffect, useRef } from "react";
+import ConsumptionDatabase, {
+  FoodDetails,
+} from "../../../database/ConsumptionDatabase";
+import AutoCompleteInput from "../../Input/AutoCompleteInput";
+import ConsumptionAutocompleteResult from "../../Input/ConsumptionAutocompleteResult";
 
 type Props = {
   onInputChange: (name: string) => void;
-  onSelectRecord: (record: ConsumptionRecord) => void;
+  onSelectRecord: (record: FoodDetails) => void;
   name: string;
-}
-export default function FoodNameForm({ name, onInputChange, onSelectRecord}: Props) {
+};
+export default function FoodNameForm({
+  name,
+  onInputChange,
+  onSelectRecord,
+}: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => inputRef?.current?.focus(), []);
 
@@ -20,7 +25,7 @@ export default function FoodNameForm({ name, onInputChange, onSelectRecord}: Pro
       label="Name"
       value={name}
       onChange={onInputChange}
-      onSearch={ConsumptionDatabase.search.bind(ConsumptionDatabase)}
+      onSearch={ConsumptionDatabase.searchFoodDetails.bind(ConsumptionDatabase)}
       onSelectSearchResult={onSelectRecord}
       renderResult={(record) => (
         <ConsumptionAutocompleteResult record={record} key={record.id} />

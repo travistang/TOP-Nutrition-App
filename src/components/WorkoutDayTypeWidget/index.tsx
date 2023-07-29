@@ -1,10 +1,12 @@
-import React, { useState } from "react";
 import { isSameMonth, startOfMonth } from "date-fns";
-import Calendar from "../Calendar";
-import Section from "../Section";
+import { useState } from "react";
 import { ExerciseDayTypeColorMap } from "../../types/Exercise";
+import Calendar from "../Calendar";
+import DateInput from "../Input/DateInput";
+import { DateInputType } from "../Input/DateInput/types";
+import Legend from "../Legend";
+import Section from "../Section";
 import WorkoutOfDayList from "../WorkoutOfDayList";
-import DateInput, { DateInputType } from "../Input/DateInput";
 import useWorkoutCalendarData from "./useWorkoutCalendarData";
 
 export default function WorkoutDayTypeWidget() {
@@ -41,13 +43,7 @@ export default function WorkoutDayTypeWidget() {
       />
       <div className="flex flex-wrap gap-2 justify-around py-2">
         {Object.entries(ExerciseDayTypeColorMap).map(([dayType, color]) => (
-          <div className="flex flex-nowrap gap-2" key={dayType}>
-            <div
-              className="rounded-full w-4 h-4"
-              style={{ backgroundColor: color }}
-            />
-            <span className="text-xs capitalize">{dayType}</span>
-          </div>
+          <Legend label={dayType} color={color} key={dayType} />
         ))}
       </div>
       <div className="py-2 max-h-24 overflow-y-auto">
