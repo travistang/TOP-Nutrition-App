@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FoodAmountTracking,
   FoodAmountTrackingType,
@@ -42,6 +42,10 @@ export default function useFoodTrackingPlaceholder(
   const [placeholder, setPlaceholder] = useState<FoodAmountTracking | null>(
     initialFoodTracking
   );
+
+  useEffect(() => {
+    setPlaceholder(initialFoodTracking);
+  }, [initialFoodTracking]);
 
   const changeType = (type: FoodAmountTrackingType | null) => {
     if (type === null) {
