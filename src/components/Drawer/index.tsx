@@ -1,6 +1,7 @@
+import classNames from "classnames";
 import React from "react";
-import DrawerContextProvider from "./DrawerContext";
 import DrawerContainer from "./DrawerContainer";
+import DrawerContextProvider from "./DrawerContext";
 
 type Props = {
   className?: string;
@@ -9,7 +10,9 @@ type Props = {
 export default function Drawer({ className, children }: Props) {
   return (
     <DrawerContextProvider>
-      <DrawerContainer className={className}>{children}</DrawerContainer>
+      <DrawerContainer className={classNames("overflow-x-hidden", className)}>
+        {children}
+      </DrawerContainer>
     </DrawerContextProvider>
   );
 }
