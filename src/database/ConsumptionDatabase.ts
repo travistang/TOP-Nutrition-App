@@ -109,8 +109,11 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
     return filter.first();
   }
 
-  async updateFoodDetails(foodDetails: FoodDetails) {
-    return this.foodDetails.put(foodDetails);
+  async updateFoodDetails(
+    id: string,
+    foodDetails: Partial<Omit<FoodDetails, "id">>
+  ) {
+    return this.foodDetails.update(id, foodDetails);
   }
 
   async getOrCreateFoodDetailByRecord(
@@ -168,8 +171,7 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
         consumption.amount,
         consumption.date
       );
-      await this.updateFoodDetails({
-        ...foodDetails,
+      await this.updateFoodDetails(foodDetails.id, {
         amountTracking: newTrackingData,
       });
     }

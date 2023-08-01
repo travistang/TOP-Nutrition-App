@@ -19,8 +19,7 @@ export default function FoodTrackingSection({ foodDetails }: Props) {
     useState(false);
   const updateTracking = async (newTracking: FoodAmountTracking) => {
     try {
-      await consumptionDatabase.updateFoodDetails({
-        ...foodDetails,
+      await consumptionDatabase.updateFoodDetails(foodDetails.id, {
         amountTracking: newTracking,
       });
       toast.success("Tracking settings updated");

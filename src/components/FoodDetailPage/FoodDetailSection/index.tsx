@@ -14,8 +14,9 @@ type Props = {
 export default function FoodDetailSection({ details }: Props) {
   const onChooseImage = useCallback(
     (image: Blob | null) => {
-      const newFoodDetails = { ...details, image: image ?? undefined };
-      ConsumptionDatabase.updateFoodDetails(newFoodDetails)
+      ConsumptionDatabase.updateFoodDetails(details.id, {
+        image: image ?? undefined,
+      })
         .then(() => {
           toast.success("Food details updated");
         })

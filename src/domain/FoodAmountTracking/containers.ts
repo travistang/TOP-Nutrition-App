@@ -88,8 +88,7 @@ export const updateContainerDetails = async (
     throw new Error("Incorrect food container tracking type");
   }
 
-  return consumptionDatabase.updateFoodDetails({
-    ...foodDetails,
+  return consumptionDatabase.updateFoodDetails(foodDetails.id, {
     amountTracking: {
       ...foodDetails.amountTracking,
       containers: foodDetails.amountTracking.containers.map((container) =>
