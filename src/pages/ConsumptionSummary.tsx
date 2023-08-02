@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
+import { useEffect, useState } from "react";
 
-import ConsumptionDatabase from "../database/ConsumptionDatabase";
-import SummaryWidgets from "../components/SummaryWidgets";
-import NutritionUtils from "../utils/Nutrition";
-import MealUtils from "../utils/Meal";
-import DateUtils from "../utils/Date";
-import MealSummary from "../components/MealSummary";
-import ShortSummary from "../components/SummaryWidgets/ShortSummary";
-import TargetCaloriesContextProvider from "../components/MealSummary/TargetCaloriesContext";
-import EmptyNotice from "../components/EmptyNotice";
 import { withErrorBoundary } from "@sentry/react";
+import EmptyNotice from "../components/EmptyNotice";
+import MealSummary from "../components/MealSummary";
+import TargetCaloriesContextProvider from "../components/MealSummary/TargetCaloriesContext";
+import SummaryWidgets from "../components/SummaryWidgets";
+import ShortSummary from "../components/SummaryWidgets/ShortSummary";
+import ConsumptionDatabase from "../database/ConsumptionDatabase";
+import DateUtils from "../utils/Date";
+import MealUtils from "../utils/Meal";
+import NutritionUtils from "../utils/Nutrition";
 
 type Props = {
   embedded?: boolean;
@@ -49,7 +49,7 @@ function ConsumptionSummary({ embedded, date }: Props) {
 
   return (
     <TargetCaloriesContextProvider date={consumptionDate}>
-      <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
+      <div className="flex flex-col flex-1 gap-2 items-stretch">
         {embedded ? (
           <ShortSummary nutritionRecords={nutritionRecords} />
         ) : (

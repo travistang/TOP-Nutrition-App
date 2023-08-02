@@ -1,13 +1,12 @@
-import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChartData } from "chart.js";
+import { useSetRecoilState } from "recoil";
+import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import {
   MarcoNutrition,
   MarcoNutritionColor,
   NutritionCalories,
 } from "../../types/Nutrition";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSetRecoilState } from "recoil";
-import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import DoughnutWidget from "./DoughnutWidget";
 
 type Props = {
@@ -49,8 +48,9 @@ export default function CalorieWidget({
   return (
     <DoughnutWidget
       label="Marco distribution"
-      className="relative overflow-hidden col-span-2 row-span-2"
-      data={doughnutChartData}>
+      className="relative overflow-hidden col-span-2 row-span-2 col-start-1"
+      data={doughnutChartData}
+    >
       <FontAwesomeIcon
         onClick={() =>
           setDailyNutritionGoalAtom((atomValue) => ({

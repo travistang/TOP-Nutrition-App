@@ -1,17 +1,25 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React from "react";
 
 type Props = {
   className?: string;
+  iconClassName?: string;
   icon: IconProp;
   children: string;
 };
-export default function SmallNotice({ className, icon, children }: Props) {
+export default function SmallNotice({
+  iconClassName,
+  className,
+  icon,
+  children,
+}: Props) {
   return (
     <div className={classNames("flex items-center text-xs", className)}>
-      <FontAwesomeIcon icon={icon} className="mr-2" />
+      <FontAwesomeIcon
+        icon={icon}
+        className={classNames("mr-2", iconClassName)}
+      />
       {children}
     </div>
   );
