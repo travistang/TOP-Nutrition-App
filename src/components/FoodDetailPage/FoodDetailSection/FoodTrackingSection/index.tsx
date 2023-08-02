@@ -17,11 +17,11 @@ type Props = {
 export default function FoodTrackingSection({ foodDetails }: Props) {
   const [showFoodTrackingSetupModal, setShowFoodTrackingSetupModal] =
     useState(false);
-  const updateTracking = async (newTracking: FoodAmountTracking) => {
+  const updateTracking = async (newTracking: FoodAmountTracking | null) => {
     try {
       await consumptionDatabase.updateFoodDetails({
         ...foodDetails,
-        amountTracking: newTracking,
+        amountTracking: newTracking ?? undefined,
       });
       toast.success("Tracking settings updated");
       return true;

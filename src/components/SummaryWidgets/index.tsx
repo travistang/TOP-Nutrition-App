@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useRecoilState } from "recoil";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import { useMaintenanceCalories } from "../../domain/MaintenanceCalories";
@@ -14,9 +14,9 @@ import CalorieWidget from "./CalorieWidget";
 
 import GaugeWidgetSection from "./GaugeWidgetSection";
 
-import RollingDeficitWidget from "./RollingDeficitWidget";
-import TodayDeficitWidget from "./TodayDeficitWidget";
 import { targetCaloriesContext } from "../MealSummary/TargetCaloriesContext";
+import FoodStockSummaryWidget from "./FoodStockSummaryWidget";
+import RollingDeficitWidget from "./RollingDeficitWidget";
 
 type Props = {
   nutritionRecords: Nutrition[];
@@ -71,9 +71,7 @@ const getMarcoWidgetConfig = (
 export default function SummaryWidgets({ nutritionRecords }: Props) {
   const targetCalories = useContext(targetCaloriesContext);
   const maintenanceCalories = useMaintenanceCalories();
-  const [{ targetNutritionIntake }] = useRecoilState(
-    dailyNutritionGoalAtom
-    );
+  const [{ targetNutritionIntake }] = useRecoilState(dailyNutritionGoalAtom);
 
   const totalNutrition = NutritionUtils.total(...nutritionRecords);
   const caloriesByNutrition =
@@ -86,17 +84,15 @@ export default function SummaryWidgets({ nutritionRecords }: Props) {
 
   return (
     <div className="grid grid-cols-6 grid-rows-[repeat(3,minmax(24px, 1fr))] gap-2">
-      <TodayDeficitWidget
-        maintenanceCalories={maintenanceCalories}
-        caloriesConsumed={totalNutrition.calories}
-      />
       <RollingDeficitWidget maintenanceCalories={maintenanceCalories} />
+      <FoodStockSummaryWidget className="col-span-3" />
       <CalorieWidget
         caloriesByNutrition={caloriesByNutrition}
-        remainingCalories={targetCalories ? Math.max(
-          0,
-          targetCalories - totalNutrition.calories
-        ): 0}
+        remainingCalories={
+          targetCalories
+            ? Math.max(0, targetCalories - totalNutrition.calories)
+            : 0
+        }
       />
       {marcoWidgetConfigs.map((config) => (
         <GaugeWidgetSection

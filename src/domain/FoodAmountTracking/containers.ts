@@ -41,7 +41,7 @@ export const isContainerEmpty = (container: Container) => {
 
 export const isContainerExpired = (container: Container) => {
   if (!container.expiryDate) return false;
-  return isPast(container.expiryDate);
+  return container.amount > 0 && isPast(container.expiryDate);
 };
 
 export const computeContainerUsage = (container: Container): ContainerUsage => {
@@ -108,4 +108,9 @@ export const shouldRestock = (tracking: FoodAmountTracking) => {
   }
 
   return !!tracking.minAmount && tracking.minAmount >= tracking.amount;
+};
+
+export const hasExpiredContainers = (tracking: FoodAmountTracking) => {
+  if (tracking.type !== FoodAmountTrackingType.Container) return false;
+  return tracking.containers.some(isContainerExpired);
 };

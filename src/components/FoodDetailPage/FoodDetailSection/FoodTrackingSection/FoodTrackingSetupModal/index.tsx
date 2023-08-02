@@ -1,13 +1,12 @@
-import React from "react";
-import Modal from "../../../../Modal";
 import { FoodAmountTracking } from "../../../../../types/FoodAmountTracking";
-import useFoodTrackingPlaceholder from "../useFoodTrackingPlaceholder";
-import FoodTrackingForm from "../FoodTrackingForm";
 import Drawer from "../../../../Drawer";
 import { MainContent } from "../../../../Drawer/DrawerContainer";
-import FoodTrackingTypeDisplay from "../FoodTrackingTypeDisplay";
 import EmptyNotice from "../../../../EmptyNotice";
 import Button from "../../../../Input/Button";
+import Modal from "../../../../Modal";
+import FoodTrackingForm from "../FoodTrackingForm";
+import FoodTrackingTypeDisplay from "../FoodTrackingTypeDisplay";
+import useFoodTrackingPlaceholder from "../useFoodTrackingPlaceholder";
 import FoodTrackingSetupModalDrawer from "./FoodTrackingSetupModalDrawer";
 
 type Props = {
@@ -15,7 +14,7 @@ type Props = {
   opened: boolean;
   onClose: () => void;
   tracking?: FoodAmountTracking;
-  onUpdate: (tracking: FoodAmountTracking) => Promise<boolean>;
+  onUpdate: (tracking: FoodAmountTracking | null) => Promise<boolean>;
 };
 
 export default function FoodTrackingSetupModal({
@@ -28,7 +27,6 @@ export default function FoodTrackingSetupModal({
     useFoodTrackingPlaceholder(tracking ?? null);
 
   const onSave = async () => {
-    if (!foodTrackingPlaceholder) return;
     const updated = await onUpdate(foodTrackingPlaceholder);
     if (updated) onClose();
   };

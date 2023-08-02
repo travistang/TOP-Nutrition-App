@@ -24,6 +24,8 @@ import {
   faDeleteLeft,
   faDumbbell,
   faEgg,
+  faEllipsisH,
+  faExclamationCircle,
   faExpand,
   faFileExport,
   faFileImport,
@@ -66,6 +68,7 @@ import {
 
 export const loadIcons = () =>
   library.add(
+    faEllipsisH,
     faMap,
     faShoePrints,
     faPersonHiking,
@@ -129,5 +132,6 @@ export const loadIcons = () =>
     faSnowflake,
     faTemperatureLow,
     faSun,
-    faQuestion
+    faQuestion,
+    faExclamationCircle
   );
