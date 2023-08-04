@@ -7,6 +7,7 @@ import {
   faArrowRightArrowLeft,
   faArrowsDownToLine,
   faArrowsUpToLine,
+  faBatteryEmpty,
   faBezierCurve,
   faBolt,
   faBox,
@@ -55,6 +56,7 @@ import {
   faSave,
   faSearch,
   faShoePrints,
+  faSkullCrossbones,
   faSnowflake,
   faSun,
   faTag,
@@ -133,5 +135,7 @@ export const loadIcons = () =>
     faTemperatureLow,
     faSun,
     faQuestion,
-    faExclamationCircle
+    faExclamationCircle,
+    faBatteryEmpty,
+    faSkullCrossbones
   );

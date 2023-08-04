@@ -35,7 +35,7 @@ export const MainContent = ({
   return (
     <div
       className={classNames(
-        "flex w-screen items-stretch justify-center overflow-hidden px-2",
+        "flex items-stretch justify-center overflow-hidden",
         className
       )}
     >
@@ -52,7 +52,7 @@ export const DrawerContent = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="order-1 flex flex-col items-stretch w-screen overflow-hidden px-2">
+    <div className="w-screen order-1 flex flex-col items-stretch overflow-hidden pl-4">
       <DrawerHeader backButtonText={backButtonText} />
       {children}
     </div>

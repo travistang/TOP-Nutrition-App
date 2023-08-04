@@ -1,9 +1,8 @@
 import classNames from "classnames";
-import React from "react";
 import InputBase from "./InputBase";
 
 type Props = {
-  label: string;
+  label?: string;
   className?: string;
   inputClassName?: string;
   labelClassName?: string;

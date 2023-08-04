@@ -1,5 +1,5 @@
 import { isSameMonth, startOfMonth } from "date-fns";
-import React, { useState } from "react";
+import { useState } from "react";
 import ConsumptionSummary from "../../pages/ConsumptionSummary";
 import Calendar from "../Calendar";
 import DateInput from "../Input/DateInput";
@@ -17,7 +17,6 @@ export default function PreviousConsumptions() {
     <div className="py-2 px-1 rounded-lg bg-gray-300 flex flex-col ">
       <span className="text-xs mb-4 px-1">Previous consumptions</span>
       <DateInput
-        label=""
         dateType={DateInputType.Month}
         className="col-span-4"
         inputClassName="bg-gray-400"

@@ -1,10 +1,9 @@
-import React from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import ConsumptionDatabase, {
   ConsumptionRecord,
 } from "../../database/ConsumptionDatabase";
-import ScalarWidget from "../Widgets/ScalarWidget";
 import NutritionUtils from "../../utils/Nutrition";
+import ScalarWidget from "../Widgets/ScalarWidget";
 
 const computeTotalDeficit = (
   maintenanceCalories: number,
@@ -34,7 +33,7 @@ export default function RollingDeficitWidget({ maintenanceCalories }: Props) {
       extraInfo={
         maintenanceCalories
           ? `Maintenance: ${Math.round(maintenanceCalories)} kcal`
-          : "missing weight measurement"
+          : "no weight measurement"
       }
       unit="kcal"
     />

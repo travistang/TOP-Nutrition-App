@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { useLiveQuery } from "dexie-react-hooks";
+import { useContext } from "react";
 import consumptionDatabase from "../../database/ConsumptionDatabase";
+import { drawerContext } from "../Drawer/DrawerContext";
 import Section from "../Section";
 import SmallNotice from "../SmallNotice";
 
@@ -9,6 +11,7 @@ type Props = {
   className?: string;
 };
 export default function FoodStockSummaryWidget({ className }: Props) {
+  const { openDrawer } = useContext(drawerContext);
   const foodStockSummary = useLiveQuery(() => {
     return consumptionDatabase.foodStockSummary();
   }) ?? {
@@ -19,13 +22,12 @@ export default function FoodStockSummaryWidget({ className }: Props) {
     Object.values(foodStockSummary ?? {}).flat().length === 0;
   const { restock, expired } = foodStockSummary;
   const toFoodStockPage = () => {
-    // TODO: redirect to stock page...
+    openDrawer();
   };
   return (
     <Section
       label="Food stock"
       onClick={toFoodStockPage}
-      blink={!noAttentionRequired}
       className={classNames(className)}
     >
       <div className="relative flex-1 flex flex-col justify-center items-stretch gap-2">

@@ -179,12 +179,6 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
   }
 
   async add(consumption: Consumption) {
-    const similarRecord = await this.findSimilar(consumption);
-    if (similarRecord) {
-      return this.mergeRecord(consumption, similarRecord);
-    }
-    const newRecord: ConsumptionRecord = { ...consumption, id: uuid() };
-    await this.registerChange("created", newRecord);
     const foodDetails = await this.getOrCreateFoodDetailByRecord(consumption);
     if (foodDetails?.amountTracking) {
       const newTrackingData = subtractAmount(
@@ -196,6 +190,14 @@ class ConsumptionDatabase extends SynchronizableDatabase<ConsumptionRecord> {
         amountTracking: newTrackingData,
       });
     }
+
+    const similarRecord = await this.findSimilar(consumption);
+    if (similarRecord) {
+      return this.mergeRecord(consumption, similarRecord);
+    }
+    const newRecord: ConsumptionRecord = { ...consumption, id: uuid() };
+    await this.registerChange("created", newRecord);
+
     return this.consumptions.add(newRecord);
   }
 

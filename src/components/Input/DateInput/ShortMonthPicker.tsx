@@ -1,7 +1,6 @@
 import { addMonths, format, getMonth, setMonth, startOfYear } from "date-fns";
-import React from "react";
-import SelectInput from "../SelectInput";
 import ArrayUtils from "../../../utils/Array";
+import SelectInput from "../SelectInput";
 
 type Props = {
   value: Date;
@@ -18,7 +17,6 @@ export default function ShortMonthPicker({ value, onChange }: Props) {
   });
   return (
     <SelectInput
-      label=""
       className=" items-center rounded-full"
       value={getMonth(value).toString()}
       onSelect={(n) => onChange(setMonth(value, parseInt(n)))}

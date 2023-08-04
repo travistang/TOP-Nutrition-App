@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
 import DateUtils from "../../utils/Date";
+import SelectInput from "../Input/SelectInput";
 import BaseChartSection, { baseChartSectionContext } from "./BaseChartSection";
 import useChartConfig from "./useChartConfig";
-import SelectInput from "../Input/SelectInput";
 import useMeasurementData from "./useMeasurementData";
 import useRecordsInDuration from "./useRecordsInDuration";
 
@@ -36,7 +36,6 @@ function ConsumptionTrendInner() {
   return (
     <>
       <SelectInput
-        label=""
         value={selectedMeasurement}
         onSelect={setSelectedMeasurement}
         inputClassName="bg-gray-400"

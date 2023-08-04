@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
-import { DateInputType } from "../Input/DateInput/types";
 import DateTimePicker from "../Input/DateInput/DateTimePicker";
+import { DateInputType } from "../Input/DateInput/types";
 import TabSelectInput, { Option } from "../Input/TabSelectInput";
 
 const TimeInputOptions: Option<boolean>[] = [
@@ -20,7 +20,7 @@ const TimeInputOptions: Option<boolean>[] = [
 type Props = {
   setDate: (date: Date) => void;
   date: Date;
-  title: string;
+  title?: string;
   children?: React.ReactNode;
   className?: string;
   useCurrentTimeByDefault?: boolean;
@@ -39,12 +39,11 @@ export default function TimeForm({
     if (useCurrentTime) {
       setDate(new Date());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useCurrentTime]);
 
   return (
     <div className={classNames("flex flex-col items-stretch", className)}>
-      <span className="text-xs">{title}</span>
+      {title && <span className="text-xs">{title}</span>}
       <TabSelectInput
         options={TimeInputOptions}
         selected={useCurrentTime}

@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import PortionSummary from "./PortionSummary";
-import InputBase from "../Input/InputBase";
+import { useMemo } from "react";
 import { ConsumptionRecord } from "../../database/ConsumptionDatabase";
 import NutritionUtils from "../../utils/Nutrition";
+import InputBase from "../Input/InputBase";
+import PortionSummary from "./PortionSummary";
 
 type Props = {
   splitRatio: number;
@@ -37,7 +37,7 @@ export default function MealSplitView({
         calories={currentMealCalories}
         ratio={1 - splitRatio}
       />
-      <InputBase label="" className="col-span-full">
+      <InputBase className="col-span-full">
         <input
           value={splitRatio}
           onChange={(e) => onChangeRatio(e.target.valueAsNumber)}

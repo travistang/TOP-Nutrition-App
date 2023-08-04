@@ -1,4 +1,3 @@
-import React from "react";
 import ScalarWidget from "../Widgets/ScalarWidget";
 
 type Props = {
@@ -21,7 +20,7 @@ export default function TodayDeficitWidget({
       extraInfo={
         maintenanceCalories
           ? `Maintenance: ${Math.round(maintenanceCalories)} kcal`
-          : "missing weight measurement"
+          : "no weight measurement"
       }
       unit="kcal"
     />

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Section from "../../Section";
-import SelectInput from "../../Input/SelectInput";
 import { Duration } from "../../../types/Duration";
 import DateInput from "../../Input/DateInput";
 import { DateInputType } from "../../Input/DateInput/types";
+import SelectInput from "../../Input/SelectInput";
+import Section from "../../Section";
 
 type Props = {
   label: string;
@@ -50,7 +50,6 @@ export default function BaseChartSection({
           <SelectInput
             className="col-span-2"
             inputClassName="bg-gray-400"
-            label=""
             value={duration}
             onSelect={(v) =>
               setContextValues((contextValue) => ({
