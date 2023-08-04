@@ -8,9 +8,14 @@ import ImageViewer from "../ImageViewer";
 type Props = {
   foodDetails: FoodDetails;
   className?: string;
+  onClick?: () => void;
 };
 
-export default function ExpiredFoodDetail({ foodDetails, className }: Props) {
+export default function ExpiredFoodDetail({
+  foodDetails,
+  className,
+  onClick,
+}: Props) {
   if (foodDetails.amountTracking?.type !== FoodAmountTrackingType.Container) {
     return null;
   }
@@ -24,7 +29,7 @@ export default function ExpiredFoodDetail({ foodDetails, className }: Props) {
   );
   const { image, name } = foodDetails;
   return (
-    <div className={classNames(className)}>
+    <div onClick={onClick} className={classNames(className)}>
       <ImageViewer image={image ?? null} className="h-10" />
       <div className="flex flex-col gap-1 items-stretch flex-1 overflow-hidden">
         <span className="font-bold text-sm overflow-ellipsis line-clamp-2">

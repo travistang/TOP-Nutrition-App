@@ -88,15 +88,13 @@ export default function ContainerTrackingForm({
   };
 
   return (
-    <>
+    <div className={classNames("flex flex-col items-stretch gap-4", className)}>
       <Tab
         selected={(config) => config.label?.toLowerCase() === page}
         options={getContainerTrackingTabsOptions(setPage)}
       />
       {page === "containers" && (
-        <div
-          className={classNames("flex flex-col items-stretch gap-2", className)}
-        >
+        <div className="flex flex-col items-stretch gap-2">
           <FoodContainerList
             containers={tracking.containers}
             onUpdateContainer={onUpdateContainer}
@@ -110,7 +108,6 @@ export default function ContainerTrackingForm({
           config={config}
           selectedField={selectedField}
           onSelectField={setSelectedField}
-          className={className}
           value={{
             containerCapacity,
             minContainerInStock: minContainerInStock ?? null,
@@ -118,6 +115,6 @@ export default function ContainerTrackingForm({
           onChange={updateValue}
         />
       )}
-    </>
+    </div>
   );
 }
