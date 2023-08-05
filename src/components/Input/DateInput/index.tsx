@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { format, getHours, getMinutes, setHours, setMinutes } from "date-fns";
 import { useState } from "react";
 
+import { createPortal } from "react-dom";
 import InputBase from "../InputBase";
 import { TextInputProps } from "../TextInput";
 import DateTimePicker from "./DateTimePicker";
@@ -61,22 +62,24 @@ export default function DateInput({
           {format(value, dateFormat)}
         </div>
       </InputBase>
-      {showingPicker && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center px-8 py-[20vh]">
-          <div
-            onClick={() => setShowingPicker(false)}
-            className="fixed inset-0 z-10 bg-gray-700 bg-opacity-80"
-          />
-          <div className="bg-gray-300 rounded-lg flex p-2 z-20">
-            <DateTimePicker
-              withNowButton
-              mode={dateType}
-              value={new Date(value)}
-              onSelectDate={onSelectDate}
+      {showingPicker &&
+        createPortal(
+          <div className="fixed inset-0 z-[60] flex items-center justify-center px-8 py-[20vh]">
+            <div
+              onClick={() => setShowingPicker(false)}
+              className="fixed inset-0 z-10 bg-gray-700 bg-opacity-80"
             />
-          </div>
-        </div>
-      )}
+            <div className="bg-gray-300 rounded-lg flex p-2 z-20">
+              <DateTimePicker
+                withNowButton
+                mode={dateType}
+                value={new Date(value)}
+                onSelectDate={onSelectDate}
+              />
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 }

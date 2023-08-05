@@ -13,7 +13,7 @@
 }
 
 * {
-  @apply text-gray-700;
+  @apply text-gray-700 antialiased;
   font-family: "Clan Pro", Helvetica, Arial, sans-serif;
   font-weight: 400;
 }

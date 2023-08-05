@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DateTimePicker from "../Input/DateInput/DateTimePicker";
 import { DateInputType } from "../Input/DateInput/types";
 import TabSelectInput, { Option } from "../Input/TabSelectInput";
@@ -35,11 +35,12 @@ export default function TimeForm({
 }: Props) {
   const [useCurrentTime, setUseCurrentTime] = useState(useCurrentTimeByDefault);
 
-  useEffect(() => {
-    if (useCurrentTime) {
+  const onSetToCurrentTime = (willUseCurrentTime: boolean) => {
+    if (willUseCurrentTime) {
       setDate(new Date());
     }
-  }, [useCurrentTime]);
+    setUseCurrentTime(willUseCurrentTime);
+  };
 
   return (
     <div className={classNames("flex flex-col items-stretch", className)}>
@@ -47,7 +48,7 @@ export default function TimeForm({
       <TabSelectInput
         options={TimeInputOptions}
         selected={useCurrentTime}
-        onSelect={setUseCurrentTime}
+        onSelect={onSetToCurrentTime}
       />
       {!useCurrentTime && (
         <div className="px-12 pb-2">

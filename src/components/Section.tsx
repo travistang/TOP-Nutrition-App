@@ -1,12 +1,16 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React from "react";
 
 type Props = {
   children: React.ReactNode;
   label: string;
+  icon?: IconProp;
   className?: string;
   labelClassName?: string;
   style?: React.CSSProperties;
+  headerComponent?: React.ReactNode;
   onClick?: () => void;
   blink?: boolean;
 };
@@ -15,8 +19,10 @@ export default function Section({
   onClick,
   children,
   label,
+  icon,
   className,
   labelClassName,
+  headerComponent,
   blink,
 }: Props) {
   return (
@@ -29,9 +35,21 @@ export default function Section({
         className
       )}
     >
-      <span className={classNames("text-xs font-bold", labelClassName)}>
+      <div
+        className={classNames(
+          "text-xs font-bold flex items-center gap-2",
+          labelClassName
+        )}
+      >
+        {icon && <FontAwesomeIcon icon={icon} />}
         {label}
-      </span>
+        {headerComponent && (
+          <>
+            <div className="flex-1" />
+            {headerComponent}
+          </>
+        )}
+      </div>
       {children}
     </div>
   );

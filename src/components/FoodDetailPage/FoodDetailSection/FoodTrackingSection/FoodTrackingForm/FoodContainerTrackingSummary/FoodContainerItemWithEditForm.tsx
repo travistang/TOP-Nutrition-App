@@ -1,9 +1,5 @@
-import { useContext, useState } from "react";
-import {
-  Container,
-  FoodAmountTrackingType,
-} from "../../../../../../types/FoodAmountTracking";
-import { foodDetailContext } from "../../../../FoodDetailContext";
+import { useState } from "react";
+import { Container } from "../../../../../../types/FoodAmountTracking";
 import CreateEditContainerForm from "./CreateEditContainerForm";
 import FoodContainerItem from "./FoodContainerItem";
 
@@ -17,11 +13,8 @@ export default function FoodContainerItemWithEditForm({
   onUpdate,
   onDelete,
 }: Props) {
-  const foodDetails = useContext(foodDetailContext);
   const [editing, setEditing] = useState(false);
   const readonly = !onUpdate;
-  if (foodDetails.amountTracking?.type !== FoodAmountTrackingType.Container)
-    return null;
 
   if (!editing || readonly) {
     return (

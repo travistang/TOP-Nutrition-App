@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { DrawerContent } from "../../../../Drawer/DrawerContainer";
-import FoodTrackingModePicker from "../FoodTrackingModePicker";
+import { useContext } from "react";
 import { FoodAmountTrackingType } from "../../../../../types/FoodAmountTracking";
+import { DrawerContent } from "../../../../Drawer/DrawerContainer";
 import { drawerContext } from "../../../../Drawer/DrawerContext";
+import FoodTrackingModePicker from "../FoodTrackingModePicker";
 
 type Props = {
   className?: string;
@@ -20,7 +20,7 @@ export default function FoodTrackingSetupModalDrawer({
     closeDrawer();
   };
   return (
-    <DrawerContent>
+    <DrawerContent className="pr-2">
       <FoodTrackingModePicker
         value={trackingType ?? null}
         onChange={onChangeWithModalClose}
