@@ -2,6 +2,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useEffect, useState } from "react";
 
 import { withErrorBoundary } from "@sentry/react";
+import classNames from "classnames";
 import EmptyNotice from "../components/EmptyNotice";
 import MealSummary from "../components/MealSummary";
 import TargetCaloriesContextProvider from "../components/MealSummary/TargetCaloriesContext";
@@ -15,8 +16,9 @@ import NutritionUtils from "../utils/Nutrition";
 type Props = {
   embedded?: boolean;
   date?: Date;
+  className?: string;
 };
-function ConsumptionSummary({ embedded, date }: Props) {
+function ConsumptionSummary({ className, embedded, date }: Props) {
   const [consumptionDate, setConsumptionDate] = useState(date ?? new Date());
 
   useEffect(() => {
@@ -49,7 +51,12 @@ function ConsumptionSummary({ embedded, date }: Props) {
 
   return (
     <TargetCaloriesContextProvider date={consumptionDate}>
-      <div className="flex flex-col flex-1 gap-2 items-stretch">
+      <div
+        className={classNames(
+          "flex flex-col flex-1 gap-2 items-stretch",
+          className
+        )}
+      >
         {embedded ? (
           <ShortSummary nutritionRecords={nutritionRecords} />
         ) : (

@@ -43,7 +43,7 @@ export default function EditFoodTrackingModal({ onClose, foodDetail }: Props) {
       label="Edit tracking"
       opened={!!trackingPlaceholder}
       onClose={onClose}
-      className="ml-[100vw] pr-4"
+      className="translate-x-[50%] pr-4"
     >
       <div className="flex flex-col items-stretch gap-2">
         {trackingPlaceholder && (

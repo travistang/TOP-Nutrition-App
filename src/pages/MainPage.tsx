@@ -14,7 +14,7 @@ function MainPage() {
         <FoodStockDetailPage />
       </DrawerContent>
       <MainContent className="w-[calc(100vw-16px)] overflow-y-auto">
-        <ConsumptionSummary />
+        <ConsumptionSummary className="overflow-hidden" />
       </MainContent>
     </Drawer>
   );

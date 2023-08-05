@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   label: string;
@@ -19,7 +20,7 @@ export default function Modal({
 }: Props) {
   if (!opened) return null;
 
-  return (
+  return createPortal(
     <div
       className={classNames(
         "overflow-y-auto fixed z-50 inset-0 flex flex-col justify-end items-stretch backdrop-blur-sm",
@@ -42,6 +43,7 @@ export default function Modal({
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
