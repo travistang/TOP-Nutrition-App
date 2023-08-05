@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   image: Blob;
@@ -14,7 +15,7 @@ export default function FullScreenImageViewer({ image, onClose }: Props) {
     [onClose]
   );
 
-  return (
+  return createPortal(
     <div
       onClick={onCloseWithStopPropagation}
       className="z-50 fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-80"
@@ -25,6 +26,7 @@ export default function FullScreenImageViewer({ image, onClose }: Props) {
         src={url}
         alt="fullscreen-viewer"
       />
-    </div>
+    </div>,
+    document.body
   );
 }
