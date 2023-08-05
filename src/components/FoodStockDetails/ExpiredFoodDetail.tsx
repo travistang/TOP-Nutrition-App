@@ -29,14 +29,17 @@ export default function ExpiredFoodDetail({
   );
   const { image, name } = foodDetails;
   return (
-    <div onClick={onClick} className={classNames(className)}>
+    <div
+      onClick={onClick}
+      className={classNames("flex items-center gap-2", className)}
+    >
       <ImageViewer image={image ?? null} className="h-10" />
       <div className="flex flex-col gap-1 items-stretch flex-1 overflow-hidden">
         <span className="font-bold text-sm overflow-ellipsis line-clamp-2">
           {name}
         </span>
-        <span className="font-bold text-red-500">
-          Expired {numDaysExpired} days ago
+        <span className="font-bold text-red-500 text-xs">
+          Oldest container expired {numDaysExpired} days ago
         </span>
       </div>
     </div>
