@@ -34,7 +34,7 @@ export default function FoodTrackingSetupModal({
   return (
     <Modal label="Setup food tracking" opened={opened} onClose={onClose}>
       <Drawer className="-mx-2">
-        <MainContent>
+        <MainContent className="w-screen px-2">
           <div className="flex flex-col items-stretch w-full gap-2">
             <FoodTrackingTypeDisplay
               type={foodTrackingPlaceholder?.type ?? null}

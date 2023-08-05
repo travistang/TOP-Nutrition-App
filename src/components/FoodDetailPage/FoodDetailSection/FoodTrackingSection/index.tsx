@@ -39,10 +39,12 @@ export default function FoodTrackingSection({ foodDetails }: Props) {
   return (
     <Section label="Amount tracking">
       {!foodDetails.amountTracking ? (
-        <EmptyNotice
-          onClick={showModal}
-          message="No amount tracking set for this food. Click to setup"
-        />
+        <div className="h-20">
+          <EmptyNotice
+            onClick={showModal}
+            message="No amount tracking set for this food. Click to setup"
+          />
+        </div>
       ) : (
         <FoodTrackingDisplay
           onEdit={showModal}
