@@ -1,6 +1,12 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useLiveQuery } from "dexie-react-hooks";
+import { useState } from "react";
+import CollapsibleSection from "../components/CollapsibleSection";
+import EmptyNotice from "../components/EmptyNotice";
+import EditFoodTrackingModal from "../components/FoodStockDetails/EditFoodTrackingModal";
 import ExpiredFoodDetail from "../components/FoodStockDetails/ExpiredFoodDetail";
 import FoodDetail from "../components/FoodStockDetails/FoodDetail";
+import NumberChip from "../components/NumberChip";
 import ConsumptionDatabase, {
   FoodDetails,
 } from "../database/ConsumptionDatabase";
@@ -8,14 +14,33 @@ import {
   hasExpiredContainers,
   shouldRestock,
 } from "../domain/FoodAmountTracking/containers";
-import CollapsibleSection from "../components/CollapsibleSection";
 import useToggle from "../hooks/useToggle";
-import EmptyNotice from "../components/EmptyNotice";
-import NumberChip from "../components/NumberChip";
-import { useState } from "react";
-import EditFoodTrackingModal from "../components/FoodStockDetails/EditFoodTrackingModal";
 
 type FoodStockSection = "expired" | "understocked" | "normal";
+const SECTION_CONFIGS: Record<
+  FoodStockSection,
+  {
+    label: string;
+    icon: IconProp;
+    ItemComponent: React.FC<{ onClick: () => void; foodDetails: FoodDetails }>;
+  }
+> = {
+  understocked: {
+    label: "Understocked food",
+    icon: "battery-empty",
+    ItemComponent: FoodDetail,
+  },
+  expired: {
+    label: "Food with expired containers",
+    icon: "skull-crossbones",
+    ItemComponent: ExpiredFoodDetail,
+  },
+  normal: {
+    label: "Other tracked food",
+    icon: "hamburger",
+    ItemComponent: FoodDetail,
+  },
+};
 
 const categorizeFood = (
   details: FoodDetails[]
@@ -54,7 +79,7 @@ export default function FoodStockDetailPage() {
         .toArray()
     ) ?? [];
 
-  const { normal, expired, understocked } = categorizeFood(foodWithTracking);
+  const foodByCategories = categorizeFood(foodWithTracking);
   const noFoodTracked = !foodWithTracking.length;
   if (noFoodTracked) {
     return (
@@ -71,53 +96,32 @@ export default function FoodStockDetailPage() {
         onClose={() => setEditingFoodTracking(null)}
         foodDetail={editingFoodTracking}
       />
-      <CollapsibleSection
-        disabled={understocked.length === 0}
-        expanded={selected("understocked")}
-        onToggleExpand={() => onSelect("understocked")}
-        label="Understocked food"
-        icon="battery-empty"
-        headerComponent={<NumberChip value={understocked.length} />}
-      >
-        {understocked.map((food) => (
-          <FoodDetail
-            key={food.id}
-            foodDetails={food}
-            onClick={() => setEditingFoodTracking(food)}
-          />
-        ))}
-      </CollapsibleSection>
-      <CollapsibleSection
-        disabled={expired.length === 0}
-        expanded={selected("expired")}
-        onToggleExpand={() => onSelect("expired")}
-        label="Food with expired containers"
-        icon="skull-crossbones"
-        headerComponent={<NumberChip value={expired.length} />}
-      >
-        {expired.map((food) => (
-          <ExpiredFoodDetail
-            key={food.id}
-            foodDetails={food}
-            onClick={() => setEditingFoodTracking(food)}
-          />
-        ))}
-      </CollapsibleSection>
-      <CollapsibleSection
-        expanded={selected("normal")}
-        onToggleExpand={() => onSelect("normal")}
-        label="Other tracked food"
-        icon="hamburger"
-        headerComponent={<NumberChip value={normal.length} />}
-      >
-        {normal.map((food) => (
-          <FoodDetail
-            key={food.id}
-            foodDetails={food}
-            onClick={() => setEditingFoodTracking(food)}
-          />
-        ))}
-      </CollapsibleSection>
+      {(
+        Object.entries(SECTION_CONFIGS) as [
+          FoodStockSection,
+          (typeof SECTION_CONFIGS)[FoodStockSection]
+        ][]
+      ).map(([section, config]) => (
+        <CollapsibleSection
+          key={section}
+          disabled={foodByCategories[section].length === 0}
+          expanded={selected(section)}
+          onToggleExpand={() => onSelect(section)}
+          label={config.label}
+          icon={config.icon}
+          headerComponent={
+            <NumberChip value={foodByCategories[section].length} />
+          }
+        >
+          {foodByCategories[section].map((food) => (
+            <config.ItemComponent
+              key={food.id}
+              foodDetails={food}
+              onClick={() => setEditingFoodTracking(food)}
+            />
+          ))}
+        </CollapsibleSection>
+      ))}
     </div>
   );
 }
