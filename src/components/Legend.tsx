@@ -11,11 +11,6 @@ type Props = {
   label: string;
   color: string;
 };
-const LEGEND_TYPE_CLASSNAMES: Record<LegendType, string> = {
-  [LegendType.Circle]: "",
-  [LegendType.Dot]: "",
-  [LegendType.HollowCircle]: "",
-};
 
 const getLegendStyles = (type: LegendType, color: string) => {
   switch (type) {
