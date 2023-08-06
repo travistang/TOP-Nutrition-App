@@ -43,17 +43,15 @@ export default function EditFoodTrackingModal({ onClose, foodDetail }: Props) {
       label="Edit tracking"
       opened={!!trackingPlaceholder}
       onClose={onClose}
-      className="pr-4"
     >
       <div className="flex flex-col items-stretch gap-2">
         {trackingPlaceholder && (
           <FoodTrackingForm
             onChange={setTrackingPlaceholder}
             tracking={trackingPlaceholder}
-            className="pr-4"
           />
         )}
-        <div className="flex items-center justify-end pr-4">
+        <div className="flex items-center justify-end">
           <Button
             buttonStyle={ButtonStyle.Block}
             icon="save"
