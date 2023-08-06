@@ -3,8 +3,8 @@ import AttributeValueDisplay from "./AttributeValueDisplay";
 import AttributeValueInputWidget from "./AttributeValueInputWidget";
 import {
   AcceptableAttributes,
-  AllConfig,
   AttributeValueInputGroupConfig,
+  InputConfig,
 } from "./types";
 
 type Props<T> = {
@@ -27,13 +27,14 @@ export default function AttributeValueInputGroup<
 }: Props<T>) {
   return (
     <div className={classNames("grid grid-cols-6 gap-2", className)}>
-      {(Object.entries(config) as [keyof T, AllConfig][]).map(
+      {(Object.entries(config) as [keyof T, InputConfig][]).map(
         ([field, config]) => (
           <AttributeValueDisplay
             value={value[field]}
             key={field.toString()}
             config={config}
             selected={selectedField === field}
+            onChange={onChange}
             onSelect={() => onSelectField?.(field)}
           />
         )

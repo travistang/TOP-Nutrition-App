@@ -1,11 +1,13 @@
 import AttributeValueInput from "../../AttributeValueInput";
 import { AcceptableAttributes, InputConfig, InputWidget } from "../types";
 import AttributeDatetimeValueDisplay from "./AttributeDatetimeValueDisplay";
+import AttributeValueInputToggleDisplay from "./AttributeValueInputToggleDisplay";
 
 type Props = {
   config: InputConfig;
   value: AcceptableAttributes;
   onSelect?: () => void;
+  onChange?: (value: AcceptableAttributes) => void;
   selected?: boolean;
 };
 
@@ -13,6 +15,7 @@ export default function AttributeValueDisplay({
   config,
   value,
   selected,
+  onChange,
   onSelect,
 }: Props) {
   if (
@@ -47,5 +50,16 @@ export default function AttributeValueDisplay({
     );
   }
 
+  if (config.widget === InputWidget.ToggleSelect) {
+    return (
+      <AttributeValueInputToggleDisplay
+        selected={selected}
+        config={config}
+        value={value}
+        onSelect={onSelect}
+        onChange={onChange}
+      />
+    );
+  }
   return null;
 }

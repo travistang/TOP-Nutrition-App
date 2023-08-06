@@ -1,7 +1,10 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+
 export enum InputWidget {
   DigitPad = "digit-pad",
   Ticker = "ticker",
   Datetime = "datetime",
+  ToggleSelect = "toggle-select",
 }
 
 export type TickerInputConfig = {
@@ -30,22 +33,20 @@ export type DatetimeInputConfig = {
   nullable?: boolean;
 };
 
+type ToggleConfigOption = { label: string; icon: IconProp; value: string };
+export type ToggleConfig = {
+  widget: InputWidget.ToggleSelect;
+  className?: string;
+  label: string;
+  options: ToggleConfigOption[];
+};
+
 export type InputConfig =
   | TickerInputConfig
   | DigitPadInputConfig
+  | ToggleConfig
   | DatetimeInputConfig;
 
 export type AttributeValueInputGroupConfig<T> = Record<keyof T, InputConfig>;
-export type AllConfig = {
-  label: string;
-  widget: InputWidget;
-  className?: string;
-  min?: number;
-  max?: number;
-  unit?: string;
-  integer?: boolean;
-  nullable?: boolean;
-  step?: number;
-};
 
 export type AcceptableAttributes = string | number | null;

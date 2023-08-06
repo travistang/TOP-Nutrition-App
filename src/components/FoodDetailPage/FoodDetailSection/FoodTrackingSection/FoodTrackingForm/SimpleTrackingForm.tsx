@@ -6,6 +6,7 @@ import {
 import AttributeValueInputGroup from "../../../../Input/AttributeValueInputGroup";
 import {
   AcceptableAttributes,
+  InputConfig,
   InputWidget,
 } from "../../../../Input/AttributeValueInputGroup/types";
 
@@ -32,7 +33,7 @@ export default function SimpleTrackingForm({
       [selectedField]: newValue as number,
     });
   };
-  const config =
+  const config: Record<"amount" | "minAmount" | "desiredAmount", InputConfig> =
     tracking.type === FoodAmountTrackingType.Simple
       ? {
           amount: {

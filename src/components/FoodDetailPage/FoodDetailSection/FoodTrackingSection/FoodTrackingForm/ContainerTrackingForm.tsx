@@ -8,6 +8,7 @@ import {
 import AttributeValueInputGroup from "../../../../Input/AttributeValueInputGroup";
 import {
   AcceptableAttributes,
+  InputConfig,
   InputWidget,
 } from "../../../../Input/AttributeValueInputGroup/types";
 import Tab from "../../../../Tab";
@@ -20,19 +21,20 @@ type Props = {
   onChange: (newTrackingConfig: FoodContainerTracking) => void;
 };
 
-const config = {
-  minContainerInStock: {
-    label: "Desired number of containers",
-    min: 0,
-    integer: true,
-    widget: InputWidget.Ticker,
-  },
-  containerCapacity: {
-    unit: "g",
-    label: "Capacity per container",
-    widget: InputWidget.DigitPad,
-  },
-};
+const config: Record<"minContainerInStock" | "containerCapacity", InputConfig> =
+  {
+    minContainerInStock: {
+      label: "Desired number of containers",
+      min: 0,
+      integer: true,
+      widget: InputWidget.Ticker,
+    },
+    containerCapacity: {
+      unit: "g",
+      label: "Capacity per container",
+      widget: InputWidget.DigitPad,
+    },
+  };
 type ContainerTrackingPage = "configs" | "containers";
 const getContainerTrackingTabsOptions = (
   onPageChange: (toPage: ContainerTrackingPage) => void

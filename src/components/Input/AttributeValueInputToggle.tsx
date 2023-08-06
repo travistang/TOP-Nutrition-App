@@ -1,7 +1,8 @@
-import React from "react";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import AttributeValue from "./AttributeValue";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import React from "react";
+import AttributeValue from "./AttributeValue";
 
 export type AttributeValueOptions<T> = {
   value: T;
@@ -12,6 +13,7 @@ export type AttributeValueOptions<T> = {
 type Props<T> = {
   options: AttributeValueOptions<T>[];
   noMatchMessage?: React.ReactNode;
+  selected?: boolean;
   label: string;
   className?: string;
   value: T | null;
@@ -21,6 +23,7 @@ export default function AttributeValueInputToggle<T>({
   options,
   label,
   noMatchMessage: NoMatchMessage,
+  selected,
   className,
   value,
   onToggle,
@@ -32,18 +35,23 @@ export default function AttributeValueInputToggle<T>({
       label={label}
       className={className}
       onClick={onToggle}
-      selected={!!selectedOption}
+      selected={selected}
     >
       <div className="flex gap-1 justify-end items-center h-8">
         {selectedOption?.label && (
-          <span className="text-xs text-gray-100 capitalize">
+          <span
+            className={classNames(
+              "text-xs capitalize",
+              selected && "text-gray-100"
+            )}
+          >
             {selectedOption.label}
           </span>
         )}
         {selectedOption?.icon && (
           <FontAwesomeIcon
             icon={selectedOption.icon}
-            className="h-4 w-4 child:fill-gray-100"
+            className={classNames("h-4 w-4", selected && "child:fill-gray-100")}
           />
         )}
         {!selectedOption && NoMatchMessage}
