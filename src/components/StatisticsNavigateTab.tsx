@@ -10,6 +10,7 @@ const LabelPathMapping: Record<string, string>[] = [
   {
     Food: "/stats/food",
     Exercise: "/stats/exercise",
+    Challenges: "/challenges",
   },
 ];
 const flattenedLabelPathMapping = Object.assign({}, ...LabelPathMapping);

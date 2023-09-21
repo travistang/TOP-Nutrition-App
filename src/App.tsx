@@ -16,6 +16,7 @@ import Header from "./components/Header";
 import SplitMealModal from "./components/SplitMealModal";
 
 import CreateCardioExerciseRecordModal from "./components/CreateCardioExerciseRecordModal";
+import ChallengeSummary from "./pages/ChallengeSummary";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
 import FoodContainerDetailPage from "./pages/FoodContainerDetailPage";
 import FoodContainerPage from "./pages/FoodContainerPage";
@@ -42,6 +43,7 @@ function App() {
             <Route path="/stats/food" element={<FoodDetailPage />} />
             <Route path="/stats/exercise" element={<ExerciseDetailPage />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
+            <Route path="/challenges" element={<ChallengeSummary />} />
             <Route
               path="/stats/measurements"
               element={<MeasurementListPage />}
