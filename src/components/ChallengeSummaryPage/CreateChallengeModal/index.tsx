@@ -7,6 +7,7 @@ import {
   Challenge,
   ChallengeMode,
   ChallengePeriod,
+  ChallengeTargetUnit,
 } from "../../../types/Achievement";
 import { Modifier } from "../../../types/utils";
 import AttributeValueInputToggle from "../../Input/AttributeValueInputToggle";
@@ -28,7 +29,7 @@ type ChallengeForm = Omit<Challenge, "id"> & {
 const DEFAULT_CHALLENGE: ChallengeForm = {
   name: "",
   description: "",
-  unit: "",
+  unit: ChallengeTargetUnit.Unit,
   mode: ChallengeMode.GreaterThanTarget,
   target: 0,
   period: ChallengePeriod.Weekly,

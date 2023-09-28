@@ -1,5 +1,13 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
+export enum ChallengeTargetUnit {
+  Person = "person",
+  Unit = "unit",
+  g = "g",
+  ml = "ml",
+  kg = "kg",
+}
+
 export enum ChallengePeriod {
   Daily = "daily",
   Weekly = "weekly",
@@ -19,7 +27,7 @@ export type Challenge = {
   period: ChallengePeriod;
   mode: ChallengeMode;
   endsAt?: number;
-  unit: string;
+  unit: ChallengeTargetUnit;
 };
 
 export type Achievement = {
