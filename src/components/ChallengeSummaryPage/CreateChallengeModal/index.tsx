@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Modal from "../../Modal";
 import {
-  CHALLENGE_MODE_SETTINGS,
   Challenge,
   ChallengeMode,
   ChallengePeriod,
@@ -12,8 +11,6 @@ import achievementDatabase from "../../../database/AchievementDatabase";
 import { toast } from "react-hot-toast";
 import { Modifier } from "../../../types/utils";
 import Button, { ButtonStyle } from "../../Input/Button";
-import TickerInput from "../../Input/TickerInput";
-import AttributeValueInputToggle from "../../Input/AttributeValueInputToggle";
 
 type Props = {
   opened: boolean;
@@ -86,11 +83,6 @@ export default function CreateChallengeModal({ onClose, opened }: Props) {
           className="col-span-full"
           onChange={changeField("description")}
           value={challenge.description}
-        />
-        <AttributeValueInputToggle
-          value={challenge.mode}
-          options={CHALLENGE_MODE_SETTINGS}
-          onToggle={}
         />
         <Button
           buttonStyle={ButtonStyle.Block}
