@@ -10,11 +10,19 @@ class AchievementDatabase extends Dexie {
     super("achievementDatabase");
 
     this.version(1).stores({
-      challenges: "++id,name,description,mode,target,period",
+      challenges: "++id,name,description,mode,target,period,unit",
       achievements: "++id,details,value,date, *completedChallengeIds",
     });
   }
 
+  async getRegisteredChallengeUnits() {
+    let units: Record<string, true> = {};
+    await this.challenges.each((challenge) => {
+      units[challenge.unit] = true;
+    });
+
+    return Object.keys(units);
+  }
   getAllChallenges() {
     return this.challenges
       .filter((challenge) => {

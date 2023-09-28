@@ -1,19 +1,21 @@
-import React, { useState } from "react";
-import Modal from "../../Modal";
+import { addMonths, endOfDay } from "date-fns";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import achievementDatabase from "../../../database/AchievementDatabase";
 import {
   CHALLENGE_MODE_SETTINGS,
   Challenge,
   ChallengeMode,
   ChallengePeriod,
 } from "../../../types/Achievement";
-import TextInput from "../../Input/TextInput";
-import { addMonths, endOfDay } from "date-fns";
-import achievementDatabase from "../../../database/AchievementDatabase";
-import { toast } from "react-hot-toast";
 import { Modifier } from "../../../types/utils";
-import Button, { ButtonStyle } from "../../Input/Button";
-import TickerInput from "../../Input/TickerInput";
 import AttributeValueInputToggle from "../../Input/AttributeValueInputToggle";
+import AutoCompleteInput from "../../Input/AutoCompleteInput";
+import Button, { ButtonStyle } from "../../Input/Button";
+import SplitDigitInput from "../../Input/SplitDigitInput";
+import TabSelectInput from "../../Input/TabSelectInput";
+import TextInput from "../../Input/TextInput";
+import Modal from "../../Modal";
 
 type Props = {
   opened: boolean;
@@ -26,12 +28,15 @@ type ChallengeForm = Omit<Challenge, "id"> & {
 const DEFAULT_CHALLENGE: ChallengeForm = {
   name: "",
   description: "",
+  unit: "",
   mode: ChallengeMode.GreaterThanTarget,
   target: 0,
   period: ChallengePeriod.Weekly,
   hasEndDate: false,
   endsAt: endOfDay(addMonths(Date.now(), 1)).getTime(),
 };
+
+const INPUT_ID = "create-challenge-modal-input";
 
 const isFormValid = (form: ChallengeForm) => {
   if (!form.name || !form.description || !form.target) return false;
@@ -51,8 +56,17 @@ const getNextToggledMode = (currentMode: ChallengeMode): ChallengeMode => {
     return ChallengeMode.LessThanTarget;
   return ChallengeMode.GreaterThanTarget;
 };
+
+const CHALLENGE_PERIOD_OPTIONS = Object.values(ChallengePeriod).map(
+  (period) => ({
+    value: period,
+    text: period,
+  })
+);
 export default function CreateChallengeModal({ onClose, opened }: Props) {
   const [challenge, setChallenge] = useState<ChallengeForm>(DEFAULT_CHALLENGE);
+  const [valueInputSelected, setValueInputSelected] = useState(false);
+
   const onCreateChallenge = async () => {
     if (!isFormValid(challenge)) {
       toast.error("Invalid form");
@@ -82,16 +96,50 @@ export default function CreateChallengeModal({ onClose, opened }: Props) {
           value={challenge.name}
         />
         <TextInput
-          label="Challenge name"
+          label="Challenge description"
           className="col-span-full"
           onChange={changeField("description")}
           value={challenge.description}
         />
         <AttributeValueInputToggle
+          label="Challenge mode"
           value={challenge.mode}
           options={CHALLENGE_MODE_SETTINGS}
-          onToggle={}
+          onToggle={() =>
+            changeField("mode")(getNextToggledMode(challenge.mode))
+          }
+          className="col-span-2"
         />
+        <SplitDigitInput
+          className="col-span-4"
+          keypadContainerId={INPUT_ID}
+          selected={valueInputSelected}
+          value={challenge.target}
+          label="Target value"
+          unit={challenge.unit}
+          onChange={changeField("target")}
+          onSelect={() => setValueInputSelected(!valueInputSelected)}
+        />
+        <AutoCompleteInput
+          value={challenge.unit}
+          onSelectSearchResult={changeField("unit")}
+          renderResult={(unit) => <span>{unit}</span>}
+          onSearch={async (str) =>
+            (await achievementDatabase.getRegisteredChallengeUnits()).filter(
+              (unit) => unit.includes(str)
+            )
+          }
+        />
+        <div className="col-span-full">
+          <TabSelectInput
+            label="Challenge period"
+            className="col-span-full col-start-1"
+            options={CHALLENGE_PERIOD_OPTIONS}
+            selected={challenge.period}
+            onSelect={changeField("period")}
+          />
+        </div>
+        <div className="col-span-full overflow-hidden" id={INPUT_ID} />
         <Button
           buttonStyle={ButtonStyle.Block}
           onClick={onCreateChallenge}

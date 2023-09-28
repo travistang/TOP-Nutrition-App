@@ -1,3 +1,5 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+
 export enum ChallengePeriod {
   Daily = "daily",
   Weekly = "weekly",
@@ -17,6 +19,7 @@ export type Challenge = {
   period: ChallengePeriod;
   mode: ChallengeMode;
   endsAt?: number;
+  unit: string;
 };
 
 export type Achievement = {
@@ -26,3 +29,16 @@ export type Achievement = {
   completedChallengeIds: string[];
   value: number;
 };
+
+export const CHALLENGE_MODE_SETTINGS = [
+  {
+    value: ChallengeMode.GreaterThanTarget,
+    icon: "greater-than-equal" as IconProp,
+    label: "Greater than target",
+  },
+  {
+    value: ChallengeMode.LessThanTarget,
+    icon: "less-than" as IconProp,
+    label: "Less than target",
+  },
+];
