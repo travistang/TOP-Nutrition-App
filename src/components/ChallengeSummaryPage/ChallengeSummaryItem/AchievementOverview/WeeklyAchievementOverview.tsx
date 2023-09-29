@@ -1,4 +1,4 @@
-import { eachDayOfInterval, endOfWeek, format, startOfWeek } from "date-fns";
+import { eachDayOfInterval, endOfWeek, startOfWeek } from "date-fns";
 import {
   Achievement,
   Challenge,
@@ -14,9 +14,7 @@ type Props = {
 const weekEnd = endOfWeek(Date.now());
 const weekStart = startOfWeek(Date.now());
 const dayInWeeks = eachDayOfInterval({ start: weekStart, end: weekEnd });
-const sortedDayStringInWeeks = dayInWeeks.map((day) =>
-  format(day, "yyyy-MM-dd")
-);
+const sortedDayStringInWeeks = dayInWeeks.map(DateUtils.dateToStringKey);
 
 export default function WeeklyAchievementOverview({
   challenge,
@@ -28,9 +26,10 @@ export default function WeeklyAchievementOverview({
   );
   return (
     <div className="grid grid-cols-7 gap-2 items-center">
-      {sortedDayStringInWeeks.map((dayString) => (
+      {sortedDayStringInWeeks.map((dayString, i) => (
         <DailyAchievementIcon
           key={dayString}
+          date={dayInWeeks[i]}
           achievements={achievementsByWeek[dayString]}
           reversed={challenge.mode === ChallengeMode.LessThanTarget}
         />

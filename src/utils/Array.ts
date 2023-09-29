@@ -67,6 +67,13 @@ const groupBy = <T, K extends string = string>(
     };
   }, {} as Record<K, T[]>);
 };
+
+const permute = (...args: any[][]): any[][] => {
+  if (args.length === 0) return [];
+  const [firstListToPermute, ...rest] = args;
+  const permuteOfTheRest = permute(rest);
+  return zip(firstListToPermute, permuteOfTheRest).map((item) => item.flat(1));
+};
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   range,
@@ -79,4 +86,5 @@ export default {
   hasSome,
   zipBy,
   groupBy,
+  permute,
 };

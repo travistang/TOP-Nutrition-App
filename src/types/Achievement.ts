@@ -30,6 +30,13 @@ export type Challenge = {
   unit: ChallengeTargetUnit;
 };
 
+export enum ChallengeStatus {
+  Ongoing = "ongoing",
+  Completed = "completed",
+  Failed = "failed",
+  NotStarted = "not-started",
+}
+
 export type Achievement = {
   id: string;
   details: string;
