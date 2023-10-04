@@ -1,6 +1,8 @@
 import { endOfDay, isAfter, startOfDay } from "date-fns";
 import Dexie, { Table } from "dexie";
+import { getChallengePeriodOnDay } from "../domain/Challenges";
 import { Achievement, Challenge } from "../types/Achievement";
+import NumberUtils from "../utils/Number";
 
 class AchievementDatabase extends Dexie {
   challenges!: Table<Challenge>;
@@ -44,6 +46,15 @@ class AchievementDatabase extends Dexie {
       .where("completedChallengeIds")
       .equals(id)
       .sortBy("date");
+  }
+
+  getAchievementsOfChallengeInPeriodAtDate(challenge: Challenge, date: number) {
+    const [start, end] = getChallengePeriodOnDay(challenge.period, date);
+    return this.achievements
+      .where("completedChallengeIds")
+      .equals(challenge.id)
+      .and((achievement) => NumberUtils.isBetween(start, achievement.date, end))
+      .toArray();
   }
 
   createChallenge(data: Omit<Challenge, "id">) {

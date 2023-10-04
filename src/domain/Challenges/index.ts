@@ -1,4 +1,15 @@
-import { isFuture, isPast, isSameDay, isSameMonth, isSameWeek } from "date-fns";
+import {
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  isFuture,
+  isSameDay,
+  isSameMonth,
+  isSameWeek,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+} from "date-fns";
 import {
   Achievement,
   Challenge,
@@ -58,7 +69,21 @@ const isDateInCurrentChallengePeriod = (
       return isSameWeek(date, now);
   }
 };
-export const hasFailedChallenges = (
+
+export const getChallengePeriodOnDay = (
+  period: ChallengePeriod,
+  date: number
+): [number, number] => {
+  switch (period) {
+    case ChallengePeriod.Daily:
+      return [startOfDay(date).getTime(), endOfDay(date).getTime()];
+    case ChallengePeriod.Monthly:
+      return [startOfMonth(date).getTime(), endOfMonth(date).getTime()];
+    case ChallengePeriod.Weekly:
+      return [startOfWeek(date).getTime(), endOfWeek(date).getTime()];
+  }
+};
+export const computeChallengeStatus = (
   challenge: Challenge,
   achievements: Achievement[],
   date: number

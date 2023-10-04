@@ -7,6 +7,7 @@ import {
   faArrowRightArrowLeft,
   faArrowsDownToLine,
   faArrowsUpToLine,
+  faBan,
   faBatteryEmpty,
   faBezierCurve,
   faBolt,
@@ -30,10 +31,10 @@ import {
   faExpand,
   faFileExport,
   faFileImport,
-  faGreaterThan,
   faGreaterThanEqual,
   faGripLines,
   faHamburger,
+  faHourglassHalf,
   faImage,
   faInfoCircle,
   faJar,
@@ -142,5 +143,7 @@ export const loadIcons = () =>
     faQuestion,
     faExclamationCircle,
     faBatteryEmpty,
-    faSkullCrossbones
+    faSkullCrossbones,
+    faBan,
+    faHourglassHalf
   );

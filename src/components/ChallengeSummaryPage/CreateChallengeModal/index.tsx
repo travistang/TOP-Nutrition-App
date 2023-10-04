@@ -2,17 +2,19 @@ import { addMonths, endOfDay } from "date-fns";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import achievementDatabase from "../../../database/AchievementDatabase";
+import { isChallengeTargetUnitInteger } from "../../../domain/Challenges";
 import {
   CHALLENGE_MODE_SETTINGS,
   Challenge,
   ChallengeMode,
   ChallengePeriod,
   ChallengeTargetUnit,
+  DEFAULT_CHALLENGE,
 } from "../../../types/Achievement";
 import { Modifier } from "../../../types/utils";
 import AttributeValueInputToggle from "../../Input/AttributeValueInputToggle";
-import AutoCompleteInput from "../../Input/AutoCompleteInput";
 import Button, { ButtonStyle } from "../../Input/Button";
+import SelectInput from "../../Input/SelectInput";
 import SplitDigitInput from "../../Input/SplitDigitInput";
 import TabSelectInput from "../../Input/TabSelectInput";
 import TextInput from "../../Input/TextInput";
@@ -26,13 +28,8 @@ type Props = {
 type ChallengeForm = Omit<Challenge, "id"> & {
   hasEndDate: boolean;
 };
-const DEFAULT_CHALLENGE: ChallengeForm = {
-  name: "",
-  description: "",
-  unit: ChallengeTargetUnit.Unit,
-  mode: ChallengeMode.GreaterThanTarget,
-  target: 0,
-  period: ChallengePeriod.Weekly,
+const DEFAULT_CHALLENGE_FORM: ChallengeForm = {
+  ...DEFAULT_CHALLENGE,
   hasEndDate: false,
   endsAt: endOfDay(addMonths(Date.now(), 1)).getTime(),
 };
@@ -65,7 +62,9 @@ const CHALLENGE_PERIOD_OPTIONS = Object.values(ChallengePeriod).map(
   })
 );
 export default function CreateChallengeModal({ onClose, opened }: Props) {
-  const [challenge, setChallenge] = useState<ChallengeForm>(DEFAULT_CHALLENGE);
+  const [challenge, setChallenge] = useState<ChallengeForm>(
+    DEFAULT_CHALLENGE_FORM
+  );
   const [valueInputSelected, setValueInputSelected] = useState(false);
 
   const onCreateChallenge = async () => {
@@ -77,7 +76,7 @@ export default function CreateChallengeModal({ onClose, opened }: Props) {
     try {
       await achievementDatabase.createChallenge(challengeInput);
       toast.success("Challenge created");
-      setChallenge(DEFAULT_CHALLENGE);
+      setChallenge(DEFAULT_CHALLENGE_FORM);
       onClose();
     } catch {
       toast.error("Failed to create challenge");
@@ -118,18 +117,19 @@ export default function CreateChallengeModal({ onClose, opened }: Props) {
           value={challenge.target}
           label="Target value"
           unit={challenge.unit}
+          integer={isChallengeTargetUnitInteger(challenge.unit)}
           onChange={changeField("target")}
           onSelect={() => setValueInputSelected(!valueInputSelected)}
         />
-        <AutoCompleteInput
+        <SelectInput
+          options={Object.values(ChallengeTargetUnit).map((unit) => ({
+            value: unit,
+            label: unit,
+          }))}
           value={challenge.unit}
-          onSelectSearchResult={changeField("unit")}
-          renderResult={(unit) => <span>{unit}</span>}
-          onSearch={async (str) =>
-            (await achievementDatabase.getRegisteredChallengeUnits()).filter(
-              (unit) => unit.includes(str)
-            )
-          }
+          label="Unit"
+          onSelect={changeField("unit")}
+          className="col-span-2 h-full"
         />
         <div className="col-span-full">
           <TabSelectInput

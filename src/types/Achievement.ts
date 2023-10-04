@@ -45,6 +45,16 @@ export type Achievement = {
   value: number;
 };
 
+export const DEFAULT_CHALLENGE: Challenge = {
+  id: "",
+  name: "",
+  description: "",
+  target: 0,
+  period: ChallengePeriod.Daily,
+  mode: ChallengeMode.GreaterThanTarget,
+  unit: ChallengeTargetUnit.Person,
+};
+
 export const CHALLENGE_MODE_SETTINGS = [
   {
     value: ChallengeMode.GreaterThanTarget,

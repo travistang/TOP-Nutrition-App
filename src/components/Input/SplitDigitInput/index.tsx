@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { createPortal } from "react-dom";
 import TextWithUnit from "../../TextWithUnit";
 import AttributeValue from "../AttributeValue";
@@ -36,7 +37,13 @@ export default function SplitDigitInput({
         onClick={onSelect}
         className={className}
       >
-        <TextWithUnit integer={integer} unit={unit} value={value} />
+        <TextWithUnit
+          className={classNames(selected && "text-white")}
+          unitClassName={classNames(selected && "text-white")}
+          integer={integer}
+          unit={unit}
+          value={value}
+        />
       </AttributeValue>
       {selected &&
         keypadContainerElement &&
@@ -45,6 +52,7 @@ export default function SplitDigitInput({
             inputMode={integer ? InputMode.Integer : undefined}
             defaultValue={value}
             onChange={onChange}
+            unit={unit}
           />,
           keypadContainerElement
         )}

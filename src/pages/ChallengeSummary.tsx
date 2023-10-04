@@ -1,12 +1,13 @@
 import classNames from "classnames";
-import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
+import { useState } from "react";
 
-import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
-import Button, { ButtonStyle } from "../components/Input/Button";
+import ChallengeSummaryItemWithContext from "../components/ChallengeSummaryPage/ChallengeSummaryItem/ChallengeSummaryItemWithContext";
 import CreateChallengeModal from "../components/ChallengeSummaryPage/CreateChallengeModal";
-import AchievementDatabase from "../database/AchievementDatabase";
 import EmptyNotice from "../components/EmptyNotice";
+import Button, { ButtonStyle } from "../components/Input/Button";
+import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
+import AchievementDatabase from "../database/AchievementDatabase";
 type Props = {
   className?: string;
 };
@@ -34,6 +35,9 @@ export default function ChallengeSummary({ className }: Props) {
       {noChallenges && (
         <EmptyNotice message="No challenges created" icon="trophy" />
       )}
+      {challenges?.map((challenge) => (
+        <ChallengeSummaryItemWithContext challenge={challenge} />
+      ))}
     </div>
   );
 }

@@ -29,7 +29,7 @@ export default function WeeklyAchievementOverview({
       {sortedDayStringInWeeks.map((dayString, i) => (
         <DailyAchievementIcon
           key={dayString}
-          date={dayInWeeks[i]}
+          date={dayInWeeks[i].getTime()}
           achievements={achievementsByWeek[dayString]}
           reversed={challenge.mode === ChallengeMode.LessThanTarget}
         />

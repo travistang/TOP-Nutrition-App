@@ -1,5 +1,6 @@
 import type { Meta } from "@storybook/react";
 
+import { addDays, startOfWeek } from "date-fns";
 import ChallengeSummaryItem from ".";
 import {
   Achievement,
@@ -7,7 +8,6 @@ import {
   ChallengePeriod,
   ChallengeTargetUnit,
 } from "../../../types/Achievement";
-import { addDays, startOfWeek } from "date-fns";
 
 const meta: Meta<typeof ChallengeSummaryItem> = {
   title: "Component/ChallengeSummary/ChallengeSummaryItem",
@@ -104,6 +104,32 @@ export const ReversedChallenge = (
       details: "a1",
       date: wednesday,
       value: 1,
+    },
+    {
+      id: "1",
+      completedChallengeIds: [],
+      details: "a1",
+      date: friday,
+      value: 1,
+    },
+  ];
+  return (
+    <ChallengeSummaryItem
+      challenge={{ ...args!.challenge!, mode: ChallengeMode.LessThanTarget }}
+      achievements={mockAchievements}
+    />
+  );
+};
+export const FailedChallenge = (
+  args: Meta<typeof ChallengeSummaryItem>["args"]
+) => {
+  const mockAchievements: Achievement[] = [
+    {
+      id: "1",
+      completedChallengeIds: [],
+      details: "a1",
+      date: wednesday,
+      value: 44,
     },
     {
       id: "1",
