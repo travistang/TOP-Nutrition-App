@@ -55,6 +55,14 @@ export const DEFAULT_CHALLENGE: Challenge = {
   unit: ChallengeTargetUnit.Person,
 };
 
+export const DEFAULT_ACHIEVEMENT: Achievement = {
+  id: "",
+  completedChallengeIds: [],
+  date: Date.now(),
+  value: 0,
+  details: "",
+};
+
 export const CHALLENGE_MODE_SETTINGS = [
   {
     value: ChallengeMode.GreaterThanTarget,

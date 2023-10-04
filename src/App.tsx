@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import SplitMealModal from "./components/SplitMealModal";
 
+import AchievementModal from "./components/AchievementModal";
 import CreateCardioExerciseRecordModal from "./components/CreateCardioExerciseRecordModal";
 import ChallengeSummary from "./pages/ChallengeSummary";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
@@ -65,6 +66,7 @@ function App() {
           <CreateMeasurementRecordModal />
           <CreateCardioExerciseRecordModal />
           <SplitMealModal />
+          <AchievementModal />
           <Footer />
         </div>
       </BrowserRouter>

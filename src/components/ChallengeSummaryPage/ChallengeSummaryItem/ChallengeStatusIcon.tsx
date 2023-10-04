@@ -14,9 +14,10 @@ const ICON_MAPPING: Record<ChallengeStatus, IconProp> = {
   [ChallengeStatus.NotStarted]: "hourglass-half",
 };
 const COLOR_MAPPING: Record<ChallengeStatus, string> = {
-  [ChallengeStatus.Completed]: "border-carbohydrates text-carbohydrates",
-  [ChallengeStatus.Failed]: "border-fat text-fat",
-  [ChallengeStatus.Ongoing]: "border-protein text-protein",
+  [ChallengeStatus.Completed]:
+    "border-carbohydrates child:fill-carbohydrates text-carbohydrates",
+  [ChallengeStatus.Failed]: "border-fat child:fill-fat text-fat",
+  [ChallengeStatus.Ongoing]: "border-protein child:fill-protein text-protein",
   [ChallengeStatus.NotStarted]: "border-grey text-grey",
 };
 
