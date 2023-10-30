@@ -3,7 +3,7 @@ import Tab, { TabConfig } from "./Tab";
 
 const LabelPathMapping: Record<string, string>[] = [
   {
-    Nutrition: "/stats",
+    Nutrition: "/stats/nutrition",
     Workouts: "/stats/workouts",
     Measurements: "/stats/measurements",
   },
@@ -18,7 +18,7 @@ export default function StatisticsNavigateTab() {
   const navigate = useNavigate();
   const location = useLocation();
   const isTagSelected = (config: TabConfig) =>
-    flattenedLabelPathMapping[config.label ?? ""] === location.pathname;
+    location.pathname.startsWith(flattenedLabelPathMapping[config.label ?? ""]);
   return (
     <div className="flex flex-col items-stretch gap-2 sticky top-0 z-50 bg-gray-200 pb-2">
       {LabelPathMapping.map((tabRow) => (

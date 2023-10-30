@@ -8,11 +8,16 @@ import ChallengeContextProvider, {
 type Props = {
   className?: string;
   challenge: Challenge;
+  onClick?: () => void;
 };
-function ChallengeSummaryItemWrapper({ className }: Pick<Props, "className">) {
+function ChallengeSummaryItemWrapper({
+  className,
+  onClick,
+}: Pick<Props, "className" | "onClick">) {
   const { challenge, achievements } = useContext(challengeContext);
   return (
     <ChallengeSummaryItem
+      onClick={onClick}
       challenge={challenge}
       achievements={achievements}
       className={className}
@@ -23,10 +28,11 @@ function ChallengeSummaryItemWrapper({ className }: Pick<Props, "className">) {
 export default function ChallengeSummaryItemWithContext({
   className,
   challenge,
+  onClick,
 }: Props) {
   return (
     <ChallengeContextProvider challenge={challenge}>
-      <ChallengeSummaryItemWrapper className={className} />
+      <ChallengeSummaryItemWrapper onClick={onClick} className={className} />
     </ChallengeContextProvider>
   );
 }

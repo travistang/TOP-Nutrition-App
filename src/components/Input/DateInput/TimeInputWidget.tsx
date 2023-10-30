@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { setMinutes, setHours, getHours, getMinutes } from "date-fns";
+import { getHours, getMinutes, setHours, setMinutes } from "date-fns";
+import { useRef } from "react";
 import TimeInput from "./TimeInput";
 type Props = {
   value: Date;
@@ -11,7 +11,7 @@ export default function TimeInputWidget({ value, onChange }: Props) {
   const hour = getHours(value);
   const minute = getMinutes(value);
   return (
-    <div className="flex flex-nowrap gap-1 overflow-hidden items-center flex-1 text-xl">
+    <div className="flex flex-row items-center overflow-hidden gap-2 text-xl">
       <TimeInput
         onChange={(n) => onChange(setHours(value, n))}
         value={hour}

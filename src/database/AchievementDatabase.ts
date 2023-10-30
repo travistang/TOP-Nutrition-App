@@ -25,6 +25,15 @@ class AchievementDatabase extends Dexie {
 
     return Object.keys(units);
   }
+
+  getChallengeByIds(ids: string[]) {
+    return this.challenges
+      .bulkGet(ids)
+      .then(
+        (challenges) =>
+          challenges.filter((challenge) => !!challenge) as Challenge[]
+      );
+  }
   getAllChallenges() {
     return this.challenges
       .filter((challenge) => {
@@ -48,12 +57,24 @@ class AchievementDatabase extends Dexie {
       .sortBy("date");
   }
 
+  getAchievementsByChallengeBetweenDates(id: string, from: number, to: number) {
+    return this.achievements
+      .where("completedChallengeIds")
+      .equals(id)
+      .filter((achievement) =>
+        NumberUtils.isBetween(from, achievement.date, to)
+      )
+      .sortBy("date");
+  }
+
   getAchievementsOfChallengeInPeriodAtDate(challenge: Challenge, date: number) {
     const [start, end] = getChallengePeriodOnDay(challenge.period, date);
     return this.achievements
       .where("completedChallengeIds")
       .equals(challenge.id)
-      .and((achievement) => NumberUtils.isBetween(start, achievement.date, end))
+      .filter((achievement) => {
+        return NumberUtils.isBetween(start, achievement.date, end);
+      })
       .toArray();
   }
 
@@ -69,6 +90,14 @@ class AchievementDatabase extends Dexie {
       ...data,
       id: window.crypto.randomUUID(),
     });
+  }
+
+  updateAchievement(id: string, data: Omit<Achievement, "id">) {
+    return this.achievements.update(id, data);
+  }
+
+  deleteAchievement(id: string) {
+    return this.achievements.delete(id);
   }
 
   async removeChallenges(id: string) {

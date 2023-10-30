@@ -18,7 +18,7 @@ const COLOR_MAPPING: Record<ChallengeStatus, string> = {
     "border-carbohydrates child:fill-carbohydrates text-carbohydrates",
   [ChallengeStatus.Failed]: "border-fat child:fill-fat text-fat",
   [ChallengeStatus.Ongoing]: "border-protein child:fill-protein text-protein",
-  [ChallengeStatus.NotStarted]: "border-grey text-grey",
+  [ChallengeStatus.NotStarted]: "border-gray-500 text-gray-500",
 };
 
 export default function ChallengeStatusIcon({ status, className }: Props) {

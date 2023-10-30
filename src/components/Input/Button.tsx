@@ -1,7 +1,7 @@
-import React from "react";
-import classNames from "classnames";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import React, { useState } from "react";
 
 export enum ButtonStyle {
   Block,
@@ -67,16 +67,30 @@ export default function Button({
   textClassName,
 }: Props) {
   const styles = buttonStyles[buttonStyle][disabled ? "disabled" : "active"];
+  const [onClickRunning, setOnClickRunning] = useState(false);
+  const shouldDisableButton = disabled || onClickRunning;
+
+  const onClickWithDisable = async (e: React.MouseEvent) => {
+    if (shouldDisableButton) return;
+    setOnClickRunning(true);
+    try {
+      await onClick(e);
+    } finally {
+      setOnClickRunning(false);
+    }
+  };
+
   return (
     <button
       type={type}
       className={classNames(
         "flex items-center justify-center outline-none border-none gap-2 p-2",
         circle ? "rounded-full" : "rounded-lg",
+        disabled && "opacity-70 cursor-not-allowed",
         styles?.button,
         className
       )}
-      onClick={disabled ? undefined : onClick}
+      onClick={onClickWithDisable}
     >
       {icon && (
         <FontAwesomeIcon

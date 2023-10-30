@@ -74,6 +74,7 @@ export const getChallengePeriodOnDay = (
   period: ChallengePeriod,
   date: number
 ): [number, number] => {
+  console.log({ period, date });
   switch (period) {
     case ChallengePeriod.Daily:
       return [startOfDay(date).getTime(), endOfDay(date).getTime()];

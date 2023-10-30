@@ -32,7 +32,7 @@ export default function ChallengeContextProvider({
       challenge,
       date
     );
-  }, [challenge, date]);
+  });
   const value: ChallengeContextValue = {
     challenge,
     achievements: achievementsInPeriod ?? [],

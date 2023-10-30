@@ -3,8 +3,19 @@ const range = (n: number, step = 1) =>
     .fill(0)
     .map((_, i) => i * step);
 
-const toggleElement = <T>(arr: T[], value: T) =>
-  arr.includes(value) ? arr.filter((el) => el !== value) : [...arr, value];
+const toggleElement = <T>(
+  arr: T[],
+  value: T,
+  matchFn: (a: T, b: T) => boolean = (a, b) => a === b
+) => {
+  const currentValueIndex = arr.findIndex((el) => matchFn(el, value));
+  if (currentValueIndex === -1) {
+    return [...arr, value];
+  }
+  const newArray = [...arr];
+  newArray.splice(currentValueIndex, 1);
+  return newArray;
+};
 
 const isEqual = <T>(a: T[], b: T[]) => a.every((el) => b.includes(el));
 const distinct = <T>(arr: T[], compareFn?: (a: T, b: T) => boolean): T[] => {

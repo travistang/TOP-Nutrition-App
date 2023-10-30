@@ -11,7 +11,7 @@ type Props = {
   onChange: (value: number) => void;
   label: string;
   selected?: boolean;
-  onSelect: () => void;
+  onSelect?: () => void;
   unit?: string;
   integer?: boolean;
   keypadContainerId: string;

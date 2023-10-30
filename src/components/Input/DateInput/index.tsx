@@ -69,7 +69,7 @@ export default function DateInput({
               onClick={() => setShowingPicker(false)}
               className="fixed inset-0 z-10 bg-gray-700 bg-opacity-80"
             />
-            <div className="bg-gray-300 rounded-lg flex p-2 z-20">
+            <div className="bg-gray-300 rounded-lg flex p-2 z-20 max-w-screen-sm overflow-hidden">
               <DateTimePicker
                 withNowButton
                 mode={dateType}
