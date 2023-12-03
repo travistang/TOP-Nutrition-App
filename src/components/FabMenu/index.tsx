@@ -12,6 +12,7 @@ import {
 } from "../../atoms/CreateEditRecordAtom";
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import { fabMenuAtom } from "../../atoms/FabMenuAtom";
+import { DEFAULT_MEAL_PREP, mealPrepAtom } from "../../atoms/MealPrepAtom";
 import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
 import { DEFAULT_MEASUREMENT } from "../../types/Measurement";
 
@@ -45,6 +46,7 @@ function FabMenuItem({ index, text, icon, onClick }: Props) {
 
 export default function FabMenu() {
   const setCreateEditRecord = useSetRecoilState(createEditRecordAtom);
+  const setMealPrepAtom = useSetRecoilState(mealPrepAtom);
   const setCreateMeasurementRecord = useSetRecoilState(
     createMeasurementRecordAtom
   );
@@ -66,6 +68,17 @@ export default function FabMenu() {
       <FabMenuItem
         index={0}
         onClick={() =>
+          setMealPrepAtom({
+            mealPrep: DEFAULT_MEAL_PREP,
+            modalOpened: true,
+          })
+        }
+        text="Meal prep"
+        icon="boxes"
+      />
+      <FabMenuItem
+        index={1}
+        onClick={() =>
           setCreateMeasurementRecord({
             record: DEFAULT_MEASUREMENT,
             modalOpened: true,
@@ -75,13 +88,13 @@ export default function FabMenu() {
         icon="ruler-horizontal"
       />
       <FabMenuItem
-        index={1}
+        index={2}
         onClick={onOpenCardioExerciseModal}
         text="Add cardio exercise"
         icon="person-running"
       />
       <FabMenuItem
-        index={2}
+        index={3}
         onClick={() =>
           setCreateExerciseRecord(() => ({
             ...DEFAULT_EXERCISE_RECORD,
@@ -93,7 +106,7 @@ export default function FabMenu() {
         icon="dumbbell"
       />
       <FabMenuItem
-        index={3}
+        index={4}
         onClick={() =>
           setCreateEditRecord(() => ({
             record: DEFAULT_CONSUMPTION,
