@@ -35,8 +35,8 @@ export default function MealPrepModal() {
     try {
       await prepMeal(mealPrep);
       toast.success("Meal prep completed");
-      setMealPrepAtomValue((atom) => ({
-        ...atom,
+      setMealPrepAtomValue(({
+        modalOpened: false,
         mealPrep: DEFAULT_MEAL_PREP,
       }));
     } catch (e) {
