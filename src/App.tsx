@@ -19,6 +19,7 @@ import AchievementModal from "./components/AchievementModal";
 import CreateCardioExerciseRecordModal from "./components/CreateCardioExerciseRecordModal";
 import ChallengeDetailPage from "./pages/ChallengeDetailPage";
 import ChallengeSummary from "./pages/ChallengeSummary";
+import MealPrepModal from "./components/MealPrepModal";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
 import FoodContainerDetailPage from "./pages/FoodContainerDetailPage";
 import FoodContainerPage from "./pages/FoodContainerPage";
@@ -69,6 +70,7 @@ function App() {
           <CreateCardioExerciseRecordModal />
           <SplitMealModal />
           <AchievementModal />
+          <MealPrepModal />
           <Footer />
         </div>
       </BrowserRouter>

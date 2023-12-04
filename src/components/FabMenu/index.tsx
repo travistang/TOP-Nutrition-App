@@ -12,11 +12,13 @@ import {
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import { fabMenuAtom } from "../../atoms/FabMenuAtom";
 import { DEFAULT_ACHIEVEMENT } from "../../types/Achievement";
+import { DEFAULT_MEAL_PREP, mealPrepAtom } from "../../atoms/MealPrepAtom";
 import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
 import { DEFAULT_MEASUREMENT } from "../../types/Measurement";
 import FabMenuItem, { FabMenuItemProps } from "./FabMenuItem";
 
 enum FabItem {
+  AddMealPrep = "add-meal-prep",
   AddAchievement = "add-achievement",
   AddMeasurement = "add-measurement",
   AddCardioExercise = "add-cardio",
@@ -25,6 +27,10 @@ enum FabItem {
 }
 
 const FAB_HANDLERS: Record<FabItem, Omit<FabMenuItemProps, "onClick">> = {
+  [FabItem.AddMealPrep]: {
+    text: "MealPrep",
+    icon: "boxes",
+  },
   [FabItem.AddAchievement]: {
     text: "Add achievement",
     icon: "trophy",
@@ -49,6 +55,7 @@ const FAB_HANDLERS: Record<FabItem, Omit<FabMenuItemProps, "onClick">> = {
 
 export default function FabMenu() {
   const setCreateEditRecord = useSetRecoilState(createEditRecordAtom);
+  const setMealPrepAtom = useSetRecoilState(mealPrepAtom);
   const setCreateMeasurementRecord = useSetRecoilState(
     createMeasurementRecordAtom
   );
@@ -66,6 +73,12 @@ export default function FabMenu() {
 
   const getHandlers = (item: FabItem) => () => {
     switch (item.toString() as unknown as FabItem) {
+      case FabItem.AddMealPrep:
+        setMealPrepAtom({
+          mealPrep: DEFAULT_MEAL_PREP,
+          modalOpened: true,
+        });
+        break;
       case FabItem.AddMeasurement:
         setCreateMeasurementRecord({
           record: DEFAULT_MEASUREMENT,
