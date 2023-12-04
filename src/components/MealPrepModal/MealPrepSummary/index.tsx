@@ -5,6 +5,7 @@ import EmptyNotice from "../../EmptyNotice";
 import Button, { ButtonStyle } from "../../Input/Button";
 import Section from "../../Section";
 import FoodContainerSelector from "./FoodContainerSelector";
+import NutritionSummary from "./NutritionSummary";
 
 type Props = {
   mealPrep: MealPrep;
@@ -22,16 +23,32 @@ export default function MealPrepSummary({
       ...atom,
       mealPrep: { ...atom.mealPrep, containerIds: sel },
     }));
+  const onRemoveFood = (index: number) => {
+    const foodList = [...mealPrep.food];
+    foodList.splice(index, 1);
+    updateMealPrep((atom) => ({
+      ...atom,
+      mealPrep: { ...atom.mealPrep, food: foodList },
+    }));
+  };
 
   return (
     <div className="flex flex-col items-stretch gap-2">
+      <NutritionSummary
+        food={mealPrep.food}
+        numContainers={mealPrep.containerIds.length}
+      />
       <Section label="Food" className="flex flex-col max-h-64 gap-2">
         <div className="flex-1 min-h-[36px] overflow-y-auto py-2">
           {!mealPrep.food.length && (
             <EmptyNotice message="No food added for meal prep" />
           )}
-          {mealPrep.food.map((food) => (
-            <ConsumptionItem consumption={food} key={food.name} />
+          {mealPrep.food.map((food, i) => (
+            <ConsumptionItem
+              onRemove={() => onRemoveFood(i)}
+              consumption={food}
+              key={food.name}
+            />
           ))}
         </div>
         <Button
