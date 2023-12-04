@@ -27,18 +27,17 @@ export default function FoodContainerSelector({
   };
   const containers = useLiveQuery(() => FoodContainerDatabase.getAll());
   const hasNoContainers = !containers?.length;
+  const sectionTitle =
+    selectedContainersId.length === 0
+      ? "Selected containers"
+      : `Selected containers (${selectedContainersId.length})`;
   return (
     <Section
-      label="Selected containers"
+      label={sectionTitle}
       className={classNames("flex flex-col max-h-64 gap-2", className)}
     >
       <div className="flex-1 min-h-[36px] overflow-y-auto py-2 flex flex-col items-stretch">
         {hasNoContainers && <EmptyNotice message="No registered containers" />}
-        {!hasNoContainers && (
-          <span className="text-xs sticky top-0 bg-gray-300">
-            Selected: {selectedContainersId.length}
-          </span>
-        )}
         {containers?.map((container) => (
           <FoodContainerSelectorItem
             key={container.identifier}

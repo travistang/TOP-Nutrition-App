@@ -7,6 +7,7 @@ import StepAddFoodContentForm from "../FoodContainers/FoodContainerDetailPage/Ad
 import Modal from "../Modal";
 import MealPrepSummary from "./MealPrepSummary";
 import { prepMeal } from "../../domain/MealPrep";
+import FoodContainerUtils from "../../utils/FoodContainer";
 
 enum MealPrepModalState {
   Summary = "summary",
@@ -21,11 +22,15 @@ export default function MealPrepModal() {
     useRecoilState(mealPrepAtom);
   const { modalOpened, mealPrep } = mealPrepAtomValue;
   const onAddFood = (food: Food) => {
+    const foodList = FoodContainerUtils.mergeDuplicatedFoodContent([
+      ...mealPrep.food,
+      food,
+    ]);
     setMealPrepAtomValue((atom) => ({
       ...atom,
       mealPrep: {
         ...mealPrep,
-        food: [...mealPrep.food, food],
+        food: foodList,
       },
     }));
     setState(MealPrepModalState.Summary);
@@ -35,10 +40,10 @@ export default function MealPrepModal() {
     try {
       await prepMeal(mealPrep);
       toast.success("Meal prep completed");
-      setMealPrepAtomValue(({
+      setMealPrepAtomValue({
         modalOpened: false,
         mealPrep: DEFAULT_MEAL_PREP,
-      }));
+      });
     } catch (e) {
       toast.error((e as Error).message);
     }
