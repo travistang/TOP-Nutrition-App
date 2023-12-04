@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { mealPrepAtom } from "../../atoms/MealPrepAtom";
+import toast from "react-hot-toast";
+import { DEFAULT_MEAL_PREP, mealPrepAtom } from "../../atoms/MealPrepAtom";
 import { Food } from "../../types/Food";
 import StepAddFoodContentForm from "../FoodContainers/FoodContainerDetailPage/AddFoodContainerContentModal/StepAddFoodContentForm";
 import Modal from "../Modal";
 import MealPrepSummary from "./MealPrepSummary";
+import { prepMeal } from "../../domain/MealPrep";
 
 enum MealPrepModalState {
   Summary = "summary",
@@ -28,6 +30,20 @@ export default function MealPrepModal() {
     }));
     setState(MealPrepModalState.Summary);
   };
+
+  const onConfirmMealPrep = async () => {
+    try {
+      await prepMeal(mealPrep);
+      toast.success("Meal prep completed");
+      setMealPrepAtomValue((atom) => ({
+        ...atom,
+        mealPrep: DEFAULT_MEAL_PREP,
+      }));
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  };
+
   return (
     <Modal
       opened={modalOpened}
@@ -38,7 +54,7 @@ export default function MealPrepModal() {
     >
       {state === MealPrepModalState.Summary && (
         <MealPrepSummary
-          onConfirm={console.log}
+          onConfirm={onConfirmMealPrep}
           mealPrep={mealPrep}
           onAddFood={() => setState(MealPrepModalState.AddingFood)}
         />
