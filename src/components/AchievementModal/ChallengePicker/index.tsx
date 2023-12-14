@@ -32,7 +32,9 @@ export default function AchievementPicker({
   }
 
   if (!allChallenges.length) {
-    return <EmptyNotice message="No challenges available" />;
+    return (
+      <EmptyNotice className={className} message="No challenges available" />
+    );
   }
 
   const toggleSelectChallenge = (challenge: Challenge) => {
