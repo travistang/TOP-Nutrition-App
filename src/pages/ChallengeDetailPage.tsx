@@ -54,7 +54,10 @@ export default function ChallengeDetailPage() {
         <EmptyNotice message="Loading data..." className="w-full h-full" />
       )}
       {challenge.current && (
-        <ChallengeOverviewSection challenge={challenge.current} />
+        <ChallengeOverviewSection
+          achievements={achievements.current ?? []}
+          challenge={challenge.current}
+        />
       )}
     </div>
   );

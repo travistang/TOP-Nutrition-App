@@ -31,7 +31,7 @@ export default function ChallengePickerResult({
   const noSearchResults = allChallenges.length > 0 && itemsToShow.length === 0;
 
   return (
-    <div className="p-2 flex flex-col max-h-72 rounded-lg shadow-inner overflow-y-auto bg-gray-200 gap-2">
+    <div className="p-2 flex flex-col max-h-72 rounded-lg shadow-inner overflow-y-auto gap-2">
       {noSearchResults && (
         <EmptyNotice message="No results" icon="search" className="h-32" />
       )}

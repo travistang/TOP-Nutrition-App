@@ -14,7 +14,7 @@ type Props = PickerItemIconProps & {
   onClick: () => void;
 };
 
-function ChallengePickerItemIcon({ selected, disabled }: PickerItemIconProps) {
+export function ChallengePickerItemIcon({ selected, disabled }: PickerItemIconProps) {
   if (disabled) {
     return (
       <FontAwesomeIcon icon="ban" className="h-6 w-6 child:fill-gray-500" />

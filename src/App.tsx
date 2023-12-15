@@ -42,7 +42,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/stats/nutrition" element={<PreviousStatistics />} />
+            <Route path="/stats" element={<PreviousStatistics />} />
             <Route path="/stats/food" element={<FoodDetailPage />} />
             <Route path="/stats/exercise" element={<ExerciseDetailPage />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
