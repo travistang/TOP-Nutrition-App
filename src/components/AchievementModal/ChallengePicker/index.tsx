@@ -32,6 +32,12 @@ export default function ChallengePicker({
     return <span className={className}>Loading...</span>;
   }
 
+  if (!allChallenges.length) {
+    return (
+      <EmptyNotice className={className} message="No challenges available" />
+    );
+  }
+
   const toggleSelectChallenge = (challenge: Challenge) => {
     const newChallenges = ArrayUtils.toggleElement(
       selectedChallenges,
