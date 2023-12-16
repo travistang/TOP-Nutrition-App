@@ -60,6 +60,17 @@ export type ExerciseChallenge = {
   exerciseConstraint: ExerciseConstraint;
   mode: ExerciseChallengeMode;
   type: ExerciseChallengeType;
+  interval: ExerciseChallengeInterval;
   typeSpecificValue?: number;
   target: number;
+};
+
+export const DEFAULT_EXERCISE_CHALLENGE: ExerciseChallenge = {
+  id: "",
+  exerciseConstraint: { name: "" },
+  mode: ExerciseChallengeMode.GreaterThan,
+  type: ExerciseChallengeType.NumberOfSets,
+  interval: ExerciseChallengeInterval.Weekly,
+  typeSpecificValue: 0,
+  target: 0,
 };
