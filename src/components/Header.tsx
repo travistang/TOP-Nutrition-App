@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import DrawerMenu from "./DrawerMenu";
 
@@ -11,7 +11,7 @@ export default function Header() {
         <FontAwesomeIcon icon="plate-wheat" className="mr-2" />
         <span className="flex-1">Nutrition Tracker</span>
       </div>
-      <FontAwesomeIcon icon="bars" />
+      <FontAwesomeIcon icon="bars" onClick={() => setDrawerOpened(true)} />
       {createPortal(
         <DrawerMenu
           opened={drawerOpened}

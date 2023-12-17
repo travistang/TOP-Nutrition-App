@@ -1,11 +1,10 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { createMeasurementRecordAtom } from "../atoms/CreateMeasurementAtom";
 import DateInput from "../components/Input/DateInput";
 import { DateInputType } from "../components/Input/DateInput/types";
 import MeasurementRecordItem from "../components/MeasurementRecord";
-import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
 import MeasurementDatabase, {
   MeasurementRecord,
 } from "../database/MeasurementDatabase";
@@ -22,7 +21,6 @@ export default function MeasurementListPage() {
   };
   return (
     <div className="flex flex-col overflow-y-auto flex-1 items-stretch gap-2 pb-24">
-      <StatisticsNavigateTab />
       <DateInput
         dateType={DateInputType.Month}
         value={selectedMonth}

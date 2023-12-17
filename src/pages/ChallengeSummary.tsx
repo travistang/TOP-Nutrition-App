@@ -7,7 +7,6 @@ import ChallengeSummaryItemWithContext from "../components/ChallengeSummaryPage/
 import CreateChallengeModal from "../components/ChallengeSummaryPage/CreateChallengeModal";
 import EmptyNotice from "../components/EmptyNotice";
 import Button, { ButtonStyle } from "../components/Input/Button";
-import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
 import AchievementDatabase from "../database/AchievementDatabase";
 import { Challenge } from "../types/Achievement";
 type Props = {
@@ -29,7 +28,6 @@ export default function ChallengeSummary({ className }: Props) {
         opened={showCreateChallengeModal}
         onClose={() => setShowCreateChallengeModal(false)}
       />
-      <StatisticsNavigateTab />
       <Button
         onClick={() => setShowCreateChallengeModal(true)}
         className="self-end w-1/2"

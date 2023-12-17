@@ -5,7 +5,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import ChallengeOverviewSection from "../components/ChallengeDetails/ChallengeOverviewSection";
 import EmptyNotice from "../components/EmptyNotice";
 import Button, { ButtonStyle } from "../components/Input/Button";
-import StatisticsNavigateTab from "../components/StatisticsNavigateTab";
 import achievementDatabase from "../database/AchievementDatabase";
 import { Achievement, Challenge } from "../types/Achievement";
 
@@ -42,7 +41,6 @@ export default function ChallengeDetailPage() {
 
   return (
     <div className="flex flex-col items-stretch gap-2">
-      <StatisticsNavigateTab />
       <Button
         className="justify-self-start w-fit"
         onClick={() => navigate(-1)}
