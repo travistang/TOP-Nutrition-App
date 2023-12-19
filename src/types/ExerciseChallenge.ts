@@ -1,11 +1,12 @@
-import { Exercise } from "./Exercise";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { BodyPart, Equipment, ExerciseMode } from "./Exercise";
 
 export enum ExerciseChallengeType {
-  NumberOfSets,
-  SetsOfWeight,
-  SetsOfRepetition,
-  TotalRepetitions,
-  TotalVolume,
+  NumberOfSets = "number_of_sets",
+  SetsOfWeight = "sets_of_weight",
+  SetsOfRepetition = "sets_of_repetition",
+  TotalRepetitions = "total_repetitions",
+  TotalVolume = "total_volume",
 }
 
 export type ExerciseChallengeTypeConfig = {
@@ -43,20 +44,37 @@ export const CHALLENGE_TYPE_CONFIG: Record<
 };
 
 export enum ExerciseChallengeInterval {
-  Daily,
-  Weekly,
-  Monthly,
+  Daily = "daily",
+  Weekly = "weekly",
+  Monthly = "monthly",
 }
 
 export enum ExerciseChallengeMode {
-  GreaterThanOrEqualTo,
-  GreaterThan,
-  LessThanOrEqualTo,
-  LessThan,
+  GreaterThanOrEqualTo = "geq",
+  GreaterThan = "gt",
+  LessThanOrEqualTo = "leq",
+  LessThan = "le",
 }
-export type ExerciseConstraint = Partial<Exercise> & { name: string };
+export type ExerciseChallengeModeDetails = {
+  description: string;
+  icon: IconProp;
+};
+export const CHALLENGE_MODE_DETAILS: Record<ExerciseChallengeMode, IconProp> = {
+  [ExerciseChallengeMode.GreaterThanOrEqualTo]: "greater-than-equal",
+  [ExerciseChallengeMode.GreaterThan]: "greater-than",
+  [ExerciseChallengeMode.LessThanOrEqualTo]: "less-than-equal",
+  [ExerciseChallengeMode.LessThan]: "less-than",
+};
+export type ExerciseConstraint = {
+  name: string;
+  modes: ExerciseMode[];
+  workingBodyParts: BodyPart[];
+  equipments: Equipment[];
+};
+
 export type ExerciseChallenge = {
   id: string;
+  name: string;
   exerciseConstraint: ExerciseConstraint;
   mode: ExerciseChallengeMode;
   type: ExerciseChallengeType;
@@ -67,7 +85,13 @@ export type ExerciseChallenge = {
 
 export const DEFAULT_EXERCISE_CHALLENGE: ExerciseChallenge = {
   id: "",
-  exerciseConstraint: { name: "" },
+  name: "",
+  exerciseConstraint: {
+    name: "",
+    modes: [],
+    workingBodyParts: [],
+    equipments: [],
+  },
   mode: ExerciseChallengeMode.GreaterThan,
   type: ExerciseChallengeType.NumberOfSets,
   interval: ExerciseChallengeInterval.Weekly,

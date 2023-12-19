@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChallengeSummaryItemWithContext from "../components/ChallengeSummaryPage/ChallengeSummaryItem/ChallengeSummaryItemWithContext";
 import CreateChallengeModal from "../components/ChallengeSummaryPage/CreateChallengeModal";
+import ExerciseChallengeSection from "../components/ChallengeSummaryPage/ExerciseChallengeSection";
 import EmptyNotice from "../components/EmptyNotice";
 import Button, { ButtonStyle } from "../components/Input/Button";
 import AchievementDatabase from "../database/AchievementDatabase";
@@ -35,6 +36,7 @@ export default function ChallengeSummary({ className }: Props) {
         icon="plus"
         text="Create Challenge"
       />
+      <ExerciseChallengeSection />
       {noChallenges && (
         <EmptyNotice message="No challenges created" icon="trophy" />
       )}

@@ -11,12 +11,22 @@ export const isExerciseUnderConstraint = (
   exercise: Exercise,
   constraint: ExerciseConstraint
 ) => {
-  if (constraint.name !== exercise.name) return false;
-  if (constraint.equipment && exercise.equipment !== constraint.equipment)
+  if (constraint.name && constraint.name !== exercise.name) return false;
+  if (
+    constraint.equipments.length &&
+    !constraint.equipments.includes(exercise.equipment)
+  )
     return false;
   if (
-    constraint.exerciseMode &&
-    exercise.exerciseMode !== constraint.exerciseMode
+    constraint.modes.length &&
+    !constraint.modes.includes(exercise.exerciseMode)
+  )
+    return false;
+  if (
+    constraint.workingBodyParts.length &&
+    !constraint.workingBodyParts.some((part) =>
+      exercise.workingBodyParts.includes(part)
+    )
   )
     return false;
   return true;
@@ -43,7 +53,7 @@ export const isSetFulfillChallenge = (
 ) => {
   if (!isExerciseUnderConstraint(set.exercise, challenge.exerciseConstraint))
     return false;
-  const { type, typeSpecificValue, target } = challenge;
+  const { type, typeSpecificValue } = challenge;
   const compareFn = createComparePredicateFromMode(challenge.mode);
   switch (type) {
     case ExerciseChallengeType.NumberOfSets:

@@ -25,7 +25,7 @@ export default function DrawerMenuItem({
       onClick={goToUrl}
       className="text-sm flex p-2 items-center gap-2 rounded-lg"
     >
-      <FontAwesomeIcon icon={icon} />
+      <FontAwesomeIcon className="w-8" icon={icon} />
       {title}
     </div>
   );
