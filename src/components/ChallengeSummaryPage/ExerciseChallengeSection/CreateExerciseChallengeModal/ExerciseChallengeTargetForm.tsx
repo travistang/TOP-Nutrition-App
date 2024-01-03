@@ -5,7 +5,8 @@ import {
   ExerciseChallengeMode,
   ExerciseChallengeType,
 } from "../../../../types/ExerciseChallenge";
-import ExercisePicker from "../../../Input/Exercise/ExercisePicker";
+import EnumPicker from "../../../Input/EnumPicker";
+import NumberInput from "../../../Input/NumberInput";
 import Section from "../../../Section";
 import { ExerciseChallengeTarget } from "./types";
 
@@ -18,7 +19,7 @@ export default function ExerciseChallengeTargetForm({
   onChange,
 }: Props) {
   const updater = useUpdater(target, onChange);
-  const { description, hasTypeSpecificValue } =
+  const { description, typeSpecificData, unit } =
     CHALLENGE_TYPE_CONFIG[target.type];
 
   return (
@@ -30,7 +31,7 @@ export default function ExerciseChallengeTargetForm({
       >
         {description}
       </Section>
-      <ExercisePicker
+      <EnumPicker
         single
         label="Challenge type"
         className="col-span-full grid grid-cols-2 gap-2"
@@ -40,7 +41,7 @@ export default function ExerciseChallengeTargetForm({
         }}
         availableValues={Object.values(ExerciseChallengeType)}
       />
-      <ExercisePicker
+      <EnumPicker
         single
         noText
         label="Challenge mode"
@@ -52,6 +53,20 @@ export default function ExerciseChallengeTargetForm({
         }}
         availableValues={Object.values(ExerciseChallengeMode)}
       />
+      <NumberInput
+        label={`Target value (${unit})`}
+        className="col-span-6"
+        value={target.target}
+        onChange={updater("target")}
+      />
+      {typeSpecificData && (
+        <NumberInput
+          label={`${typeSpecificData.description} (${typeSpecificData.unit})`}
+          className="col-span-6"
+          value={target.typeSpecificValue || 0}
+          onChange={updater("typeSpecificValue")}
+        />
+      )}
     </div>
   );
 }

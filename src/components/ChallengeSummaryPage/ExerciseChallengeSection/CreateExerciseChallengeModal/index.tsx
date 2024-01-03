@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
+import ExerciseDatabase from "../../../../database/ExerciseDatabase";
 import {
+  CHALLENGE_TYPE_CONFIG,
   DEFAULT_EXERCISE_CHALLENGE,
+  ExerciseChallenge,
   ExerciseConstraint,
 } from "../../../../types/ExerciseChallenge";
 import Button, { ButtonStyle } from "../../../Input/Button";
 import Modal from "../../../Modal";
 import Tab from "../../../Tab";
 import ExerciseChallengeConstraintForm from "./ExerciseChallengeConstraintForm";
+import ExerciseChallengeInfoForm from "./ExerciseChallengeInfoForm";
 import ExerciseChallengeTargetForm from "./ExerciseChallengeTargetForm";
 import {
   ChallengeInfo,
@@ -19,11 +24,36 @@ import {
 
 type Props = {
   opened?: boolean;
+  onCreated?: () => void;
   onClose: () => void;
+};
+type FormParts = {
+  info: ChallengeInfo;
+  target: ExerciseChallengeTarget;
+  constraint: ExerciseConstraint;
+};
+const isFormValid = ({ constraint, info, target }: FormParts) => {
+  if (!info.name) return false;
+  if (!target.target) return false;
+  if (
+    CHALLENGE_TYPE_CONFIG[target.type].typeSpecificData &&
+    !target.typeSpecificValue
+  )
+    return false;
+
+  if (
+    !constraint.name &&
+    !constraint.equipments.length &&
+    !constraint.modes.length &&
+    !constraint.workingBodyParts.length
+  )
+    return false;
+  return true;
 };
 
 export default function CreateExerciseChallengeModal({
   onClose,
+  onCreated,
   opened,
 }: Props) {
   const [tab, setTab] = useState<FormTabs>(FormTabs.Constraint);
@@ -34,7 +64,22 @@ export default function CreateExerciseChallengeModal({
   const [constraint, setConstraint] = useState<ExerciseConstraint>(
     DEFAULT_EXERCISE_CHALLENGE.exerciseConstraint
   );
-
+  const canSubmit = isFormValid({ info, target, constraint });
+  const createChallenge = useCallback(
+    async ({ constraint, info, target }: FormParts) => {
+      const challenge: Omit<ExerciseChallenge, "id"> = {
+        exerciseConstraint: constraint,
+        ...info,
+        ...target,
+      };
+      return ExerciseDatabase.createExerciseChallenge(challenge)
+        .then(() => toast.success("Challenge created"))
+        .then(onCreated)
+        .then(onClose)
+        .catch(() => toast.error("Failed to create challenge"));
+    },
+    [onClose, onCreated]
+  );
   return (
     <Modal
       opened={!!opened}
@@ -46,6 +91,9 @@ export default function CreateExerciseChallengeModal({
           selected={(config) => (config.id as string) === tab}
           options={getFormTabs(setTab)}
         />
+        {tab === FormTabs.Info && (
+          <ExerciseChallengeInfoForm info={info} onChange={setInfo} />
+        )}
         {tab === FormTabs.Constraint && (
           <ExerciseChallengeConstraintForm
             constraint={constraint}
@@ -63,7 +111,8 @@ export default function CreateExerciseChallengeModal({
             icon="times"
           />
           <Button
-            onClick={console.log}
+            disabled={!canSubmit}
+            onClick={() => createChallenge({ target, constraint, info })}
             buttonStyle={ButtonStyle.Block}
             text="Create"
             icon="plus"

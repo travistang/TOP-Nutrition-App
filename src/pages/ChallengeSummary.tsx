@@ -42,6 +42,7 @@ export default function ChallengeSummary({ className }: Props) {
       )}
       {challenges?.map((challenge) => (
         <ChallengeSummaryItemWithContext
+          key={challenge.id}
           challenge={challenge}
           onClick={() => goToChallenge(challenge)}
         />

@@ -1,18 +1,31 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ExerciseDatabase from "../../../database/ExerciseDatabase";
+import useFetch from "../../../hooks/useFetch";
+import { ExerciseChallenge } from "../../../types/ExerciseChallenge";
 import EmptyNotice from "../../EmptyNotice";
 import Button, { ButtonStyle } from "../../Input/Button";
 import Section from "../../Section";
 import CreateExerciseChallengeModal from "./CreateExerciseChallengeModal";
+import ExerciseChallengeItem from "./ExerciseChallengeItem";
 
+const fetchChallenges = () => ExerciseDatabase.getAllExerciseChallenges();
 export default function ExerciseChallengeSection() {
-  const challenges = useLiveQuery(
-    () => ExerciseDatabase.getAllExerciseChallenges(),
-    []
-  );
-  const noChallenges = challenges?.length === 0;
+  const { result: challenges, loading } = useFetch(null, fetchChallenges);
   const [creatingChallenge, setCreatingChallenge] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  const navigate = useNavigate();
+  const toChallengeDetails = useCallback(
+    (challenge: ExerciseChallenge) => () =>
+      navigate(`/exercise-challenges/${challenge.id}`),
+    [navigate]
+  );
+  const displayingChallenges = useMemo(
+    () => (showAll ? challenges : challenges?.slice(0, 5)),
+    [challenges, showAll]
+  );
+
+  const noChallenges = challenges?.length === 0;
 
   return (
     <>
@@ -21,10 +34,23 @@ export default function ExerciseChallengeSection() {
         onClose={() => setCreatingChallenge(false)}
       />
       <Section icon="dumbbell" label="Exercise challenges">
-        {noChallenges && (
+        {!loading && noChallenges && (
           <EmptyNotice className="pt-4 pb-2" message="No challenges" />
         )}
-        <div className="flex items-center justify-end">
+        {displayingChallenges?.map((challenge) => (
+          <ExerciseChallengeItem
+            onClick={toChallengeDetails(challenge)}
+            key={challenge.id}
+            challenge={challenge}
+          />
+        ))}
+        <div className="flex items-center justify-between">
+          <Button
+            onClick={() => setShowAll(!showAll)}
+            buttonStyle={ButtonStyle.Clear}
+            className="text-sm"
+            text={showAll ? "Show less" : "Show more"}
+          />
           <Button
             onClick={() => setCreatingChallenge(true)}
             buttonStyle={ButtonStyle.Clear}

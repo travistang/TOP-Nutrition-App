@@ -1,6 +1,8 @@
+import { endOfDay, endOfWeek, startOfDay, startOfWeek } from "date-fns";
 import { Exercise, ExerciseSet } from "../../types/Exercise";
 import {
   ExerciseChallenge,
+  ExerciseChallengeInterval,
   ExerciseChallengeMode,
   ExerciseChallengeType,
   ExerciseConstraint,
@@ -61,9 +63,9 @@ export const isSetFulfillChallenge = (
     case ExerciseChallengeType.TotalVolume:
       return true;
     case ExerciseChallengeType.SetsOfRepetition:
-      return compareFn(typeSpecificValue || 0, set.repetitions.count);
+      return compareFn(set.repetitions.count, typeSpecificValue || 0);
     case ExerciseChallengeType.SetsOfWeight:
-      return compareFn(typeSpecificValue || 0, set.repetitions.weight);
+      return compareFn(set.repetitions.weight, typeSpecificValue || 0);
   }
 };
 
@@ -81,5 +83,19 @@ export const getAchievedValueFromSet = (
       return RepetitionUtils.volume(set.repetitions);
     case ExerciseChallengeType.TotalRepetitions:
       return set.repetitions.count;
+  }
+};
+
+export const getTimeFromInterval = (
+  interval: ExerciseChallengeInterval,
+  time: number
+): [number, number] => {
+  switch (interval) {
+    case ExerciseChallengeInterval.Daily:
+      return [startOfDay(time).getTime(), endOfDay(time).getTime()];
+    case ExerciseChallengeInterval.Monthly:
+      return [startOfDay(time).getTime(), endOfDay(time).getTime()];
+    case ExerciseChallengeInterval.Weekly:
+      return [startOfWeek(time).getTime(), endOfWeek(time).getTime()];
   }
 };

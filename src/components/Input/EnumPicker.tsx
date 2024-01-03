@@ -1,10 +1,10 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import classNames from "classnames";
 import { useState } from "react";
-import ArrayUtils from "../../../utils/Array";
-import StringUtils from "../../../utils/String";
-import Button, { ButtonStyle } from "../Button";
-import PickerItem from "./PickerItem";
+import ArrayUtils from "../../utils/Array";
+import StringUtils from "../../utils/String";
+import Button, { ButtonStyle } from "./Button";
+import PickerItem from "./Exercise/PickerItem";
 
 type Props<T extends string> = {
   availableValues: T[];
@@ -16,7 +16,7 @@ type Props<T extends string> = {
   className?: string;
   label?: string;
 };
-export default function ExercisePicker<T extends string>({
+export default function EnumPicker<T extends string>({
   values,
   onChange,
   single,

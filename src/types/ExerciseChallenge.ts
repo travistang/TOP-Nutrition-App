@@ -11,8 +11,12 @@ export enum ExerciseChallengeType {
 
 export type ExerciseChallengeTypeConfig = {
   name: string;
+  unit: string;
   description: string;
-  hasTypeSpecificValue?: boolean;
+  typeSpecificData?: {
+    unit: string;
+    description: string;
+  };
 };
 export const CHALLENGE_TYPE_CONFIG: Record<
   ExerciseChallengeType,
@@ -20,25 +24,36 @@ export const CHALLENGE_TYPE_CONFIG: Record<
 > = {
   [ExerciseChallengeType.NumberOfSets]: {
     name: "Number of sets",
+    unit: "sets",
     description: "Target number of sets done within given interval",
   },
   [ExerciseChallengeType.SetsOfWeight]: {
     name: "Number of sets with weight",
+    unit: "sets",
     description: "Target number of sets done using at least X kg of weights",
-    hasTypeSpecificValue: true,
+    typeSpecificData: {
+      unit: "kg",
+      description: "minimum weight",
+    },
   },
   [ExerciseChallengeType.SetsOfRepetition]: {
     name: "Number of sets with repetition",
+    unit: "sets",
     description:
       "Target number of sets done with at least X number of repetitions",
-    hasTypeSpecificValue: true,
+    typeSpecificData: {
+      unit: "rep",
+      description: "Minimum repetitions",
+    },
   },
   [ExerciseChallengeType.TotalRepetitions]: {
     name: "Total number of repetitions",
+    unit: "reps",
     description: "Target number of repetitions done within given interval",
   },
   [ExerciseChallengeType.TotalVolume]: {
     name: "Total number of volume",
+    unit: "kg x rep",
     description: "Target amount of volume done within given interval",
   },
 };
@@ -65,6 +80,7 @@ export const CHALLENGE_MODE_DETAILS: Record<ExerciseChallengeMode, IconProp> = {
   [ExerciseChallengeMode.LessThanOrEqualTo]: "less-than-equal",
   [ExerciseChallengeMode.LessThan]: "less-than",
 };
+
 export type ExerciseConstraint = {
   name: string;
   modes: ExerciseMode[];
@@ -95,6 +111,5 @@ export const DEFAULT_EXERCISE_CHALLENGE: ExerciseChallenge = {
   mode: ExerciseChallengeMode.GreaterThan,
   type: ExerciseChallengeType.NumberOfSets,
   interval: ExerciseChallengeInterval.Weekly,
-  typeSpecificValue: 0,
   target: 0,
 };

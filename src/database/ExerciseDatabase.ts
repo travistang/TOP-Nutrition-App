@@ -18,7 +18,11 @@ import {
 } from "../types/Exercise";
 import { CreateEditType } from "../types/utils";
 
-import { isExerciseUnderConstraint } from "../domain/Challenges/exerciseChallenge";
+import {
+  getTimeFromInterval,
+  isExerciseUnderConstraint,
+  isSetFulfillChallenge,
+} from "../domain/Challenges/exerciseChallenge";
 import { ExerciseChallenge } from "../types/ExerciseChallenge";
 import ArrayUtils from "../utils/Array";
 import DatabaseUtils from "../utils/Database";
@@ -236,6 +240,22 @@ class ExerciseDatabase extends Dexie {
     data: Omit<ExerciseChallenge, "id">
   ) {
     return this.exerciseChallenges.update(id, data);
+  }
+
+  async getWorkoutsForChallenge(challenge: ExerciseChallenge, time: number) {
+    const [start, end] = getTimeFromInterval(challenge.interval, time);
+    return this.exerciseSetRecord
+      .filter(
+        (record) =>
+          isSetFulfillChallenge(record, challenge) &&
+          start <= record.date &&
+          record.date <= end
+      )
+      .toArray();
+  }
+
+  async getChallengeById(id: string): Promise<ExerciseChallenge | undefined> {
+    return this.exerciseChallenges.get(id);
   }
 }
 

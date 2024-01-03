@@ -9,7 +9,7 @@ import {
   ExerciseModeIcon,
 } from "../../../../types/Exercise";
 import { ExerciseConstraint } from "../../../../types/ExerciseChallenge";
-import ExercisePicker from "../../../Input/Exercise/ExercisePicker";
+import EnumPicker from "../../../Input/EnumPicker";
 import ExerciseSearchInput from "../../../Input/Exercise/ExerciseSearchInput";
 
 type Props = {
@@ -46,7 +46,7 @@ export default function ExerciseChallengeConstraintForm({
         selectedExercise={selectedExercise}
         onSelectExercise={onExerciseSelected}
       />
-      <ExercisePicker
+      <EnumPicker
         label="Exercise mode(s)"
         className="grid grid-cols-2 gap-2"
         availableValues={ALL_EXERCISE_MODES}
@@ -54,7 +54,7 @@ export default function ExerciseChallengeConstraintForm({
         iconMapping={ExerciseModeIcon}
         onChange={updater("modes")}
       />
-      <ExercisePicker
+      <EnumPicker
         label="Exercise equipment(s)"
         className="grid grid-cols-3 gap-2"
         availableValues={ALL_EQUIPMENTS}
@@ -62,7 +62,7 @@ export default function ExerciseChallengeConstraintForm({
         iconMapping={EquipmentIcon}
         onChange={updater("equipments")}
       />
-      <ExercisePicker
+      <EnumPicker
         label="Body part(s)"
         className="grid grid-cols-4 gap-2"
         availableValues={ALL_BODY_PARTS}
