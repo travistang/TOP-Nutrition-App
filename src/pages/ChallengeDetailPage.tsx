@@ -13,7 +13,7 @@ export default function ChallengeDetailPage() {
   const challenge = useRef<Challenge | null>(null);
   const achievements = useRef<Achievement[] | null>(null);
   const [loading, setLoading] = useState(true);
-  const [viewDate, setViewDate] = useState(Date.now());
+  const [viewDate] = useState(Date.now());
   const navigate = useNavigate();
   useEffect(() => {
     if (!id) {

@@ -11,10 +11,12 @@ export enum ItemPlaceholderType {
 
 type Props = {
   className?: string;
+  itemClassName?: string;
   type?: ItemPlaceholderType;
 };
 export default function ItemPlaceholder({
   className,
+  itemClassName,
   type = ItemPlaceholderType.IconWithTwoLines,
 }: Props) {
   const noIconType =
@@ -30,20 +32,23 @@ export default function ItemPlaceholder({
       <CirclePlaceholder
         className={classNames(
           "row-span-full w-full col-span-1 row-start-1",
-          noIconType && "hidden"
+          noIconType && "hidden",
+          itemClassName,
         )}
       />
       <LinePlaceholder
         className={classNames(
           "h-6 row-start-1 col-end-6",
-          noIconType ? "col-start-1" : "col-start-2"
+          noIconType ? "col-start-1" : "col-start-2",
+          itemClassName,
         )}
       />
       <LinePlaceholder
         className={classNames(
           "h-4 w-1/3 row-start-2 col-end-6",
           noIconType ? "col-start-1" : "col-start-2",
-          !hasTwoLines && "hidden"
+          !hasTwoLines && "hidden",
+          itemClassName,
         )}
       />
     </div>

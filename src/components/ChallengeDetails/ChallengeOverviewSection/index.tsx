@@ -1,10 +1,7 @@
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import {
   Achievement,
   Challenge,
-  ChallengeMode,
 } from "../../../types/Achievement";
 import Section from "../../Section";
 import ChallengeModeChip from "../../ChallengeSummaryPage/ChallengeSummaryItem/ChallengeModeChip";
@@ -25,7 +22,6 @@ export default function ChallengeOverviewSection({
       <div className="flex flex-col items-stretch col-span-2">
         <div className="flex gap-1 items-center text-lg">
           <ChallengeModeChip mode={challenge.mode} />
-
           {challenge.target}
           <span className="text-xs">{challenge.unit}</span>
         </div>
