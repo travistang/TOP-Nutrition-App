@@ -1,5 +1,5 @@
 import { endOfMonth, startOfMonth } from "date-fns";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import ChallengeOverviewSection from "../components/ChallengeDetails/ChallengeOverviewSection";
@@ -15,6 +15,8 @@ export default function ChallengeDetailPage() {
   const [loading, setLoading] = useState(true);
   const [viewDate] = useState(Date.now());
   const navigate = useNavigate();
+  const goBack = useCallback(() => navigate(-1), [navigate]);
+
   useEffect(() => {
     if (!id) {
       return;
@@ -43,8 +45,15 @@ export default function ChallengeDetailPage() {
     <div className="flex flex-col items-stretch gap-2">
       <Button
         className="justify-self-start w-fit"
-        onClick={() => navigate(-1)}
+        onClick={goBack}
         text="Back"
+        buttonStyle={ButtonStyle.Clear}
+        icon="arrow-left"
+      />
+      <Button
+        className="justify-self-start w-fit"
+        onClick={console.log}
+        text="Edit challenge..."
         buttonStyle={ButtonStyle.Clear}
         icon="arrow-left"
       />

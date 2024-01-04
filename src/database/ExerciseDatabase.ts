@@ -19,7 +19,7 @@ import {
 import { CreateEditType } from "../types/utils";
 
 import {
-  getChallengeIntervals,
+  getTimeInInterval,
   getTimeFromInterval,
   isExerciseUnderConstraint,
   isSetFulfillChallenge,
@@ -256,8 +256,8 @@ class ExerciseDatabase extends Dexie {
   }
 
   async getPreviousSectionsForChallenge(challenge: ExerciseChallenge, time: number, numSections: number) {
-      const intervals = getChallengeIntervals(challenge.interval, time, numSections);
-      return Promise.all(intervals.map((interval) => this.getWorkoutsForChallenge(challenge, interval[0])));
+      const timeInIntervals = getTimeInInterval(challenge.interval, time, numSections);
+      return Promise.all(timeInIntervals.map((time) => this.getWorkoutsForChallenge(challenge, time)));
   }
 
   async getChallengeById(id: string): Promise<ExerciseChallenge | undefined> {

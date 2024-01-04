@@ -8,7 +8,7 @@ import {
   ExerciseConstraint,
 } from "../../types/ExerciseChallenge";
 import RepetitionUtils from "../../utils/Repetition";
-import NumberUtils from "../../utils/Number";
+import ArrayUtils from "../../utils/Array";
 
 export const isExerciseUnderConstraint = (
   exercise: Exercise,
@@ -109,16 +109,15 @@ export const getTimeFromInterval = (
   return [intervalStart, intervalEnd];
 };
 
-export const getChallengeIntervals = (interval: ExerciseChallengeInterval, time: number, numInterval: number): [number, number][] => {
+export const getTimeInInterval = (interval: ExerciseChallengeInterval, time: number, numInterval: number): number[] => {
   const timeInIntervalFunc = {
     [ExerciseChallengeInterval.Daily]: subDays,
     [ExerciseChallengeInterval.Weekly]: subWeeks,
     [ExerciseChallengeInterval.Monthly]: subMonths,
   }[interval];
   
-  return NumberUtils.range(numInterval).map((n) => {
-    const timeInNthInterval = timeInIntervalFunc(time, n).getTime();
-    return getTimeFromInterval(interval, timeInNthInterval);
+  return ArrayUtils.range(numInterval).map((n) => {
+    return timeInIntervalFunc(time, n).getTime();
   })
 }
 

@@ -7,7 +7,7 @@ import Section from "../Section";
 
 type Props = {
   className?: string;
-  label: string;
+  label: string | React.ReactNode;
   icon?: IconProp;
   disabled?: boolean;
   children: React.ReactNode;

@@ -8,7 +8,7 @@ import { useSetRecoilState } from "recoil";
 import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
 
 type Props = {
-  index: number;
+  index?: number;
   set: ExerciseSetRecord;
   properties: ExerciseSetType[];
   preview?: boolean;
@@ -57,9 +57,11 @@ export default function SetItem({ set, index, properties, preview }: Props) {
           properties.includes(ExerciseSetType.Warmup) && "opacity-70"
         )}
       >
-        <span className="capitalize col-span-2 text-xs font-bold flex items-center justify-center">
-          {getIndexText(index, properties, preview)}
-        </span>
+        {index !== undefined && (
+          <span className="capitalize col-span-2 text-xs font-bold flex items-center justify-center">
+            {getIndexText(index, properties, preview)}
+          </span>
+        )}
         <span className="h-min col-span-2 text-xs font-bold flex items-center justify-center text-gray-200 mx-2">
           <FontAwesomeIcon
             icon={EquipmentIcon[set.exercise.equipment]}

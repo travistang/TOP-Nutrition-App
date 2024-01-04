@@ -1,15 +1,16 @@
-import { format } from "date-fns";
-import { useMemo } from "react";
+import { useCallback, useState } from "react";
 import ExerciseDatabase from "../../../database/ExerciseDatabase";
-import { getTimeFromInterval } from "../../../domain/Challenges/exerciseChallenge";
 import useFetch from "../../../hooks/useFetch";
 import { ExerciseChallenge } from "../../../types/ExerciseChallenge";
-import Section from "../../Section";
-import ItemPlaceholder, { ItemPlaceholderType } from "../../Placeholders/ItemPlaceholder";
+import ItemPlaceholder, {
+  ItemPlaceholderType,
+} from "../../Placeholders/ItemPlaceholder";
 import Repeat from "../../Repeat";
-import WorkoutListPage from "../../../pages/WorkoutListPage";
-import SetEntry from "../../WorkoutOfDayList/SetEntry";
 import SetItem from "../../WorkoutOfDayList/SetItem";
+import CollapsibleSection from "../../CollapsibleSection";
+import ExerciseChallengePeriodSectionHeader from "./ExerciseChallengePeriodSectionHeader";
+import List from "../../List";
+import { ExerciseSet } from "../../../types/Exercise";
 
 type Props = {
   date: number;
@@ -22,24 +23,44 @@ const fetchWorkoutSets = (fetchWorkoutProps: Props) =>
     fetchWorkoutProps.date
   );
 
-const formatDate = (date: number) => format(date, "dd/MM/yyyy");
+const workoutRenderer = ({
+  item,
+  index,
+}: {
+  item: ExerciseSet;
+  index: number;
+}) => {
+  return <SetItem index={index} set={item} key={index} properties={[]} />;
+};
 
 export default function ExerciseChallengePeriodSection(props: Props) {
+  const [expanded, setExpanded] = useState(false);
+  const toggleExpand = useCallback(() => setExpanded((exp) => !exp), []);
   const { result: workouts, loading } = useFetch(props, fetchWorkoutSets);
-  const sectionTitle = useMemo(() => {
-    const [start, end] = getTimeFromInterval(
-      props.challenge.interval,
-      props.date
-    );
-    return `${formatDate(start)} - ${formatDate(end)}`;
-  }, [props.challenge.interval, props.date]);
 
-  return <Section label={sectionTitle}>
-    {loading &&
-      <Repeat times={3}>
-        <ItemPlaceholder type={ItemPlaceholderType.IconWithOneLine} />
-      </Repeat>
-    }
-    {workouts?.map((workout, index) => <SetItem key={workout.id} set={workout} index={index} properties={[]} />)}
-  </Section>;
+  return (
+    <CollapsibleSection
+      expanded={expanded}
+      onToggleExpand={toggleExpand}
+      label={
+        <ExerciseChallengePeriodSectionHeader
+          challenge={props.challenge}
+          workouts={workouts ?? []}
+          date={props.date}
+        />
+      }
+    >
+      {loading && (
+        <Repeat times={3}>
+          <ItemPlaceholder type={ItemPlaceholderType.IconWithOneLine} />
+        </Repeat>
+      )}
+      <List
+        emptyMessage="No workouts fulfills the challenge during this period"
+        items={workouts ?? []}
+      >
+        {workoutRenderer}
+      </List>
+    </CollapsibleSection>
+  );
 }

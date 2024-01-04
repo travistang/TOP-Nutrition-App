@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type FetchResult<R> = {
   result: R | null;
   loading: boolean;
+  refetch: () => void;
 };
 
 export default function useFetch<P, R>(
@@ -11,16 +12,19 @@ export default function useFetch<P, R>(
 ): FetchResult<R> {
   const [result, setResult] = useState<R | null>(null);
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
+  const refetch = useCallback(() => {
     Promise.resolve()
       .then(() => setLoading(true))
       .then(() => fetchFunc(params))
       .then(setResult)
       .finally(() => setLoading(false));
-  }, [fetchFunc, params]);
+  }, [fetchFunc, params])
+
+  useEffect(refetch , [refetch]);
 
   return {
     result,
     loading,
+    refetch,
   };
 }
