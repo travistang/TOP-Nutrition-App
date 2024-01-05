@@ -81,12 +81,10 @@ export default function DateTimePicker({
         />
       )}
       {hasDisplay(DateInputDisplay.Time) && (
-        <div className="flex items-center justify-between mt-2 overflow-hidden w-full">
-          <TimeInputWidget
-            value={value}
-            onChange={(d) => onSelectDate(d, false)}
-          />
-        </div>
+        <TimeInputWidget
+          value={value}
+          onChange={(d) => onSelectDate(d, false)}
+        />
       )}
       <div className="flex justify-between items-center gap-2">
         {onClear && (

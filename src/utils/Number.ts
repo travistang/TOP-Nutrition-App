@@ -119,6 +119,9 @@ const numberToFormattedDigit = (nInHundred: number, integer?: boolean) => {
 };
 
 const isNumericDigit = (str: string) => str.match(/^[0-9.,]$/);
+const isBetween = (low: number, value: number, high: number) =>
+  low <= value && value <= high;
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   nanToZero,
@@ -137,6 +140,7 @@ export default {
   inputAsNumber,
   isNumeric,
   isCloseTo,
+  isBetween,
   isNumericDigit,
   stringToFloat,
   safeDivide,

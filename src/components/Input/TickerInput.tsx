@@ -38,6 +38,7 @@ export default function TickerInput({
   max,
   formatter,
   integer,
+  label,
   unit,
   className,
   buttonClassName,
@@ -47,29 +48,27 @@ export default function TickerInput({
   };
 
   return (
-    <div
-      className={classNames(
-        "flex items-center justify-between gap-2",
-        className
-      )}
-    >
-      <Button
-        type="button"
-        buttonStyle={ButtonStyle.Clear}
-        className={buttonClassName}
-        icon="caret-left"
-        onClick={tick("left")}
-      />
-      {formatter?.({ value, unit, integer }) ?? (
-        <TextWithUnit size="xl" unit={unit} value={value} integer={integer} />
-      )}
-      <Button
-        type="button"
-        buttonStyle={ButtonStyle.Clear}
-        className={buttonClassName}
-        icon="caret-right"
-        onClick={tick("right")}
-      />
+    <div className={classNames("flex flex-col items-stretch gap-2", className)}>
+      {label && <span className="text-xs">{label}</span>}
+      <div className="flex items-center flex-1 justify-between gap-2">
+        <Button
+          type="button"
+          buttonStyle={ButtonStyle.Clear}
+          className={buttonClassName}
+          icon="caret-left"
+          onClick={tick("left")}
+        />
+        {formatter?.({ value, unit, integer }) ?? (
+          <TextWithUnit size="xl" unit={unit} value={value} integer={integer} />
+        )}
+        <Button
+          type="button"
+          buttonStyle={ButtonStyle.Clear}
+          className={buttonClassName}
+          icon="caret-right"
+          onClick={tick("right")}
+        />
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import React from "react";
 
 type Props = {
   children: React.ReactNode;
-  label: string;
+  label: string | React.ReactNode;
   icon?: IconProp;
   className?: string;
   labelClassName?: string;

@@ -1,4 +1,3 @@
-import { v4 as uuid4 } from "uuid";
 import {
   differenceInMonths,
   endOfDay,
@@ -8,18 +7,26 @@ import {
   subMinutes,
 } from "date-fns";
 import Dexie, { Table } from "dexie";
+import { v4 as uuid4 } from "uuid";
+import { CardioExercise, CardioExerciseType } from "../types/CardioExercise";
+import { Duration } from "../types/Duration";
 import {
   Exercise,
   ExerciseDetail,
   ExerciseSet,
   Repetition,
 } from "../types/Exercise";
-import { Duration } from "../types/Duration";
 import { CreateEditType } from "../types/utils";
-import { CardioExercise, CardioExerciseType } from "../types/CardioExercise";
 
-import DatabaseUtils from "../utils/Database";
+import {
+  getTimeInInterval,
+  getTimeFromInterval,
+  isExerciseUnderConstraint,
+  isSetFulfillChallenge,
+} from "../domain/Challenges/exerciseChallenge";
+import { ExerciseChallenge } from "../types/ExerciseChallenge";
 import ArrayUtils from "../utils/Array";
+import DatabaseUtils from "../utils/Database";
 import ExerciseUtils from "../utils/Exercise";
 import StringUtils from "../utils/String";
 
@@ -35,6 +42,7 @@ class ExerciseDatabase extends Dexie {
   exerciseSetRecord!: Table<ExerciseSetRecord>;
   exerciseDetails!: Table<ExerciseDetail>;
   cardioExerciseRecord!: Table<CardioExerciseRecord>;
+  exerciseChallenges!: Table<ExerciseChallenge>;
 
   constructor() {
     super("exerciseDatabase");
@@ -51,6 +59,13 @@ class ExerciseDatabase extends Dexie {
       exerciseSetRecord: "++id,name,date",
       exerciseDetails: "++id,name,date",
       cardioExerciseRecord: "++id,type,date",
+    });
+
+    this.version(4).stores({
+      exerciseSetRecord: "++id,name,date",
+      exerciseDetails: "++id,name,date",
+      cardioExerciseRecord: "++id,type,date",
+      exerciseChallenges: "++id,name",
     });
   }
 
@@ -198,6 +213,55 @@ class ExerciseDatabase extends Dexie {
         return record.date >= start && record.date <= end && typeMatches;
       })
       .toArray();
+  }
+
+  async createExerciseChallenge(data: Omit<ExerciseChallenge, "id">) {
+    return this.exerciseChallenges.add({
+      ...data,
+      id: uuid4(),
+    });
+  }
+
+  async removeExerciseChallenge(id: string) {
+    return this.exerciseChallenges.delete(id);
+  }
+
+  async getChallengesByExercise(exercise: Exercise) {
+    return this.exerciseChallenges
+      .filter((c) => isExerciseUnderConstraint(exercise, c.exerciseConstraint))
+      .toArray();
+  }
+
+  async getAllExerciseChallenges() {
+    return this.exerciseChallenges.toArray();
+  }
+
+  async updateExerciseChallenge(
+    id: string,
+    data: Omit<ExerciseChallenge, "id">
+  ) {
+    return this.exerciseChallenges.update(id, data);
+  }
+
+  async getWorkoutsForChallenge(challenge: ExerciseChallenge, time: number) {
+    const [start, end] = getTimeFromInterval(challenge.interval, time);
+    return this.exerciseSetRecord
+      .filter(
+        (record) =>
+          isSetFulfillChallenge(record, challenge) &&
+          start <= record.date &&
+          record.date <= end
+      )
+      .toArray();
+  }
+
+  async getPreviousSectionsForChallenge(challenge: ExerciseChallenge, time: number, numSections: number) {
+      const timeInIntervals = getTimeInInterval(challenge.interval, time, numSections);
+      return Promise.all(timeInIntervals.map((time) => this.getWorkoutsForChallenge(challenge, time)));
+  }
+
+  async getChallengeById(id: string): Promise<ExerciseChallenge | undefined> {
+    return this.exerciseChallenges.get(id);
   }
 }
 

@@ -1,6 +1,5 @@
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { createEditAchievementAtom } from "../../atoms/CreateEditAchievementAtom";
 import useCardioExerciseMutation from "../../atoms/CreateEditCardioExerciseRecordAtom";
 import {
   DEFAULT_EXERCISE_RECORD,
@@ -12,37 +11,47 @@ import {
 } from "../../atoms/CreateEditRecordAtom";
 import { createMeasurementRecordAtom } from "../../atoms/CreateMeasurementAtom";
 import { fabMenuAtom } from "../../atoms/FabMenuAtom";
+import { DEFAULT_ACHIEVEMENT } from "../../types/Achievement";
 import { DEFAULT_MEAL_PREP, mealPrepAtom } from "../../atoms/MealPrepAtom";
 import { DEFAULT_CONSUMPTION } from "../../types/Consumption";
 import { DEFAULT_MEASUREMENT } from "../../types/Measurement";
+import FabMenuItem, { FabMenuItemProps } from "./FabMenuItem";
 
-type Props = {
-  text: string;
-  icon: IconProp;
-  onClick: () => void;
-  index: number;
-};
-function FabMenuItem({ index, text, icon, onClick }: Props) {
-  const animationStyle = { animationDelay: `${index * 100}ms` };
-  return (
-    <div
-      onClick={onClick}
-      className=" flex flex-row justify-end items-center gap-2 flex-nowrap px-4 text-sm font-bold"
-    >
-      <span
-        className="text-sm font-bold animate-move-in opacity-0"
-        style={animationStyle}
-      >
-        {text}
-      </span>
-      <FontAwesomeIcon
-        icon={icon}
-        style={animationStyle}
-        className="translate-y-[50vw] animate-move-up opacity-0 rounded-full bg-blue-500 child:fill-gray-200 p-2 h-8 w-8 items-center justify-center"
-      />
-    </div>
-  );
+enum FabItem {
+  AddMealPrep = "add-meal-prep",
+  AddAchievement = "add-achievement",
+  AddMeasurement = "add-measurement",
+  AddCardioExercise = "add-cardio",
+  AddExercise = "add-exercise",
+  AddConsumption = "add-consumption",
 }
+
+const FAB_HANDLERS: Record<FabItem, Omit<FabMenuItemProps, "onClick">> = {
+  [FabItem.AddMealPrep]: {
+    text: "MealPrep",
+    icon: "boxes",
+  },
+  [FabItem.AddAchievement]: {
+    text: "Add achievement",
+    icon: "trophy",
+  },
+  [FabItem.AddMeasurement]: {
+    text: "Add measurement",
+    icon: "ruler-horizontal",
+  },
+  [FabItem.AddCardioExercise]: {
+    text: "Add cardio exercise",
+    icon: "person-running",
+  },
+  [FabItem.AddExercise]: {
+    text: "Add exercise",
+    icon: "dumbbell",
+  },
+  [FabItem.AddConsumption]: {
+    text: "Add consumption",
+    icon: "hamburger",
+  },
+};
 
 export default function FabMenu() {
   const setCreateEditRecord = useSetRecoilState(createEditRecordAtom);
@@ -50,6 +59,7 @@ export default function FabMenu() {
   const setCreateMeasurementRecord = useSetRecoilState(
     createMeasurementRecordAtom
   );
+  const setCreateAchievement = useSetRecoilState(createEditAchievementAtom);
   const setCreateExerciseRecord = useSetRecoilState(
     createEditExerciseRecordAtom
   );
@@ -60,62 +70,56 @@ export default function FabMenu() {
   if (!fabMenuOpened) return null;
 
   const closeFabMenu = () => setFabMenuOpened({ fabMenuOpened: false });
+
+  const getHandlers = (item: FabItem) => () => {
+    switch (item.toString() as unknown as FabItem) {
+      case FabItem.AddMealPrep:
+        setMealPrepAtom({
+          mealPrep: DEFAULT_MEAL_PREP,
+          modalOpened: true,
+        });
+        break;
+      case FabItem.AddMeasurement:
+        setCreateMeasurementRecord({
+          record: DEFAULT_MEASUREMENT,
+          modalOpened: true,
+        });
+        break;
+      case FabItem.AddCardioExercise:
+        onOpenCardioExerciseModal();
+        break;
+      case FabItem.AddExercise:
+        setCreateExerciseRecord(() => ({
+          ...DEFAULT_EXERCISE_RECORD,
+          modalOpened: true,
+          date: new Date(),
+        }));
+        break;
+      case FabItem.AddConsumption:
+        setCreateEditRecord(() => ({
+          record: DEFAULT_CONSUMPTION,
+          openingSource: ModalOpenSource.Cta,
+        }));
+        break;
+      case FabItem.AddAchievement:
+        setCreateAchievement({ achievement: DEFAULT_ACHIEVEMENT });
+        break;
+    }
+  };
+
   return (
     <div
       onClick={closeFabMenu}
       className="animate-blur fixed inset-0 z-40 flex flex-col justify-end gap-2 pb-20"
     >
-      <FabMenuItem
-        index={0}
-        onClick={() =>
-          setMealPrepAtom({
-            mealPrep: DEFAULT_MEAL_PREP,
-            modalOpened: true,
-          })
-        }
-        text="Meal prep"
-        icon="boxes"
-      />
-      <FabMenuItem
-        index={1}
-        onClick={() =>
-          setCreateMeasurementRecord({
-            record: DEFAULT_MEASUREMENT,
-            modalOpened: true,
-          })
-        }
-        text="Add measurement"
-        icon="ruler-horizontal"
-      />
-      <FabMenuItem
-        index={2}
-        onClick={onOpenCardioExerciseModal}
-        text="Add cardio exercise"
-        icon="person-running"
-      />
-      <FabMenuItem
-        index={3}
-        onClick={() =>
-          setCreateExerciseRecord(() => ({
-            ...DEFAULT_EXERCISE_RECORD,
-            modalOpened: true,
-            date: new Date(),
-          }))
-        }
-        text="Add exercise"
-        icon="dumbbell"
-      />
-      <FabMenuItem
-        index={4}
-        onClick={() =>
-          setCreateEditRecord(() => ({
-            record: DEFAULT_CONSUMPTION,
-            openingSource: ModalOpenSource.Cta,
-          }))
-        }
-        text="Add consumption"
-        icon="hamburger"
-      />
+      {Object.entries(FAB_HANDLERS).map(([item, { text, icon }]) => (
+        <FabMenuItem
+          key={item}
+          onClick={getHandlers(item as unknown as FabItem)}
+          text={text}
+          icon={icon}
+        />
+      ))}
     </div>
   );
 }

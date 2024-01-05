@@ -70,17 +70,18 @@ const getIntervalFromDuration = (date: Date | number, duration: Duration) => {
   return [startDate, endDate];
 };
 
+const dateToStringKey = (date: number | Date) => format(date, "yyyy/MM/dd");
 const groupRecordsByDates = <T extends { date: Date | number }>(
   records: T[],
   dates: (Date | number)[]
 ): { [dateString: string]: T[] } => {
-  const dateStrings = dates.map((date) => format(date, "yyyy/MM/dd"));
+  const dateStrings = dates.map(dateToStringKey);
   const initialGroups: { [dateString: string]: T[] } = Object.assign(
     {},
     ...dateStrings.map((dateString) => ({ [dateString]: [] }))
   );
   return records.reduce((groups, record) => {
-    const recordDateString = format(record.date, "yyyy/MM/dd");
+    const recordDateString = dateToStringKey(record.date);
     if (!groups[recordDateString]) return groups;
     return {
       ...groups,
@@ -108,12 +109,14 @@ const getMostRecentRecords = <T extends { date: Date | number }>(
   onDate: Date | number
 ): T[] => {
   const recordsBeforeDate = records
-    .filter(r => isBefore(r.date, onDate))
+    .filter((r) => isBefore(r.date, onDate))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   if (recordsBeforeDate.length === 0) return [];
   const mostRecentDay = recordsBeforeDate[0].date;
-  return recordsBeforeDate.filter(record => isSameDay(mostRecentDay, record.date));
+  return recordsBeforeDate.filter((record) =>
+    isSameDay(mostRecentDay, record.date)
+  );
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -127,4 +130,5 @@ export default {
   groupRecordsByDates,
   orderedRecordGroups,
   getMostRecentRecords,
+  dateToStringKey,
 };

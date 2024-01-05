@@ -15,8 +15,12 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import SplitMealModal from "./components/SplitMealModal";
 
+import AchievementModal from "./components/AchievementModal";
 import CreateCardioExerciseRecordModal from "./components/CreateCardioExerciseRecordModal";
 import MealPrepModal from "./components/MealPrepModal";
+import ChallengeDetailPage from "./pages/ChallengeDetailPage";
+import ChallengeSummary from "./pages/ChallengeSummary";
+import ExerciseChallengeDetailPage from "./pages/ExerciseChallengeDetailPage";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
 import FoodContainerDetailPage from "./pages/FoodContainerDetailPage";
 import FoodContainerPage from "./pages/FoodContainerPage";
@@ -43,10 +47,16 @@ function App() {
             <Route path="/stats/food" element={<FoodDetailPage />} />
             <Route path="/stats/exercise" element={<ExerciseDetailPage />} />
             <Route path="/stats/workouts" element={<WorkoutStatistics />} />
+            <Route path="/challenges" element={<ChallengeSummary />} />
             <Route
               path="/stats/measurements"
               element={<MeasurementListPage />}
             />
+            <Route
+              path="/exercise-challenges/:id"
+              element={<ExerciseChallengeDetailPage />}
+            />
+            <Route path="/challenges/:id" element={<ChallengeDetailPage />} />
             <Route path="/workouts" element={<WorkoutListPage />} />
             <Route path="/containers" element={<FoodContainerPage />} />
             <Route
@@ -64,6 +74,7 @@ function App() {
           <CreateMeasurementRecordModal />
           <CreateCardioExerciseRecordModal />
           <SplitMealModal />
+          <AchievementModal />
           <MealPrepModal />
           <Footer />
         </div>
