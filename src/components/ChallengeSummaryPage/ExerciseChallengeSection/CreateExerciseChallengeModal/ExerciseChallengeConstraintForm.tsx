@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import useUpdater from "../../../../hooks/useUpdater";
 import {
   BodyPart,
@@ -8,9 +8,15 @@ import {
   ExerciseMode,
   ExerciseModeIcon,
 } from "../../../../types/Exercise";
-import { ExerciseConstraint } from "../../../../types/ExerciseChallenge";
+import {
+  DEFAULT_EXERCISE_CHALLENGE,
+  ExerciseConstraint,
+} from "../../../../types/ExerciseChallenge";
+import Button, { ButtonStyle } from "../../../Input/Button";
 import EnumPicker from "../../../Input/EnumPicker";
 import ExerciseSearchInput from "../../../Input/Exercise/ExerciseSearchInput";
+import Section from "../../../Section";
+import { challengeToFormPart } from "./helpers";
 
 type Props = {
   constraint: ExerciseConstraint;
@@ -20,6 +26,9 @@ const ALL_EXERCISE_MODES = Object.values(ExerciseMode);
 const ALL_EQUIPMENTS = Object.values(Equipment);
 const ALL_BODY_PARTS = Object.values(BodyPart);
 
+const DEFAULT_EXERCISE_CHALLENGE_CONSTRAINT = challengeToFormPart(
+  DEFAULT_EXERCISE_CHALLENGE
+).constraint;
 export default function ExerciseChallengeConstraintForm({
   constraint,
   onChange,
@@ -28,7 +37,10 @@ export default function ExerciseChallengeConstraintForm({
   const [selectedExercise, setSelectedExercise] = useState<
     Exercise | undefined
   >(undefined);
-
+  const reset = useCallback(
+    () => onChange(DEFAULT_EXERCISE_CHALLENGE_CONSTRAINT),
+    [onChange]
+  );
   const onExerciseSelected = (exercise?: Exercise) => {
     setSelectedExercise(exercise);
 
@@ -46,6 +58,19 @@ export default function ExerciseChallengeConstraintForm({
         selectedExercise={selectedExercise}
         onSelectExercise={onExerciseSelected}
       />
+      {constraint.name && (
+        <Section label="Exercise" icon="dumbbell">
+          <div className="flex items-center justify-between font-bold text-xs py-2">
+            {constraint.name}
+            <Button
+              onClick={reset}
+              className="h-4 aspect-square"
+              icon="times"
+              buttonStyle={ButtonStyle.Clear}
+            />
+          </div>
+        </Section>
+      )}
       <EnumPicker
         label="Exercise mode(s)"
         className="grid grid-cols-2 gap-2"

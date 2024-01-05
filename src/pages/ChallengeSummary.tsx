@@ -29,6 +29,8 @@ export default function ChallengeSummary({ className }: Props) {
         opened={showCreateChallengeModal}
         onClose={() => setShowCreateChallengeModal(false)}
       />
+      <ExerciseChallengeSection />
+      <span className="text-xs">Other challenges</span>
       <Button
         onClick={() => setShowCreateChallengeModal(true)}
         className="self-end w-1/2"
@@ -36,7 +38,6 @@ export default function ChallengeSummary({ className }: Props) {
         icon="plus"
         text="Create Challenge"
       />
-      <ExerciseChallengeSection />
       {noChallenges && (
         <EmptyNotice message="No challenges created" icon="trophy" />
       )}

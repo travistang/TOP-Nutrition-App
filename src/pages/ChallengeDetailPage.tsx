@@ -50,13 +50,6 @@ export default function ChallengeDetailPage() {
         buttonStyle={ButtonStyle.Clear}
         icon="arrow-left"
       />
-      <Button
-        className="justify-self-start w-fit"
-        onClick={console.log}
-        text="Edit challenge..."
-        buttonStyle={ButtonStyle.Clear}
-        icon="arrow-left"
-      />
       {loading && (
         <EmptyNotice message="Loading data..." className="w-full h-full" />
       )}

@@ -6,12 +6,18 @@ import { ExerciseChallenge } from "../../../types/ExerciseChallenge";
 import EmptyNotice from "../../EmptyNotice";
 import Button, { ButtonStyle } from "../../Input/Button";
 import Section from "../../Section";
-import CreateExerciseChallengeModal from "./CreateExerciseChallengeModal";
+import CreateExerciseChallengeModal, {
+  ExerciseChallengeModalHandlers,
+} from "./CreateExerciseChallengeModal";
 import ExerciseChallengeItem from "./ExerciseChallengeItem";
 
 const fetchChallenges = () => ExerciseDatabase.getAllExerciseChallenges();
 export default function ExerciseChallengeSection() {
-  const { result: challenges, loading } = useFetch(null, fetchChallenges);
+  const {
+    result: challenges,
+    loading,
+    refetch,
+  } = useFetch(null, fetchChallenges);
   const [creatingChallenge, setCreatingChallenge] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
@@ -24,14 +30,20 @@ export default function ExerciseChallengeSection() {
     () => (showAll ? challenges : challenges?.slice(0, 5)),
     [challenges, showAll]
   );
+  const modalHandlers = useMemo<ExerciseChallengeModalHandlers>(
+    () => ({
+      created: refetch,
+      close: () => setCreatingChallenge(false),
+    }),
+    [refetch]
+  );
 
   const noChallenges = challenges?.length === 0;
-
   return (
     <>
       <CreateExerciseChallengeModal
         opened={creatingChallenge}
-        onClose={() => setCreatingChallenge(false)}
+        on={modalHandlers}
       />
       <Section icon="dumbbell" label="Exercise challenges">
         {!loading && noChallenges && (

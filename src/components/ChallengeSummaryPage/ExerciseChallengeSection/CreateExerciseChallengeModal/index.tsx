@@ -1,110 +1,67 @@
-import { useCallback, useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import ExerciseDatabase from "../../../../database/ExerciseDatabase";
-import {
-  CHALLENGE_TYPE_CONFIG,
-  DEFAULT_EXERCISE_CHALLENGE,
-  ExerciseChallenge,
-  ExerciseConstraint,
-} from "../../../../types/ExerciseChallenge";
-import Button, { ButtonStyle } from "../../../Input/Button";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import useUpdater from "../../../../hooks/useUpdater";
+import { ExerciseChallenge } from "../../../../types/ExerciseChallenge";
+import { Optional } from "../../../../types/utils";
 import Modal from "../../../Modal";
 import Tab from "../../../Tab";
+import CreateExerciseChallengeButtonRow from "./CreateExerciseChallengeButtonRow";
 import ExerciseChallengeConstraintForm from "./ExerciseChallengeConstraintForm";
 import ExerciseChallengeInfoForm from "./ExerciseChallengeInfoForm";
 import ExerciseChallengeTargetForm from "./ExerciseChallengeTargetForm";
 import {
-  ChallengeInfo,
-  DEFAULT_CHALLENGE_INFO,
-  DEFAULT_CHALLENGE_TARGET,
-  ExerciseChallengeTarget,
-  FormTabs,
-  getFormTabs,
-} from "./types";
+  DEFAULT_FORM_PARTS,
+  FormParts,
+  challengeToFormPart,
+  createChallenge,
+  isFormValid,
+  removeChallenge,
+} from "./helpers";
+import { FormTabs, getFormTabs } from "./types";
 
+type FormSignal = "created" | "updated" | "deleted" | "close";
+export type ExerciseChallengeModalHandlers = Optional<
+  Record<FormSignal, () => void>,
+  "updated" | "deleted"
+>;
 type Props = {
   editingChallenge?: ExerciseChallenge;
   opened?: boolean;
   onCreated?: () => void;
-  onClose: () => void;
-};
-type FormParts = {
-  id?: string;
-  info: ChallengeInfo;
-  target: ExerciseChallengeTarget;
-  constraint: ExerciseConstraint;
-};
-const isFormValid = ({ constraint, info, target }: FormParts) => {
-  if (!info.name) return false;
-  if (!target.target) return false;
-  if (
-    CHALLENGE_TYPE_CONFIG[target.type].typeSpecificData &&
-    !target.typeSpecificValue
-  )
-    return false;
-
-  if (
-    !constraint.name &&
-    !constraint.equipments.length &&
-    !constraint.modes.length &&
-    !constraint.workingBodyParts.length
-  )
-    return false;
-  return true;
+  on: ExerciseChallengeModalHandlers;
 };
 
-const createChallenge = (form: FormParts) => {
-  const { info, target, constraint } = form;
-  const challenge: Omit<ExerciseChallenge, "id"> = {
-    exerciseConstraint: constraint,
-    ...info,
-    ...target,
-  };
-  const challengeId = form.id;
-  const mutatePromise = !challengeId
-    ? ExerciseDatabase.createExerciseChallenge(challenge)
-    : ExerciseDatabase.updateExerciseChallenge(challengeId, challenge);
-  return mutatePromise
-    .then(() => toast.success("Challenge created"))
-    .catch(() => toast.error("Failed to create challenge"));
-};
-
-export default function CreateExerciseChallengeModal({
+export default function CreateEditExerciseChallengeModal({
   editingChallenge,
-  onClose,
-  onCreated,
+  on,
   opened,
 }: Props) {
-  const [tab, setTab] = useState<FormTabs>(FormTabs.Constraint);
-  const [info, setInfo] = useState<ChallengeInfo>(DEFAULT_CHALLENGE_INFO);
-  const [target, setTarget] = useState<ExerciseChallengeTarget>(
-    DEFAULT_CHALLENGE_TARGET
+  const [tab, setTab] = useState<FormTabs>(FormTabs.Info);
+  const [form, setForm] = useState<FormParts>(
+    editingChallenge
+      ? challengeToFormPart(editingChallenge)
+      : DEFAULT_FORM_PARTS
   );
-  const [constraint, setConstraint] = useState<ExerciseConstraint>(
-    DEFAULT_EXERCISE_CHALLENGE.exerciseConstraint
+  const formUpdater = useUpdater(form, setForm);
+  const onCreateOrUpdate = useCallback(() => {
+    createChallenge(form).then(on.created).then(on.close);
+  }, [form, on.created, on.close]);
+
+  const isEditing = useMemo(
+    () => !!editingChallenge?.id,
+    [editingChallenge?.id]
   );
-  const onCreate = useCallback(() => {
-    createChallenge({ id: editingChallenge?.id, info, target, constraint })
-      .then(onCreated)
-      .then(onClose);
-  }, [editingChallenge?.id, onClose, onCreated, info, target, constraint]);
 
   useEffect(() => {
     if (!editingChallenge) return;
-    const { name, interval, mode, type, target, exerciseConstraint } =
-      editingChallenge;
-    setInfo({ name, interval });
-    setTarget({ type, mode, target });
-    setConstraint(exerciseConstraint);
+    setForm(challengeToFormPart(editingChallenge));
   }, [editingChallenge]);
 
-  const canSubmit = isFormValid({ info, target, constraint });
-
+  const formValid = isFormValid(form);
   return (
     <Modal
       opened={!!opened}
-      onClose={onClose}
-      label="Create exercise challenge"
+      onClose={on.close}
+      label={isEditing ? "Edit challenge" : "Create exercise challenge"}
     >
       <div className="flex flex-col items-stretch gap-2">
         <Tab
@@ -112,32 +69,33 @@ export default function CreateExerciseChallengeModal({
           options={getFormTabs(setTab)}
         />
         {tab === FormTabs.Info && (
-          <ExerciseChallengeInfoForm info={info} onChange={setInfo} />
+          <ExerciseChallengeInfoForm
+            info={form.info}
+            onChange={formUpdater("info")}
+          />
         )}
         {tab === FormTabs.Constraint && (
           <ExerciseChallengeConstraintForm
-            constraint={constraint}
-            onChange={setConstraint}
+            constraint={form.constraint}
+            onChange={formUpdater("constraint")}
           />
         )}
         {tab === FormTabs.Target && (
-          <ExerciseChallengeTargetForm target={target} onChange={setTarget} />
+          <ExerciseChallengeTargetForm
+            target={form.target}
+            onChange={formUpdater("target")}
+          />
         )}
-        <div className="flex items-center justify-end gap-2 col-span-full">
-          <Button
-            onClick={onClose}
-            buttonStyle={ButtonStyle.Clear}
-            text="Cancel"
-            icon="times"
-          />
-          <Button
-            disabled={!canSubmit}
-            onClick={onCreate}
-            buttonStyle={ButtonStyle.Block}
-            text="Create"
-            icon="plus"
-          />
-        </div>
+        <CreateExerciseChallengeButtonRow
+          isFormValid={formValid}
+          onClose={on.close}
+          onConfirm={onCreateOrUpdate}
+          onRemove={
+            editingChallenge?.id
+              ? removeChallenge.bind(null, editingChallenge.id)
+              : undefined
+          }
+        />
       </div>
     </Modal>
   );

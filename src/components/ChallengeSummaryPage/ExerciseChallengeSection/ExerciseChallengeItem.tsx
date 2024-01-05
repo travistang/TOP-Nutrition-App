@@ -80,7 +80,7 @@ export default function ExerciseChallengeItem({
     <div
       onClick={onClick}
       className={classNames(
-        "grid grid-rows-2 grid-cols-6 gap-2 py-2",
+        "grid grid-rows-2 grid-cols-6 gap-2 py-2 items-center",
         className
       )}
     >
@@ -101,7 +101,7 @@ export default function ExerciseChallengeItem({
         />
       </div>
       <div className="row-start-1 row-span-full flex flex-col items-end justify-center text-xs line-clamp-2 overflow-hidden text-ellipsis text-right gap-1">
-        <div className="text-lg font-bold leading-3">
+        <div className="text-md font-bold leading-3 flex-nowrap whitespace-nowrap">
           {totalCompletedValue} / {challenge.target}
         </div>
         {CHALLENGE_TYPE_CONFIG[challenge.type].unit}

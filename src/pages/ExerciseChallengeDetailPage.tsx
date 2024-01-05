@@ -1,15 +1,15 @@
 import { useCallback, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import CreateExerciseChallengeModal from "../components/ChallengeSummaryPage/ExerciseChallengeSection/CreateExerciseChallengeModal";
+import ExerciseChallengePeriodSection from "../components/ExerciseChallengeDetail/ExerciseChallengePeriodSection";
+import ExerciseChallengeSummarySection from "../components/ExerciseChallengeDetail/ExerciseChallengeSummarySection";
+import Button, { ButtonStyle } from "../components/Input/Button";
+import SectionPlaceholder from "../components/Placeholders/SectionPlaceholder";
+import Repeat from "../components/Repeat";
 import ExerciseDatabase from "../database/ExerciseDatabase";
+import { getTimeInInterval } from "../domain/Challenges/exerciseChallenge";
 import useFetch from "../hooks/useFetch";
 import { ExerciseChallenge } from "../types/ExerciseChallenge";
-import Repeat from "../components/Repeat";
-import SectionPlaceholder from "../components/Placeholders/SectionPlaceholder";
-import Button, { ButtonStyle } from "../components/Input/Button";
-import ExerciseChallengeSummarySection from "../components/ExerciseChallengeDetail/ExerciseChallengeSummarySection";
-import ExerciseChallengePeriodSection from "../components/ExerciseChallengeDetail/ExerciseChallengePeriodSection";
-import { getTimeInInterval } from "../domain/Challenges/exerciseChallenge";
-import CreateExerciseChallengeModal from "../components/ChallengeSummaryPage/ExerciseChallengeSection/CreateExerciseChallengeModal";
 
 const fetchChallenge = async (
   id?: string | null
@@ -37,6 +37,14 @@ export default function ExerciseChallengeDetailPage() {
     return getTimeInInterval(challenge.interval, Date.now(), 4);
   }, [challenge?.interval]);
 
+  const modalHandlers = useMemo(
+    () => ({
+      close: toggleShowEditModal,
+      created: refetchChallenge,
+      deleted: goBack,
+    }),
+    [toggleShowEditModal, refetchChallenge, goBack]
+  );
   if (!id) return null;
 
   return (
@@ -60,8 +68,7 @@ export default function ExerciseChallengeDetailPage() {
       {challenge && (
         <CreateExerciseChallengeModal
           opened={showEditModal}
-          onClose={toggleShowEditModal}
-          onCreated={refetchChallenge}
+          on={modalHandlers}
           editingChallenge={challenge}
         />
       )}
