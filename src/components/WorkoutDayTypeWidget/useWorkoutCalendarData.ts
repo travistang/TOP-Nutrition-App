@@ -1,6 +1,7 @@
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import { useLiveQuery } from "dexie-react-hooks";
 
+import { useCallback } from "react";
 import ExerciseDatabase, {
   CardioExerciseRecord,
   ExerciseSetRecord,
@@ -43,7 +44,6 @@ export default function useWorkoutCalendarData({
       return [[], []];
     });
   }, [selectedMonth]) ?? [[], []];
-
   const workoutsByDate = ExerciseUtils.groupWorkoutsByDate(
     workoutOfMonth ?? []
   );
@@ -93,9 +93,12 @@ export default function useWorkoutCalendarData({
     }
   );
 
-  const getWorkoutsOnDate = (date: Date) => {
-    return allWorkoutsByDate[format(date, "yyyy/MM/dd")] ?? [];
-  };
+  const getWorkoutsOnDate = useCallback(
+    (date: Date) => {
+      return allWorkoutsByDate[format(date, "yyyy/MM/dd")] ?? [];
+    },
+    [allWorkoutsByDate]
+  );
 
   return {
     getWorkoutsOnDate,

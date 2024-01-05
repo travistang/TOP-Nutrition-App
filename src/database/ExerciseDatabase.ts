@@ -19,8 +19,8 @@ import {
 import { CreateEditType } from "../types/utils";
 
 import {
-  getTimeInInterval,
   getTimeFromInterval,
+  getTimeInInterval,
   isExerciseUnderConstraint,
   isSetFulfillChallenge,
 } from "../domain/Challenges/exerciseChallenge";
@@ -228,7 +228,17 @@ class ExerciseDatabase extends Dexie {
 
   async getChallengesByExercise(exercise: Exercise) {
     return this.exerciseChallenges
-      .filter((c) => isExerciseUnderConstraint(exercise, c.exerciseConstraint))
+      .filter((c) => {
+        const modifiedExerciseByConstraint: Exercise = {
+          ...exercise,
+          exerciseMode: c.exerciseConstraint.modes[0] ?? exercise.exerciseMode,
+          equipment: c.exerciseConstraint.equipments[0] ?? exercise.equipment,
+        };
+        return isExerciseUnderConstraint(
+          modifiedExerciseByConstraint,
+          c.exerciseConstraint
+        );
+      })
       .toArray();
   }
 
@@ -255,9 +265,21 @@ class ExerciseDatabase extends Dexie {
       .toArray();
   }
 
-  async getPreviousSectionsForChallenge(challenge: ExerciseChallenge, time: number, numSections: number) {
-      const timeInIntervals = getTimeInInterval(challenge.interval, time, numSections);
-      return Promise.all(timeInIntervals.map((time) => this.getWorkoutsForChallenge(challenge, time)));
+  async getPreviousSectionsForChallenge(
+    challenge: ExerciseChallenge,
+    time: number,
+    numSections: number
+  ) {
+    const timeInIntervals = getTimeInInterval(
+      challenge.interval,
+      time,
+      numSections
+    );
+    return Promise.all(
+      timeInIntervals.map((time) =>
+        this.getWorkoutsForChallenge(challenge, time)
+      )
+    );
   }
 
   async getChallengeById(id: string): Promise<ExerciseChallenge | undefined> {

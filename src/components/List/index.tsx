@@ -1,8 +1,8 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import classNames from "classnames";
 import { useCallback, useMemo, useState } from "react";
-import Button, { ButtonStyle } from "../Input/Button";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import EmptyNotice from "../EmptyNotice";
+import Button, { ButtonStyle } from "../Input/Button";
 
 type RenderProps<V> = {
   item: V;
@@ -10,6 +10,8 @@ type RenderProps<V> = {
 };
 type Props<V> = {
   items: V[];
+  loading?: boolean;
+  loadingPlaceholder?: React.FC;
   className?: string;
   pageSize?: number;
   emptyMessage?: string;
@@ -19,6 +21,8 @@ type Props<V> = {
 export default function List<V>({
   className,
   items,
+  loading,
+  loadingPlaceholder: Placeholder,
   pageSize,
   emptyIcon,
   emptyMessage,
@@ -41,7 +45,8 @@ export default function List<V>({
   return (
     <div className={classNames("flex flex-col items-stretch gap-2", className)}>
       {displayingItems.map((item, index) => renderer({ item, index }))}
-      {isEmpty && (
+      {loading && Placeholder && <Placeholder />}
+      {!loading && isEmpty && (
         <EmptyNotice
           className="text-xs font-bold py-4"
           message={emptyMessage ?? ""}

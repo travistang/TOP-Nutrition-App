@@ -18,6 +18,12 @@
   font-weight: 400;
 }
 
+*::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+}
+
 input[type="range"]::-webkit-slider-runnable-track {
   @apply bg-gray-100 rounded-full;
 }
