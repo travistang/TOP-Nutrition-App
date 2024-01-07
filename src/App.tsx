@@ -34,7 +34,6 @@ import WorkoutStatistics from "./pages/WorkoutStatistics";
 
 function App() {
   useDatabaseSynchronization();
-
   return (
     <ErrorBoundary>
       <BrowserRouter basename="/TOP-Nutrition-App">

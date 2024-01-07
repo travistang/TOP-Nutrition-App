@@ -5,6 +5,8 @@ import WorkoutOfDayList from "../components/WorkoutOfDayList";
 import CardioEntry from "../components/WorkoutOfDayList/CardioEntry";
 import WorkoutSummary from "../components/WorkoutSummary";
 import ExerciseDatabase from "../database/ExerciseDatabase";
+import { EventBusName } from "../domain/EventBus";
+import useEventBus from "../hooks/useEventBus";
 import useFetch from "../hooks/useFetch";
 
 const fetchWorkoutData = async () => {
@@ -23,27 +25,26 @@ const fetchWorkoutData = async () => {
   };
 };
 export default function WorkoutListPage() {
-  const { result: workoutsToday } = useFetch(null, fetchWorkoutData);
-  const { strength: strengthExercises = [], cardio: cardioExercises = [] } =
-    workoutsToday ?? {};
+  const { result: workoutsToday, refetch } = useFetch(null, fetchWorkoutData);
+  useEventBus(EventBusName.Workouts, refetch);
   const workoutOfDayData = useMemo(
     () => ({
-      strength: strengthExercises,
+      strength: workoutsToday?.strength ?? [],
       cardio: [],
     }),
-    [strengthExercises]
+    [workoutsToday?.strength]
   );
   return (
     <div className="flex flex-col overflow-y-auto flex-1 gap-2 items-stretch">
       <div className="p-2 gap-2 pb-36 flex flex-col items-stretch">
-        {cardioExercises.length > 0 && (
+        {!!workoutsToday?.cardio.length && (
           <Section label="Cardio exercises">
-            {cardioExercises.map((cardio) => (
+            {workoutsToday?.cardio.map((cardio) => (
               <CardioEntry cardio={cardio} key={cardio.id} />
             ))}
           </Section>
         )}
-        <WorkoutSummary workouts={strengthExercises} />
+        <WorkoutSummary workouts={workoutsToday?.strength ?? []} />
         <WorkoutOfDayList workouts={workoutOfDayData} />
       </div>
     </div>

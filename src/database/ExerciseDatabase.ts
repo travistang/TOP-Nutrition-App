@@ -24,6 +24,7 @@ import {
   isExerciseUnderConstraint,
   isSetFulfillChallenge,
 } from "../domain/Challenges/exerciseChallenge";
+import bus, { EventBusName } from "../domain/EventBus";
 import { ExerciseChallenge } from "../types/ExerciseChallenge";
 import ArrayUtils from "../utils/Array";
 import DatabaseUtils from "../utils/Database";
@@ -111,11 +112,13 @@ class ExerciseDatabase extends Dexie {
     rep: Repetition,
     date: Date
   ) {
-    return this.exerciseSetRecord.update(id, {
-      exercise,
-      repetitions: rep,
-      date: date.getTime(),
-    });
+    return this.exerciseSetRecord
+      .update(id, {
+        exercise,
+        repetitions: rep,
+        date: date.getTime(),
+      })
+      .then(() => bus.emit(EventBusName.Workouts));
   }
 
   async addRecord(
@@ -130,11 +133,15 @@ class ExerciseDatabase extends Dexie {
       repetitions: rep,
     };
 
-    return this.exerciseSetRecord.add(exerciseSetRecord);
+    return this.exerciseSetRecord
+      .add(exerciseSetRecord)
+      .then(() => bus.emit(EventBusName.Workouts));
   }
 
   async deleteRecord(id: string) {
-    return this.exerciseSetRecord.delete(id);
+    return this.exerciseSetRecord
+      .delete(id)
+      .then(() => bus.emit(EventBusName.Workouts));
   }
 
   async findOrCreateExerciseDetails(record: Exercise): Promise<ExerciseDetail> {
@@ -191,15 +198,21 @@ class ExerciseDatabase extends Dexie {
       id: uuid4(),
       ...exercise,
     };
-    return this.cardioExerciseRecord.add(record);
+    return this.cardioExerciseRecord
+      .add(record)
+      .then(() => bus.emit(EventBusName.Workouts));
   }
 
   async updateCardioRecord(id: string, data: CardioExercise) {
-    return this.cardioExerciseRecord.update(id, data);
+    return this.cardioExerciseRecord
+      .update(id, data)
+      .then(() => bus.emit(EventBusName.Workouts));
   }
 
   async removeCardioRecord(id: string) {
-    return this.cardioExerciseRecord.delete(id);
+    return this.cardioExerciseRecord
+      .delete(id)
+      .then(() => bus.emit(EventBusName.Workouts));
   }
 
   async getCardioExerciseRecords(

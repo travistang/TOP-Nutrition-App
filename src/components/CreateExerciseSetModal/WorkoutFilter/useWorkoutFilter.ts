@@ -89,7 +89,6 @@ type UseWorkoutFilterResult = {
 export default function useWorkoutFilter(
   exercises: ExerciseSetRecord[]
 ): UseWorkoutFilterResult {
-  console.log("use workoutfilter start");
   const availableFilters = computeAvailableFilters(exercises);
   const [appliedFilter, setAppliedFilter] = useState(DEFAULT_FILTER);
 
@@ -105,7 +104,6 @@ export default function useWorkoutFilter(
     () => exercises.filter(applyFilter(appliedFilter)),
     [exercises, appliedFilter]
   );
-  console.log("use workoutfilter end");
 
   return {
     availableFilters,

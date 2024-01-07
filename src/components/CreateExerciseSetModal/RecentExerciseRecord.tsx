@@ -1,8 +1,10 @@
 import classNames from "classnames";
 import { format } from "date-fns";
-import { useLiveQuery } from "dexie-react-hooks";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
+import { EventBusName } from "../../domain/EventBus";
+import useEventBus from "../../hooks/useEventBus";
+import useFetch from "../../hooks/useFetch";
 import { WorkoutTrendMode } from "../../types/Exercise";
 import ArrayUtils from "../../utils/Array";
 import ObjectUtils from "../../utils/Object";
@@ -14,20 +16,25 @@ import RecentExerciseStatisticsChart from "./RecentExerciseStatisticsChart";
 import WorkoutFilter from "./WorkoutFilter";
 import useWorkoutFilter from "./WorkoutFilter/useWorkoutFilter";
 
+const queryByExerciseName = (name: string) =>
+  ExerciseDatabase.getRecentExercisesTrendData(name);
+
 type Props = {
   inline?: boolean;
   className?: string;
   exerciseName: string;
 };
+
 export default function RecentExerciseRecord({
   inline,
   className,
   exerciseName,
 }: Props) {
-  const queryByExercise = useCallback(() => {
-    return ExerciseDatabase.getRecentExercisesTrendData(exerciseName);
-  }, [exerciseName]);
-  const exerciseRecords = useLiveQuery(queryByExercise, [exerciseName]);
+  const { result: exerciseRecords, refetch } = useFetch(
+    exerciseName,
+    queryByExerciseName
+  );
+  useEventBus(EventBusName.Workouts, refetch);
 
   const { availableFilters, appliedFilter, toggleFilter, filteredRecords } =
     useWorkoutFilter(exerciseRecords ?? []);

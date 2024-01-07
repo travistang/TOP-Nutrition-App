@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import ExerciseDatabase, {
   ExerciseSetRecord,
 } from "../../../database/ExerciseDatabase";
+import { EventBusName } from "../../../domain/EventBus";
+import useEventBus from "../../../hooks/useEventBus";
 import useFetch from "../../../hooks/useFetch";
 import { ExerciseSet } from "../../../types/Exercise";
 import { ExerciseChallenge } from "../../../types/ExerciseChallenge";
@@ -49,10 +51,12 @@ export default function ExerciseRelatedChallengesSection({ records }: Props) {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
   const toggleExpand = useCallback(() => setExpanded((e) => !e), []);
-  const { result: challenges, loading } = useFetch(
-    records ?? [],
-    fetchExerciseRelatedChallenges
-  );
+  const {
+    result: challenges,
+    loading,
+    refetch,
+  } = useFetch(records ?? [], fetchExerciseRelatedChallenges);
+  useEventBus(EventBusName.Workouts, refetch);
   const challengesToMap = useMemo(
     () =>
       challenges?.map((challenge) => ({
@@ -69,6 +73,7 @@ export default function ExerciseRelatedChallengesSection({ records }: Props) {
     >
       <List
         loading={loading}
+        emptyMessage="No related challenges found"
         loadingPlaceholder={LoadingPlaceholder}
         items={challengesToMap ?? []}
       >
