@@ -18,10 +18,9 @@ export default function useFetch<P, R>(
       .then(() => fetchFunc(params))
       .then(setResult)
       .finally(() => setLoading(false));
-  }, [fetchFunc, params])
+  }, [fetchFunc, params]);
 
-  useEffect(refetch , [refetch]);
-
+  useEffect(refetch, [refetch]);
   return {
     result,
     loading,

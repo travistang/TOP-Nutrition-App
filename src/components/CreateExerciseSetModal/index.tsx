@@ -1,17 +1,15 @@
-import React from "react";
+import { useCallback } from "react";
 import { useRecoilState } from "recoil";
 import { createEditExerciseRecordAtom } from "../../atoms/CreateEditExerciseRecordAtom";
 import Modal from "../Modal";
-import useModalOpenedMode, {
-  ExerciseModalOpenMode,
-} from "./useModalOpenedMode";
 import RecentExerciseRecord from "./RecentExerciseRecord";
 import StepCreateEditExerciseForm from "./StepCreateEditExerciseForm";
 import NewSetContextProvider from "./StepCreateEditExerciseForm/NewSetContext";
+import useModalOpenedMode, {
+  ExerciseModalOpenMode,
+} from "./useModalOpenedMode";
 
-const getModalHeader = (
-  openingMode: ExerciseModalOpenMode,
-) => {
+const getModalHeader = (openingMode: ExerciseModalOpenMode) => {
   switch (openingMode) {
     case ExerciseModalOpenMode.Adding:
       return "Add new workout set";
@@ -30,9 +28,9 @@ export default function CreateExerciseSetModal() {
   const isViewingExercise = openingMode === ExerciseModalOpenMode.Viewing;
   const { modalOpened, exercise } = createEditRecordAtom;
   const modalHeader = getModalHeader(openingMode);
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setCreateEditRecordAtom({ ...createEditRecordAtom, modalOpened: false });
-  };
+  }, [createEditRecordAtom, setCreateEditRecordAtom]);
 
   return (
     <Modal onClose={closeModal} opened={modalOpened} label={modalHeader}>

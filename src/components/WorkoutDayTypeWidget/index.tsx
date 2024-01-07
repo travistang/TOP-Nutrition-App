@@ -1,5 +1,5 @@
-import { isSameMonth, startOfMonth } from "date-fns";
-import { useState } from "react";
+import { format, isSameMonth, startOfMonth } from "date-fns";
+import { useCallback, useState } from "react";
 import { ExerciseDayTypeColorMap } from "../../types/Exercise";
 import Calendar from "../Calendar";
 import DateInput from "../Input/DateInput";
@@ -30,42 +30,47 @@ export default function WorkoutDayTypeWidget() {
 
   const workoutOnSelectedDate = getWorkoutsOnDate(selectedDate);
 
-  const onSelectMonth = (newMonth: Date) => {
+  const onSelectMonth = useCallback((newMonth: Date) => {
     setSelectedMonth(newMonth);
     const autoSelectedDate = isSameMonth(newMonth, Date.now())
       ? new Date()
       : startOfMonth(newMonth);
     setSelectedDate(autoSelectedDate);
-  };
+  }, []);
 
   return (
-    <Section label="Workout day type">
-      <DateInput
-        dateType={DateInputType.Month}
-        value={selectedMonth}
-        onChange={onSelectMonth}
-        inputClassName="bg-gray-400"
-        className="mb-2"
-      />
-      <Calendar
-        markers={calendarMarkers}
-        date={selectedDate}
-        selectedDate={selectedDate}
-        onSelectDate={setSelectedDate}
-      />
-      <div className="flex flex-wrap gap-2 justify-evenly py-2">
-        {LEGENDS.map(({ label, color, legendType }) => (
-          <Legend
-            key={label}
-            label={label}
-            color={color}
-            legendType={legendType}
-          />
-        ))}
-      </div>
-      <div className="py-2 max-h-24 overflow-y-auto">
+    <>
+      <Section label="Workout day type">
+        <DateInput
+          dateType={DateInputType.Month}
+          value={selectedMonth}
+          onChange={onSelectMonth}
+          inputClassName="bg-gray-400"
+          className="mb-2"
+        />
+        <Calendar
+          markers={calendarMarkers}
+          date={selectedDate}
+          selectedDate={selectedDate}
+          onSelectDate={setSelectedDate}
+        />
+        <div className="flex flex-wrap gap-2 justify-evenly py-2">
+          {LEGENDS.map(({ label, color, legendType }) => (
+            <Legend
+              key={label}
+              label={label}
+              color={color}
+              legendType={legendType}
+            />
+          ))}
+        </div>
+      </Section>
+      <span className="text-xs">
+        Workouts on <b>{format(selectedDate, "dd/MM/yyyy")}</b>
+      </span>
+      <div className="py-2 overflow-y-auto">
         <WorkoutOfDayList workouts={workoutOnSelectedDate} />
       </div>
-    </Section>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import { withErrorBoundary } from "@sentry/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import RecentExerciseRecord from "../components/CreateExerciseSetModal/RecentExerciseRecord";
 import ExerciseSearchPanel from "../components/ExerciseDetailPage/ExerciseSearchPanel";
 import ExerciseSearchResult from "../components/ExerciseDetailPage/ExerciseSearchResult";
@@ -7,7 +7,7 @@ import { Exercise } from "../types/Exercise";
 
 function ExerciseDetailPage() {
   const [selectedRecord, setSelectedRecord] = useState<Exercise | null>(null);
-  const clearRecord = () => setSelectedRecord(null);
+  const clearRecord = useCallback(() => setSelectedRecord(null), []);
 
   return (
     <div className="flex flex-col overflow-y-auto overflow-x-hidden flex-1 items-stretch gap-2 pb-12 scroll-pb-12">

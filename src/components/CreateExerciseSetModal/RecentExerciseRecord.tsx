@@ -1,45 +1,62 @@
-import React from "react";
+import classNames from "classnames";
 import { format } from "date-fns";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useMemo } from "react";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
+import { EventBusName } from "../../domain/EventBus";
+import useEventBus from "../../hooks/useEventBus";
+import useFetch from "../../hooks/useFetch";
+import { WorkoutTrendMode } from "../../types/Exercise";
 import ArrayUtils from "../../utils/Array";
 import ObjectUtils from "../../utils/Object";
+import EmptyNotice from "../EmptyNotice";
+import ExerciseRelatedChallengesSection from "./ExerciseRelatedChallengesSection";
 import PreviousWorkoutList from "./PreviousWorkoutList";
 import RecentExerciseStatistics from "./RecentExerciseStatistics";
 import RecentExerciseStatisticsChart from "./RecentExerciseStatisticsChart";
-import { WorkoutTrendMode } from "../../types/Exercise";
-import classNames from "classnames";
 import WorkoutFilter from "./WorkoutFilter";
 import useWorkoutFilter from "./WorkoutFilter/useWorkoutFilter";
-import EmptyNotice from "../EmptyNotice";
+
+const queryByExerciseName = (name: string) =>
+  ExerciseDatabase.getRecentExercisesTrendData(name);
 
 type Props = {
   inline?: boolean;
   className?: string;
   exerciseName: string;
 };
+
 export default function RecentExerciseRecord({
   inline,
   className,
   exerciseName,
 }: Props) {
-  const exerciseRecords = useLiveQuery(() => {
-    return ExerciseDatabase.getRecentExercisesTrendData(exerciseName);
-  }, [exerciseName]);
+  const { result: exerciseRecords, refetch } = useFetch(
+    exerciseName,
+    queryByExerciseName
+  );
+  useEventBus(EventBusName.Workouts, refetch);
 
   const { availableFilters, appliedFilter, toggleFilter, filteredRecords } =
     useWorkoutFilter(exerciseRecords ?? []);
 
-  const recordsByDate = ArrayUtils.groupBy(filteredRecords ?? [], (record) =>
-    format(record.date, "yyyy/MM/dd")
-  );
-  const sortedWorkoutGroups = ObjectUtils.valueBySortedKey(
-    recordsByDate,
-    (a, b) => new Date(b).getTime() - new Date(a).getTime()
+  const recordsByDate = useMemo(
+    () =>
+      ArrayUtils.groupBy(filteredRecords ?? [], (record) =>
+        format(record.date, "yyyy/MM/dd")
+      ),
+    [filteredRecords]
   );
 
-  const hasFilterWithNoResults =
-    exerciseRecords?.length && filteredRecords.length === 0;
+  const sortedWorkoutGroups = useMemo(
+    () =>
+      ObjectUtils.valueBySortedKey(
+        recordsByDate,
+        (a, b) => new Date(b).getTime() - new Date(a).getTime()
+      ),
+    [recordsByDate]
+  );
+
+  const hasFilterWithNoResults = filteredRecords.length === 0;
 
   return (
     <div
@@ -53,6 +70,7 @@ export default function RecentExerciseRecord({
         noHeader={inline}
         recentExercises={filteredRecords}
       />
+      <ExerciseRelatedChallengesSection records={filteredRecords} />
       <RecentExerciseStatisticsChart
         trendMode={WorkoutTrendMode.MaxWeight}
         workouts={filteredRecords}

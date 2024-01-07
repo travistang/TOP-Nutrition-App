@@ -1,5 +1,20 @@
-import { endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek, subDays, subMonths, subWeeks } from "date-fns";
-import { BodyPart, Equipment, Exercise, ExerciseSet } from "../../types/Exercise";
+import {
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  subDays,
+  subMonths,
+  subWeeks,
+} from "date-fns";
+import {
+  BodyPart,
+  Equipment,
+  Exercise,
+  ExerciseSet,
+} from "../../types/Exercise";
 import {
   ExerciseChallenge,
   ExerciseChallengeInterval,
@@ -7,8 +22,8 @@ import {
   ExerciseChallengeType,
   ExerciseConstraint,
 } from "../../types/ExerciseChallenge";
-import RepetitionUtils from "../../utils/Repetition";
 import ArrayUtils from "../../utils/Array";
+import RepetitionUtils from "../../utils/Repetition";
 
 export const isExerciseUnderConstraint = (
   exercise: Exercise,
@@ -89,9 +104,10 @@ export const getAchievedValueFromSet = (
 
 export const getTimeFromInterval = (
   interval: ExerciseChallengeInterval,
-  time: number,
+  time: number
 ): [number, number] => {
-  let intervalStart = Date.now(), intervalEnd = Date.now();
+  let intervalStart = Date.now(),
+    intervalEnd = Date.now();
   switch (interval) {
     case ExerciseChallengeInterval.Daily:
       intervalEnd = endOfDay(time).getTime();
@@ -109,17 +125,21 @@ export const getTimeFromInterval = (
   return [intervalStart, intervalEnd];
 };
 
-export const getTimeInInterval = (interval: ExerciseChallengeInterval, time: number, numInterval: number): number[] => {
+export const getTimeInInterval = (
+  interval: ExerciseChallengeInterval,
+  time: number,
+  numInterval: number
+): number[] => {
   const timeInIntervalFunc = {
     [ExerciseChallengeInterval.Daily]: subDays,
     [ExerciseChallengeInterval.Weekly]: subWeeks,
     [ExerciseChallengeInterval.Monthly]: subMonths,
   }[interval];
-  
+
   return ArrayUtils.range(numInterval).map((n) => {
     return timeInIntervalFunc(time, n).getTime();
-  })
-}
+  });
+};
 
 export const createChallengeTypeText = (challenge: ExerciseChallenge) => {
   const { type, target, typeSpecificValue } = challenge;
@@ -134,33 +154,40 @@ export const createChallengeTypeText = (challenge: ExerciseChallenge) => {
       return `${target} reps of eligible exercises`;
     case ExerciseChallengeType.TotalVolume:
       return `a total volume of ${target} kg x reps of eligible exercises`;
-
   }
-  return ``
-}
+};
 
 export const challengeComparisonText = (mode: ExerciseChallengeMode) => {
   switch (mode) {
     case ExerciseChallengeMode.GreaterThan:
-      return 'more than';
+      return "more than";
     case ExerciseChallengeMode.GreaterThanOrEqualTo:
-      return 'at least';
+      return "at least";
     case ExerciseChallengeMode.LessThan:
-      return 'less than';
+      return "less than";
     case ExerciseChallengeMode.LessThanOrEqualTo:
-      return 'at most';
+      return "at most";
   }
-}
+};
 
 const equipmentConstraintText = (equipments: Equipment[]) => {
-  if (equipments.length === 0 || equipments.length === Object.values(Equipment).length) return 'any equipments';
+  if (
+    equipments.length === 0 ||
+    equipments.length === Object.values(Equipment).length
+  )
+    return "any equipments";
   if (equipments.length === 1) return equipments[0].toString();
   const [firstEquipment, ...remainingEquipments] = equipments;
-  return `any of ${remainingEquipments.join(',')} or ${firstEquipment}`;
-}
+  return `any of ${remainingEquipments.join(",")} or ${firstEquipment}`;
+};
 export const challengeConstraintText = (constraint: ExerciseConstraint) => {
   const { name, workingBodyParts, equipments } = constraint;
   const nameString = name || "any exercises";
-  const bodyPartString = workingBodyParts.length === Object.values(BodyPart).length ? 'any body parts' : `working on ${workingBodyParts.join(',')}`;
-  return `${nameString} ${bodyPartString} using ${equipmentConstraintText(equipments)}`;
-}
+  const bodyPartString =
+    workingBodyParts.length === Object.values(BodyPart).length
+      ? "any body parts"
+      : `working on ${workingBodyParts.join(",")}`;
+  return `${nameString} ${bodyPartString} using ${equipmentConstraintText(
+    equipments
+  )}`;
+};

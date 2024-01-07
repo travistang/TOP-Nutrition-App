@@ -1,8 +1,4 @@
-import {
-  DEFAULT_EXERCISE_CHALLENGE,
-  ExerciseChallenge,
-} from "../../../../types/ExerciseChallenge";
-import ObjectUtils from "../../../../utils/Object";
+import { ExerciseChallenge } from "../../../../types/ExerciseChallenge";
 
 export enum FormTabs {
   Info = "info",
@@ -10,19 +6,11 @@ export enum FormTabs {
   Target = "target",
 }
 export type ChallengeInfo = Pick<ExerciseChallenge, "name" | "interval">;
-export const DEFAULT_CHALLENGE_INFO = ObjectUtils.filterKeys(
-  DEFAULT_EXERCISE_CHALLENGE,
-  ["name", "interval"]
-);
 
 export type ExerciseChallengeTarget = Pick<
   ExerciseChallenge,
   "mode" | "type" | "target" | "typeSpecificValue"
 >;
-export const DEFAULT_CHALLENGE_TARGET = ObjectUtils.filterKeys(
-  DEFAULT_EXERCISE_CHALLENGE,
-  ["mode", "target", "typeSpecificValue", "type"]
-);
 
 export const getFormTabs = (setTab: (t: FormTabs) => void) => [
   {

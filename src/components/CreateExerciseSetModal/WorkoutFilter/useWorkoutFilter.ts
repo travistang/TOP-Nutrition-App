@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ExerciseSetRecord } from "../../../database/ExerciseDatabase";
 import { Exercise } from "../../../types/Exercise";
 import ArrayUtils from "../../../utils/Array";
@@ -92,12 +92,19 @@ export default function useWorkoutFilter(
   const availableFilters = computeAvailableFilters(exercises);
   const [appliedFilter, setAppliedFilter] = useState(DEFAULT_FILTER);
 
-  const toggleFilter = (key: FilterableExerciseKeys) => {
-    const nextFilter = toNextFilter(availableFilters, appliedFilter, key);
-    setAppliedFilter(nextFilter);
-  };
+  const toggleFilter = useCallback(
+    (key: FilterableExerciseKeys) => {
+      const nextFilter = toNextFilter(availableFilters, appliedFilter, key);
+      setAppliedFilter(nextFilter);
+    },
+    [availableFilters, appliedFilter]
+  );
 
-  const filteredRecords = exercises.filter(applyFilter(appliedFilter));
+  const filteredRecords = useMemo(
+    () => exercises.filter(applyFilter(appliedFilter)),
+    [exercises, appliedFilter]
+  );
+
   return {
     availableFilters,
     appliedFilter,
