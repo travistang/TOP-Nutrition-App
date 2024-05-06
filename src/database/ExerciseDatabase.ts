@@ -23,7 +23,7 @@ import {
   getTimeInInterval,
   isExerciseUnderConstraint,
   isSetFulfillChallenge,
-} from "../domain/Challenges/exerciseChallenge";
+} from "../domain/Challenges/ExerciseChallenge";
 import bus, { EventBusName } from "../domain/EventBus";
 import { ExerciseChallenge } from "../types/ExerciseChallenge";
 import ArrayUtils from "../utils/Array";

@@ -7,7 +7,7 @@ import Button, { ButtonStyle } from "../components/Input/Button";
 import SectionPlaceholder from "../components/Placeholders/SectionPlaceholder";
 import Repeat from "../components/Repeat";
 import ExerciseDatabase from "../database/ExerciseDatabase";
-import { getTimeInInterval } from "../domain/Challenges/exerciseChallenge";
+import { getTimeInInterval } from "../domain/Challenges/ExerciseChallenge";
 import useFetch from "../hooks/useFetch";
 import { ExerciseChallenge } from "../types/ExerciseChallenge";
 

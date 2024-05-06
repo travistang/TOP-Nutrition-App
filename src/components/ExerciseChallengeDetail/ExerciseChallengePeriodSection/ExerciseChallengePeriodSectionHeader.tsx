@@ -1,18 +1,18 @@
-import { useMemo } from "react";
 import { format } from "date-fns";
+import { useMemo } from "react";
+import {
+  getAchievedValueFromSet,
+  getTimeFromInterval,
+} from "../../../domain/Challenges/ExerciseChallenge";
+import { ExerciseSet } from "../../../types/Exercise";
 import {
   ExerciseChallenge,
   ExerciseChallengeMode,
 } from "../../../types/ExerciseChallenge";
 import { MarcoNutritionColor } from "../../../types/Nutrition";
-import { ExerciseSet } from "../../../types/Exercise";
-import {
-  getAchievedValueFromSet,
-  getTimeFromInterval,
-} from "../../../domain/Challenges/exerciseChallenge";
 import NumberUtils from "../../../utils/Number";
-import ProgressBar from "../../ProgressBar";
 import Chip from "../../Chip";
+import ProgressBar from "../../ProgressBar";
 
 const formatDate = (date: number) => format(date, "dd/MM/yyyy");
 

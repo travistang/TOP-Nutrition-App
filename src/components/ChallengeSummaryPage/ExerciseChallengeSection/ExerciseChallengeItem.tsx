@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { useMemo } from "react";
 import { Doughnut } from "react-chartjs-2";
 import ExerciseDatabase from "../../../database/ExerciseDatabase";
-import { getAchievedValueFromSet } from "../../../domain/Challenges/exerciseChallenge";
+import { getAchievedValueFromSet } from "../../../domain/Challenges/ExerciseChallenge";
 import useFetch from "../../../hooks/useFetch";
 import {
   CHALLENGE_TYPE_CONFIG,
