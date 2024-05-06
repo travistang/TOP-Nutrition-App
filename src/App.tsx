@@ -2,8 +2,6 @@ import { ErrorBoundary } from "@sentry/react";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import useDatabaseSynchronization from "./domain/DatabaseSynchronization/hooks";
-
 import ConfirmationModal from "./components/ConfirmationModal";
 import CreateExerciseSetModal from "./components/CreateExerciseSetModal";
 import CreateMeasurementRecordModal from "./components/CreateMeasurementRecordModal";
@@ -33,7 +31,6 @@ import WorkoutListPage from "./pages/WorkoutListPage";
 import WorkoutStatistics from "./pages/WorkoutStatistics";
 
 function App() {
-  useDatabaseSynchronization();
   return (
     <ErrorBoundary>
       <BrowserRouter basename="/TOP-Nutrition-App">
