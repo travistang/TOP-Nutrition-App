@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/TOP-Nutrition-App/static/css/main.e562d8e0.css",
-    "main.js": "/TOP-Nutrition-App/static/js/main.1dc0474c.js",
-    "static/js/810.540ff938.chunk.js": "/TOP-Nutrition-App/static/js/810.540ff938.chunk.js",
-    "static/js/787.d785a6e4.chunk.js": "/TOP-Nutrition-App/static/js/787.d785a6e4.chunk.js",
-    "static/js/250.efa712e6.chunk.js": "/TOP-Nutrition-App/static/js/250.efa712e6.chunk.js",
+    "main.css": "/TOP-Nutrition-App/static/css/main.841aa58e.css",
+    "main.js": "/TOP-Nutrition-App/static/js/main.70e10230.js",
+    "static/js/810.be01e105.chunk.js": "/TOP-Nutrition-App/static/js/810.be01e105.chunk.js",
+    "static/js/787.fa4fdc47.chunk.js": "/TOP-Nutrition-App/static/js/787.fa4fdc47.chunk.js",
+    "static/js/250.055ac505.chunk.js": "/TOP-Nutrition-App/static/js/250.055ac505.chunk.js",
     "static/media/FFClanProRegular.TTF": "/TOP-Nutrition-App/static/media/FFClanProRegular.f320eb6917987c847eff.TTF",
     "static/media/FFClanProBold.TTF": "/TOP-Nutrition-App/static/media/FFClanProBold.cfcefc98300feea1bf32.TTF",
     "service-worker.js": "/TOP-Nutrition-App/service-worker.js",
     "index.html": "/TOP-Nutrition-App/index.html",
-    "main.e562d8e0.css.map": "/TOP-Nutrition-App/static/css/main.e562d8e0.css.map",
-    "main.1dc0474c.js.map": "/TOP-Nutrition-App/static/js/main.1dc0474c.js.map",
-    "810.540ff938.chunk.js.map": "/TOP-Nutrition-App/static/js/810.540ff938.chunk.js.map",
-    "787.d785a6e4.chunk.js.map": "/TOP-Nutrition-App/static/js/787.d785a6e4.chunk.js.map",
-    "250.efa712e6.chunk.js.map": "/TOP-Nutrition-App/static/js/250.efa712e6.chunk.js.map"
+    "main.841aa58e.css.map": "/TOP-Nutrition-App/static/css/main.841aa58e.css.map",
+    "main.70e10230.js.map": "/TOP-Nutrition-App/static/js/main.70e10230.js.map",
+    "810.be01e105.chunk.js.map": "/TOP-Nutrition-App/static/js/810.be01e105.chunk.js.map",
+    "787.fa4fdc47.chunk.js.map": "/TOP-Nutrition-App/static/js/787.fa4fdc47.chunk.js.map",
+    "250.055ac505.chunk.js.map": "/TOP-Nutrition-App/static/js/250.055ac505.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e562d8e0.css",
-    "static/js/main.1dc0474c.js"
+    "static/css/main.841aa58e.css",
+    "static/js/main.70e10230.js"
   ]
 }
