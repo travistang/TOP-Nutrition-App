@@ -86,4 +86,5 @@ class FoodContainerDatabase extends Dexie {
   }
 }
 
-export default new FoodContainerDatabase();
+const foodContainerDatabase = new FoodContainerDatabase();
+export default foodContainerDatabase;

@@ -64,4 +64,5 @@ class DatabaseSynchronizer {
   }
 }
 
-export default new DatabaseSynchronizer();
+const databaseSynchronizer = new DatabaseSynchronizer();
+export default databaseSynchronizer;

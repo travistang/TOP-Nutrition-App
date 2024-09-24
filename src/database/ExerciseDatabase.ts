@@ -300,4 +300,5 @@ class ExerciseDatabase extends Dexie {
   }
 }
 
-export default new ExerciseDatabase();
+const exerciseDatabase = new ExerciseDatabase();
+export default exerciseDatabase;
