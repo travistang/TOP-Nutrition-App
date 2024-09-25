@@ -17,6 +17,7 @@ export default function FoodContainerSelector({
   onUpdateSelection,
   className,
 }: Props) {
+  const containers = useLiveQuery(() => FoodContainerDatabase.getAll());
   const toggleSelection = (id: string) => {
     const index = selectedContainersId.findIndex((c) => c === id);
     if (index === -1) {
@@ -27,17 +28,19 @@ export default function FoodContainerSelector({
       onUpdateSelection(updated);
     }
   };
-  const containers = useLiveQuery(() => FoodContainerDatabase.getAll());
   const hasNoContainers = !containers?.length;
   const sectionTitle =
     selectedContainersId.length === 0
       ? "Selected containers"
       : `Selected containers (${selectedContainersId.length})`;
-  const toggleSelectionByQrCode = (code: string) => {
-    if (!containers?.find((container) => container.identifier === code)) {
+  const toggleSelectionByQrCode = async (code: string) => {
+    const containerExists = !!containers?.find((container) => container.identifier === code);
+    if (!containerExists) {
       toast.error("Unrecognized container");
+      return;
     }
-    toggleSelection(code);
+    const newSelectedIds = Array.from(new Set([...selectedContainersId, code]));
+    onUpdateSelection(newSelectedIds);
   };
   return (
     <Section

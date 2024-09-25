@@ -82,6 +82,9 @@
       "last 1 safari version"
     ]
   },
+  "overrides": {
+    "react-refresh": "0.11.0"
+  },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.0.27",
     "@storybook/addon-interactions": "^7.0.27",

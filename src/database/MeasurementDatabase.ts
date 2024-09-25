@@ -74,9 +74,13 @@ class MeasurementDatabase extends BaseDatabase<MeasurementRecord> {
   }
 
   async lastRecordOfLabel(label: string) {
-    const weightRecords = await this.measurements.where("name").equalsIgnoreCase(label).sortBy('date');
+    const weightRecords = await this.measurements
+      .where("name")
+      .equalsIgnoreCase(label)
+      .sortBy("date");
     return weightRecords[weightRecords.length - 1];
   }
 }
 
-export default new MeasurementDatabase();
+const measurementDatabase = new MeasurementDatabase();
+export default measurementDatabase;
