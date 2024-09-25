@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/TOP-Nutrition-App/static/css/main.841aa58e.css",
-    "main.js": "/TOP-Nutrition-App/static/js/main.70e10230.js",
-    "static/js/810.be01e105.chunk.js": "/TOP-Nutrition-App/static/js/810.be01e105.chunk.js",
-    "static/js/787.fa4fdc47.chunk.js": "/TOP-Nutrition-App/static/js/787.fa4fdc47.chunk.js",
-    "static/js/250.055ac505.chunk.js": "/TOP-Nutrition-App/static/js/250.055ac505.chunk.js",
+    "main.css": "/TOP-Nutrition-App/static/css/main.1f3544c4.css",
+    "main.js": "/TOP-Nutrition-App/static/js/main.9f7dfa89.js",
+    "static/js/49.5f3e5233.chunk.js": "/TOP-Nutrition-App/static/js/49.5f3e5233.chunk.js",
+    "static/js/845.a9ffdbe0.chunk.js": "/TOP-Nutrition-App/static/js/845.a9ffdbe0.chunk.js",
+    "static/js/348.6a7129ca.chunk.js": "/TOP-Nutrition-App/static/js/348.6a7129ca.chunk.js",
     "static/media/FFClanProRegular.TTF": "/TOP-Nutrition-App/static/media/FFClanProRegular.f320eb6917987c847eff.TTF",
     "static/media/FFClanProBold.TTF": "/TOP-Nutrition-App/static/media/FFClanProBold.cfcefc98300feea1bf32.TTF",
     "service-worker.js": "/TOP-Nutrition-App/service-worker.js",
     "index.html": "/TOP-Nutrition-App/index.html",
-    "main.841aa58e.css.map": "/TOP-Nutrition-App/static/css/main.841aa58e.css.map",
-    "main.70e10230.js.map": "/TOP-Nutrition-App/static/js/main.70e10230.js.map",
-    "810.be01e105.chunk.js.map": "/TOP-Nutrition-App/static/js/810.be01e105.chunk.js.map",
-    "787.fa4fdc47.chunk.js.map": "/TOP-Nutrition-App/static/js/787.fa4fdc47.chunk.js.map",
-    "250.055ac505.chunk.js.map": "/TOP-Nutrition-App/static/js/250.055ac505.chunk.js.map"
+    "main.1f3544c4.css.map": "/TOP-Nutrition-App/static/css/main.1f3544c4.css.map",
+    "main.9f7dfa89.js.map": "/TOP-Nutrition-App/static/js/main.9f7dfa89.js.map",
+    "49.5f3e5233.chunk.js.map": "/TOP-Nutrition-App/static/js/49.5f3e5233.chunk.js.map",
+    "845.a9ffdbe0.chunk.js.map": "/TOP-Nutrition-App/static/js/845.a9ffdbe0.chunk.js.map",
+    "348.6a7129ca.chunk.js.map": "/TOP-Nutrition-App/static/js/348.6a7129ca.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.841aa58e.css",
-    "static/js/main.70e10230.js"
+    "static/css/main.1f3544c4.css",
+    "static/js/main.9f7dfa89.js"
   ]
 }
