@@ -12,6 +12,9 @@ class FoodContainerDatabase extends Dexie {
     this.version(1).stores({
       foodContainers: "&identifier,&name,content",
     });
+    this.version(2).stores({
+      foodContainers: "&identifier,&name,content,preparationDate",
+    });
   }
 
   async createFoodContainer(name: string | null, identifier: string) {
@@ -36,16 +39,24 @@ class FoodContainerDatabase extends Dexie {
 
   updateFoodContainerInfo(
     identifier: string,
-    info: Pick<FoodContainer, "name">
+    info: Pick<FoodContainer, "name" | "preparationDate">
   ) {
     return this.foodContainers.update(identifier, info);
   }
 
-  setFoodContainerContentById(identifier: string, content: Food[]) {
+  async setFoodContainerContentById(identifier: string, content: Food[]) {
     const contentWithoutDuplicates =
       FoodContainerUtils.mergeDuplicatedFoodContent(content);
+    const currentContainerData = await this.getFoodContainerById(identifier);
+    if (!currentContainerData) {
+      throw new Error(`No container found with container ${identifier}`);
+    }
     return this.foodContainers.update(identifier, {
       content: contentWithoutDuplicates,
+      preparationDate: FoodContainerUtils.computeFoodContainerPreparationDate(
+        currentContainerData,
+        content
+      ),
     });
   }
 

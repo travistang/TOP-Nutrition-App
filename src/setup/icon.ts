@@ -152,5 +152,6 @@ export const loadIcons = () =>
     faBatteryEmpty,
     faSkullCrossbones,
     faBan,
-    faHourglassHalf
+    faHourglassHalf,
+    faBatteryEmpty,
   );
