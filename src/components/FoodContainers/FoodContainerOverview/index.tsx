@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { FoodContainer } from "../../../types/FoodContainer";
 import FoodContainerNutritionInfo from "./FoodContainerNutritionInfo";
+import PreparationDateInfo from "./PreparationDateInfo";
 
 type Props = {
   foodContainer: FoodContainer;
@@ -17,13 +18,11 @@ export default function FoodContainerOverview({
     <div
       onClick={onSelect}
       className={classNames(
-        "cursor-pointer grid grid-cols-[auto_3fr_1fr] gap-x-2 p-2",
+        "cursor-pointer grid grid-cols-[minmax(20%,auto)_3fr_1fr] gap-x-2 p-2",
         className
       )}
     >
-      <div className="row-span-2 col-start-1 col-span-1 text-3xl items-center justify-center">
-        <FontAwesomeIcon icon="box" />
-      </div>
+      <PreparationDateInfo preparationDate={foodContainer.preparationDate} />
       <span className="font-bold text-sm">{foodContainer.name}</span>
       <span className="text-xs col-start-2">{foodContainer.identifier}</span>
       <FoodContainerNutritionInfo foodContainer={foodContainer} />
