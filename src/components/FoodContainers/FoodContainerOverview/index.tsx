@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { FoodContainer } from "../../../types/FoodContainer";
 import FoodContainerNutritionInfo from "./FoodContainerNutritionInfo";
