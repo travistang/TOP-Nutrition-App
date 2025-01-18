@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { useRecoilState } from "recoil";
+import { useCallback, useContext } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { dailyNutritionGoalAtom } from "../../atoms/DailyNutritionGoalAtom";
 import { useMaintenanceCalories } from "../../domain/MaintenanceCalories";
 import {
@@ -70,8 +70,15 @@ const getMarcoWidgetConfig = (
 
 export default function SummaryWidgets({ nutritionRecords }: Props) {
   const targetCalories = useContext(targetCaloriesContext);
+  const setDailyNutritionGoalAtom = useSetRecoilState(dailyNutritionGoalAtom);
   const maintenanceCalories = useMaintenanceCalories();
   const [{ targetNutritionIntake }] = useRecoilState(dailyNutritionGoalAtom);
+  const openNutritionGoalModal = useCallback(() => {
+    setDailyNutritionGoalAtom((atomValue) => ({
+      ...atomValue,
+      modalOpened: true,
+    }));
+  }, [setDailyNutritionGoalAtom]);
 
   const totalNutrition = NutritionUtils.total(...nutritionRecords);
   const caloriesByNutrition =
@@ -97,6 +104,7 @@ export default function SummaryWidgets({ nutritionRecords }: Props) {
       {marcoWidgetConfigs.map((config) => (
         <GaugeWidgetSection
           key={config.label}
+          onClick={openNutritionGoalModal}
           label={config.label}
           color={config.color}
           value={config.value}
