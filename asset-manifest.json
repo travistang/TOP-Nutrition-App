@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/TOP-Nutrition-App/static/css/main.b34f51f0.css",
-    "main.js": "/TOP-Nutrition-App/static/js/main.5bba8dd1.js",
+    "main.js": "/TOP-Nutrition-App/static/js/main.d9f9129f.js",
     "static/js/49.5f3e5233.chunk.js": "/TOP-Nutrition-App/static/js/49.5f3e5233.chunk.js",
     "static/js/845.a9ffdbe0.chunk.js": "/TOP-Nutrition-App/static/js/845.a9ffdbe0.chunk.js",
     "static/js/348.6a7129ca.chunk.js": "/TOP-Nutrition-App/static/js/348.6a7129ca.chunk.js",
@@ -10,13 +10,13 @@
     "service-worker.js": "/TOP-Nutrition-App/service-worker.js",
     "index.html": "/TOP-Nutrition-App/index.html",
     "main.b34f51f0.css.map": "/TOP-Nutrition-App/static/css/main.b34f51f0.css.map",
-    "main.5bba8dd1.js.map": "/TOP-Nutrition-App/static/js/main.5bba8dd1.js.map",
+    "main.d9f9129f.js.map": "/TOP-Nutrition-App/static/js/main.d9f9129f.js.map",
     "49.5f3e5233.chunk.js.map": "/TOP-Nutrition-App/static/js/49.5f3e5233.chunk.js.map",
     "845.a9ffdbe0.chunk.js.map": "/TOP-Nutrition-App/static/js/845.a9ffdbe0.chunk.js.map",
     "348.6a7129ca.chunk.js.map": "/TOP-Nutrition-App/static/js/348.6a7129ca.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b34f51f0.css",
-    "static/js/main.5bba8dd1.js"
+    "static/js/main.d9f9129f.js"
   ]
 }
