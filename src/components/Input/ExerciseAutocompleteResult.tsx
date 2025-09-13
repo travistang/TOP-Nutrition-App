@@ -1,9 +1,9 @@
-import { useLiveQuery } from "dexie-react-hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { EquipmentIcon, Exercise } from "../../types/Exercise";
-import StringUtils from "../../utils/String";
+import { useEffect, useState } from "react";
 import ExerciseDatabase from "../../database/ExerciseDatabase";
+import { EquipmentIcon, Exercise, ExerciseDetail } from "../../types/Exercise";
+import StringUtils from "../../utils/String";
 import ImageViewer from "../ImageViewer";
 
 type Props = {
@@ -11,8 +11,10 @@ type Props = {
 };
 
 export default function ExerciseAutocompleteResult({ exercise }: Props) {
-  const exerciseDetails = useLiveQuery(() => {
-    return ExerciseDatabase.findOrCreateExerciseDetails(exercise);
+  const [exerciseDetails, setExerciseDetails] = useState<ExerciseDetail | undefined>(undefined);
+
+  useEffect(() => {
+    ExerciseDatabase.findExerciseDetails(exercise).then(setExerciseDetails);
   }, [exercise]);
 
   return (

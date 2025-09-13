@@ -126,6 +126,8 @@ class ExerciseDatabase extends Dexie {
     rep: Repetition,
     date = new Date()
   ) {
+    await this.findOrCreateExerciseDetails(exercise);
+    
     const exerciseSetRecord: ExerciseSetRecord = {
       id: uuid4(),
       date: date.getTime(),
@@ -144,20 +146,24 @@ class ExerciseDatabase extends Dexie {
       .then(() => bus.emit(EventBusName.Workouts));
   }
 
-  async findOrCreateExerciseDetails(record: Exercise): Promise<ExerciseDetail> {
-    const matchedDetail = await this.exerciseDetails
+  async findExerciseDetails(record: Exercise): Promise<ExerciseDetail | undefined> {
+    return this.exerciseDetails
       .where("name")
       .equals(record.name)
       .first();
+  }
+  async findOrCreateExerciseDetails(record: Exercise): Promise<ExerciseDetail> {
+    const matchedDetail = await this.findExerciseDetails(record);
     if (matchedDetail) return matchedDetail;
 
+    const id = uuid4();
     const newDetails: ExerciseDetail = {
       ...record,
-      id: uuid4(),
+      id,
     };
     await this.exerciseDetails.add({
       ...record,
-      id: uuid4(),
+      id,
     });
 
     return newDetails;

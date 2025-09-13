@@ -1,17 +1,17 @@
-import React, { useCallback } from "react";
-import { Exercise } from "../../../types/Exercise";
-import Section from "../../Section";
-import ExerciseDatabase from "../../../database/ExerciseDatabase";
-import ImagePicker from "../../Input/ImagePicker";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import ExerciseDatabase from "../../../database/ExerciseDatabase";
+import { Exercise, ExerciseDetail } from "../../../types/Exercise";
+import ImagePicker from "../../Input/ImagePicker";
+import Section from "../../Section";
 
 type Props = {
   exercise: Exercise;
 };
 export default function ExerciseSearchResult({ exercise }: Props) {
-  const exerciseDetail = useLiveQuery(() => {
-    return ExerciseDatabase.findOrCreateExerciseDetails(exercise);
+  const [exerciseDetail, setExerciseDetail] = useState<ExerciseDetail | undefined>(undefined);
+  useEffect(() => {
+    ExerciseDatabase.findExerciseDetails(exercise).then(setExerciseDetail);
   }, [exercise]);
 
   const onChooseImage = useCallback(
