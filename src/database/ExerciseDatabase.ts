@@ -126,7 +126,6 @@ class ExerciseDatabase extends Dexie {
     rep: Repetition,
     date = new Date()
   ) {
-    await this.findOrCreateExerciseDetails(exercise);
     
     const exerciseSetRecord: ExerciseSetRecord = {
       id: uuid4(),
