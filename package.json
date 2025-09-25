@@ -16,7 +16,7 @@
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "@zxing/browser": "^0.1.1",
-    "chart.js": "^3.8.0",
+    "chart.js": "^4.0.0",
     "chartjs-plugin-annotation": "^2.2.1",
     "classnames": "^2.3.1",
     "date-fns": "^2.28.0",
